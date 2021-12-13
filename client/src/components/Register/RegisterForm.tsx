@@ -2,18 +2,19 @@ import React from 'react'
 import { useNavigate, NavLink } from "react-router-dom";
 import {useFormik, FormikProps} from 'formik';
 import * as YUP from 'yup';
-import { MyRegisterFormValues, myRegProps } from '../../interfaces';
+import styled from "styled-components";
+import { MyRegisterFormValues } from '../../interfaces';
 import Select from './Select';
 import * as routes from '../../routes';
 
 
 
-import StyledInput from '../Input/StyledInput.style';
+import Input from '../Input/Input';
 import StyledButton from '../Button/StyledButton.style';
 
 
 
-const Register : React.FC<myRegProps> = ({className}) => {
+const RegisterForm : React.FC = () => {
   let navigate = useNavigate();
   const formik: FormikProps<MyRegisterFormValues> = useFormik<MyRegisterFormValues>({
     initialValues:{
@@ -57,11 +58,11 @@ const Register : React.FC<myRegProps> = ({className}) => {
   });
 
   return (
-    <div className={className}>
+    <RegSection>
       <div className="wrap">
         <h2>Register</h2>
         <form onSubmit={formik.handleSubmit}>
-          <StyledInput 
+          <Input 
             id="regFname"
             name="regFname"
             text="First Name" 
@@ -71,7 +72,7 @@ const Register : React.FC<myRegProps> = ({className}) => {
             value={formik.values.regFname}  
           />
           {formik.touched.regFname && formik.errors.regFname ? <p className="error">{formik.errors.regFname}</p> : null}
-          <StyledInput
+          <Input
             id="regLname" 
             name="regLname"  
             text="Last Name" 
@@ -81,7 +82,7 @@ const Register : React.FC<myRegProps> = ({className}) => {
             value={formik.values.regLname}  
           />
           {formik.touched.regLname && formik.errors.regLname ? <p className="error">{formik.errors.regLname}</p> : null}
-          <StyledInput
+          <Input
             id="regEmail" 
             name="regEmail"  
             text="Email" 
@@ -100,7 +101,7 @@ const Register : React.FC<myRegProps> = ({className}) => {
             value={formik.values.regStatus}  
           />
           {formik.touched.regStatus && formik.errors.regStatus ? <p className="error">{formik.errors.regStatus}</p> : null}
-          <StyledInput 
+          <Input 
             id="regNumber"
             name="regNumber"
             text="Card Number" 
@@ -110,7 +111,7 @@ const Register : React.FC<myRegProps> = ({className}) => {
             value={formik.values.regNumber}  
           />
           {formik.touched.regNumber && formik.errors.regNumber ? <p className="error">{formik.errors.regNumber}</p> : null}
-          <StyledInput 
+          <Input 
             id="regPass"
             name="regPass"
             text="Password" 
@@ -120,7 +121,7 @@ const Register : React.FC<myRegProps> = ({className}) => {
             value={formik.values.regPass}  
           />
           {formik.touched.regPass && formik.errors.regPass ? <p className="error">{formik.errors.regPass}</p> : null}
-          <StyledInput
+          <Input
             id="repeatRegPass" 
             name="repeatRegPass"  
             text="Repeat password" 
@@ -142,8 +143,32 @@ const Register : React.FC<myRegProps> = ({className}) => {
         </form>
 
     </div>
-  </div>
+  </RegSection>
   )
 }
 
-export default Register;
+const RegSection = styled.div`
+  height: 100vh;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  & form{
+    width: 100%;
+    & button{
+      margin-top: 1.5rem !important;
+    }
+  }
+  & div{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    & h2{
+      font-size: 1.8rem !important;
+      font-weight: 600;
+      color:#000;
+    }
+  }
+`;
+
+export default RegisterForm;

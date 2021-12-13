@@ -1,11 +1,11 @@
-import StyledRegister from "./Register/StyledRegister.style";
-import StyledInput from './Input/StyledInput.style';
-import StyledForm from './Form/StyledForm.style';
-import StyledLogin from './Login/StyledLogin.style';
+import RegisterForm from "./Register/RegisterForm";
+import Input from './Input/Input';
+import Form from './Form/Form';
+import LoginForm from './Login/LoginForm';
 
 export {
-  StyledRegister,
-  StyledInput,
-  StyledForm,
-  StyledLogin,
+  RegisterForm,
+  Input,
+  Form,
+  LoginForm,
 }

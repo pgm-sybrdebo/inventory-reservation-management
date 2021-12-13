@@ -1,11 +1,6 @@
 // interfaces
-
-export interface myRegProps{
-  className: string
-}
 export interface myForm {
   children: React.ReactNode,
-  className: string
 }
 
 export interface MyRegisterFormValues {
@@ -24,7 +19,6 @@ export interface MyLoginFormValues {
 }
 
 export interface MyInputFormProps {
-  className : string, 
   text: string, 
   type: string, 
   id: string, 

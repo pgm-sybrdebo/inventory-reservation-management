@@ -2,13 +2,14 @@ import React from 'react'
 import { useNavigate, NavLink } from "react-router-dom";
 import {useFormik, FormikProps} from 'formik';
 import * as YUP from 'yup';
-import { MyLoginFormValues, myRegProps } from '../../interfaces';
+import styled from "styled-components";
+import { MyLoginFormValues } from '../../interfaces';
 import * as routes from '../../routes';
 
-import StyledInput from '../Input/StyledInput.style';
+import Input from '../Input/Input';
 import StyledButton from '../Button/StyledButton.style';
 
-const Login: React.FC<myRegProps> = ({className}) => {
+const LoginForm: React.FC = () => {
   let navigate = useNavigate();
 
   const formik: FormikProps<MyLoginFormValues> = useFormik<MyLoginFormValues>({
@@ -26,11 +27,11 @@ const Login: React.FC<myRegProps> = ({className}) => {
     },
   });
   return (
-    <div className={className}>
+    <LogSection>
       <div className="wrap">
         <h2>Login</h2>
         <form onSubmit={formik.handleSubmit}>
-          <StyledInput 
+          <Input 
             id="email"
             name="loginEmail"
             text="Email" 
@@ -40,7 +41,7 @@ const Login: React.FC<myRegProps> = ({className}) => {
             value={formik.values.loginEmail}  
           />
           {formik.touched.loginEmail && formik.errors.loginEmail ? <p className="error">{formik.errors.loginEmail}</p> : null}
-          <StyledInput
+          <Input
             id="password" 
             name="loginPass"  
             text="Password" 
@@ -64,9 +65,32 @@ const Login: React.FC<myRegProps> = ({className}) => {
       </div>
 
 
-  </div>
+  </LogSection>
 
   )
 }
+const LogSection = styled.div`
+  height: 100vh;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  & form{
+    width: 100%;
+    & button{
+      margin-top: 1.5rem !important;
+    }
+  }
+  & div{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    & h2{
+      font-size: 1.8rem !important;
+      font-weight: 600;
+      color:#000;
+    }
+  }
+`;
 
-export default Login;
+export default LoginForm;
