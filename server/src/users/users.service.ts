@@ -19,15 +19,11 @@ export class UsersService {
     return this.usersRepository.find();
   }
 
-  async findOneByEmail(email: string): Promise<User | undefined> {
-    return this.usersRepository.findOne({ email });
-  }
-
-  findOne(id: number):Promise<User> {
+  findOne(id: string):Promise<User> {
     return this.usersRepository.findOneOrFail(id);
   }
 
-  async update(id: number, updateUserInput: UpdateUserInput):Promise<User> {
+  async update(id: string, updateUserInput: UpdateUserInput):Promise<User> {
     const updatedUser = await this.usersRepository.preload({
       id: id,
       ...updateUserInput,
@@ -36,7 +32,7 @@ export class UsersService {
     return this.usersRepository.save(updatedUser);
   }
 
-  async remove(id: number):Promise<User> {
+  async remove(id: string):Promise<User> {
     const user = await this.findOne(id);
     return this.usersRepository.remove(user);
   }

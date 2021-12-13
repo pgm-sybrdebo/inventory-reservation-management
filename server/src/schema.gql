@@ -3,44 +3,55 @@
 # ------------------------------------------------------
 
 input CreateUserInput {
+  dateCreated_on: Timestamp
+  dateDeleted_on: Timestamp
+  dateModified_on: Timestamp
   email: String!
   firstName: String!
   lastName: String!
-  lecturerNumber: String
+  lecturerNumber: Int
   password: String!
-  role: String!
-  studentNumber: String
+  role: Float!
+  studentNumber: Int
 }
 
 type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
-  removeUser(id: Int!): User!
+  removeUser(id: String!): User!
   updateUser(updateUserInput: UpdateUserInput!): User!
 }
 
 type Query {
-  user(id: Int!): User!
+  user(id: String!): User!
   users: [User!]!
 }
 
+"""
+`Date` type as integer. Type represents date and time as number of milliseconds from start of UNIX epoch.
+"""
+scalar Timestamp
+
 input UpdateUserInput {
+  dateCreated_on: Timestamp
+  dateDeleted_on: Timestamp
+  dateModified_on: Timestamp
   email: String
   firstName: String
-  id: Int!
+  id: String!
   lastName: String
-  lecturerNumber: String
+  lecturerNumber: Int
   password: String
-  role: String
-  studentNumber: String
+  role: Float
+  studentNumber: Int
 }
 
 type User {
   email: String!
   firstName: String!
-  id: Int!
+  id: String!
   lastName: String!
-  lecturerNumber: String!
+  lecturerNumber: Int
   password: String!
-  role: String!
-  studentNumber: String!
+  role: Int!
+  studentNumber: Int
 }

@@ -1,8 +1,10 @@
 import { InputType, Int, Field } from '@nestjs/graphql';
-import { IsNotEmpty, IsAlpha, IsString, IsEmail, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsAlpha, IsString, IsEmail, IsOptional, IsInt, IsPositive } from 'class-validator';
+import { CreateDateInput } from 'src/mixins/create-date.input';
+import { Dates } from 'src/mixins/date.entity';
 
 @InputType()
-export class CreateUserInput {
+export class CreateUserInput extends CreateDateInput {
   @IsNotEmpty()
   @IsAlpha()
   @Field()
@@ -23,17 +25,33 @@ export class CreateUserInput {
   @Field()
   password: string;
 
-  @IsAlpha()
+  @IsNotEmpty()
+  @IsPositive()
+  @IsInt()
   @Field()
-  role: string;
+  role: number;
 
   @IsOptional()
-  @IsString()
-  @Field({nullable: true})
-  studentNumber?: string;
+  @IsPositive()
+  @IsInt()
+  @Field(type => Int, {nullable: true})
+  studentNumber?: number;
 
   @IsOptional()
-  @IsString()
-  @Field({nullable: true})
-  lecturerNumber?: string;
+  @IsPositive()
+  @IsInt()
+  @Field(type => Int, {nullable: true})
+  lecturerNumber?: number;
+
+  // @Field()
+  // date: CreateDateInput
+
+  // @Field()
+  // dateCreated_on: Date
+
+  // @Field()
+  // dateModified_on: Date
+
+  // @Field({nullable: true})
+  // dateDeleted_on: Date
 }
