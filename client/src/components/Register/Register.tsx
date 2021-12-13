@@ -2,7 +2,7 @@ import React from 'react'
 import { useNavigate, NavLink } from "react-router-dom";
 import {useFormik, FormikProps} from 'formik';
 import * as YUP from 'yup';
-import { MyRegisterFormValues, myRegProps } from '../../interfaces'
+import { MyRegisterFormValues, myRegProps } from '../../interfaces';
 import Select from './Select';
 import * as routes from '../../routes';
 

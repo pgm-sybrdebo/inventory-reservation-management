@@ -18,6 +18,11 @@ export interface MyRegisterFormValues {
   repeatRegPass:string,
 }
 
+export interface MyLoginFormValues {
+  loginEmail: string,
+  loginPass:string,
+}
+
 export interface MyInputFormProps {
   className : string, 
   text: string, 

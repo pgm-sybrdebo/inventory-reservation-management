@@ -56,8 +56,13 @@ body {
   -moz-osx-font-smoothing: grayscale;
   
 }
-.picture{
+.picReg{
   background-image: url('https://images.unsplash.com/photo-1605995753652-d92e1167c867?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80');
+}
+.picLog{
+  background-image: url('https://images.unsplash.com/photo-1605595971596-d6f55f6987b7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80');
+}
+.picture{
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
