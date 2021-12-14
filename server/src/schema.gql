@@ -2,10 +2,15 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input CreateReservationInput {
+  device_id: String!
+  end_date: Timestamp!
+  reservation_state_id: String!
+  start_date: Timestamp!
+  user_id: String!
+}
+
 input CreateUserInput {
-  dateCreated_on: Timestamp
-  dateDeleted_on: Timestamp
-  dateModified_on: Timestamp
   email: String!
   firstName: String!
   lastName: String!
@@ -16,14 +21,28 @@ input CreateUserInput {
 }
 
 type Mutation {
+  createReservation(createReservationInput: CreateReservationInput!): Reservation!
   createUser(createUserInput: CreateUserInput!): User!
+  removeReservation(id: String!): Reservation!
   removeUser(id: String!): User!
+  updateReservation(updateReservationInput: UpdateReservationInput!): Reservation!
   updateUser(updateUserInput: UpdateUserInput!): User!
 }
 
 type Query {
+  reservation(id: String!): Reservation!
+  reservations: [Reservation!]!
   user(id: String!): User!
   users: [User!]!
+}
+
+type Reservation {
+  device_id: String!
+  end_date: Timestamp!
+  id: String!
+  reservation_state_id: String!
+  start_date: Timestamp!
+  user_id: String!
 }
 
 """
@@ -31,10 +50,16 @@ type Query {
 """
 scalar Timestamp
 
+input UpdateReservationInput {
+  device_id: String
+  end_date: Timestamp
+  id: String!
+  reservation_state_id: String
+  start_date: Timestamp
+  user_id: String
+}
+
 input UpdateUserInput {
-  dateCreated_on: Timestamp
-  dateDeleted_on: Timestamp
-  dateModified_on: Timestamp
   email: String
   firstName: String
   id: String!

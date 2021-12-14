@@ -4,7 +4,7 @@ import { CreateDateInput } from 'src/mixins/create-date.input';
 import { Dates } from 'src/mixins/date.entity';
 
 @InputType()
-export class CreateUserInput extends CreateDateInput {
+export class CreateUserInput {
   @IsNotEmpty()
   @IsAlpha()
   @Field()
