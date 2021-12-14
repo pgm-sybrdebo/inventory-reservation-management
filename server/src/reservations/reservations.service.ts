@@ -23,10 +23,10 @@ export class ReservationsService {
     return this.reservationsRepository.findOneOrFail(id);
   }
 
-  async update(id: string, updateUserInput: UpdateReservationInput):Promise<Reservation> {
+  async update(id: string, updateReservationInput: UpdateReservationInput):Promise<Reservation> {
     const updatedReservation = await this.reservationsRepository.preload({
       id: id,
-      ...updateUserInput,
+      ...updateReservationInput,
     });
 
     return this.reservationsRepository.save(updatedReservation);

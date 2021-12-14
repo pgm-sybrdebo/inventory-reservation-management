@@ -7,6 +7,7 @@ import { AppService } from './app.service';
 import { join } from 'path';
 import { UsersModule } from './users/users.module';
 import { ReservationsModule } from './reservations/reservations.module';
+import { ReservationStatesModule } from './reservation-states/reservation-states.module';
 
 import * as dotenv from 'dotenv';
 dotenv.config();
@@ -50,6 +51,7 @@ const nodeEnvironment = `${(
     }),
     UsersModule,
     ReservationsModule,
+    ReservationStatesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
