@@ -17,6 +17,16 @@ input CreateDeviceInput {
   qr_code: String!
 }
 
+input CreateModelInput {
+  brand: String!
+  description: String!
+  end_date: Timestamp!
+  name: String!
+  quantity: Int!
+  reservation_time_id: String!
+  specifications: String!
+}
+
 input CreateReservationInput {
   device_id: String!
   end_date: Timestamp!
@@ -61,21 +71,34 @@ type Device {
   qr_code: String!
 }
 
+type Model {
+  brand: String!
+  description: String!
+  id: String!
+  name: String!
+  quantity: Int!
+  reservation_time_id: String!
+  specifications: String!
+}
+
 type Mutation {
   createDamage(createDamageInput: CreateDamageInput!): Damage!
   createDevice(createDeviceInput: CreateDeviceInput!): Device!
+  createModel(createModelInput: CreateModelInput!): Model!
   createReservation(createReservationInput: CreateReservationInput!): Reservation!
   createReservationState(createReservationStateInput: CreateReservationStateInput!): ReservationState!
   createReservationTime(createReservationTimeInput: CreateReservationTimeInput!): ReservationTime!
   createUser(createUserInput: CreateUserInput!): User!
   removeDamage(id: String!): Damage!
   removeDevice(id: String!): Device!
+  removeModel(id: String!): Model!
   removeReservation(id: String!): Reservation!
   removeReservationState(id: String!): ReservationState!
   removeReservationTime(id: String!): ReservationTime!
   removeUser(id: String!): User!
   updateDamage(updateDamageInput: UpdateDamageInput!): Damage!
   updateDevice(updateDeviceInput: UpdateDeviceInput!): Device!
+  updateModel(updateModelInput: UpdateModelInput!): Model!
   updateReservation(updateReservationInput: UpdateReservationInput!): Reservation!
   updateReservationState(updateReservationStateInput: UpdateReservationStateInput!): ReservationState!
   updateReservationTime(updateReservationTimeInput: UpdateReservationTimeInput!): ReservationTime!
@@ -87,6 +110,8 @@ type Query {
   damages: [Damage!]!
   device(id: String!): Device!
   devices: [Device!]!
+  model(id: String!): Model!
+  models: [Model!]!
   reservation(id: String!): Reservation!
   reservationState(id: String!): ReservationState!
   reservationStates: [ReservationState!]!
@@ -137,6 +162,17 @@ input UpdateDeviceInput {
   is_available: Boolean
   model_id: String
   qr_code: String
+}
+
+input UpdateModelInput {
+  brand: String
+  description: String
+  end_date: Timestamp
+  id: String!
+  name: String
+  quantity: Int
+  reservation_time_id: String
+  specifications: String
 }
 
 input UpdateReservationInput {
