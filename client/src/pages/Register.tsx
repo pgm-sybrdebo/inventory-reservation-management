@@ -1,14 +1,12 @@
 import React from 'react'
+import { Form, RegisterForm } from '../components'
 
-interface Props {
-  
-}
-
-const Register = (props: Props) => {
+const Register = () => {
   return (
-    <div>
-      <h1>Register page</h1>
-    </div>
+    <Form>
+      <div className="picture picReg"><div></div></div>
+      <RegisterForm />
+    </Form>
   )
 }
 
