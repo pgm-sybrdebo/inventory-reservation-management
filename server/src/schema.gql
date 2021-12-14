@@ -10,6 +10,13 @@ input CreateDamageInput {
   title: String!
 }
 
+input CreateDeviceInput {
+  device_status_id: String!
+  is_available: Boolean!
+  model_id: String!
+  qr_code: String!
+}
+
 input CreateReservationInput {
   device_id: String!
   end_date: Timestamp!
@@ -46,18 +53,29 @@ type Damage {
   title: String!
 }
 
+type Device {
+  device_status_id: String!
+  id: String!
+  is_available: Boolean!
+  model_id: String!
+  qr_code: String!
+}
+
 type Mutation {
   createDamage(createDamageInput: CreateDamageInput!): Damage!
+  createDevice(createDeviceInput: CreateDeviceInput!): Device!
   createReservation(createReservationInput: CreateReservationInput!): Reservation!
   createReservationState(createReservationStateInput: CreateReservationStateInput!): ReservationState!
   createReservationTime(createReservationTimeInput: CreateReservationTimeInput!): ReservationTime!
   createUser(createUserInput: CreateUserInput!): User!
   removeDamage(id: String!): Damage!
+  removeDevice(id: String!): Device!
   removeReservation(id: String!): Reservation!
   removeReservationState(id: String!): ReservationState!
   removeReservationTime(id: String!): ReservationTime!
   removeUser(id: String!): User!
   updateDamage(updateDamageInput: UpdateDamageInput!): Damage!
+  updateDevice(updateDeviceInput: UpdateDeviceInput!): Device!
   updateReservation(updateReservationInput: UpdateReservationInput!): Reservation!
   updateReservationState(updateReservationStateInput: UpdateReservationStateInput!): ReservationState!
   updateReservationTime(updateReservationTimeInput: UpdateReservationTimeInput!): ReservationTime!
@@ -67,6 +85,8 @@ type Mutation {
 type Query {
   damage(id: String!): Damage!
   damages: [Damage!]!
+  device(id: String!): Device!
+  devices: [Device!]!
   reservation(id: String!): Reservation!
   reservationState(id: String!): ReservationState!
   reservationStates: [ReservationState!]!
@@ -109,6 +129,14 @@ input UpdateDamageInput {
   picture: String
   reservation_id: String
   title: String
+}
+
+input UpdateDeviceInput {
+  device_status_id: String
+  id: String!
+  is_available: Boolean
+  model_id: String
+  qr_code: String
 }
 
 input UpdateReservationInput {
