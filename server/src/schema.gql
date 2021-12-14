@@ -14,6 +14,11 @@ input CreateReservationStateInput {
   name: String!
 }
 
+input CreateReservationTimeInput {
+  amount: Int!
+  name: String!
+}
+
 input CreateUserInput {
   email: String!
   firstName: String!
@@ -27,12 +32,15 @@ input CreateUserInput {
 type Mutation {
   createReservation(createReservationInput: CreateReservationInput!): Reservation!
   createReservationState(createReservationStateInput: CreateReservationStateInput!): ReservationState!
+  createReservationTime(createReservationTimeInput: CreateReservationTimeInput!): ReservationTime!
   createUser(createUserInput: CreateUserInput!): User!
   removeReservation(id: String!): Reservation!
   removeReservationState(id: String!): ReservationState!
+  removeReservationTime(id: String!): ReservationTime!
   removeUser(id: String!): User!
   updateReservation(updateReservationInput: UpdateReservationInput!): Reservation!
   updateReservationState(updateReservationStateInput: UpdateReservationStateInput!): ReservationState!
+  updateReservationTime(updateReservationTimeInput: UpdateReservationTimeInput!): ReservationTime!
   updateUser(updateUserInput: UpdateUserInput!): User!
 }
 
@@ -40,6 +48,8 @@ type Query {
   reservation(id: String!): Reservation!
   reservationState(id: String!): ReservationState!
   reservationStates: [ReservationState!]!
+  reservationTime(id: String!): ReservationTime!
+  reservationTimes: [ReservationTime!]!
   reservations: [Reservation!]!
   user(id: String!): User!
   users: [User!]!
@@ -59,6 +69,12 @@ type ReservationState {
   name: String!
 }
 
+type ReservationTime {
+  amount: Int!
+  id: String!
+  name: String!
+}
+
 """
 `Date` type as integer. Type represents date and time as number of milliseconds from start of UNIX epoch.
 """
@@ -74,6 +90,12 @@ input UpdateReservationInput {
 }
 
 input UpdateReservationStateInput {
+  id: String!
+  name: String
+}
+
+input UpdateReservationTimeInput {
+  amount: Int
   id: String!
   name: String
 }
