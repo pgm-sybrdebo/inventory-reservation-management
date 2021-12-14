@@ -21,6 +21,12 @@ input CreateDeviceStatusInput {
   name: String!
 }
 
+input CreateMediaInput {
+  model_id: String!
+  source: String!
+  type: String!
+}
+
 input CreateModelInput {
   brand: String!
   description: String!
@@ -80,6 +86,13 @@ type DeviceStatus {
   name: String!
 }
 
+type Media {
+  id: String!
+  model_id: String!
+  source: String!
+  type: String!
+}
+
 type Model {
   brand: String!
   description: String!
@@ -94,6 +107,7 @@ type Mutation {
   createDamage(createDamageInput: CreateDamageInput!): Damage!
   createDevice(createDeviceInput: CreateDeviceInput!): Device!
   createDeviceStatus(createDeviceStatusInput: CreateDeviceStatusInput!): DeviceStatus!
+  createMedia(createMediaInput: CreateMediaInput!): Media!
   createModel(createModelInput: CreateModelInput!): Model!
   createReservation(createReservationInput: CreateReservationInput!): Reservation!
   createReservationState(createReservationStateInput: CreateReservationStateInput!): ReservationState!
@@ -102,6 +116,7 @@ type Mutation {
   removeDamage(id: String!): Damage!
   removeDevice(id: String!): Device!
   removeDeviceStatus(id: String!): DeviceStatus!
+  removeMedia(id: String!): Media!
   removeModel(id: String!): Model!
   removeReservation(id: String!): Reservation!
   removeReservationState(id: String!): ReservationState!
@@ -110,6 +125,7 @@ type Mutation {
   updateDamage(updateDamageInput: UpdateDamageInput!): Damage!
   updateDevice(updateDeviceInput: UpdateDeviceInput!): Device!
   updateDeviceStatus(updateDeviceStatusInput: UpdateDeviceStatusInput!): DeviceStatus!
+  updateMedia(updateMediaInput: UpdateMediaInput!): Media!
   updateModel(updateModelInput: UpdateModelInput!): Model!
   updateReservation(updateReservationInput: UpdateReservationInput!): Reservation!
   updateReservationState(updateReservationStateInput: UpdateReservationStateInput!): ReservationState!
@@ -124,6 +140,8 @@ type Query {
   deviceStatus(id: String!): DeviceStatus!
   deviceStatuses: [DeviceStatus!]!
   devices: [Device!]!
+  media(id: String!): Media!
+  medias: [Media!]!
   model(id: String!): Model!
   models: [Model!]!
   reservation(id: String!): Reservation!
@@ -181,6 +199,13 @@ input UpdateDeviceInput {
 input UpdateDeviceStatusInput {
   id: String!
   name: String
+}
+
+input UpdateMediaInput {
+  id: String!
+  model_id: String
+  source: String
+  type: String
 }
 
 input UpdateModelInput {

@@ -13,6 +13,7 @@ import { DamagesModule } from './damages/damages.module';
 import { DevicesModule } from './devices/devices.module';
 import { ModelsModule } from './models/models.module';
 import { DeviceStatusesModule } from './device-statuses/device-statuses.module';
+import { MediasModule } from './medias/medias.module';
 
 import * as dotenv from 'dotenv';
 dotenv.config();
@@ -62,6 +63,7 @@ const nodeEnvironment = `${(
     DevicesModule,
     ModelsModule,
     DeviceStatusesModule,
+    MediasModule,
   ],
   controllers: [AppController],
   providers: [AppService],
