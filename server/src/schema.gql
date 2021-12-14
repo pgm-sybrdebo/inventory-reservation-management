@@ -2,6 +2,14 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input CreateDamageInput {
+  description: String!
+  device_id: String!
+  picture: String!
+  reservation_id: String!
+  title: String!
+}
+
 input CreateReservationInput {
   device_id: String!
   end_date: Timestamp!
@@ -29,15 +37,27 @@ input CreateUserInput {
   studentNumber: Int
 }
 
+type Damage {
+  description: String!
+  device_id: String!
+  id: String!
+  picture: String!
+  reservation_id: String!
+  title: String!
+}
+
 type Mutation {
+  createDamage(createDamageInput: CreateDamageInput!): Damage!
   createReservation(createReservationInput: CreateReservationInput!): Reservation!
   createReservationState(createReservationStateInput: CreateReservationStateInput!): ReservationState!
   createReservationTime(createReservationTimeInput: CreateReservationTimeInput!): ReservationTime!
   createUser(createUserInput: CreateUserInput!): User!
+  removeDamage(id: String!): Damage!
   removeReservation(id: String!): Reservation!
   removeReservationState(id: String!): ReservationState!
   removeReservationTime(id: String!): ReservationTime!
   removeUser(id: String!): User!
+  updateDamage(updateDamageInput: UpdateDamageInput!): Damage!
   updateReservation(updateReservationInput: UpdateReservationInput!): Reservation!
   updateReservationState(updateReservationStateInput: UpdateReservationStateInput!): ReservationState!
   updateReservationTime(updateReservationTimeInput: UpdateReservationTimeInput!): ReservationTime!
@@ -45,6 +65,8 @@ type Mutation {
 }
 
 type Query {
+  damage(id: String!): Damage!
+  damages: [Damage!]!
   reservation(id: String!): Reservation!
   reservationState(id: String!): ReservationState!
   reservationStates: [ReservationState!]!
@@ -79,6 +101,15 @@ type ReservationTime {
 `Date` type as integer. Type represents date and time as number of milliseconds from start of UNIX epoch.
 """
 scalar Timestamp
+
+input UpdateDamageInput {
+  description: String
+  device_id: String
+  id: String!
+  picture: String
+  reservation_id: String
+  title: String
+}
 
 input UpdateReservationInput {
   device_id: String
