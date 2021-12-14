@@ -12,6 +12,7 @@ import { ReservationTimesModule } from './reservation-times/reservation-times.mo
 import { DamagesModule } from './damages/damages.module';
 import { DevicesModule } from './devices/devices.module';
 import { ModelsModule } from './models/models.module';
+import { DeviceStatusesModule } from './device-statuses/device-statuses.module';
 
 import * as dotenv from 'dotenv';
 dotenv.config();
@@ -60,6 +61,7 @@ const nodeEnvironment = `${(
     DamagesModule,
     DevicesModule,
     ModelsModule,
+    DeviceStatusesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
