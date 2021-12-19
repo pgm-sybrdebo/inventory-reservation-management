@@ -1,6 +1,6 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import JSON from 'graphql-type-json';
+import JSON, { GraphQLJSONObject } from 'graphql-type-json';
 import { Dates } from 'src/mixins/date.entity';
 
 @Entity()
@@ -30,13 +30,13 @@ export class Model {
   @Field()
   brand: string;
 
-  // @Column()
-  // @Field(type => JSON)
-  // specifications: JSON;
+  @Column({type: 'json'})
+  @Field(() => GraphQLJSONObject)
+  specifications: JSON;
 
-  @Column()
-  @Field()
-  specifications: string;
+  // @Column()
+  // @Field()
+  // specifications: string;
 
   @Column(()=> Dates)
   date: Dates

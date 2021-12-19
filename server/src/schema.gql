@@ -30,11 +30,10 @@ input CreateMediaInput {
 input CreateModelInput {
   brand: String!
   description: String!
-  end_date: Timestamp!
   name: String!
   quantity: Int!
   reservation_time_id: String!
-  specifications: String!
+  specifications: JSONObject!
 }
 
 input CreateReservationInput {
@@ -90,6 +89,11 @@ type DeviceStatus {
   name: String!
 }
 
+"""
+The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSONObject @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
+
 type Media {
   id: String!
   model_id: String!
@@ -104,7 +108,7 @@ type Model {
   name: String!
   quantity: Int!
   reservation_time_id: String!
-  specifications: String!
+  specifications: JSONObject!
 }
 
 type Mutation {
@@ -225,12 +229,11 @@ input UpdateMediaInput {
 input UpdateModelInput {
   brand: String
   description: String
-  end_date: Timestamp
   id: String!
   name: String
   quantity: Int
   reservation_time_id: String
-  specifications: String
+  specifications: JSONObject
 }
 
 input UpdateReservationInput {
