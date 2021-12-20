@@ -4,6 +4,7 @@ import Form from './Form/Form';
 import LoginForm from './Login/LoginForm';
 import Container from './layout/Container';
 import Header from './layout/Header';
+import SearchBar from './Home/SearchBar'
 
 export {
   RegisterForm,
@@ -12,4 +13,5 @@ export {
   LoginForm,
   Container,
   Header,
+  SearchBar,
 }

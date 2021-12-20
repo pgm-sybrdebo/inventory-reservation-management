@@ -138,6 +138,7 @@ const RegisterForm : React.FC = () => {
             color="white"
             width="100%"
             backgroundcolor="#F58732"
+            radius = ".25rem"
           />
           <p className="switch">Already have an account? <NavLink to ={routes.LOGIN}>Login</NavLink></p>
         </form>

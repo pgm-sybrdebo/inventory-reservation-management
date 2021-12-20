@@ -19,8 +19,12 @@ export interface MyLoginFormValues {
   loginPass:string,
 }
 
+export interface MySearchValues {
+  query: string
+}
+
 export interface MyInputFormProps {
-  text: string, 
+  text?: string, 
   type: string, 
   id: string, 
   name: string, 
@@ -41,6 +45,6 @@ export interface MyButtonProps {
   className?: string,
   text: string, 
   type: "button" | "submit" | "reset" | undefined, 
-  name: string, 
+  name?: string, 
   onClick?: () => void,
 }
