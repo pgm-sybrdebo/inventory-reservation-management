@@ -33,4 +33,22 @@ export class ModelsResolver {
   removeModel(@Args('id', new ParseUUIDPipe()) id: string) {
     return this.modelsService.remove(id);
   }
+
+  @Mutation(() => Model, { name: 'addModelToTag' })
+  addToTag(
+    @Args('modelId', { type: () => String, nullable: false }) modelId: string,
+    @Args('tagId', { type: () => String, nullable: false }) tagId: string,
+  ) {
+    return this.modelsService.addToTag(modelId, tagId);
+  }
+  @Mutation(() => Model, { name: 'removeModelFromTag' })
+  removeFromTag(
+    @Args('modelId', { type: () => String, nullable: false }) modelId: string,
+    @Args('tagId', { type: () => String, nullable: false }) tagId: string,
+  ) {
+    return this.modelsService.removeFromTag(modelId, tagId);
+  }
+
+
+
 }
