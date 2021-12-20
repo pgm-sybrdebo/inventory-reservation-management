@@ -1,7 +1,8 @@
 // interfaces
-export interface myForm {
+export interface base {
   children: React.ReactNode,
 }
+
 
 export interface MyRegisterFormValues {
   regFname: string,
