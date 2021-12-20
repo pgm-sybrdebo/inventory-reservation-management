@@ -3,6 +3,18 @@ export interface base {
   children: React.ReactNode,
 }
 
+export interface topic {
+  quantity: number,
+}
+
+
+export interface ModelCardPic {
+  src: string,
+  title: string,
+  quantity: number,
+  description: string
+}
+
 
 export interface MyRegisterFormValues {
   regFname: string,

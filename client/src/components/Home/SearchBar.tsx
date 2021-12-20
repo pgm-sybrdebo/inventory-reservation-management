@@ -109,7 +109,8 @@ const SearchSection = styled.div`
   & h2{
     text-align: center;
     color: #2E3939;
-    font-size:24px
+    font-size:24px;
+    margin: 32px 0;
   }
   }
   
