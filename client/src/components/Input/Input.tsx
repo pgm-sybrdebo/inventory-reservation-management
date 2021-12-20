@@ -10,7 +10,7 @@ const Input : React.FC<MyInputFormProps> = ({text, type, id, name, onChange=null
 )
 
 const FormInput = styled.div`
-    display: flex;
+  display: flex;
   flex-direction: column;
   align-items: start;
   & label{

@@ -1,12 +1,11 @@
-import { Container, Header, SearchBar } from '../components';
-
+import { Container, Header } from '../components';
 
 const HomePage = () => {
   return (
     <>
       <Header />
       <Container>
-        <SearchBar />
+        <h2>Models</h2>
       </Container>
     </>
 

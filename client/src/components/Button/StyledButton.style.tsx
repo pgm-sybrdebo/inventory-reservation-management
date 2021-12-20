@@ -5,6 +5,7 @@ type Props = {
   width: string;
   backgroundcolor: string;
   color: string;
+  radius: string;
 };
 
 const StyledButton = styled(Button)<Props>`
@@ -15,11 +16,11 @@ const StyledButton = styled(Button)<Props>`
   font-weight: bold;
   border: 2px solid transparent;
   outline: none;
-  border-radius: .25rem;
+  border-radius: ${props=>props.radius};
   display: block;
   background-color: ${props=>props.backgroundcolor};
   transition: all 0.3s ease-in-out;
-  margin: 1.5rem auto 0;
+  margin: 0 auto;
   font-size: 1.25rem;
   text-decoration: none;
   cursor: pointer;

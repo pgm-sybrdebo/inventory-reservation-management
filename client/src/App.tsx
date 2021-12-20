@@ -1,10 +1,11 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import {GlobalStyles} from './GeneralStyles.style';
 import * as ROUTES from "./routes";
 import {
   HomePage,
   Login,
-  Register
+  Register,
+  Models,
 } from "./pages";
 
 function App() {
@@ -12,11 +13,13 @@ function App() {
     <div className="app">
       <GlobalStyles />
       <Router>
+        
         <Routes>
           <Route 
             path={ROUTES.LANDING} 
             element={<HomePage />} 
           />
+          <Route path={ROUTES.HOME}  element={<Navigate to={ROUTES.LANDING} replace />} />
           <Route
             path={ROUTES.LOGIN}
             element={<Login />}
@@ -24,6 +27,10 @@ function App() {
           <Route
             path={ROUTES.REGISTER}
             element={<Register />}
+          />
+          <Route
+            path={ROUTES.MODELS}
+            element={<Models />}
           />
         </Routes>
       </Router>
