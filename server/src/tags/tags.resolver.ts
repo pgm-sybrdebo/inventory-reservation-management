@@ -24,6 +24,7 @@ export class TagsResolver {
     return this.tagsService.findOne(id);
   }
 
+  
   @Mutation(() => Tag)
   updateTag(@Args('updateTagInput') updateTagInput: UpdateTagInput) {
     return this.tagsService.update(updateTagInput.id, updateTagInput);
