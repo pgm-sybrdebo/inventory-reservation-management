@@ -23,7 +23,6 @@ export class TagsResolver {
   findOne(@Args('id', new ParseUUIDPipe()) id: string) {
     return this.tagsService.findOne(id);
   }
-
   
   @Mutation(() => Tag)
   updateTag(@Args('updateTagInput') updateTagInput: UpdateTagInput) {
