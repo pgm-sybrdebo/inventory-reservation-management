@@ -1,6 +1,8 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { Dates } from 'src/mixins/date.entity';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Reservation } from 'src/reservations/entities/reservation.entity';
+import { Device } from 'src/devices/entities/device.entity';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 @ObjectType()
@@ -31,4 +33,12 @@ export class Damage {
   
   @Column(()=> Dates)
   date: Dates
+
+  @ManyToOne(() => Reservation, reservation => reservation.damages)
+  @Field(type => Reservation)
+  reservation: Reservation;
+
+  @ManyToOne(() => Device, device => device.damages)
+  @Field(type => Device)
+  device: Device;
 }

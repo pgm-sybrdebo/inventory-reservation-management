@@ -1,6 +1,7 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { Dates } from 'src/mixins/date.entity';
-import { PrimaryGeneratedColumn, Column, Entity } from 'typeorm';
+import { Reservation } from 'src/reservations/entities/reservation.entity';
+import { PrimaryGeneratedColumn, Column, Entity, OneToMany } from 'typeorm';
 
 @Entity()
 @ObjectType()
@@ -39,4 +40,9 @@ export class User {
 
   @Column(() => Dates)
   date: Dates
+
+  @OneToMany(() => Reservation, reservation => reservation.user)
+  @Field(type => [Reservation], { nullable: true })
+  reservations?: Reservation[];
+
 }

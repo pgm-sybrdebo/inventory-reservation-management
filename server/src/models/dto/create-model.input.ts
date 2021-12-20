@@ -31,12 +31,12 @@ export class CreateModelInput {
   @Field()
   brand: string;
 
-  @IsNotEmpty()
-  @IsJSON()
-  @Field(type => GraphQLJSONObject)
-  specifications: JSON;
-
   // @IsNotEmpty()
-  // @Field()
-  // specifications: string;
+  // @IsJSON()
+  // @Field(type => GraphQLJSONObject)
+  // specifications: JSON;
+
+  @IsNotEmpty()
+  @Field()
+  specifications: string;
 }
