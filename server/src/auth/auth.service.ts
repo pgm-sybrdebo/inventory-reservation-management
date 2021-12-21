@@ -10,15 +10,15 @@ export class AuthService {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
-  ){}
+  ) {}
 
-  async validateUser(email: string, password: string):Promise<any> {
+  async validateUser(email: string, password: string): Promise<any> {
     const user = await this.usersService.findOneByEmail(email);
 
     const valid = await bcrypt.compare(password, user?.password);
 
     if (user && valid) {
-      const { password, ...result} = user;
+      const { password, ...result } = user;
       return result;
     }
 
@@ -26,18 +26,17 @@ export class AuthService {
   }
 
   async login(user: User) {
-
     return {
-      access_token: this.jwtService.sign({ 
-        email: user.email, 
-        sub: user.id
+      access_token: this.jwtService.sign({
+        email: user.email,
+        sub: user.id,
       }),
-      user
-    }
+      user,
+    };
   }
 
   async signup(signupUserInput: SignupUserInput) {
-    const user = await this.usersService.findOneByEmail(signupUserInput.email)
+    const user = await this.usersService.findOneByEmail(signupUserInput.email);
 
     if (user) {
       throw new Error('User already exist!');
@@ -47,8 +46,7 @@ export class AuthService {
 
     return this.usersService.create({
       ...signupUserInput,
-      password
-    })
-
+      password,
+    });
   }
 }

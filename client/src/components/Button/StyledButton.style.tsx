@@ -19,7 +19,7 @@ const StyledButton = styled(Button)<Props>`
   border-radius: ${props=>props.radius};
   display: block;
   background-color: ${props=>props.backgroundcolor};
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
   margin: 0 auto;
   font-size: 1.25rem;
   text-decoration: none;

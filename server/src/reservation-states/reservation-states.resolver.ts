@@ -7,10 +7,15 @@ import { ParseUUIDPipe } from '@nestjs/common';
 
 @Resolver(() => ReservationState)
 export class ReservationStatesResolver {
-  constructor(private readonly reservationStatesService: ReservationStatesService) {}
+  constructor(
+    private readonly reservationStatesService: ReservationStatesService,
+  ) {}
 
   @Mutation(() => ReservationState)
-  createReservationState(@Args('createReservationStateInput') createReservationStateInput: CreateReservationStateInput) {
+  createReservationState(
+    @Args('createReservationStateInput')
+    createReservationStateInput: CreateReservationStateInput,
+  ) {
     return this.reservationStatesService.create(createReservationStateInput);
   }
 
@@ -25,8 +30,14 @@ export class ReservationStatesResolver {
   }
 
   @Mutation(() => ReservationState)
-  updateReservationState(@Args('updateReservationStateInput') updateReservationStateInput: UpdateReservationStateInput) {
-    return this.reservationStatesService.update(updateReservationStateInput.id, updateReservationStateInput);
+  updateReservationState(
+    @Args('updateReservationStateInput')
+    updateReservationStateInput: UpdateReservationStateInput,
+  ) {
+    return this.reservationStatesService.update(
+      updateReservationStateInput.id,
+      updateReservationStateInput,
+    );
   }
 
   @Mutation(() => ReservationState)

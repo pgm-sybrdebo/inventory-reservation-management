@@ -17,5 +17,4 @@ export class CreateMediaInput {
   @IsString()
   @Field()
   source: string;
-  
 }

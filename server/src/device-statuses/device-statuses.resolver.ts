@@ -10,7 +10,10 @@ export class DeviceStatusesResolver {
   constructor(private readonly deviceStatusesService: DeviceStatusesService) {}
 
   @Mutation(() => DeviceStatus)
-  createDeviceStatus(@Args('createDeviceStatusInput') createDeviceStatusInput: CreateDeviceStatusInput) {
+  createDeviceStatus(
+    @Args('createDeviceStatusInput')
+    createDeviceStatusInput: CreateDeviceStatusInput,
+  ) {
     return this.deviceStatusesService.create(createDeviceStatusInput);
   }
 
@@ -25,8 +28,14 @@ export class DeviceStatusesResolver {
   }
 
   @Mutation(() => DeviceStatus)
-  updateDeviceStatus(@Args('updateDeviceStatusInput') updateDeviceStatusInput: UpdateDeviceStatusInput) {
-    return this.deviceStatusesService.update(updateDeviceStatusInput.id, updateDeviceStatusInput);
+  updateDeviceStatus(
+    @Args('updateDeviceStatusInput')
+    updateDeviceStatusInput: UpdateDeviceStatusInput,
+  ) {
+    return this.deviceStatusesService.update(
+      updateDeviceStatusInput.id,
+      updateDeviceStatusInput,
+    );
   }
 
   @Mutation(() => DeviceStatus)

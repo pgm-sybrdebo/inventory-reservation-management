@@ -7,23 +7,31 @@ import { Reservation } from './entities/reservation.entity';
 
 @Injectable()
 export class ReservationsService {
-  constructor(@InjectRepository(Reservation) private reservationsRepository: Repository<Reservation>){}
+  constructor(
+    @InjectRepository(Reservation)
+    private reservationsRepository: Repository<Reservation>,
+  ) {}
 
-  create(createReservationInput: CreateReservationInput):Promise<Reservation>{
-    const newReservation = this.reservationsRepository.create(createReservationInput); 
+  create(createReservationInput: CreateReservationInput): Promise<Reservation> {
+    const newReservation = this.reservationsRepository.create(
+      createReservationInput,
+    );
 
-    return this.reservationsRepository.save(newReservation); 
+    return this.reservationsRepository.save(newReservation);
   }
 
-  findAll():Promise<Reservation[]> {
+  findAll(): Promise<Reservation[]> {
     return this.reservationsRepository.find();
   }
 
-  findOne(id: string):Promise<Reservation> {
+  findOne(id: string): Promise<Reservation> {
     return this.reservationsRepository.findOneOrFail(id);
   }
 
-  async update(id: string, updateReservationInput: UpdateReservationInput):Promise<Reservation> {
+  async update(
+    id: string,
+    updateReservationInput: UpdateReservationInput,
+  ): Promise<Reservation> {
     const updatedReservation = await this.reservationsRepository.preload({
       id: id,
       ...updateReservationInput,
@@ -32,7 +40,7 @@ export class ReservationsService {
     return this.reservationsRepository.save(updatedReservation);
   }
 
-  async remove(id: string):Promise<Reservation> {
+  async remove(id: string): Promise<Reservation> {
     const reservation = await this.findOne(id);
     return this.reservationsRepository.remove(reservation);
   }

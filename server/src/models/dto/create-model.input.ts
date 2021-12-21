@@ -1,5 +1,13 @@
 import { InputType, Int, Field } from '@nestjs/graphql';
-import { IsJSON, IsNotEmpty, IsPositive, IsString, IsUUID, Max, Min } from 'class-validator';
+import {
+  IsJSON,
+  IsNotEmpty,
+  IsPositive,
+  IsString,
+  IsUUID,
+  Max,
+  Min,
+} from 'class-validator';
 import JSON, { GraphQLJSONObject } from 'graphql-type-json';
 
 @InputType()
@@ -23,7 +31,7 @@ export class CreateModelInput {
   @IsPositive()
   @Min(0)
   @Max(1000)
-  @Field(type=> Int)
+  @Field((type) => Int)
   quantity: number;
 
   @IsNotEmpty()

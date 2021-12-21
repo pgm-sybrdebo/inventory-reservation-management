@@ -7,5 +7,4 @@ export class CreateDeviceStatusInput {
   @IsString()
   @Field()
   name: string;
-
 }

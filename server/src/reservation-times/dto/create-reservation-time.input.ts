@@ -7,7 +7,7 @@ export class CreateReservationTimeInput {
   @IsPositive()
   @Min(1)
   @Max(365)
-  @Field(type => Int)
+  @Field((type) => Int)
   amount: number;
 
   @IsNotEmpty()

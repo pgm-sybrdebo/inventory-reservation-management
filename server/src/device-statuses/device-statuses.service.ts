@@ -7,23 +7,33 @@ import { DeviceStatus } from './entities/device-status.entity';
 
 @Injectable()
 export class DeviceStatusesService {
-  constructor(@InjectRepository(DeviceStatus) private deviceStatusesRepository: Repository<DeviceStatus>){}
+  constructor(
+    @InjectRepository(DeviceStatus)
+    private deviceStatusesRepository: Repository<DeviceStatus>,
+  ) {}
 
-  create(createDeviceStatusInput: CreateDeviceStatusInput):Promise<DeviceStatus> {
-    const newDeviceStatus = this.deviceStatusesRepository.create(createDeviceStatusInput); 
+  create(
+    createDeviceStatusInput: CreateDeviceStatusInput,
+  ): Promise<DeviceStatus> {
+    const newDeviceStatus = this.deviceStatusesRepository.create(
+      createDeviceStatusInput,
+    );
 
-    return this.deviceStatusesRepository.save(newDeviceStatus); 
+    return this.deviceStatusesRepository.save(newDeviceStatus);
   }
 
-  findAll():Promise<DeviceStatus[]> {
+  findAll(): Promise<DeviceStatus[]> {
     return this.deviceStatusesRepository.find();
   }
 
-  findOne(id: string):Promise<DeviceStatus> {
+  findOne(id: string): Promise<DeviceStatus> {
     return this.deviceStatusesRepository.findOneOrFail(id);
   }
 
-  async update(id: string, updateDeviceStatusInput: UpdateDeviceStatusInput):Promise<DeviceStatus> {
+  async update(
+    id: string,
+    updateDeviceStatusInput: UpdateDeviceStatusInput,
+  ): Promise<DeviceStatus> {
     const updatedDeviceStatus = await this.deviceStatusesRepository.preload({
       id: id,
       ...updateDeviceStatusInput,
@@ -32,7 +42,7 @@ export class DeviceStatusesService {
     return this.deviceStatusesRepository.save(updatedDeviceStatus);
   }
 
-  async remove(id: string):Promise<DeviceStatus> {
+  async remove(id: string): Promise<DeviceStatus> {
     const deviceStatus = await this.findOne(id);
     return this.deviceStatusesRepository.remove(deviceStatus);
   }

@@ -146,7 +146,7 @@ ul{
     margin-bottom: .5rem;
     color:#725AC1;
     font-weight: bold;
-    transition: all .3s ease-in-out  ;
+    transition: all .2s ease-in-out  ;
     &:hover{
     opacity: .8;
   }

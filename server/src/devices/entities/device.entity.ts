@@ -4,7 +4,13 @@ import { DeviceStatus } from 'src/device-statuses/entities/device-status.entity'
 import { Dates } from 'src/mixins/date.entity';
 import { Model } from 'src/models/entities/model.entity';
 import { Reservation } from 'src/reservations/entities/reservation.entity';
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 @ObjectType()
@@ -22,29 +28,29 @@ export class Device {
   device_status_id: string;
 
   @Column()
-  @Field(type=> Boolean)
+  @Field((type) => Boolean)
   is_available: boolean;
 
   @Column()
   @Field()
   qr_code: string;
 
-  @Column(()=> Dates)
-  date: Dates
+  @Column(() => Dates)
+  date: Dates;
 
-  @OneToMany(() => Damage, damage => damage.device)
-  @Field(type => [Damage], { nullable: true })
+  @OneToMany(() => Damage, (damage) => damage.device)
+  @Field((type) => [Damage], { nullable: true })
   damages?: Damage[];
 
-  @OneToMany(() => Reservation, reservation => reservation.device)
-  @Field(type => [Reservation], { nullable: true })
+  @OneToMany(() => Reservation, (reservation) => reservation.device)
+  @Field((type) => [Reservation], { nullable: true })
   reservations?: Reservation[];
 
-  @ManyToOne(() => DeviceStatus, deviceStatus => deviceStatus.devices)
-  @Field(type => DeviceStatus)
+  @ManyToOne(() => DeviceStatus, (deviceStatus) => deviceStatus.devices)
+  @Field((type) => DeviceStatus)
   deviceStatus: DeviceStatus;
 
-  @ManyToOne(() => Model, model => model.devices)
-  @Field(type => Model)
+  @ManyToOne(() => Model, (model) => model.devices)
+  @Field((type) => Model)
   model: Model;
 }

@@ -7,7 +7,6 @@ const nodeEnvironment = `${(
   process.env.NODE_ENV || 'development'
 ).toLowerCase()}`;
 
-
 const typeormConfig: ConnectionOptions = {
   type: 'postgres',
   host: 'frankfurt-postgres.render.com',

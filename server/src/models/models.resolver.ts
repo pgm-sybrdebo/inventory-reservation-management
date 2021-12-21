@@ -48,7 +48,4 @@ export class ModelsResolver {
   ) {
     return this.modelsService.removeFromTag(modelId, tagId);
   }
-
-
-
 }

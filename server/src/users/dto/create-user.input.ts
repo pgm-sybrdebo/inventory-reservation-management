@@ -1,5 +1,13 @@
 import { InputType, Int, Field } from '@nestjs/graphql';
-import { IsNotEmpty, IsAlpha, IsString, IsEmail, IsOptional, IsInt, IsPositive } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsAlpha,
+  IsString,
+  IsEmail,
+  IsOptional,
+  IsInt,
+  IsPositive,
+} from 'class-validator';
 import { CreateDateInput } from 'src/mixins/create-date.input';
 import { Dates } from 'src/mixins/date.entity';
 
@@ -34,7 +42,7 @@ export class CreateUserInput {
   @IsOptional()
   @IsPositive()
   @IsInt()
-  @Field(type => Int, {nullable: true})
+  @Field((type) => Int, { nullable: true })
   cardNumber?: number;
 
   // @Field()

@@ -7,23 +7,28 @@ import { Damage } from './entities/damage.entity';
 
 @Injectable()
 export class DamagesService {
-  constructor(@InjectRepository(Damage) private damagesRepository: Repository<Damage>){}
+  constructor(
+    @InjectRepository(Damage) private damagesRepository: Repository<Damage>,
+  ) {}
 
-  create(createDamageInput: CreateDamageInput):Promise<Damage> {
-    const newDamage = this.damagesRepository.create(createDamageInput); 
+  create(createDamageInput: CreateDamageInput): Promise<Damage> {
+    const newDamage = this.damagesRepository.create(createDamageInput);
 
-    return this.damagesRepository.save(newDamage); 
+    return this.damagesRepository.save(newDamage);
   }
 
-  findAll():Promise<Damage[]> {
+  findAll(): Promise<Damage[]> {
     return this.damagesRepository.find();
   }
 
-  findOne(id: string):Promise<Damage> {
+  findOne(id: string): Promise<Damage> {
     return this.damagesRepository.findOneOrFail(id);
   }
 
-  async update(id: string, updateDamageInput: UpdateDamageInput):Promise<Damage> {
+  async update(
+    id: string,
+    updateDamageInput: UpdateDamageInput,
+  ): Promise<Damage> {
     const updatedDamage = await this.damagesRepository.preload({
       id: id,
       ...updateDamageInput,
@@ -32,7 +37,7 @@ export class DamagesService {
     return this.damagesRepository.save(updatedDamage);
   }
 
-  async remove(id: string):Promise<Damage> {
+  async remove(id: string): Promise<Damage> {
     const damage = await this.findOne(id);
     return this.damagesRepository.remove(damage);
   }

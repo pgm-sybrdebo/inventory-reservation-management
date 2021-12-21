@@ -11,24 +11,24 @@ import { Model } from './entities/model.entity';
 export class ModelsService {
   constructor(
     @InjectRepository(Model) private modelsRepository: Repository<Model>,
-    private tagsService: TagsService 
-  ){}
+    private tagsService: TagsService,
+  ) {}
 
-  create(createModelInput: CreateModelInput):Promise<Model> {
-    const newModel = this.modelsRepository.create(createModelInput); 
+  create(createModelInput: CreateModelInput): Promise<Model> {
+    const newModel = this.modelsRepository.create(createModelInput);
 
-    return this.modelsRepository.save(newModel); 
+    return this.modelsRepository.save(newModel);
   }
 
-  findAll():Promise<Model[]> {
+  findAll(): Promise<Model[]> {
     return this.modelsRepository.find();
   }
 
-  findOne(id: string):Promise<Model> {
+  findOne(id: string): Promise<Model> {
     return this.modelsRepository.findOneOrFail(id);
   }
 
-  async update(id: string, updateModelInput: UpdateModelInput):Promise<Model> {
+  async update(id: string, updateModelInput: UpdateModelInput): Promise<Model> {
     const updatedModel = await this.modelsRepository.preload({
       id: id,
       ...updateModelInput,
@@ -37,17 +37,17 @@ export class ModelsService {
     return this.modelsRepository.save(updatedModel);
   }
 
-  async remove(id: string):Promise<Model> {
+  async remove(id: string): Promise<Model> {
     const model = await this.findOne(id);
     return this.modelsRepository.remove(model);
   }
 
   async addToTag(modelId: string, tagId: string): Promise<Model> {
-    let foundModel = await this.modelsRepository.findOne(
+    const foundModel = await this.modelsRepository.findOne(
       { id: modelId },
       { relations: ['tags'] },
     );
-    let foundTag = await this.tagsService.findOne(tagId );
+    const foundTag = await this.tagsService.findOne(tagId);
 
     if (foundModel && foundTag) {
       foundModel.tags = foundModel.tags
@@ -61,11 +61,11 @@ export class ModelsService {
   }
 
   async removeFromTag(modelId: string, tagId: string): Promise<Model> {
-    let foundModel = await this.modelsRepository.findOne(
+    const foundModel = await this.modelsRepository.findOne(
       { id: modelId },
       { relations: ['tags'] },
     );
-    let foundTag = await this.tagsService.findOne(tagId);
+    const foundTag = await this.tagsService.findOne(tagId);
 
     if (foundModel && foundTag) {
       foundModel.tags = foundModel.tags

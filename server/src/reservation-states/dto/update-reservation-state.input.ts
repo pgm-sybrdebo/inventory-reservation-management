@@ -3,7 +3,9 @@ import { InputType, Field, Int, PartialType } from '@nestjs/graphql';
 import { IsNotEmpty, IsUUID } from 'class-validator';
 
 @InputType()
-export class UpdateReservationStateInput extends PartialType(CreateReservationStateInput) {
+export class UpdateReservationStateInput extends PartialType(
+  CreateReservationStateInput,
+) {
   @IsNotEmpty()
   @IsUUID('all')
   @Field()

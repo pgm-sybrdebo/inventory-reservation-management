@@ -26,5 +26,4 @@ export class CreateReservationInput {
   @IsNotEmpty()
   @Field()
   end_date: Date;
-
 }

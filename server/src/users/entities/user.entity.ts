@@ -27,18 +27,17 @@ export class User {
   password: string;
 
   @Column()
-  @Field(type => Int)
+  @Field((type) => Int)
   role: number;
 
-  @Column({nullable: true})
-  @Field(type => Int, {nullable: true})
+  @Column({ nullable: true })
+  @Field((type) => Int, { nullable: true })
   cardNumber?: number;
 
   @Column(() => Dates)
-  date: Dates
+  date: Dates;
 
-  @OneToMany(() => Reservation, reservation => reservation.user)
-  @Field(type => [Reservation], { nullable: true })
+  @OneToMany(() => Reservation, (reservation) => reservation.user)
+  @Field((type) => [Reservation], { nullable: true })
   reservations?: Reservation[];
-
 }

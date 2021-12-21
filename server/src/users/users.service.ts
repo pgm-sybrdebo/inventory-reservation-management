@@ -7,27 +7,29 @@ import { User } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectRepository(User) private usersRepository: Repository<User>){}
+  constructor(
+    @InjectRepository(User) private usersRepository: Repository<User>,
+  ) {}
 
-  create(createUserInput: CreateUserInput):Promise<User> {
-    const newUser = this.usersRepository.create(createUserInput); 
+  create(createUserInput: CreateUserInput): Promise<User> {
+    const newUser = this.usersRepository.create(createUserInput);
 
-    return this.usersRepository.save(newUser); 
+    return this.usersRepository.save(newUser);
   }
 
-  findAll():Promise<User[]> {
+  findAll(): Promise<User[]> {
     return this.usersRepository.find();
   }
 
-  findOne(id: string):Promise<User> {
+  findOne(id: string): Promise<User> {
     return this.usersRepository.findOneOrFail(id);
   }
 
-  findOneByEmail(email: string):Promise<User> {
-    return this.usersRepository.findOne({email});
+  findOneByEmail(email: string): Promise<User> {
+    return this.usersRepository.findOne({ email });
   }
 
-  async update(id: string, updateUserInput: UpdateUserInput):Promise<User> {
+  async update(id: string, updateUserInput: UpdateUserInput): Promise<User> {
     const updatedUser = await this.usersRepository.preload({
       id: id,
       ...updateUserInput,
@@ -36,7 +38,7 @@ export class UsersService {
     return this.usersRepository.save(updatedUser);
   }
 
-  async remove(id: string):Promise<User> {
+  async remove(id: string): Promise<User> {
     const user = await this.findOne(id);
     return this.usersRepository.remove(user);
   }

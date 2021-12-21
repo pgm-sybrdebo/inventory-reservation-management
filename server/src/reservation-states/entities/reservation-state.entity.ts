@@ -14,10 +14,10 @@ export class ReservationState {
   @Field()
   name: string;
 
-  @Column(()=> Dates)
-  date: Dates
+  @Column(() => Dates)
+  date: Dates;
 
-  @OneToMany(() => Reservation, reservation => reservation.reservationState)
-  @Field(type => [Reservation], { nullable: true })
+  @OneToMany(() => Reservation, (reservation) => reservation.reservationState)
+  @Field((type) => [Reservation], { nullable: true })
   reservations?: Reservation[];
 }

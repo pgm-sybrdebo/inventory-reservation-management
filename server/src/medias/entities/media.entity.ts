@@ -22,10 +22,10 @@ export class Media {
   @Field()
   source: string;
 
-  @Column(()=> Dates)
-  date: Dates
+  @Column(() => Dates)
+  date: Dates;
 
-  @ManyToOne(() => Model, model => model.medias)
-  @Field(type => Model)
+  @ManyToOne(() => Model, (model) => model.medias)
+  @Field((type) => Model)
   model: Model;
 }

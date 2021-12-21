@@ -7,23 +7,25 @@ import { Media } from './entities/media.entity';
 
 @Injectable()
 export class MediasService {
-  constructor(@InjectRepository(Media) private mediasRepository: Repository<Media>){}
+  constructor(
+    @InjectRepository(Media) private mediasRepository: Repository<Media>,
+  ) {}
 
-  create(createMediaInput: CreateMediaInput):Promise<Media> {
-    const newMedia = this.mediasRepository.create(createMediaInput); 
+  create(createMediaInput: CreateMediaInput): Promise<Media> {
+    const newMedia = this.mediasRepository.create(createMediaInput);
 
-    return this.mediasRepository.save(newMedia); 
+    return this.mediasRepository.save(newMedia);
   }
 
-  findAll():Promise<Media[]> {
+  findAll(): Promise<Media[]> {
     return this.mediasRepository.find();
   }
 
-  findOne(id: string):Promise<Media> {
+  findOne(id: string): Promise<Media> {
     return this.mediasRepository.findOneOrFail(id);
   }
 
-  async update(id: string, updateMediaInput: UpdateMediaInput):Promise<Media> {
+  async update(id: string, updateMediaInput: UpdateMediaInput): Promise<Media> {
     const updatedMedia = await this.mediasRepository.preload({
       id: id,
       ...updateMediaInput,
@@ -32,7 +34,7 @@ export class MediasService {
     return this.mediasRepository.save(updatedMedia);
   }
 
-  async remove(id: string):Promise<Media> {
+  async remove(id: string): Promise<Media> {
     const media = await this.findOne(id);
     return this.mediasRepository.remove(media);
   }

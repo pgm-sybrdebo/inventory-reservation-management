@@ -15,11 +15,10 @@ export class CreateDeviceInput {
 
   @IsNotEmpty()
   @IsBoolean()
-  @Field(type => Boolean)
+  @Field((type) => Boolean)
   is_available: boolean;
 
   @IsNotEmpty()
   @Field()
   qr_code: string;
-  
 }

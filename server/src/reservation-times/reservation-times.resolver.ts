@@ -7,10 +7,15 @@ import { ParseUUIDPipe } from '@nestjs/common';
 
 @Resolver(() => ReservationTime)
 export class ReservationTimesResolver {
-  constructor(private readonly reservationTimesService: ReservationTimesService) {}
+  constructor(
+    private readonly reservationTimesService: ReservationTimesService,
+  ) {}
 
   @Mutation(() => ReservationTime)
-  createReservationTime(@Args('createReservationTimeInput') createReservationTimeInput: CreateReservationTimeInput) {
+  createReservationTime(
+    @Args('createReservationTimeInput')
+    createReservationTimeInput: CreateReservationTimeInput,
+  ) {
     return this.reservationTimesService.create(createReservationTimeInput);
   }
 
@@ -25,8 +30,14 @@ export class ReservationTimesResolver {
   }
 
   @Mutation(() => ReservationTime)
-  updateReservationTime(@Args('updateReservationTimeInput') updateReservationTimeInput: UpdateReservationTimeInput) {
-    return this.reservationTimesService.update(updateReservationTimeInput.id, updateReservationTimeInput);
+  updateReservationTime(
+    @Args('updateReservationTimeInput')
+    updateReservationTimeInput: UpdateReservationTimeInput,
+  ) {
+    return this.reservationTimesService.update(
+      updateReservationTimeInput.id,
+      updateReservationTimeInput,
+    );
   }
 
   @Mutation(() => ReservationTime)

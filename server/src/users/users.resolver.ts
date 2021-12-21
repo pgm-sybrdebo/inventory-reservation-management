@@ -29,7 +29,7 @@ export class UsersResolver {
   }
 
   @Query(() => User, { name: 'userByEmail' })
-  findOneByEmail(@Args('email', { type: () => String}) email: string) {
+  findOneByEmail(@Args('email', { type: () => String }) email: string) {
     return this.usersService.findOneByEmail(email);
   }
 

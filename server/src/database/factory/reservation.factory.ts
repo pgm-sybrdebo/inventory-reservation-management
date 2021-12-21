@@ -1,11 +1,11 @@
-import { define, factory } from "typeorm-seeding";
+import { define, factory } from 'typeorm-seeding';
 import * as Faker from 'faker';
-import { Reservation } from "src/reservations/entities/reservation.entity";
-import { User } from "src/users/entities/user.entity";
-import { ReservationState } from "src/reservation-states/entities/reservation-state.entity";
-import { Device } from "src/devices/entities/device.entity";
+import { Reservation } from 'src/reservations/entities/reservation.entity';
+import { User } from 'src/users/entities/user.entity';
+import { ReservationState } from 'src/reservation-states/entities/reservation-state.entity';
+import { Device } from 'src/devices/entities/device.entity';
 
-define(Reservation, (faker: typeof Faker) => { 
+define(Reservation, (faker: typeof Faker) => {
   const reservation = new Reservation();
   reservation.device_id = factory(Device)() as any;
   reservation.reservation_state_id = factory(ReservationState)() as any;

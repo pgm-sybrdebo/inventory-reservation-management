@@ -16,7 +16,9 @@ const SmallBtn = styled.button`
   font-size:14px;
   font-weight: 400;
   border-radius:.25rem;
-  transition: all .3s ease-in-out;
+  cursor:pointer;
+  transition: all .2s ease-in-out;
+
   &:hover{
     background-color:#F58732;
     color:#fff;

@@ -11,18 +11,17 @@ export class ReservationTime {
   id: string;
 
   @Column()
-  @Field(type=> Int)
+  @Field((type) => Int)
   amount: number;
 
   @Column()
   @Field()
   name: string;
 
-  @Column(()=> Dates)
-  date: Dates
+  @Column(() => Dates)
+  date: Dates;
 
-
-  @OneToMany(() => Model, model => model.reservationTime)
-  @Field(type => [Model], { nullable: true })
+  @OneToMany(() => Model, (model) => model.reservationTime)
+  @Field((type) => [Model], { nullable: true })
   models?: Model[];
 }

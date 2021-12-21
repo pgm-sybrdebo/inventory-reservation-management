@@ -14,10 +14,10 @@ export class DeviceStatus {
   @Field()
   name: string;
 
-  @Column(()=> Dates)
-  date: Dates
+  @Column(() => Dates)
+  date: Dates;
 
-  @OneToMany(() => Device, device => device.deviceStatus)
-  @Field(type => [Device], { nullable: true })
+  @OneToMany(() => Device, (device) => device.deviceStatus)
+  @Field((type) => [Device], { nullable: true })
   devices?: Device[];
 }

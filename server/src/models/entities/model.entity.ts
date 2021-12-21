@@ -1,5 +1,13 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
-import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import JSON, { GraphQLJSONObject } from 'graphql-type-json';
 import { Dates } from 'src/mixins/date.entity';
 import { Device } from 'src/devices/entities/device.entity';
@@ -27,7 +35,7 @@ export class Model {
   description: string;
 
   @Column()
-  @Field(type => Int)
+  @Field((type) => Int)
   quantity: number;
 
   @Column()
@@ -42,19 +50,19 @@ export class Model {
   @Field()
   specifications: string;
 
-  @Column(()=> Dates)
-  date: Dates
+  @Column(() => Dates)
+  date: Dates;
 
-  @OneToMany(() => Device, device => device.model)
-  @Field(type => [Device], { nullable: true })
+  @OneToMany(() => Device, (device) => device.model)
+  @Field((type) => [Device], { nullable: true })
   devices?: Device[];
 
-  @OneToMany(() => Media, media => media.model)
-  @Field(type => [Media], { nullable: true })
+  @OneToMany(() => Media, (media) => media.model)
+  @Field((type) => [Media], { nullable: true })
   medias?: Media[];
 
-  @ManyToOne(() => ReservationTime, reservationTime => reservationTime.models)
-  @Field(type => ReservationTime)
+  @ManyToOne(() => ReservationTime, (reservationTime) => reservationTime.models)
+  @Field((type) => ReservationTime)
   reservationTime: ReservationTime;
 
   @ManyToMany(() => Tag, (tag) => tag.models, { cascade: true })

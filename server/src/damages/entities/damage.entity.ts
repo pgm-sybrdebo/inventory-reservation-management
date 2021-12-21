@@ -30,15 +30,15 @@ export class Damage {
   @Column()
   @Field()
   picture: string;
-  
-  @Column(()=> Dates)
-  date: Dates
 
-  @ManyToOne(() => Reservation, reservation => reservation.damages)
-  @Field(type => Reservation)
+  @Column(() => Dates)
+  date: Dates;
+
+  @ManyToOne(() => Reservation, (reservation) => reservation.damages)
+  @Field((type) => Reservation)
   reservation: Reservation;
 
-  @ManyToOne(() => Device, device => device.damages)
-  @Field(type => Device)
+  @ManyToOne(() => Device, (device) => device.damages)
+  @Field((type) => Device)
   device: Device;
 }

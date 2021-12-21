@@ -10,7 +10,9 @@ export class DevicesResolver {
   constructor(private readonly devicesService: DevicesService) {}
 
   @Mutation(() => Device)
-  createDevice(@Args('createDeviceInput') createDeviceInput: CreateDeviceInput) {
+  createDevice(
+    @Args('createDeviceInput') createDeviceInput: CreateDeviceInput,
+  ) {
     return this.devicesService.create(createDeviceInput);
   }
 
@@ -25,7 +27,9 @@ export class DevicesResolver {
   }
 
   @Mutation(() => Device)
-  updateDevice(@Args('updateDeviceInput') updateDeviceInput: UpdateDeviceInput) {
+  updateDevice(
+    @Args('updateDeviceInput') updateDeviceInput: UpdateDeviceInput,
+  ) {
     return this.devicesService.update(updateDeviceInput.id, updateDeviceInput);
   }
 

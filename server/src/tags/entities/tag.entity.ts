@@ -14,8 +14,8 @@ export class Tag {
   @Field()
   name: string;
 
-  @Column(()=> Dates)
-  date: Dates
+  @Column(() => Dates)
+  date: Dates;
 
   @ManyToMany(() => Model, (model) => model.tags)
   @Field(() => [Model], { nullable: true })

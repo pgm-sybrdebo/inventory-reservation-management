@@ -7,23 +7,28 @@ import { Device } from './entities/device.entity';
 
 @Injectable()
 export class DevicesService {
-  constructor(@InjectRepository(Device) private devicesRepository: Repository<Device>){}
+  constructor(
+    @InjectRepository(Device) private devicesRepository: Repository<Device>,
+  ) {}
 
-  create(createDeviceInput: CreateDeviceInput):Promise<Device> {
-    const newDevice = this.devicesRepository.create(createDeviceInput); 
+  create(createDeviceInput: CreateDeviceInput): Promise<Device> {
+    const newDevice = this.devicesRepository.create(createDeviceInput);
 
-    return this.devicesRepository.save(newDevice); 
+    return this.devicesRepository.save(newDevice);
   }
 
-  findAll():Promise<Device[]> {
+  findAll(): Promise<Device[]> {
     return this.devicesRepository.find();
   }
 
-  findOne(id: string):Promise<Device> {
+  findOne(id: string): Promise<Device> {
     return this.devicesRepository.findOneOrFail(id);
   }
 
-  async update(id: string, updateDeviceInput: UpdateDeviceInput):Promise<Device> {
+  async update(
+    id: string,
+    updateDeviceInput: UpdateDeviceInput,
+  ): Promise<Device> {
     const updatedDevice = await this.devicesRepository.preload({
       id: id,
       ...updateDeviceInput,
@@ -32,7 +37,7 @@ export class DevicesService {
     return this.devicesRepository.save(updatedDevice);
   }
 
-  async remove(id: string):Promise<Device> {
+  async remove(id: string): Promise<Device> {
     const device = await this.findOne(id);
     return this.devicesRepository.remove(device);
   }

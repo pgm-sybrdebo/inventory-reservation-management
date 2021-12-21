@@ -10,7 +10,9 @@ export class DamagesResolver {
   constructor(private readonly damagesService: DamagesService) {}
 
   @Mutation(() => Damage)
-  createDamage(@Args('createDamageInput') createDamageInput: CreateDamageInput) {
+  createDamage(
+    @Args('createDamageInput') createDamageInput: CreateDamageInput,
+  ) {
     return this.damagesService.create(createDamageInput);
   }
 
@@ -25,7 +27,9 @@ export class DamagesResolver {
   }
 
   @Mutation(() => Damage)
-  updateDamage(@Args('updateDamageInput') updateDamageInput: UpdateDamageInput) {
+  updateDamage(
+    @Args('updateDamageInput') updateDamageInput: UpdateDamageInput,
+  ) {
     return this.damagesService.update(updateDamageInput.id, updateDamageInput);
   }
 
