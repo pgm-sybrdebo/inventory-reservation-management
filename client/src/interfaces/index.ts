@@ -1,7 +1,20 @@
 // interfaces
-export interface myForm {
+export interface base {
   children: React.ReactNode,
 }
+
+export interface topic {
+  quantity: number,
+}
+
+
+export interface ModelCardPic {
+  src: string,
+  title: string,
+  quantity: number,
+  description: string
+}
+
 
 export interface MyRegisterFormValues {
   regFname: string,
@@ -18,8 +31,12 @@ export interface MyLoginFormValues {
   loginPass:string,
 }
 
+export interface MySearchValues {
+  query: string
+}
+
 export interface MyInputFormProps {
-  text: string, 
+  text?: string, 
   type: string, 
   id: string, 
   name: string, 
@@ -40,6 +57,6 @@ export interface MyButtonProps {
   className?: string,
   text: string, 
   type: "button" | "submit" | "reset" | undefined, 
-  name: string, 
+  name?: string, 
   onClick?: () => void,
 }

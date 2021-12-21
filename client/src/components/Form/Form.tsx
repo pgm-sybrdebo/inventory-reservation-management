@@ -1,8 +1,8 @@
 import React from 'react'
-import { myForm } from '../../interfaces'
+import { base } from '../../interfaces'
 import styled from "styled-components";
 
-const Form : React.FC<myForm> = ({children}) => (
+const Form : React.FC<base> = ({children}) => (
   <TheForm>
     {children}
   </TheForm>

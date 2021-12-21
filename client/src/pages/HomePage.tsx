@@ -1,14 +1,15 @@
-import React from 'react'
+import { Container, Header, SearchBar } from '../components';
 
-interface Props {
-  
-}
 
-const HomePage = (props: Props) => {
+const HomePage = () => {
   return (
-    <div>
-      <h1>Home Page</h1>
-    </div>
+    <>
+      <Header />
+      <Container>
+        <SearchBar />
+      </Container>
+    </>
+
   )
 }
 
