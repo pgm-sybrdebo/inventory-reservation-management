@@ -15,6 +15,7 @@ import { ModelsModule } from './models/models.module';
 import { DeviceStatusesModule } from './device-statuses/device-statuses.module';
 import { MediasModule } from './medias/medias.module';
 import { TagsModule } from './tags/tags.module';
+import { AuthModule } from './auth/auth.module';
 
 import * as dotenv from 'dotenv';
 dotenv.config();
@@ -66,6 +67,7 @@ const nodeEnvironment = `${(
     DeviceStatusesModule,
     MediasModule,
     TagsModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

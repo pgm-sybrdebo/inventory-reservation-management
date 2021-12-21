@@ -3,7 +3,8 @@ import { UsersService } from './users.service';
 import { User } from './entities/user.entity';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
-import { ParseUUIDPipe } from '@nestjs/common';
+import { ParseUUIDPipe, UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Resolver(() => User)
 export class UsersResolver {
@@ -15,13 +16,21 @@ export class UsersResolver {
   }
 
   @Query(() => [User], { name: 'users' })
+  @UseGuards(JwtAuthGuard)
   findAll() {
     return this.usersService.findAll();
   }
 
+  // findAll(@context() context)
+
   @Query(() => User, { name: 'user' })
   findOne(@Args('id', new ParseUUIDPipe()) id: string) {
     return this.usersService.findOne(id);
+  }
+
+  @Query(() => User, { name: 'userByEmail' })
+  findOneByEmail(@Args('email', { type: () => String}) email: string) {
+    return this.usersService.findOneByEmail(email);
   }
 
   @Mutation(() => User)

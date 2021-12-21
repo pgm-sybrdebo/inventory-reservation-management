@@ -23,6 +23,10 @@ export class UsersService {
     return this.usersRepository.findOneOrFail(id);
   }
 
+  findOneByEmail(email: string):Promise<User> {
+    return this.usersRepository.findOne({email});
+  }
+
   async update(id: string, updateUserInput: UpdateUserInput):Promise<User> {
     const updatedUser = await this.usersRepository.preload({
       id: id,

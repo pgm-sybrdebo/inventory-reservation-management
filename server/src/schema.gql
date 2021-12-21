@@ -95,6 +95,16 @@ type DeviceStatus {
   name: String!
 }
 
+type LoginResponse {
+  access_token: String!
+  user: User!
+}
+
+input LoginUserInput {
+  email: String!
+  password: String!
+}
+
 type Media {
   id: String!
   model: Model!
@@ -129,6 +139,7 @@ type Mutation {
   createReservationTime(createReservationTimeInput: CreateReservationTimeInput!): ReservationTime!
   createTag(createTagInput: CreateTagInput!): Tag!
   createUser(createUserInput: CreateUserInput!): User!
+  login(loginUserInput: LoginUserInput!): LoginResponse!
   removeDamage(id: String!): Damage!
   removeDevice(id: String!): Device!
   removeDeviceStatus(id: String!): DeviceStatus!
@@ -140,6 +151,7 @@ type Mutation {
   removeReservationTime(id: String!): ReservationTime!
   removeTag(id: String!): Tag!
   removeUser(id: String!): User!
+  signup(signupUserInput: SignupUserInput!): User!
   updateDamage(updateDamageInput: UpdateDamageInput!): Damage!
   updateDevice(updateDeviceInput: UpdateDeviceInput!): Device!
   updateDeviceStatus(updateDeviceStatusInput: UpdateDeviceStatusInput!): DeviceStatus!
@@ -172,6 +184,7 @@ type Query {
   tag(id: String!): Tag!
   tags: [Tag!]!
   user(id: String!): User!
+  userByEmail(email: String!): User!
   users: [User!]!
 }
 
@@ -199,6 +212,15 @@ type ReservationTime {
   id: String!
   models: [Model!]
   name: String!
+}
+
+input SignupUserInput {
+  cardNumber: Int
+  email: String!
+  firstName: String!
+  lastName: String!
+  password: String!
+  role: Float!
 }
 
 type Tag {
