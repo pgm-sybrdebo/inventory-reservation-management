@@ -58,13 +58,12 @@ input CreateTagInput {
 }
 
 input CreateUserInput {
+  cardNumber: Int
   email: String!
   firstName: String!
   lastName: String!
-  lecturerNumber: Int
   password: String!
   role: Float!
-  studentNumber: Int
 }
 
 type Damage {
@@ -278,24 +277,22 @@ input UpdateTagInput {
 }
 
 input UpdateUserInput {
+  cardNumber: Int
   email: String
   firstName: String
   id: String!
   lastName: String
-  lecturerNumber: Int
   password: String
   role: Float
-  studentNumber: Int
 }
 
 type User {
+  cardNumber: Int
   email: String!
   firstName: String!
   id: String!
   lastName: String!
-  lecturerNumber: Int
   password: String!
   reservations: [Reservation!]
   role: Int!
-  studentNumber: Int
 }

@@ -35,13 +35,7 @@ export class CreateUserInput {
   @IsPositive()
   @IsInt()
   @Field(type => Int, {nullable: true})
-  studentNumber?: number;
-
-  @IsOptional()
-  @IsPositive()
-  @IsInt()
-  @Field(type => Int, {nullable: true})
-  lecturerNumber?: number;
+  cardNumber?: number;
 
   // @Field()
   // date: CreateDateInput

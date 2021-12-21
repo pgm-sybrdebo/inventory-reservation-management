@@ -32,11 +32,7 @@ export class User {
 
   @Column({nullable: true})
   @Field(type => Int, {nullable: true})
-  studentNumber?: number;
-
-  @Column({nullable: true})
-  @Field(type => Int, {nullable: true})
-  lecturerNumber?: number;
+  cardNumber?: number;
 
   @Column(() => Dates)
   date: Dates
