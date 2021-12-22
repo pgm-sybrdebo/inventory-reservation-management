@@ -9,7 +9,7 @@ type Props = {
 };
 
 const StyledButton = styled(Button)<Props>`
-  width:${props=>props.width};
+  width:100%;
   max-width: 100%;
   height:50px;
   color: ${props=>props.color};
@@ -20,12 +20,15 @@ const StyledButton = styled(Button)<Props>`
   display: block;
   background-color: ${props=>props.backgroundcolor};
   transition: all 0.2s ease-in-out;
-  margin: 0 auto;
+  margin: 0 auto 16px;
   font-size: 1.25rem;
   text-decoration: none;
   cursor: pointer;
   font-weight: 600;
 
+  @media(min-width:1023px){
+    width:${props=>props.width};
+  }
   &:hover{
     background-color: ${props=>props.color};
     color: ${props=>props.backgroundcolor};

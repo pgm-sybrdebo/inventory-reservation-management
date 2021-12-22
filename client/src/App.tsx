@@ -6,6 +6,7 @@ import {
   Login,
   Register,
   Models,
+  ModelDetail,
 } from "./pages";
 
 function App() {
@@ -31,6 +32,10 @@ function App() {
           <Route
             path={ROUTES.MODELS}
             element={<Models />}
+          />
+          <Route
+            path={ROUTES.MODEL_DETAILS}
+            element={<ModelDetail />}
           />
         </Routes>
       </Router>

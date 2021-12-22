@@ -7,6 +7,18 @@ export interface topic {
   quantity: number,
 }
 
+export interface image {
+  src: string,
+}
+
+export interface modelInfo {
+  name: string,
+  quantity: number,
+  description: string,
+  specifications: string[],
+  tags: string[],
+}
+
 
 export interface ModelCardPic {
   src: string,
