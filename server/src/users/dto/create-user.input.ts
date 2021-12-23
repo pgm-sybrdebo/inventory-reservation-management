@@ -33,16 +33,15 @@ export class CreateUserInput {
   @Field()
   password: string;
 
-  @IsNotEmpty()
-  @IsPositive()
-  @IsInt()
-  @Field()
-  role: number;
-
   @IsPositive()
   @IsInt()
   @Field((type) => Int)
   cardNumber: number;
+
+  @IsPositive()
+  @IsInt()
+  @Field((type) => Int)
+  profession: number;
 
   // @Field()
   // date: CreateDateInput

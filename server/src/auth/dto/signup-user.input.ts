@@ -31,14 +31,13 @@ export class SignupUserInput {
   @Field()
   password: string;
 
-  @IsNotEmpty()
-  @IsPositive()
-  @IsInt()
-  @Field()
-  role: number;
-
   @IsPositive()
   @IsInt()
   @Field((type) => Int)
   cardNumber: number;
+
+  @IsPositive()
+  @IsInt()
+  @Field((type) => Int)
+  profession: number;
 }

@@ -27,8 +27,8 @@ export class User {
   password: string;
 
   @Column()
-  @Field((type) => Int)
-  role: number;
+  @Field()
+  role: number = 0;
 
   @Column({ nullable: true })
   @Field((type) => Int, { nullable: true })
