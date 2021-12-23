@@ -1,10 +1,12 @@
 import React from 'react'
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 import { ModelCardPic } from '../../interfaces'
 import CardBtn from '../CardBtn/CardBtn';
 
 
 const ModelCard : React.FC<ModelCardPic>= ({src, title, quantity, description}) => {
+  let navigate = useNavigate();
   return(
     <BigCard>
     <div className="bg">
@@ -24,6 +26,7 @@ const ModelCard : React.FC<ModelCardPic>= ({src, title, quantity, description}) 
       type="button" 
       text="Learn More" 
       name="lm"
+      onClick = {()=> navigate("/models/detail")}
     />
     <CardBtn
       type="button" 
