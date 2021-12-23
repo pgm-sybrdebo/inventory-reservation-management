@@ -121,11 +121,11 @@
 
 
 import React, { useEffect } from 'react'
-import { useNavigate, NavLink, Navigate } from "react-router-dom";
-import {useFormik, FormikProps, Formik} from 'formik';
+import { useNavigate, NavLink } from "react-router-dom";
+import { Formik } from 'formik';
 import * as YUP from 'yup';
 import styled from "styled-components";
-import { MyLoginFormValues } from '../../interfaces';
+//import { MyLoginFormValues } from '../../interfaces';
 import * as routes from '../../routes';
 
 import Input from '../Input/Input';
@@ -143,13 +143,14 @@ const LoginForm: React.FC = () => {
   let navigate = useNavigate();
 
   useEffect(() => {
-    if (data) {
+    if (data && !loading && !error) {
 
       console.log(data);
       localStorage.setItem("token", data.login.access_token);
       navigate("/");
+
     }
-  }, [data])
+  }, [data, error, loading, navigate])
 
   return (
     <LogSection>
@@ -240,6 +241,7 @@ const LogSection = styled.div`
       font-size: 1.8rem !important;
       font-weight: 600;
       color:#000;
+      margin-bottom: 1rem !important;
     }
   }
 `;

@@ -168,6 +168,7 @@ const RegSection = styled.div`
       font-size: 1.8rem !important;
       font-weight: 600;
       color:#000;
+      margin-bottom:1rem ;
     }
   }
 `;
