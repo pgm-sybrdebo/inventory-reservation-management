@@ -15,6 +15,15 @@
 //   const [login, { data, loading, error }] = useMutation(LOGIN);
 //   let navigate = useNavigate();
 
+//   useEffect(() => {
+//     if (data) {
+
+//       console.log(data);
+//       localStorage.setItem("token", data.login.access_token);
+//       navigate("/");
+//     }
+//   }, [data])
+
 //   const formik: FormikProps<MyLoginFormValues> = useFormik<MyLoginFormValues>({
 //     initialValues:{
 //       loginEmail: "",
@@ -35,7 +44,6 @@
 //         }
 //       })
 //       setSubmitting(false);
-//       navigate("/")
 //     }
 //   })
 
@@ -65,6 +73,7 @@
 //           />
           
 //           {formik.touched.loginPass && formik.errors.loginPass ? <p className="error">{formik.errors.loginPass}</p> : null}
+//           {error && <p>Wrong email or password!</p>}
 //           <StyledButton 
 //             type="submit" 
 //             text="Login" 
