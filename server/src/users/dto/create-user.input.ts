@@ -39,11 +39,10 @@ export class CreateUserInput {
   @Field()
   role: number;
 
-  @IsOptional()
   @IsPositive()
   @IsInt()
-  @Field((type) => Int, { nullable: true })
-  cardNumber?: number;
+  @Field((type) => Int)
+  cardNumber: number;
 
   // @Field()
   // date: CreateDateInput
