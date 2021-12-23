@@ -37,9 +37,8 @@ export class SignupUserInput {
   @Field()
   role: number;
 
-  @IsOptional()
   @IsPositive()
   @IsInt()
-  @Field((type) => Int, { nullable: true })
-  cardNumber?: number;
+  @Field((type) => Int)
+  cardNumber: number;
 }

@@ -58,7 +58,7 @@ input CreateTagInput {
 }
 
 input CreateUserInput {
-  cardNumber: Int
+  cardNumber: Int!
   email: String!
   firstName: String!
   lastName: String!
@@ -215,7 +215,7 @@ type ReservationTime {
 }
 
 input SignupUserInput {
-  cardNumber: Int
+  cardNumber: Int!
   email: String!
   firstName: String!
   lastName: String!
