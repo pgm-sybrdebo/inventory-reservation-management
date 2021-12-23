@@ -12,7 +12,7 @@ import { JwtStrategy } from './jwt.strategy';
     PassportModule,
     UsersModule,
     JwtModule.register({
-      signOptions: { expiresIn: '60s' },
+      signOptions: { expiresIn: '30s' },
       secret: 'artevelde-inventory-reservation', // process.env.JWT_SECRET
     }),
   ],
