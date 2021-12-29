@@ -30,9 +30,13 @@ export class User {
   @Field()
   role: number = 0;
 
+  @Column()
+  @Field((type) => Int)
+  profession: number;
+
   @Column({ nullable: true })
-  @Field((type) => Int, { nullable: true })
-  cardNumber?: number;
+  @Field((type) => Int)
+  cardNumber: number;
 
   @Column(() => Dates)
   date: Dates;
