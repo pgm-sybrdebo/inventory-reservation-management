@@ -39,6 +39,7 @@ export class CreateUserInput {
   cardNumber: number;
 
   @IsPositive()
+  @IsOptional()
   @IsInt()
   @Field((type) => Int)
   profession: number;

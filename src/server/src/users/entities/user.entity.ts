@@ -30,8 +30,8 @@ export class User {
   @Field()
   role: number = 0;
 
-  @Column()
-  @Field((type) => Int)
+  @Column({nullable: true})
+  @Field((type) => Int, {nullable: true})
   profession: number;
 
   @Column({ nullable: true })

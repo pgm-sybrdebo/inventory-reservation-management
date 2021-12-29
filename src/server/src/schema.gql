@@ -309,12 +309,13 @@ input UpdateUserInput {
 }
 
 type User {
-  cardNumber: Int
+  cardNumber: Int!
   email: String!
   firstName: String!
   id: String!
   lastName: String!
   password: String!
+  profession: Int
   reservations: [Reservation!]
   role: Float!
 }
