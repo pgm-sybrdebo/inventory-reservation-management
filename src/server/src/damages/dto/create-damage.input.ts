@@ -6,12 +6,12 @@ export class CreateDamageInput {
   @IsNotEmpty()
   @IsUUID('all')
   @Field()
-  device_id: string;
+  deviceId: string;
 
   @IsNotEmpty()
   @IsUUID('all')
   @Field()
-  reservation_id: string;
+  reservationId: string;
 
   @IsNotEmpty()
   @IsString()

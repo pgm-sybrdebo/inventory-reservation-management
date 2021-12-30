@@ -13,11 +13,11 @@ export class Damage {
 
   @Column()
   @Field()
-  device_id: string;
+  deviceId: string;
 
   @Column()
   @Field()
-  reservation_id: string;
+  reservationId: string;
 
   @Column()
   @Field()
