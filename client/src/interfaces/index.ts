@@ -32,7 +32,7 @@ export interface MyRegisterFormValues {
   regFname: string,
   regLname:string,
   regEmail:string,
-  regStatus:string,
+  regStatus:number,
   regNumber:string,
   regPass:string,
   repeatRegPass:string,
@@ -62,7 +62,7 @@ export interface MySingleSelectProps{
   name: string,
   onChange?: any, 
   onBlur?: any, 
-  value: string,
+  value: number,
 }
 
 export interface MyButtonProps {

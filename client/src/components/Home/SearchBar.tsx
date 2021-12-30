@@ -91,12 +91,15 @@ const SearchSection = styled.div`
         display: flex;
       }
       & .search__wrapper__form__input{
-        width: 90%;
+        width: 80%;
         height: 50px;
         border: 2px solid #F58732;
         border-radius: .25rem 0 0 .25rem;
         padding: 0 .5rem;
         outline: none;
+      }
+      & button{
+        width: 20%;
       }
   
     }

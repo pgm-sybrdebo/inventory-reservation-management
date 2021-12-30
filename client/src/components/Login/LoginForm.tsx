@@ -143,7 +143,7 @@ const LoginForm: React.FC = () => {
   let navigate = useNavigate();
 
   useEffect(() => {
-    if (data && !loading && !error) {
+    if (data) {
 
       console.log(data);
       localStorage.setItem("token", data.login.access_token);
@@ -200,7 +200,8 @@ const LoginForm: React.FC = () => {
               />
               
               {touched.loginPass && errors.loginPass ? <p className="error">{errors.loginPass}</p> : null}
-              {error && <p>Wrong email or password!</p>}
+              {error && <p className="error">{error.message}</p>}
+              {loading && <p className="error">Trying to find your account...</p>}
               <StyledButton 
                 type="submit" 
                 text="Login" 

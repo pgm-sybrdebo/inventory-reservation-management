@@ -63,7 +63,7 @@ input CreateUserInput {
   firstName: String!
   lastName: String!
   password: String!
-  profession: Int!
+  role: Float!
 }
 
 type Damage {
@@ -220,7 +220,7 @@ input SignupUserInput {
   firstName: String!
   lastName: String!
   password: String!
-  profession: Int!
+  role: Float!
 }
 
 type Tag {
@@ -305,7 +305,7 @@ input UpdateUserInput {
   id: String!
   lastName: String
   password: String
-  profession: Int
+  role: Float
 }
 
 type User {
@@ -316,5 +316,5 @@ type User {
   lastName: String!
   password: String!
   reservations: [Reservation!]
-  role: Float!
+  role: Int!
 }

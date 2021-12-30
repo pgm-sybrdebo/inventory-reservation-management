@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation, Outlet } from "react-router-dom";
 import {GlobalStyles} from './GeneralStyles.style';
 import * as ROUTES from "./routes";
+
 import {
   HomePage,
   Login,
@@ -19,7 +20,6 @@ function RequireAuth() {
 
   return <Outlet />;
 }
-
 
 function App() {
   return (

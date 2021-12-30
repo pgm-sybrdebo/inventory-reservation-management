@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { useNavigate, NavLink } from "react-router-dom";
 import {useFormik, FormikProps} from 'formik';
 import * as YUP from 'yup';
@@ -7,7 +7,8 @@ import { MyRegisterFormValues } from '../../interfaces';
 import Select from './Select';
 import * as routes from '../../routes';
 
-
+import { REGISTER } from '../../graphql/auth';
+import { useMutation } from '@apollo/client';
 
 import Input from '../Input/Input';
 import StyledButton from '../Button/StyledButton.style';
@@ -15,13 +16,22 @@ import StyledButton from '../Button/StyledButton.style';
 
 
 const RegisterForm : React.FC = () => {
+  const [register, { data, loading, error }] = useMutation(REGISTER);
   let navigate = useNavigate();
+
+    useEffect(() => {
+    if (data && !loading && !error) {
+
+      console.log(data);
+      navigate("/login");
+    }
+  }, [data, error, loading, navigate])
   const formik: FormikProps<MyRegisterFormValues> = useFormik<MyRegisterFormValues>({
     initialValues:{
       regFname: "",
       regLname:"",
       regEmail:"",
-      regStatus:"",
+      regStatus:0,
       regNumber:"",
       regPass:"",
       repeatRegPass:"",
@@ -47,14 +57,25 @@ const RegisterForm : React.FC = () => {
       .required("Password is required"),
       repeatRegPass: YUP.string().oneOf([YUP.ref('regPass'), null], 'Passwords must match'),
 
-      regStatus:  YUP.string().required("Status is required"),
-      regNumber: YUP.string()
+      regStatus:  YUP.number().required("Profession is required"),
+      regNumber: YUP.number()
       .required("Card number is required"),
      }),
-    onSubmit: (values) => {
+    onSubmit:(values, {setSubmitting}) => {
+      setSubmitting(true);
       console.log(values);
-      navigate("/login");
-    },
+      register({
+        variables: {
+          email: values.regEmail,
+          password: values.regPass,
+          firstName: values.regFname,
+          lastName: values.regLname,
+          profession: values.regStatus,
+          cardNumber: values.regNumber,
+        }
+      })
+      setSubmitting(false);
+    }
   });
 
   return (
