@@ -1,0 +1,317 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+input CreateDamageInput {
+  description: String!
+  deviceId: String!
+  picture: String!
+  reservationId: String!
+  title: String!
+}
+
+input CreateDeviceInput {
+  deviceStatusId: String!
+  modelId: String!
+  qr_code: String!
+}
+
+input CreateDeviceStatusInput {
+  name: String!
+}
+
+input CreateMediaInput {
+  modelId: String!
+  source: String!
+  type: String!
+}
+
+input CreateModelInput {
+  brand: String!
+  description: String!
+  max_reservation_time: Int!
+  name: String!
+  quantity: Int!
+  specifications: String!
+}
+
+input CreateReservationInput {
+  deviceId: String!
+  end_date: Timestamp!
+  reservationStateId: String!
+  start_date: Timestamp!
+  userId: String!
+}
+
+input CreateReservationStateInput {
+  name: String!
+}
+
+input CreateReservationTimeInput {
+  amount: Int!
+  name: String!
+}
+
+input CreateTagInput {
+  name: String!
+}
+
+input CreateUserInput {
+  cardNumber: Int!
+  email: String!
+  firstName: String!
+  lastName: String!
+  password: String!
+  profession: Int!
+}
+
+type Damage {
+  description: String!
+  device: Device!
+  deviceId: String!
+  id: String!
+  picture: String!
+  reservation: Reservation!
+  reservationId: String!
+  title: String!
+}
+
+type Device {
+  damages: [Damage!]
+  deviceStatus: DeviceStatus!
+  deviceStatusId: String!
+  id: String!
+  model: Model!
+  modelId: String!
+  qr_code: String!
+  reservations: [Reservation!]
+}
+
+type DeviceStatus {
+  devices: [Device!]
+  id: String!
+  name: String!
+}
+
+type LoginResponse {
+  access_token: String!
+  user: User!
+}
+
+input LoginUserInput {
+  email: String!
+  password: String!
+}
+
+type Media {
+  id: String!
+  model: Model!
+  modelId: String!
+  source: String!
+  type: String!
+}
+
+type Model {
+  brand: String!
+  description: String!
+  devices: [Device!]
+  id: String!
+  max_reservation_time: Int!
+  medias: [Media!]
+  name: String!
+  quantity: Int!
+  specifications: String!
+  tags: [Tag!]
+}
+
+type Mutation {
+  addModelToTag(modelId: String!, tagId: String!): Model!
+  createDamage(createDamageInput: CreateDamageInput!): Damage!
+  createDevice(createDeviceInput: CreateDeviceInput!): Device!
+  createDeviceStatus(createDeviceStatusInput: CreateDeviceStatusInput!): DeviceStatus!
+  createMedia(createMediaInput: CreateMediaInput!): Media!
+  createModel(createModelInput: CreateModelInput!): Model!
+  createReservation(createReservationInput: CreateReservationInput!): Reservation!
+  createReservationState(createReservationStateInput: CreateReservationStateInput!): ReservationState!
+  createReservationTime(createReservationTimeInput: CreateReservationTimeInput!): ReservationTime!
+  createTag(createTagInput: CreateTagInput!): Tag!
+  createUser(createUserInput: CreateUserInput!): User!
+  login(loginUserInput: LoginUserInput!): LoginResponse!
+  removeDamage(id: String!): Damage!
+  removeDevice(id: String!): Device!
+  removeDeviceStatus(id: String!): DeviceStatus!
+  removeMedia(id: String!): Media!
+  removeModel(id: String!): Model!
+  removeModelFromTag(modelId: String!, tagId: String!): Model!
+  removeReservation(id: String!): Reservation!
+  removeReservationState(id: String!): ReservationState!
+  removeReservationTime(id: String!): ReservationTime!
+  removeTag(id: String!): Tag!
+  removeUser(id: String!): User!
+  signup(signupUserInput: SignupUserInput!): User!
+  updateDamage(updateDamageInput: UpdateDamageInput!): Damage!
+  updateDevice(updateDeviceInput: UpdateDeviceInput!): Device!
+  updateDeviceStatus(updateDeviceStatusInput: UpdateDeviceStatusInput!): DeviceStatus!
+  updateMedia(updateMediaInput: UpdateMediaInput!): Media!
+  updateModel(updateModelInput: UpdateModelInput!): Model!
+  updateReservation(updateReservationInput: UpdateReservationInput!): Reservation!
+  updateReservationState(updateReservationStateInput: UpdateReservationStateInput!): ReservationState!
+  updateReservationTime(updateReservationTimeInput: UpdateReservationTimeInput!): ReservationTime!
+  updateTag(updateTagInput: UpdateTagInput!): Tag!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+}
+
+type Query {
+  damage(id: String!): Damage!
+  damages: [Damage!]!
+  device(id: String!): Device!
+  deviceStatus(id: String!): DeviceStatus!
+  deviceStatuses: [DeviceStatus!]!
+  devices: [Device!]!
+  getDeviceById(id: String!): Device!
+  media(id: String!): Media!
+  medias: [Media!]!
+  model(id: String!): Model!
+  models: [Model!]!
+  reservation(id: String!): Reservation!
+  reservationState(id: String!): ReservationState!
+  reservationStates: [ReservationState!]!
+  reservationTime(id: String!): ReservationTime!
+  reservationTimes: [ReservationTime!]!
+  reservations: [Reservation!]!
+  tag(id: String!): Tag!
+  tags: [Tag!]!
+  user(id: String!): User!
+  userByEmail(email: String!): User!
+  users: [User!]!
+}
+
+type Reservation {
+  damages: [Damage!]
+  device: Device!
+  deviceId: String!
+  end_date: Timestamp
+  id: String!
+  reservationState: ReservationState!
+  reservationStateId: String!
+  start_date: Timestamp!
+  user: User!
+  userId: String!
+}
+
+type ReservationState {
+  id: String!
+  name: String!
+  reservations: [Reservation!]
+}
+
+type ReservationTime {
+  amount: Int!
+  id: String!
+  name: String!
+}
+
+input SignupUserInput {
+  cardNumber: Int!
+  email: String!
+  firstName: String!
+  lastName: String!
+  password: String!
+  profession: Int!
+}
+
+type Tag {
+  id: String!
+  models: [Model!]
+  name: String!
+}
+
+"""
+`Date` type as integer. Type represents date and time as number of milliseconds from start of UNIX epoch.
+"""
+scalar Timestamp
+
+input UpdateDamageInput {
+  description: String
+  deviceId: String
+  id: String!
+  picture: String
+  reservationId: String
+  title: String
+}
+
+input UpdateDeviceInput {
+  deviceStatusId: String
+  id: String!
+  modelId: String
+  qr_code: String
+}
+
+input UpdateDeviceStatusInput {
+  id: String!
+  name: String
+}
+
+input UpdateMediaInput {
+  id: String!
+  modelId: String
+  source: String
+  type: String
+}
+
+input UpdateModelInput {
+  brand: String
+  description: String
+  id: String!
+  max_reservation_time: Int
+  name: String
+  quantity: Int
+  specifications: String
+}
+
+input UpdateReservationInput {
+  deviceId: String
+  end_date: Timestamp
+  id: String!
+  reservationStateId: String
+  start_date: Timestamp
+  userId: String
+}
+
+input UpdateReservationStateInput {
+  id: String!
+  name: String
+}
+
+input UpdateReservationTimeInput {
+  amount: Int
+  id: String!
+  name: String
+}
+
+input UpdateTagInput {
+  id: String!
+  name: String
+}
+
+input UpdateUserInput {
+  cardNumber: Int
+  email: String
+  firstName: String
+  id: String!
+  lastName: String
+  password: String
+  profession: Int
+}
+
+type User {
+  cardNumber: Int
+  email: String!
+  firstName: String!
+  id: String!
+  lastName: String!
+  password: String!
+  profession: Int
+  reservations: [Reservation!]
+  role: Float!
+}
