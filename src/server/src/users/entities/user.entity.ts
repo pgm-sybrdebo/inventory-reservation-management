@@ -35,7 +35,7 @@ export class User {
   profession: number;
 
   @Column({ nullable: true })
-  @Field((type) => Int)
+  @Field((type) => Int, { nullable: true })
   cardNumber: number;
 
   @Column(() => Dates)
