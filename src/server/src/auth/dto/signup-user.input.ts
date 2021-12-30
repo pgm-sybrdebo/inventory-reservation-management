@@ -7,6 +7,7 @@ import {
   IsPositive,
   IsInt,
   IsOptional,
+  Min,
 } from 'class-validator';
 
 @InputType()
@@ -31,12 +32,14 @@ export class SignupUserInput {
   @Field()
   password: string;
 
+  @IsNotEmpty()
   @IsPositive()
   @IsInt()
   @Field((type) => Int)
   cardNumber: number;
 
-  @IsPositive()
+  @IsNotEmpty()
+  @Min(0)
   @IsInt()
   @Field((type) => Int)
   profession: number;

@@ -4,9 +4,9 @@
 
 input CreateDamageInput {
   description: String!
-  device_id: String!
+  deviceId: String!
   picture: String!
-  reservation_id: String!
+  reservationId: String!
   title: String!
 }
 
@@ -21,7 +21,7 @@ input CreateDeviceStatusInput {
 }
 
 input CreateMediaInput {
-  model_id: String!
+  modelId: String!
   source: String!
   type: String!
 }
@@ -36,11 +36,11 @@ input CreateModelInput {
 }
 
 input CreateReservationInput {
-  device_id: String!
+  deviceId: String!
   end_date: Timestamp!
-  reservation_state_id: String!
+  reservationStateId: String!
   start_date: Timestamp!
-  user_id: String!
+  userId: String!
 }
 
 input CreateReservationStateInput {
@@ -68,11 +68,11 @@ input CreateUserInput {
 type Damage {
   description: String!
   device: Device!
-  device_id: String!
+  deviceId: String!
   id: String!
   picture: String!
   reservation: Reservation!
-  reservation_id: String!
+  reservationId: String!
   title: String!
 }
 
@@ -106,7 +106,7 @@ input LoginUserInput {
 type Media {
   id: String!
   model: Model!
-  model_id: String!
+  modelId: String!
   source: String!
   type: String!
 }
@@ -168,6 +168,7 @@ type Query {
   deviceStatus(id: String!): DeviceStatus!
   deviceStatuses: [DeviceStatus!]!
   devices: [Device!]!
+  getDeviceById(id: String!): Device!
   media(id: String!): Media!
   medias: [Media!]!
   model(id: String!): Model!
@@ -188,14 +189,14 @@ type Query {
 type Reservation {
   damages: [Damage!]
   device: Device!
-  device_id: String!
-  end_date: Timestamp!
+  deviceId: String!
+  end_date: Timestamp
   id: String!
   reservationState: ReservationState!
-  reservation_state_id: String!
+  reservationStateId: String!
   start_date: Timestamp!
   user: User!
-  user_id: String!
+  userId: String!
 }
 
 type ReservationState {
@@ -232,10 +233,10 @@ scalar Timestamp
 
 input UpdateDamageInput {
   description: String
-  device_id: String
+  deviceId: String
   id: String!
   picture: String
-  reservation_id: String
+  reservationId: String
   title: String
 }
 
@@ -253,7 +254,7 @@ input UpdateDeviceStatusInput {
 
 input UpdateMediaInput {
   id: String!
-  model_id: String
+  modelId: String
   source: String
   type: String
 }
@@ -269,12 +270,12 @@ input UpdateModelInput {
 }
 
 input UpdateReservationInput {
-  device_id: String
+  deviceId: String
   end_date: Timestamp
   id: String!
-  reservation_state_id: String
+  reservationStateId: String
   start_date: Timestamp
-  user_id: String
+  userId: String
 }
 
 input UpdateReservationStateInput {
@@ -304,7 +305,7 @@ input UpdateUserInput {
 }
 
 type User {
-  cardNumber: Int!
+  cardNumber: Int
   email: String!
   firstName: String!
   id: String!

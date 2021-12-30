@@ -1,5 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { DevicesService } from 'src/devices/devices.service';
+import { Device } from 'src/devices/entities/device.entity';
+import { Media } from 'src/medias/entities/media.entity';
+import { MediasService } from 'src/medias/medias.service';
 import { Tag } from 'src/tags/entities/tag.entity';
 import { TagsService } from 'src/tags/tags.service';
 import { Repository } from 'typeorm';
@@ -12,6 +16,8 @@ export class ModelsService {
   constructor(
     @InjectRepository(Model) private modelsRepository: Repository<Model>,
     private tagsService: TagsService,
+    private mediasService: MediasService,
+    @Inject(forwardRef(() => DevicesService)) private devicesService: DevicesService,
   ) {}
 
   create(createModelInput: CreateModelInput): Promise<Model> {
@@ -22,6 +28,14 @@ export class ModelsService {
 
   findAll(): Promise<Model[]> {
     return this.modelsRepository.find();
+  }
+
+  getMediasByModelId(modelId: string): Promise<Media[]> {
+    return this.mediasService.findAllByModelId(modelId);
+  }
+
+  getDevicesByModelId(modelId: string): Promise<Device[]> {
+    return this.devicesService.findAllByModelId(modelId);
   }
 
   findOne(id: string): Promise<Model> {
@@ -77,4 +91,7 @@ export class ModelsService {
       throw new Error(`Founding model or tag problem`);
     }
   }
+
+
+
 }

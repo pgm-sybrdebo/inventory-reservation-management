@@ -24,6 +24,10 @@ export class ReservationsService {
     return this.reservationsRepository.find();
   }
 
+  findAllByDeviceId(deviceId: string): Promise<Reservation[]> {
+    return this.reservationsRepository.find({deviceId});
+  }
+
   findOne(id: string): Promise<Reservation> {
     return this.reservationsRepository.findOneOrFail(id);
   }
