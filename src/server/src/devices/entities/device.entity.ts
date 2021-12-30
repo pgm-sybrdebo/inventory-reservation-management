@@ -21,15 +21,15 @@ export class Device {
 
   @Column()
   @Field()
-  model_id: string;
+  modelId: string;
 
   @Column()
   @Field()
-  device_status_id: string;
+  deviceStatusId: string;
 
-  @Column()
-  @Field((type) => Boolean)
-  is_available: boolean;
+  // @Column()
+  // @Field((type) => Boolean)
+  // is_available: boolean;
 
   @Column()
   @Field()

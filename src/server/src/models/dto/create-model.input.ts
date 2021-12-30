@@ -12,10 +12,10 @@ import JSON, { GraphQLJSONObject } from 'graphql-type-json';
 
 @InputType()
 export class CreateModelInput {
-  @IsNotEmpty()
-  @IsUUID('all')
-  @Field()
-  reservation_time_id: string;
+  // @IsNotEmpty()
+  // @IsUUID('all')
+  // @Field()
+  // reservation_time_id: string;
 
   @IsNotEmpty()
   @IsString()
@@ -47,4 +47,11 @@ export class CreateModelInput {
   @IsNotEmpty()
   @Field()
   specifications: string;
+
+  @IsNotEmpty()
+  @IsPositive()
+  @Min(0)
+  @Max(1000)
+  @Field((type) => Int)
+  max_reservation_time: number;
 }

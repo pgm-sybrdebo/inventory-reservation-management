@@ -14,6 +14,7 @@ import { Device } from 'src/devices/entities/device.entity';
 import { Media } from 'src/medias/entities/media.entity';
 import { ReservationTime } from 'src/reservation-times/entities/reservation-time.entity';
 import { Tag } from 'src/tags/entities/tag.entity';
+import { type } from 'os';
 
 @Entity()
 @ObjectType()
@@ -22,9 +23,9 @@ export class Model {
   @Field()
   id: string;
 
-  @Column()
-  @Field()
-  reservation_time_id: string;
+  // @Column()
+  // @Field()
+  // reservation_time_id: string;
 
   @Column()
   @Field()
@@ -50,6 +51,10 @@ export class Model {
   @Field()
   specifications: string;
 
+  @Column()
+  @Field((type) => Int)
+  max_reservation_time: number
+
   @Column(() => Dates)
   date: Dates;
 
@@ -61,9 +66,9 @@ export class Model {
   @Field((type) => [Media], { nullable: true })
   medias?: Media[];
 
-  @ManyToOne(() => ReservationTime, (reservationTime) => reservationTime.models)
-  @Field((type) => ReservationTime)
-  reservationTime: ReservationTime;
+  // @ManyToOne(() => ReservationTime, (reservationTime) => reservationTime.models)
+  // @Field((type) => ReservationTime)
+  // reservationTime: ReservationTime;
 
   @ManyToMany(() => Tag, (tag) => tag.models, { cascade: true })
   @Field(() => [Tag], { nullable: true })

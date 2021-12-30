@@ -11,9 +11,8 @@ input CreateDamageInput {
 }
 
 input CreateDeviceInput {
-  device_status_id: String!
-  is_available: Boolean!
-  model_id: String!
+  deviceStatusId: String!
+  modelId: String!
   qr_code: String!
 }
 
@@ -30,9 +29,9 @@ input CreateMediaInput {
 input CreateModelInput {
   brand: String!
   description: String!
+  max_reservation_time: Int!
   name: String!
   quantity: Int!
-  reservation_time_id: String!
   specifications: String!
 }
 
@@ -80,11 +79,10 @@ type Damage {
 type Device {
   damages: [Damage!]
   deviceStatus: DeviceStatus!
-  device_status_id: String!
+  deviceStatusId: String!
   id: String!
-  is_available: Boolean!
   model: Model!
-  model_id: String!
+  modelId: String!
   qr_code: String!
   reservations: [Reservation!]
 }
@@ -118,11 +116,10 @@ type Model {
   description: String!
   devices: [Device!]
   id: String!
+  max_reservation_time: Int!
   medias: [Media!]
   name: String!
   quantity: Int!
-  reservationTime: ReservationTime!
-  reservation_time_id: String!
   specifications: String!
   tags: [Tag!]
 }
@@ -210,7 +207,6 @@ type ReservationState {
 type ReservationTime {
   amount: Int!
   id: String!
-  models: [Model!]
   name: String!
 }
 
@@ -244,10 +240,9 @@ input UpdateDamageInput {
 }
 
 input UpdateDeviceInput {
-  device_status_id: String
+  deviceStatusId: String
   id: String!
-  is_available: Boolean
-  model_id: String
+  modelId: String
   qr_code: String
 }
 
@@ -267,9 +262,9 @@ input UpdateModelInput {
   brand: String
   description: String
   id: String!
+  max_reservation_time: Int
   name: String
   quantity: Int
-  reservation_time_id: String
   specifications: String
 }
 
