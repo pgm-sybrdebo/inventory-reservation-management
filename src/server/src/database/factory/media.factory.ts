@@ -4,10 +4,14 @@ import { Media } from 'src/medias/entities/media.entity';
 import { Model } from 'src/models/entities/model.entity';
 
 const types = ['jpeg', 'png', 'mp4'];
+interface Context {
+  id: string
+}
 
-define(Media, (faker: typeof Faker) => {
+define(Media, (faker: typeof Faker, context: Context) => {
+  const { id } = context;
   const media = new Media();
-  media.model_id = factory(Model)() as any;
+  media.modelId = id;
   media.type = 'jpeg';
   media.source = 'defaultImage.jpeg';
   return media;

@@ -8,30 +8,31 @@ import { Device } from 'src/devices/entities/device.entity';
 import { DeviceStatus } from 'src/device-statuses/entities/device-status.entity';
 
 let number = 0;
-
-const createDevices = async () => {
-  const devices = await factory(Device)().makeMany(2) as any;
-  return devices;
+interface Context {
+  tags: Tag[]
 }
 
-define(Model, (faker: typeof Faker, context: {context}) => {
+define(Model, (faker: typeof Faker, context: Context) => {
+  const { tags } = context;
+  console.log("tagssssss", tags);
   const model = new Model();
   console.log("fact", context);
   // console.log("rt", context.tags[1]);
-  const copyTags = context.context[0].slice(0);
+  const copyTags = tags.slice(0);
+  console.log("cpoy", copyTags);
   const newTags = copyTags.splice(faker.random.number({min: 0, max:4}), faker.random.number({min: 1, max:4}));
-  const deviceStatuses = context.context[1];
+  // const deviceStatuses = context.context[1];
 
+  console.log(newTags);
   model.max_reservation_time = faker.random.number({min: 1, max: 100});
   model.name = MODELS[number].Name;
   model.description = faker.lorem.sentence();
   model.quantity = MODELS[number].quantity;
   model.brand = faker.lorem.word();
-  model.specifications = 'specifications ...';
+  model.specifications = '{"numberOfCores":4,"RAM":"2GB","size":"3.35 x 2.2 (85mm x 56mm"}';
   model.tags = newTags;
   // model.devices = createDevices() as any;
   // model.tags = factory(Tag)().makeMany(2) as any;
-  console.log("model1", model);
   number++;
   return model;
 });

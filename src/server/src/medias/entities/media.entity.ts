@@ -12,7 +12,7 @@ export class Media {
 
   @Column()
   @Field()
-  model_id: string;
+  modelId: string;
 
   @Column()
   @Field()

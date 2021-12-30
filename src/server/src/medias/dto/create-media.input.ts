@@ -6,7 +6,7 @@ export class CreateMediaInput {
   @IsNotEmpty()
   @IsUUID('all')
   @Field()
-  model_id: string;
+  modelId: string;
 
   @IsNotEmpty()
   @IsAlpha()
