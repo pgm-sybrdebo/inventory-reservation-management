@@ -21,22 +21,22 @@ export class Reservation {
 
   @Column()
   @Field()
-  device_id: string;
+  deviceId: string;
 
   @Column()
   @Field()
-  reservation_state_id: string;
+  reservationStateId: string;
 
   @Column()
   @Field()
-  user_id: string;
+  userId: string;
 
   @Column()
   @Field()
   start_date: Date;
 
-  @Column()
-  @Field()
+  @Column({ nullable: true })
+  @Field({ nullable: true })
   end_date: Date;
 
   @Column(() => Dates)

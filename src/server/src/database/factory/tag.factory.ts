@@ -2,10 +2,13 @@ import { define, factory } from 'typeorm-seeding';
 import * as Faker from 'faker';
 import { Tag } from 'src/tags/entities/tag.entity';
 
-const types = ['jpeg', 'png', 'mp4'];
+const types = ['audio', 'sensor', 'transport', 'cable', 'varia'];
+let number = 0;
 
 define(Tag, (faker: typeof Faker) => {
   const tag = new Tag();
-  tag.name = faker.lorem.word();
+  tag.name = types[number];
+  number ++;
+  console.log("tag", tag);
   return tag;
 });

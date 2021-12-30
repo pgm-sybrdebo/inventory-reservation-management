@@ -1,9 +1,11 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
 import { ModelsService } from './models.service';
 import { Model } from './entities/model.entity';
 import { CreateModelInput } from './dto/create-model.input';
 import { UpdateModelInput } from './dto/update-model.input';
 import { ParseUUIDPipe } from '@nestjs/common';
+import { Media } from 'src/medias/entities/media.entity';
+import { Device } from 'src/devices/entities/device.entity';
 
 @Resolver(() => Model)
 export class ModelsResolver {
@@ -47,5 +49,15 @@ export class ModelsResolver {
     @Args('tagId', { type: () => String, nullable: false }) tagId: string,
   ) {
     return this.modelsService.removeFromTag(modelId, tagId);
+  }
+
+  @ResolveField(returns => [Media])
+  medias(@Parent() model: Model): Promise<Media[]> {
+    return this.modelsService.getMediasByModelId(model.id);
+  }
+
+  @ResolveField(returns => [Device])
+  devices(@Parent() model: Model): Promise<Device[]> {
+    return this.modelsService.getDevicesByModelId(model.id);
   }
 }

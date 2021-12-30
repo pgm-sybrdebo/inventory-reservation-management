@@ -4,11 +4,24 @@ import { Device } from 'src/devices/entities/device.entity';
 import { Model } from 'src/models/entities/model.entity';
 import { DeviceStatus } from 'src/device-statuses/entities/device-status.entity';
 
-define(Device, (faker: typeof Faker) => {
+interface Context {
+  id: string
+  device_statuses: DeviceStatus[]
+}
+
+define(Device, (faker: typeof Faker, context: Context) => {
+  // console.log("sup", context);
+  const { id, device_statuses } = context;
+  // console.log("id", id);
+  // console.log("deviceStatus", device_statuses);
   const device = new Device();
-  device.model_id = factory(Model)() as any;
-  device.device_status_id = factory(DeviceStatus)() as any;
-  device.is_available = faker.datatype.boolean();
-  device.qr_code = 'string';
+  const deviceSt = device_statuses[faker.random.number({min: 0, max: 3})];
+  // console.log("device", deviceSt);
+  device.modelId = id;
+  // device.deviceStatusId = faker.random.uuid();
+  // device.is_available = faker.datatype.boolean();
+  device.deviceStatus = deviceSt;
+  device.qr_code = 'default_qr_code';
+  // console.log("decice", device);
   return device;
 });

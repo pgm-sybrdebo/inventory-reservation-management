@@ -21,7 +21,7 @@ export class ReservationTime {
   @Column(() => Dates)
   date: Dates;
 
-  @OneToMany(() => Model, (model) => model.reservationTime)
-  @Field((type) => [Model], { nullable: true })
-  models?: Model[];
+  // @OneToMany(() => Model, (model) => model.reservationTime)
+  // @Field((type) => [Model], { nullable: true })
+  // models?: Model[];
 }
