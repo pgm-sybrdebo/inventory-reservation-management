@@ -91,7 +91,4 @@ export class ModelsService {
       throw new Error(`Founding model or tag problem`);
     }
   }
-
-
-
 }
