@@ -3,13 +3,19 @@ import { DeviceStatusesService } from './device-statuses.service';
 import { DeviceStatus } from './entities/device-status.entity';
 import { CreateDeviceStatusInput } from './dto/create-device-status.input';
 import { UpdateDeviceStatusInput } from './dto/update-device-status.input';
-import { ParseUUIDPipe } from '@nestjs/common';
+import { ParseUUIDPipe, UseGuards } from '@nestjs/common';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { Role } from 'src/auth/role.enum';
 
 @Resolver(() => DeviceStatus)
 export class DeviceStatusesResolver {
   constructor(private readonly deviceStatusesService: DeviceStatusesService) {}
 
   @Mutation(() => DeviceStatus)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   createDeviceStatus(
     @Args('createDeviceStatusInput')
     createDeviceStatusInput: CreateDeviceStatusInput,
@@ -18,16 +24,22 @@ export class DeviceStatusesResolver {
   }
 
   @Query(() => [DeviceStatus], { name: 'deviceStatuses' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   findAll() {
     return this.deviceStatusesService.findAll();
   }
 
   @Query(() => DeviceStatus, { name: 'deviceStatus' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   findOne(@Args('id', new ParseUUIDPipe()) id: string) {
     return this.deviceStatusesService.findOne(id);
   }
 
   @Mutation(() => DeviceStatus)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   updateDeviceStatus(
     @Args('updateDeviceStatusInput')
     updateDeviceStatusInput: UpdateDeviceStatusInput,
@@ -39,6 +51,8 @@ export class DeviceStatusesResolver {
   }
 
   @Mutation(() => DeviceStatus)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   removeDeviceStatus(@Args('id', new ParseUUIDPipe()) id: string) {
     return this.deviceStatusesService.remove(id);
   }

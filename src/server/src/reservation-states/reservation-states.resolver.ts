@@ -3,7 +3,11 @@ import { ReservationStatesService } from './reservation-states.service';
 import { ReservationState } from './entities/reservation-state.entity';
 import { CreateReservationStateInput } from './dto/create-reservation-state.input';
 import { UpdateReservationStateInput } from './dto/update-reservation-state.input';
-import { ParseUUIDPipe } from '@nestjs/common';
+import { ParseUUIDPipe, UseGuards } from '@nestjs/common';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { Role } from 'src/auth/role.enum';
 
 @Resolver(() => ReservationState)
 export class ReservationStatesResolver {
@@ -12,6 +16,8 @@ export class ReservationStatesResolver {
   ) {}
 
   @Mutation(() => ReservationState)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   createReservationState(
     @Args('createReservationStateInput')
     createReservationStateInput: CreateReservationStateInput,
@@ -20,16 +26,22 @@ export class ReservationStatesResolver {
   }
 
   @Query(() => [ReservationState], { name: 'reservationStates' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   findAll() {
     return this.reservationStatesService.findAll();
   }
 
   @Query(() => ReservationState, { name: 'reservationState' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   findOne(@Args('id', new ParseUUIDPipe()) id: string) {
     return this.reservationStatesService.findOne(id);
   }
 
   @Mutation(() => ReservationState)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   updateReservationState(
     @Args('updateReservationStateInput')
     updateReservationStateInput: UpdateReservationStateInput,
@@ -41,6 +53,8 @@ export class ReservationStatesResolver {
   }
 
   @Mutation(() => ReservationState)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   removeReservationState(@Args('id', new ParseUUIDPipe()) id: string) {
     return this.reservationStatesService.remove(id);
   }
