@@ -1,6 +1,7 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation, Outlet } from "react-router-dom";
 import {GlobalStyles} from './GeneralStyles.style';
 import * as ROUTES from "./routes";
+
 import {
   HomePage,
   Login,
@@ -9,6 +10,17 @@ import {
   ModelDetail,
 } from "./pages";
 
+function RequireAuth() {
+  const token = localStorage.getItem('token');
+  let location = useLocation();
+
+  if (!token) {
+    return <Navigate to="/login" state={{ from: location }} />;
+  }
+
+  return <Outlet />;
+}
+
 function App() {
   return (
     <div className="app">
@@ -16,18 +28,11 @@ function App() {
       <Router>
         
         <Routes>
+        <Route element={<RequireAuth />}>
+          <Route path={ROUTES.HOME}  element={<Navigate to={ROUTES.LANDING} replace />} />
           <Route 
             path={ROUTES.LANDING} 
             element={<HomePage />} 
-          />
-          <Route path={ROUTES.HOME}  element={<Navigate to={ROUTES.LANDING} replace />} />
-          <Route
-            path={ROUTES.LOGIN}
-            element={<Login />}
-          />
-          <Route
-            path={ROUTES.REGISTER}
-            element={<Register />}
           />
           <Route
             path={ROUTES.MODELS}
@@ -37,6 +42,18 @@ function App() {
             path={ROUTES.MODEL_DETAILS}
             element={<ModelDetail />}
           />
+        </Route>
+
+          <Route
+            path={ROUTES.LOGIN}
+            element={<Login />}
+          />
+          <Route
+            path={ROUTES.REGISTER}
+            element={<Register />}
+          />
+
+
         </Routes>
       </Router>
     </div>
