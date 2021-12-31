@@ -56,15 +56,6 @@ input CreateTagInput {
   name: String!
 }
 
-input CreateUserInput {
-  cardNumber: Int!
-  email: String!
-  firstName: String!
-  lastName: String!
-  password: String!
-  profession: Int!
-}
-
 type Damage {
   description: String!
   device: Device!
@@ -135,7 +126,6 @@ type Mutation {
   createReservationState(createReservationStateInput: CreateReservationStateInput!): ReservationState!
   createReservationTime(createReservationTimeInput: CreateReservationTimeInput!): ReservationTime!
   createTag(createTagInput: CreateTagInput!): Tag!
-  createUser(createUserInput: CreateUserInput!): User!
   login(loginUserInput: LoginUserInput!): LoginResponse!
   removeDamage(id: String!): Damage!
   removeDevice(id: String!): Device!
