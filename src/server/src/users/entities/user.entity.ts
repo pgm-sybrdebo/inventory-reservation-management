@@ -2,7 +2,7 @@ import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { Dates } from 'src/mixins/date.entity';
 import { Reservation } from 'src/reservations/entities/reservation.entity';
 import { PrimaryGeneratedColumn, Column, Entity, OneToMany } from 'typeorm';
-
+import { Role } from '../../auth/role.enum';
 @Entity()
 @ObjectType()
 export class User {
@@ -26,9 +26,9 @@ export class User {
   @Field()
   password: string;
 
-  @Column()
+  @Column({type: 'enum', enum: Role, default: Role.USER})
   @Field()
-  role: number = 0;
+  role: Role = 0;
 
   @Column({nullable: true})
   @Field((type) => Int, {nullable: true})
