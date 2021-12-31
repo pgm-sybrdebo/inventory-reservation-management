@@ -3,13 +3,19 @@ import { DamagesService } from './damages.service';
 import { Damage } from './entities/damage.entity';
 import { CreateDamageInput } from './dto/create-damage.input';
 import { UpdateDamageInput } from './dto/update-damage.input';
-import { ParseUUIDPipe } from '@nestjs/common';
+import { ParseUUIDPipe, UseGuards } from '@nestjs/common';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { Role } from 'src/auth/role.enum';
 
 @Resolver(() => Damage)
 export class DamagesResolver {
   constructor(private readonly damagesService: DamagesService) {}
 
   @Mutation(() => Damage)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   createDamage(
     @Args('createDamageInput') createDamageInput: CreateDamageInput,
   ) {
@@ -17,16 +23,22 @@ export class DamagesResolver {
   }
 
   @Query(() => [Damage], { name: 'damages' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   findAll() {
     return this.damagesService.findAll();
   }
 
   @Query(() => Damage, { name: 'damage' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   findOne(@Args('id', new ParseUUIDPipe()) id: string) {
     return this.damagesService.findOne(id);
   }
 
   @Mutation(() => Damage)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   updateDamage(
     @Args('updateDamageInput') updateDamageInput: UpdateDamageInput,
   ) {
@@ -34,6 +46,8 @@ export class DamagesResolver {
   }
 
   @Mutation(() => Damage)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   removeDamage(@Args('id', new ParseUUIDPipe()) id: string) {
     return this.damagesService.remove(id);
   }
