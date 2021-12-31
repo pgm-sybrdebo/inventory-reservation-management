@@ -58,6 +58,5 @@ export default class CreateModels implements Seeder {
       const reservId = reserv[0].id;
       await factory(Damage)({id, reservId}).create();
     }
-
   }
 }
