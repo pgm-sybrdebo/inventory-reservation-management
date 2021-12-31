@@ -4,7 +4,7 @@ import { Media } from 'src/medias/entities/media.entity';
 
 const types = ['jpeg', 'png', 'mp4'];
 interface Context {
-  id: string
+  id: string;
 }
 
 define(Media, (faker: typeof Faker, context: Context) => {

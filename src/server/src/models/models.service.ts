@@ -17,7 +17,8 @@ export class ModelsService {
     @InjectRepository(Model) private modelsRepository: Repository<Model>,
     private tagsService: TagsService,
     private mediasService: MediasService,
-    @Inject(forwardRef(() => DevicesService)) private devicesService: DevicesService,
+    @Inject(forwardRef(() => DevicesService))
+    private devicesService: DevicesService,
   ) {}
 
   create(createModelInput: CreateModelInput): Promise<Model> {

@@ -8,7 +8,7 @@ let number = 0;
 define(Tag, (faker: typeof Faker) => {
   const tag = new Tag();
   tag.name = types[number];
-  number ++;
-  console.log("tag", tag);
+  number++;
+  console.log('tag', tag);
   return tag;
 });

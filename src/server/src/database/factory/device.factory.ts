@@ -5,8 +5,8 @@ import { Model } from 'src/models/entities/model.entity';
 import { DeviceStatus } from 'src/device-statuses/entities/device-status.entity';
 
 interface Context {
-  id: string
-  device_statuses: DeviceStatus[]
+  id: string;
+  device_statuses: DeviceStatus[];
 }
 
 define(Device, (faker: typeof Faker, context: Context) => {
@@ -15,7 +15,7 @@ define(Device, (faker: typeof Faker, context: Context) => {
   // console.log("id", id);
   // console.log("deviceStatus", device_statuses);
   const device = new Device();
-  const deviceSt = device_statuses[faker.random.number({min: 0, max: 3})];
+  const deviceSt = device_statuses[faker.random.number({ min: 0, max: 3 })];
   // console.log("device", deviceSt);
   device.modelId = id;
   // device.deviceStatusId = faker.random.uuid();

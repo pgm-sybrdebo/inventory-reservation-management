@@ -11,21 +11,22 @@ import { Reservation } from 'src/reservations/entities/reservation.entity';
 import { Damage } from 'src/damages/entities/damage.entity';
 
 export default class CreateModels implements Seeder {
-
   public async run(factory: Factory, connection: Connection): Promise<any> {
-    const tags  =  await factory(Tag)().createMany(5);
+    const tags = await factory(Tag)().createMany(5);
     const device_statuses = await factory(DeviceStatus)().createMany(4);
     const reservation_states = await factory(ReservationState)().createMany(3);
-    const models = await factory(Model)({tags}).createMany(90); // 90
-    console.log("models", models);
-    let devs = [];
+    const models = await factory(Model)({ tags }).createMany(90); // 90
+    console.log('models', models);
+    const devs = [];
 
     for (const mod of models) {
       const { id, quantity } = mod;
 
-      const dev = await factory(Device)({id, device_statuses}).createMany(quantity);
-        //  console.log("lenght", dev.length);
-        //  console.log("dev",dev);
+      const dev = await factory(Device)({ id, device_statuses }).createMany(
+        quantity,
+      );
+      //  console.log("lenght", dev.length);
+      //  console.log("dev",dev);
       if (dev.length > 1) {
         for (let i = 0; i < dev.length; i++) {
           devs.push(dev[i]);
@@ -43,7 +44,7 @@ export default class CreateModels implements Seeder {
       //   devs = devs.concat(dev);
       // }
       // console.log(dev);
-      await factory(Media)({id}).create();
+      await factory(Media)({ id }).create();
     }
 
     // console.log("devs", devs);
@@ -51,13 +52,15 @@ export default class CreateModels implements Seeder {
     for (const d of devs) {
       const { id } = d;
 
-      const reserv = await factory(Reservation)({id, reservation_states}).createMany(2);
+      const reserv = await factory(Reservation)({
+        id,
+        reservation_states,
+      }).createMany(2);
       // console.log("reserv", reserv);
       // console.log("one", reserv[0]);
       // console.log("one id", reserv[0].id);
       const reservId = reserv[0].id;
-      await factory(Damage)({id, reservId}).create();
+      await factory(Damage)({ id, reservId }).create();
     }
-
   }
 }

@@ -8,12 +8,13 @@ import { DeviceStatusesModule } from 'src/device-statuses/device-statuses.module
 import { ModelsModule } from 'src/models/models.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Device]),
-  ReservationsModule,
-  DeviceStatusesModule,
-  forwardRef(() => ModelsModule),
-  // ModelsModule,
-],
+  imports: [
+    TypeOrmModule.forFeature([Device]),
+    ReservationsModule,
+    DeviceStatusesModule,
+    forwardRef(() => ModelsModule),
+    // ModelsModule,
+  ],
   providers: [DevicesResolver, DevicesService],
   exports: [DevicesService],
 })

@@ -17,7 +17,8 @@ export class DevicesService {
     @InjectRepository(Device) private devicesRepository: Repository<Device>,
     private reservationsService: ReservationsService,
     private deviceStatusesService: DeviceStatusesService,
-    @Inject(forwardRef(() => ModelsService)) private modelsService: ModelsService,
+    @Inject(forwardRef(() => ModelsService))
+    private modelsService: ModelsService,
   ) {}
 
   create(createDeviceInput: CreateDeviceInput): Promise<Device> {
@@ -31,7 +32,10 @@ export class DevicesService {
   }
 
   findAllByModelId(modelId: string): Promise<Device[]> {
-    return this.devicesRepository.find({modelId: modelId, deviceStatusId: "5e36852b-f18a-441b-a44e-8348ec0ca322"});
+    return this.devicesRepository.find({
+      modelId: modelId,
+      deviceStatusId: '5e36852b-f18a-441b-a44e-8348ec0ca322',
+    });
   }
 
   findOne(id: string): Promise<Device> {
@@ -39,7 +43,10 @@ export class DevicesService {
   }
 
   findOneByDeviceId(id: string): Promise<Device> {
-    return this.devicesRepository.findOne({id: id, deviceStatusId: "5e36852b-f18a-441b-a44e-8348ec0ca322"});
+    return this.devicesRepository.findOne({
+      id: id,
+      deviceStatusId: '5e36852b-f18a-441b-a44e-8348ec0ca322',
+    });
   }
 
   async update(
@@ -63,7 +70,9 @@ export class DevicesService {
     return this.reservationsService.findAllByDeviceId(deviceId);
   }
 
-  getDeviceStatusByDeviceStatusId(deviceStatusId: string): Promise<DeviceStatus> {
+  getDeviceStatusByDeviceStatusId(
+    deviceStatusId: string,
+  ): Promise<DeviceStatus> {
     return this.deviceStatusesService.findOne(deviceStatusId);
   }
 

@@ -28,10 +28,10 @@ export class User {
 
   @Column()
   @Field()
-  role: number = 0;
+  role = 0;
 
-  @Column({nullable: true})
-  @Field((type) => Int, {nullable: true})
+  @Column({ nullable: true })
+  @Field((type) => Int, { nullable: true })
   profession: number;
 
   @Column({ nullable: true })

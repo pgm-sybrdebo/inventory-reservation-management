@@ -11,6 +11,6 @@ define(User, (faker: typeof Faker) => {
   user.password = bcrypt.hash('password', 10);
   user.cardNumber = faker.random.number({ min: 1000000, max: 999999999 });
   user.role = 0;
-  user.profession = faker.random.number({min: 0, max: 1});
+  user.profession = faker.random.number({ min: 0, max: 1 });
   return user;
 });

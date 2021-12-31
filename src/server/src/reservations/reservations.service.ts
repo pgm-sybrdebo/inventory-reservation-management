@@ -25,7 +25,7 @@ export class ReservationsService {
   }
 
   findAllByDeviceId(deviceId: string): Promise<Reservation[]> {
-    return this.reservationsRepository.find({deviceId});
+    return this.reservationsRepository.find({ deviceId });
   }
 
   findOne(id: string): Promise<Reservation> {

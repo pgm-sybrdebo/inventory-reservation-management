@@ -56,8 +56,8 @@ const nodeEnvironment = `${(
         dropSchema: nodeEnvironment === 'test' ? true : false,
         // ssl: true,
         ssl: {
-          rejectUnauthorized: false
-        }
+          rejectUnauthorized: false,
+        },
       }),
     }),
     UsersModule,

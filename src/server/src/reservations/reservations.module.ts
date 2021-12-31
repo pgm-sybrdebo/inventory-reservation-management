@@ -8,6 +8,6 @@ import { TagsService } from 'src/tags/tags.service';
 @Module({
   imports: [TypeOrmModule.forFeature([Reservation])],
   providers: [ReservationsResolver, ReservationsService],
-  exports: [ReservationsService]
+  exports: [ReservationsService],
 })
 export class ReservationsModule {}

@@ -5,8 +5,8 @@ import { Device } from 'src/devices/entities/device.entity';
 import { Reservation } from 'src/reservations/entities/reservation.entity';
 
 interface Context {
-  id: string
-  reservId: string
+  id: string;
+  reservId: string;
 }
 
 define(Damage, (faker: typeof Faker, context: Context) => {

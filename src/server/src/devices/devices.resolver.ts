@@ -1,4 +1,12 @@
-import { Resolver, Query, Mutation, Args, Int, Parent, ResolveField } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  Int,
+  Parent,
+  ResolveField,
+} from '@nestjs/graphql';
 import { DevicesService } from './devices.service';
 import { Device } from './entities/device.entity';
 import { CreateDeviceInput } from './dto/create-device.input';
@@ -34,8 +42,6 @@ export class DevicesResolver {
     return this.devicesService.findOneByDeviceId(id);
   }
 
-
-
   @Mutation(() => Device)
   updateDevice(
     @Args('updateDeviceInput') updateDeviceInput: UpdateDeviceInput,
@@ -48,19 +54,20 @@ export class DevicesResolver {
     return this.devicesService.remove(id);
   }
 
-  @ResolveField(returns => [Reservation])
+  @ResolveField((returns) => [Reservation])
   reservations(@Parent() device: Device): Promise<Reservation[]> {
     return this.devicesService.getDeviceReservations(device.id);
   }
 
-  @ResolveField(returns => DeviceStatus)
+  @ResolveField((returns) => DeviceStatus)
   deviceStatus(@Parent() device: Device): Promise<DeviceStatus> {
-    return this.devicesService.getDeviceStatusByDeviceStatusId(device.deviceStatusId);
+    return this.devicesService.getDeviceStatusByDeviceStatusId(
+      device.deviceStatusId,
+    );
   }
 
-  @ResolveField(returns => Model)
+  @ResolveField((returns) => Model)
   model(@Parent() device: Device): Promise<Model> {
     return this.devicesService.getModelByDeviceId(device.modelId);
   }
-  
 }
