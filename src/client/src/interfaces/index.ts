@@ -72,3 +72,16 @@ export interface MyButtonProps {
   name?: string, 
   onClick?: () => void,
 }
+
+export enum UserRole {
+  Regular,
+  Admin
+}
+
+export interface TokenInfo {
+  email: string,
+  exp: number,
+  iat: number,
+  role: UserRole,
+  sub: string
+}
