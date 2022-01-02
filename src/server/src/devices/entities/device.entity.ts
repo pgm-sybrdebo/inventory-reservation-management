@@ -6,10 +6,13 @@ import { Model } from 'src/models/entities/model.entity';
 import { Reservation } from 'src/reservations/entities/reservation.entity';
 import {
   Column,
+  CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
@@ -35,8 +38,20 @@ export class Device {
   @Field()
   qr_code: string;
 
-  @Column(() => Dates)
-  date: Dates;
+  // @Column(() => Dates)
+  // date: Dates;
+
+  @CreateDateColumn()
+  @Field()
+  created_on: Date;
+
+  @UpdateDateColumn()
+  @Field()
+  updated_on: Date;
+
+  @DeleteDateColumn()
+  @Field()
+  deleted_on: Date;
 
   @OneToMany(() => Damage, (damage) => damage.device)
   @Field((type) => [Damage], { nullable: true })

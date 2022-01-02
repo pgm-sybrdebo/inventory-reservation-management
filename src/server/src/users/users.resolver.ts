@@ -19,10 +19,31 @@ export class UsersResolver {
   // }
 
   @Query(() => [User], { name: 'users' })
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles(Role.ADMIN)
   findAll() {
     return this.usersService.findAll();
+  }
+
+  @Query(() => Int, { name: 'totalUsers' })
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles(Role.ADMIN)
+  async findTotal() {
+    return this.usersService.findAndCount();
+  }
+
+  @Query(() => Int, { name: 'differenceLastMonthUsers' })
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles(Role.ADMIN)
+  async findDifferenceLastMonth() {
+    return this.usersService.findDifferenceLastMonth();
+  }
+
+  @Query(() => [User], { name: 'recentUsers' })
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles(Role.ADMIN)
+  async findRecentUsers(@Args('from', { type: () => String }) from: string, @Args('to', { type: () => String }) to: string) {
+    return this.usersService.findRecentUsers(from, to);
   }
 
   // findAll(@context() context)

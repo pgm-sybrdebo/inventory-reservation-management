@@ -22,7 +22,7 @@ const Header: React.FC = () => (
 const TheHeader = styled.div`
   width: 100%;
   height: 90px;
-  margin-bottom: 32px;
+  // margin-bottom: 32px;
   background-color: #F58732;
   & .header__wrapper{
     display:flex;

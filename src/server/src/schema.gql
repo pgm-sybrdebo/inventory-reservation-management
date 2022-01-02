@@ -68,7 +68,9 @@ type Damage {
 }
 
 type Device {
+  created_on: Timestamp!
   damages: [Damage!]
+  deleted_on: Timestamp!
   deviceStatus: DeviceStatus!
   deviceStatusId: String!
   id: String!
@@ -76,6 +78,7 @@ type Device {
   modelId: String!
   qr_code: String!
   reservations: [Reservation!]
+  updated_on: Timestamp!
 }
 
 type DeviceStatus {
@@ -104,6 +107,8 @@ type Media {
 
 type Model {
   brand: String!
+  created_on: Timestamp!
+  deleted_on: Timestamp!
   description: String!
   devices: [Device!]
   id: String!
@@ -113,6 +118,7 @@ type Model {
   quantity: Int!
   specifications: String!
   tags: [Tag!]
+  updated_on: Timestamp!
 }
 
 type Mutation {
@@ -158,19 +164,30 @@ type Query {
   deviceStatus(id: String!): DeviceStatus!
   deviceStatuses: [DeviceStatus!]!
   devices: [Device!]!
+  differenceLastMonthDevices: Int!
+  differenceLastMonthModels: Int!
+  differenceLastMonthUsers: Int!
   getDeviceById(id: String!): Device!
   media(id: String!): Media!
   medias: [Media!]!
   model(id: String!): Model!
   models: [Model!]!
+  recentDevices(from: String!, to: String!): [Device!]!
+  recentModels(from: String!, to: String!): [Model!]!
+  recentUsers(from: String!, to: String!): [User!]!
   reservation(id: String!): Reservation!
   reservationState(id: String!): ReservationState!
   reservationStates: [ReservationState!]!
   reservationTime(id: String!): ReservationTime!
   reservationTimes: [ReservationTime!]!
   reservations: [Reservation!]!
+  reservationsOverview(today: String!): [ReservationsOverview!]!
   tag(id: String!): Tag!
   tags: [Tag!]!
+  totalDevices: Int!
+  totalModels: Int!
+  totalMonthReservations(month: String!): Int!
+  totalUsers: Int!
   user(id: String!): User!
   userByEmail(email: String!): User!
   users: [User!]!
@@ -199,6 +216,11 @@ type ReservationTime {
   amount: Int!
   id: String!
   name: String!
+}
+
+type ReservationsOverview {
+  month: String!
+  total_reservations: Float!
 }
 
 input SignupUserInput {
@@ -296,6 +318,8 @@ input UpdateUserInput {
 
 type User {
   cardNumber: Int
+  created_on: Timestamp!
+  deleted_on: Timestamp!
   email: String!
   firstName: String!
   id: String!
@@ -304,4 +328,5 @@ type User {
   profession: Int
   reservations: [Reservation!]
   role: Float!
+  updated_on: Timestamp!
 }

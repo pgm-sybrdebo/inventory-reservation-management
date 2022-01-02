@@ -72,3 +72,33 @@ export interface MyButtonProps {
   name?: string, 
   onClick?: () => void,
 }
+
+interface SubMenu {
+  name: string,
+  icon: any,
+}
+export interface MenuItemProps {
+  title: string;
+  icon: any;
+  submenu: SubMenu[];
+}
+
+export interface WidgetProps {
+  title: string;
+  total: number;
+  changed: number;
+}
+
+export interface FeaturedInfoProps {
+  totalUsers: number;
+  totalModels: number;
+  totalDevices: number;
+  differenceLastMonthUsers: number;
+  differenceLastMonthModels: number;
+  differenceLastMonthDevices: number;
+}
+
+export interface ReservationItem {
+  month: any,
+  count: number
+}

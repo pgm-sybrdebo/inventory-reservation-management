@@ -32,6 +32,27 @@ export class DevicesResolver {
     return this.devicesService.findAll();
   }
 
+  @Query(() => Int, { name: 'totalDevices' })
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles(Role.ADMIN)
+  async findTotal() {
+    return this.devicesService.findAndCount();
+  }
+
+  @Query(() => Int, { name: 'differenceLastMonthDevices' })
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles(Role.ADMIN)
+  async findDifferenceLastMonth() {
+    return this.devicesService.findDifferenceLastMonth();
+  }
+
+  @Query(() => [Device], { name: 'recentDevices' })
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles(Role.ADMIN)
+  async findRecentDevices(@Args('from', { type: () => String }) from: string, @Args('to', { type: () => String }) to: string) {
+    return this.devicesService.findRecentDevices(from, to);
+  }
+
   @Query(() => Device, { name: 'device' })
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN)

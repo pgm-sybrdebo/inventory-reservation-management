@@ -8,6 +8,12 @@ import { Roles } from 'src/auth/decorators/roles.decorator';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Role } from 'src/auth/role.enum';
+import { ReservationsOverview } from './dto/reservationsOverview';
+
+// type ReservationsOverview = {
+//   month: string;
+//   total: number;
+// }
 
 @Resolver(() => Reservation)
 export class ReservationsResolver {
@@ -24,10 +30,24 @@ export class ReservationsResolver {
   }
 
   @Query(() => [Reservation], { name: 'reservations' })
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles(Role.ADMIN)
   findAll() {
     return this.reservationsService.findAll();
+  }
+
+  @Query(() => [ReservationsOverview], { name: 'reservationsOverview' })
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles(Role.ADMIN)
+  reservationsOverview(@Args('today', { type: () => String }) today: string) {
+    return this.reservationsService.reservationsOverview(today);
+  }
+
+  @Query(() => Int, { name: 'totalMonthReservations' })
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles(Role.ADMIN)
+  findTotalMonthReservations(@Args('month', { type: () => String }) month: string) {
+    return this.reservationsService.findTotalMonthReservations(month);
   }
 
   @Query(() => Reservation, { name: 'reservation' })
