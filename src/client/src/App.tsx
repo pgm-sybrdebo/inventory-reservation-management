@@ -10,6 +10,7 @@ import {
   ModelDetail,
 } from "./pages";
 import DashboardHome from "./pages/DashboardHome";
+import DashboardUsers from "./pages/DashboardUsers";
 
 function RequireAuth() {
   const token = localStorage.getItem('token');
@@ -57,6 +58,11 @@ function App() {
           <Route
             path={ROUTES.DASHBOARD_HOME}
             element={<DashboardHome />}
+          />
+
+          <Route
+            path={ROUTES.DASHBOARD_ALL_USERS}
+            element={<DashboardUsers />}
           />
 
 

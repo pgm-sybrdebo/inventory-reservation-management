@@ -1,48 +1,27 @@
-import { Header } from '../components';
 import styled from "styled-components";
-import Sidebar from '../components/layout/Sidebar';
 import FeaturedInfo from '../components/dashboard/home/FeaturedInfo';
-import { useLazyQuery, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { DIFFERENCE_LAST_MONTH_USERS, TOTAL_USERS } from '../graphql/users';
 import { DIFFERENCE_LAST_MONTH_MODELS, TOTAL_MODELS } from '../graphql/models';
-import { DIFFERENCE_LAST_MONTH_DEVICES, TOTAL_DEVICES } from '../graphql/devices';
+import { DIFFERENCE_LAST_MONTH_DEVICES, RECENT_NEW_DEVICES, TOTAL_DEVICES } from '../graphql/devices';
 import Chart from '../components/dashboard/home/Chart';
-import { TOTAL_MONTH_RESERVATIONS } from '../graphql/reservations';
-import { useEffect, useState } from 'react';
+import { RECENT_RESERVATIONS, TOTAL_MONTH_RESERVATIONS } from '../graphql/reservations';
 import moment from 'moment';
 import { ReservationItem } from '../interfaces';
+import WidgetTableSm from '../components/dashboard/home/WidgetTableSm';
+import WidgetTableMd from '../components/dashboard/home/WidgetTableMd';
+import AdminLayout from '../layouts/AdminLayout';
 
-const Container = styled.div`
+const WidgetContainer = styled.div`
   display: flex;
-  top: -32px;
+  margin: 1.5rem;
 `;
-
-const Content = styled.div`
-  flex: 4;
-`;
-
 
 
 const DashboardHome = () => {
   let newReservationsOverview;
   const today = new Date();
   const todayString = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-
-  // useEffect(() => {
-    
-  //   for (let i = 0; i < 12; i++) {
-  //     const now = new Date();
-  //     now.setDate(1);
-  //     now.setMonth(now.getMonth()-i);
-  //     console.log("now", now);
-  //     getTotalMonthReservations({
-  //       variables: {
-  //         month: now
-  //       }
-  //     })
-
-  //   }
-  // }, [])
 
   const { error, loading, data} = useQuery(TOTAL_USERS);
   const { error: errorTotalModels, loading: loadingTotalModels, data:dataTotalModels} = useQuery(TOTAL_MODELS);
@@ -55,6 +34,8 @@ const DashboardHome = () => {
       today: todayString,
     }
   });
+  const { error:errorRecentNewDevices, loading: loadingRecentNewDevices, data: dataRecentNewDevices} = useQuery(RECENT_NEW_DEVICES);
+  const { error:errorRecentReservations, loading: loadingRecentReservations, data: dataRecentReservations} = useQuery(RECENT_RESERVATIONS);
 
 
   if (!loadingReservationsOverview) {
@@ -64,38 +45,36 @@ const DashboardHome = () => {
       const d = new Date(Number(m.month));
       const dString = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
       const monthName = moment(dString).format("MMM-YYYY");
-      // console.log(m.month);
       return {...m, month: monthName }
     });
   }
-  if (loading || loadingTotalDevices || loadingTotalModels || loadingDifferenceLastMonthModels || loadingDifferenceLastMonthDevices || loadingDifferenceLastMonthUsers || loadingReservationsOverview) return <p>Loading ...</p>
+  if (loading || loadingTotalDevices || loadingTotalModels || loadingDifferenceLastMonthModels || loadingDifferenceLastMonthDevices || loadingDifferenceLastMonthUsers || loadingReservationsOverview || loadingRecentNewDevices || loadingRecentReservations) return <p>Loading ...</p>
 
-  if (error ||  errorTotalDevices || errorTotalModels || errorDifferenceLastMonthUsers || errorDifferenceLastMonthDevices || errorDifferenceLastMonthModels || errorReservationsOverview) return <p>Error!</p>
+  if (error ||  errorTotalDevices || errorTotalModels || errorDifferenceLastMonthUsers || errorDifferenceLastMonthDevices || errorDifferenceLastMonthModels || errorReservationsOverview || errorRecentNewDevices || errorRecentReservations) return <p>Error!</p>
 
-
+  // if (dataRecentReservations) {
+  //   console.log(dataRecentReservations)
+  // }
 
   return (
-    <>
-      <Header />
-      <Container>
-        <Sidebar />
-        <Content>
-          { (data && dataTotalModels && dataTotalDevices) && <FeaturedInfo 
-            totalUsers={data.totalUsers} 
-            totalModels={dataTotalModels.totalModels} 
-            totalDevices={dataTotalDevices.totalDevices}
-            differenceLastMonthUsers = {dataDifferenceLastMonthUsers.differenceLastMonthUsers}
-            differenceLastMonthDevices = {dataDifferenceLastMonthDevices.differenceLastMonthDevices}
-            differenceLastMonthModels = {dataDifferenceLastMonthModels.differenceLastMonthModels}
-          /> }
+    <AdminLayout>
+      { (data && dataTotalModels && dataTotalDevices) && <FeaturedInfo 
+        totalUsers={data.totalUsers} 
+        totalModels={dataTotalModels.totalModels} 
+        totalDevices={dataTotalDevices.totalDevices}
+        differenceLastMonthUsers = {dataDifferenceLastMonthUsers.differenceLastMonthUsers}
+        differenceLastMonthDevices = {dataDifferenceLastMonthDevices.differenceLastMonthDevices}
+        differenceLastMonthModels = {dataDifferenceLastMonthModels.differenceLastMonthModels}
+      /> }
 
-          {dataReservationsOverview && <Chart dataReserv={newReservationsOverview} />}
-          {dataReservationsOverview && <p>{newReservationsOverview[0].__typename}</p> }
-          
-        </Content>
-      </Container>
-    </>
-
+      {dataReservationsOverview && <Chart dataReserv={newReservationsOverview} title={"Reservations Analytics"} dataKey={"total_reservations"} xData={"month"}/>}
+  
+      <WidgetContainer>
+        {dataRecentNewDevices && <WidgetTableSm recentNewDevices={dataRecentNewDevices.recentNewDevices}/>}
+        {dataRecentReservations && <WidgetTableMd recentReservations={dataRecentReservations.recentReservations}/>}
+      
+      </WidgetContainer>
+    </AdminLayout>
   )
 }
 

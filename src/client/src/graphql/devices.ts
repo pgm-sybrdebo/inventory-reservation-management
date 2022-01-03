@@ -11,3 +11,15 @@ export const DIFFERENCE_LAST_MONTH_DEVICES = gql`
     differenceLastMonthDevices
   }
 `;
+
+export const RECENT_NEW_DEVICES = gql`
+  query recentNewDevices {
+    recentNewDevices {
+      id
+      created_on
+      model {
+        name
+      }
+    }
+  }
+`;

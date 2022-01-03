@@ -11,3 +11,17 @@ export const DIFFERENCE_LAST_MONTH_USERS = gql`
     differenceLastMonthUsers
   }
 `;
+
+export const GET_ALL_USERS = gql`
+  query users {
+    users {
+      id
+      firstName
+      lastName
+      email
+      role
+      profession
+      created_on
+    }
+  }
+`;

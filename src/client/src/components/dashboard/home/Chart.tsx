@@ -12,10 +12,10 @@ const Container = styled.div`
   }
 `;
 
-const Chart = ({dataReserv}:any) => {
+const Chart = ({dataReserv, title, dataKey, xData}:any) => {
   return (
     <Container>
-      <h2>Reservations Analytics</h2>
+      <h2>{title}</h2>
 
       <ResponsiveContainer width="100%" aspect={4/1}>
         <LineChart
@@ -28,11 +28,11 @@ const Chart = ({dataReserv}:any) => {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="month" />
+          <XAxis dataKey={xData} />
           <YAxis />
           <Tooltip />
           <Legend />
-          <Line type="monotone" dataKey="total_reservations" stroke="#8884d8" activeDot={{ r: 8 }} />
+          <Line type="monotone" dataKey={dataKey} stroke="#F58732" activeDot={{ r: 8 }} />
         </LineChart>
       </ResponsiveContainer>
     </Container>
