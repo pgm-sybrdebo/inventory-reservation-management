@@ -1,5 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Reservation } from 'src/reservations/entities/reservation.entity';
+import { ReservationsService } from 'src/reservations/reservations.service';
 import { Repository, Between, LessThanOrEqual } from 'typeorm';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
@@ -9,6 +11,7 @@ import { User } from './entities/user.entity';
 export class UsersService {
   constructor(
     @InjectRepository(User) private usersRepository: Repository<User>,
+    @Inject(forwardRef(() => ReservationsService)) private reservationsService: ReservationsService,
   ) {}
 
   create(createUserInput: CreateUserInput): Promise<User> {
@@ -19,6 +22,14 @@ export class UsersService {
 
   findAll(): Promise<User[]> {
     return this.usersRepository.find();
+  }
+
+  findAllByRole(role: number): Promise<User[]> {
+    return this.usersRepository.find({role});
+  }
+
+  findAllByProfession(profession: number): Promise<User[]> {
+    return this.usersRepository.find({profession});
   }
 
   findAndCount(): Promise<number> {
@@ -75,5 +86,9 @@ export class UsersService {
   async remove(id: string): Promise<User> {
     const user = await this.findOne(id);
     return this.usersRepository.remove(user);
+  }
+
+  getReservationsByUserId(userId: string): Promise<Reservation[]> {
+    return this.reservationsService.findAllByUserId(userId);
   }
 }

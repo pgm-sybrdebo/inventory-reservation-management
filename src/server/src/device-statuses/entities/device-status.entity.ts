@@ -1,7 +1,7 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { Device } from 'src/devices/entities/device.entity';
 import { Dates } from 'src/mixins/date.entity';
-import { PrimaryGeneratedColumn, Column, Entity, OneToMany } from 'typeorm';
+import { PrimaryGeneratedColumn, Column, Entity, OneToMany, CreateDateColumn, DeleteDateColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity()
 @ObjectType()
@@ -14,8 +14,19 @@ export class DeviceStatus {
   @Field()
   name: string;
 
-  @Column(() => Dates)
-  date: Dates;
+  // @Column(() => Dates)
+  // date: Dates;
+  @CreateDateColumn()
+  @Field()
+  created_on: Date;
+
+  @UpdateDateColumn()
+  @Field()
+  updated_on: Date;
+
+  @DeleteDateColumn()
+  @Field()
+  deleted_on: Date;
 
   @OneToMany(() => Device, (device) => device.deviceStatus)
   @Field((type) => [Device], { nullable: true })

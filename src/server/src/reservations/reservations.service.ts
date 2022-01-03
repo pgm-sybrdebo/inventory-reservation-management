@@ -1,16 +1,22 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Between, Repository } from 'typeorm';
 import { CreateReservationInput } from './dto/create-reservation.input';
 import { UpdateReservationInput } from './dto/update-reservation.input';
 import { Reservation } from './entities/reservation.entity';
 import moment from 'moment';
+import { DevicesService } from 'src/devices/devices.service';
+import { Device } from 'src/devices/entities/device.entity';
+import { User } from 'src/users/entities/user.entity';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class ReservationsService {
   constructor(
     @InjectRepository(Reservation)
     private reservationsRepository: Repository<Reservation>,
+    @Inject(forwardRef(() => UsersService)) private usersService: UsersService,
+    @Inject(forwardRef(() => DevicesService)) private devicesService: DevicesService,
   ) {}
 
   create(createReservationInput: CreateReservationInput): Promise<Reservation> {
@@ -25,8 +31,21 @@ export class ReservationsService {
     return this.reservationsRepository.find();
   }
 
+  findRecentReservations(): Promise<Reservation[]> {
+    return this.reservationsRepository.find({
+      order: {
+        created_on: "DESC"
+      },
+      take: 8,
+    });
+  }
+
   findAllByDeviceId(deviceId: string): Promise<Reservation[]> {
     return this.reservationsRepository.find({deviceId});
+  }
+
+  findAllByUserId(userId: string): Promise<Reservation[]> {
+    return this.reservationsRepository.find({userId});
   }
 
   findTotalMonthReservations(month: string): Promise<number> {
@@ -49,7 +68,7 @@ export class ReservationsService {
         COUNT(id) AS total_reservations
       FROM
         reservation
-      WHERE start_date <= '${today}'
+      WHERE start_date < '${today}'
       GROUP BY
         DATE_TRUNC('month', reservation.start_date)
       ORDER BY 
@@ -79,5 +98,13 @@ export class ReservationsService {
   async remove(id: string): Promise<Reservation> {
     const reservation = await this.findOne(id);
     return this.reservationsRepository.remove(reservation);
+  }
+
+  getReservationByDeviceId(deviceId: string): Promise<Device> {
+    return this.devicesService.findOne(deviceId);
+  }
+
+  getReservationByUserId(userId: string): Promise<User> {
+    return this.usersService.findOne(userId);
   }
 }

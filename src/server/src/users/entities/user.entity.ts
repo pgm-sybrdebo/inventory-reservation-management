@@ -1,4 +1,5 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { Device } from 'src/devices/entities/device.entity';
 import { Dates } from 'src/mixins/date.entity';
 import { Reservation } from 'src/reservations/entities/reservation.entity';
 import { PrimaryGeneratedColumn, Column, Entity, OneToMany, CreateDateColumn, DeleteDateColumn, UpdateDateColumn } from 'typeorm';
@@ -57,4 +58,8 @@ export class User {
   @OneToMany(() => Reservation, (reservation) => reservation.user)
   @Field((type) => [Reservation], { nullable: true })
   reservations?: Reservation[];
+
+  @OneToMany(() => Device, (device) => device.user)
+  @Field((type) => [Device], { nullable: true })
+  devices?: Device[];
 }

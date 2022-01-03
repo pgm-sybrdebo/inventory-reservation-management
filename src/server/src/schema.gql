@@ -14,6 +14,7 @@ input CreateDeviceInput {
   deviceStatusId: String!
   modelId: String!
   qr_code: String!
+  userId: String
 }
 
 input CreateDeviceStatusInput {
@@ -79,12 +80,17 @@ type Device {
   qr_code: String!
   reservations: [Reservation!]
   updated_on: Timestamp!
+  user: User!
+  userId: String
 }
 
 type DeviceStatus {
+  created_on: Timestamp!
+  deleted_on: Timestamp!
   devices: [Device!]
   id: String!
   name: String!
+  updated_on: Timestamp!
 }
 
 type LoginResponse {
@@ -158,6 +164,7 @@ type Mutation {
 }
 
 type Query {
+  borrowedDevices: [Device!]!
   damage(id: String!): Damage!
   damages: [Damage!]!
   device(id: String!): Device!
@@ -168,12 +175,16 @@ type Query {
   differenceLastMonthModels: Int!
   differenceLastMonthUsers: Int!
   getDeviceById(id: String!): Device!
+  getDevicesByModelId(modelId: String!): Device!
+  inCheckDevices: [Device!]!
   media(id: String!): Media!
   medias: [Media!]!
   model(id: String!): Model!
   models: [Model!]!
   recentDevices(from: String!, to: String!): [Device!]!
   recentModels(from: String!, to: String!): [Model!]!
+  recentNewDevices: [Device!]!
+  recentReservations: [Reservation!]!
   recentUsers(from: String!, to: String!): [User!]!
   reservation(id: String!): Reservation!
   reservationState(id: String!): ReservationState!
@@ -182,6 +193,7 @@ type Query {
   reservationTimes: [ReservationTime!]!
   reservations: [Reservation!]!
   reservationsOverview(today: String!): [ReservationsOverview!]!
+  stockDevices: [Device!]!
   tag(id: String!): Tag!
   tags: [Tag!]!
   totalDevices: Int!
@@ -191,10 +203,14 @@ type Query {
   user(id: String!): User!
   userByEmail(email: String!): User!
   users: [User!]!
+  usersByProfession(profession: Int!): [User!]!
+  usersByRole(role: Int!): [User!]!
 }
 
 type Reservation {
+  created_on: Timestamp!
   damages: [Damage!]
+  deleted_on: Timestamp!
   device: Device!
   deviceId: String!
   end_date: Timestamp
@@ -202,6 +218,7 @@ type Reservation {
   reservationState: ReservationState!
   reservationStateId: String!
   start_date: Timestamp!
+  updated_on: Timestamp!
   user: User!
   userId: String!
 }
@@ -233,9 +250,12 @@ input SignupUserInput {
 }
 
 type Tag {
+  created_on: Timestamp!
+  deleted_on: Timestamp!
   id: String!
   models: [Model!]
   name: String!
+  updated_on: Timestamp!
 }
 
 """
@@ -257,6 +277,7 @@ input UpdateDeviceInput {
   id: String!
   modelId: String
   qr_code: String
+  userId: String
 }
 
 input UpdateDeviceStatusInput {
@@ -320,6 +341,7 @@ type User {
   cardNumber: Int
   created_on: Timestamp!
   deleted_on: Timestamp!
+  devices: [Device!]
   email: String!
   firstName: String!
   id: String!

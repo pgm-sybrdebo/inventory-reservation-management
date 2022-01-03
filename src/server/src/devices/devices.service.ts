@@ -1,12 +1,16 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { DamagesService } from 'src/damages/damages.service';
+import { Damage } from 'src/damages/entities/damage.entity';
 import { DeviceStatusesService } from 'src/device-statuses/device-statuses.service';
 import { DeviceStatus } from 'src/device-statuses/entities/device-status.entity';
 import { Model } from 'src/models/entities/model.entity';
 import { ModelsService } from 'src/models/models.service';
 import { Reservation } from 'src/reservations/entities/reservation.entity';
 import { ReservationsService } from 'src/reservations/reservations.service';
-import { Repository, Between, LessThanOrEqual } from 'typeorm';
+import { User } from 'src/users/entities/user.entity';
+import { UsersService } from 'src/users/users.service';
+import { Repository, Between, LessThanOrEqual, Not, Equal, IsNull } from 'typeorm';
 import { CreateDeviceInput } from './dto/create-device.input';
 import { UpdateDeviceInput } from './dto/update-device.input';
 import { Device } from './entities/device.entity';
@@ -15,9 +19,13 @@ import { Device } from './entities/device.entity';
 export class DevicesService {
   constructor(
     @InjectRepository(Device) private devicesRepository: Repository<Device>,
-    private reservationsService: ReservationsService,
+    // private reservationsService: ReservationsService,
     private deviceStatusesService: DeviceStatusesService,
+    // private usersService: UsersService,
+    private damagesService: DamagesService,
     @Inject(forwardRef(() => ModelsService)) private modelsService: ModelsService,
+    @Inject(forwardRef(() => UsersService)) private usersService: UsersService,
+    @Inject(forwardRef(() => ReservationsService)) private reservationsService: ReservationsService,
   ) {}
 
   create(createDeviceInput: CreateDeviceInput): Promise<Device> {
@@ -28,6 +36,33 @@ export class DevicesService {
 
   findAll(): Promise<Device[]> {
     return this.devicesRepository.find();
+  }
+
+  findAllBorrowedDevices(): Promise<Device[]> {
+    return this.devicesRepository.find({
+      userId: Not(IsNull())
+    });
+  }
+
+  findAllStockDevices(): Promise<Device[]> {
+    return this.devicesRepository.find({
+      userId: IsNull()
+    });
+  }
+
+  findAllInCheckDevices(): Promise<Device[]> {
+    return this.devicesRepository.find({
+      deviceStatusId: "f2b5ac3c-de05-4ae2-b9ef-3d3b1d86fd91"
+    });
+  }
+
+  findRecentNewDevices(): Promise<Device[]> {
+    return this.devicesRepository.find({
+      order: {
+        created_on: "DESC"
+      },
+      take: 5,
+    });
   }
 
   findAndCount(): Promise<number> {
@@ -65,15 +100,16 @@ export class DevicesService {
   }
 
   findAllByModelId(modelId: string): Promise<Device[]> {
-    return this.devicesRepository.find({modelId: modelId, deviceStatusId: "5e36852b-f18a-441b-a44e-8348ec0ca322"});
+    return this.devicesRepository.find({modelId: modelId, deviceStatusId: "15c5dbc7-766a-4dcc-a942-9bae3cddd179"});
   }
 
   findOne(id: string): Promise<Device> {
     return this.devicesRepository.findOneOrFail(id);
+ 
   }
 
   findOneByDeviceId(id: string): Promise<Device> {
-    return this.devicesRepository.findOne({id: id, deviceStatusId: "5e36852b-f18a-441b-a44e-8348ec0ca322"});
+    return this.devicesRepository.findOne({id: id, deviceStatusId: "15c5dbc7-766a-4dcc-a942-9bae3cddd179"});
   }
 
   async update(
@@ -97,8 +133,16 @@ export class DevicesService {
     return this.reservationsService.findAllByDeviceId(deviceId);
   }
 
+  getDeviceDamages(deviceId: string): Promise<Damage[]> {
+    return this.damagesService.findAllByDeviceId(deviceId);
+  }
+
   getDeviceStatusByDeviceStatusId(deviceStatusId: string): Promise<DeviceStatus> {
     return this.deviceStatusesService.findOne(deviceStatusId);
+  }
+
+  getUserByUserId(userId: string): Promise<User> {
+    return this.usersService.findOne(userId);
   }
 
   getModelByDeviceId(modelId: string): Promise<Model> {

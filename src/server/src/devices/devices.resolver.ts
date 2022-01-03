@@ -11,6 +11,8 @@ import { Roles } from 'src/auth/decorators/roles.decorator';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Role } from 'src/auth/role.enum';
+import { User } from 'src/users/entities/user.entity';
+import { Damage } from 'src/damages/entities/damage.entity';
 
 @Resolver(() => Device)
 export class DevicesResolver {
@@ -32,23 +34,50 @@ export class DevicesResolver {
     return this.devicesService.findAll();
   }
 
+  @Query(() => [Device], { name: 'borrowedDevices' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
+  findAllBorrowedDevices() {
+    return this.devicesService.findAllBorrowedDevices();
+  }
+
+  @Query(() => [Device], { name: 'stockDevices' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
+  findAllStockDevices() {
+    return this.devicesService.findAllStockDevices();
+  }
+  @Query(() => [Device], { name: 'inCheckDevices' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
+  findAllInCheckDevices() {
+    return this.devicesService.findAllInCheckDevices();
+  }
+
+  @Query(() => [Device], { name: 'recentNewDevices' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
+  findRecentNewDevices() {
+    return this.devicesService.findRecentNewDevices();
+  }
+
   @Query(() => Int, { name: 'totalDevices' })
-  // @UseGuards(JwtAuthGuard, RolesGuard)
-  // @Roles(Role.ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   async findTotal() {
     return this.devicesService.findAndCount();
   }
 
   @Query(() => Int, { name: 'differenceLastMonthDevices' })
-  // @UseGuards(JwtAuthGuard, RolesGuard)
-  // @Roles(Role.ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   async findDifferenceLastMonth() {
     return this.devicesService.findDifferenceLastMonth();
   }
 
   @Query(() => [Device], { name: 'recentDevices' })
-  // @UseGuards(JwtAuthGuard, RolesGuard)
-  // @Roles(Role.ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   async findRecentDevices(@Args('from', { type: () => String }) from: string, @Args('to', { type: () => String }) to: string) {
     return this.devicesService.findRecentDevices(from, to);
   }
@@ -67,7 +96,12 @@ export class DevicesResolver {
     return this.devicesService.findOneByDeviceId(id);
   }
 
-
+  @Query(() => Device, { name: 'getDevicesByModelId' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.USER)
+  findAllByModelId(@Args('modelId', new ParseUUIDPipe()) modelId: string) {
+    return this.devicesService.findAllByModelId(modelId);
+  }
 
   @Mutation(() => Device)
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -90,9 +124,23 @@ export class DevicesResolver {
     return this.devicesService.getDeviceReservations(device.id);
   }
 
+  @ResolveField(returns => [Damage])
+  damages(@Parent() device: Device): Promise<Damage[]> {
+    return this.devicesService.getDeviceDamages(device.id);
+  }
+
   @ResolveField(returns => DeviceStatus)
   deviceStatus(@Parent() device: Device): Promise<DeviceStatus> {
     return this.devicesService.getDeviceStatusByDeviceStatusId(device.deviceStatusId);
+  }
+
+  @ResolveField(returns => User)
+  user(@Parent() device: Device): Promise<User> {
+    if (device.userId){
+      return this.devicesService.getUserByUserId(device.userId);
+    } else {
+      return;
+    }
   }
 
   @ResolveField(returns => Model)

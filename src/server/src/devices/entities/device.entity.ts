@@ -4,6 +4,7 @@ import { DeviceStatus } from 'src/device-statuses/entities/device-status.entity'
 import { Dates } from 'src/mixins/date.entity';
 import { Model } from 'src/models/entities/model.entity';
 import { Reservation } from 'src/reservations/entities/reservation.entity';
+import { User } from 'src/users/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
@@ -29,6 +30,10 @@ export class Device {
   @Column()
   @Field()
   deviceStatusId: string;
+  
+  @Column({nullable: true})
+  @Field({nullable: true})
+  userId: string;
 
   // @Column()
   // @Field((type) => Boolean)
@@ -64,6 +69,10 @@ export class Device {
   @ManyToOne(() => DeviceStatus, (deviceStatus) => deviceStatus.devices)
   @Field((type) => DeviceStatus)
   deviceStatus: DeviceStatus;
+
+  @ManyToOne(() => User, (user) => user.devices)
+  @Field((type) => User)
+  user: User;
 
   @ManyToOne(() => Model, (model) => model.devices)
   @Field((type) => Model)
