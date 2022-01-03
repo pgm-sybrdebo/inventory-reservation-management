@@ -11,3 +11,43 @@ export const DIFFERENCE_LAST_MONTH_MODELS = gql`
     differenceLastMonthModels
   }
 `;
+
+export const CREATE_MODEL = gql`
+
+mutation ($name: String!, $brand: String!, $description: String!, $quantity: Int!, $specifications: String!, $max_reservation_time: Int! ) {
+  createModel(createModelInput: {
+    name: $name,
+    brand: $brand,
+    description: $description,
+    quantity: $quantity
+    specifications: $specifications
+    max_reservation_time: $max_reservation_time
+  }) {
+    id
+  }
+}
+`;
+
+export const UPDATE_MODEL = gql`
+
+mutation ($name: String, $brand: String, $description: String, $quantity: Int, $specifications: String, $max_reservation_time: Int ) {
+  updateModel(updateModelInput: {
+    name: $name,
+    brand: $brand,
+    description: $description,
+    quantity: $quantity
+    specifications: $specifications
+    max_reservation_time: $max_reservation_time
+  }) {
+    id
+  }
+}
+`;
+
+export const REMOVE_MODEL = gql`
+  mutation ($id: String!){
+    removeModel(id: $id, ) {
+      name
+    }
+  }
+`;

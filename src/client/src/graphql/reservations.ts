@@ -27,3 +27,39 @@ export const RECENT_RESERVATIONS = gql`
     }
   }
 `;
+
+export const CREATE_RESERVATION = gql`
+
+mutation ($deviceId: String!, $reservationStateId: String!, $userId: String!, $start_date: Timestamp! ) {
+  createReservation(createReservationInput: {
+    deviceId: $deviceId,
+    reservationStateId: $reservationStateId,
+    userId: $userId,
+    start_date: $start_date
+  }) {
+    id
+  }
+}
+`;
+
+export const UPDATE_RESERVATION = gql`
+mutation ($deviceId: String, $reservationStateId: String, $userId: String, $start_date: Timestamp, $end_date = Timestamp ) {
+  updateReservation(updateReservationInput: {
+    deviceId: $deviceId,
+    reservationStateId: $reservationStateId,
+    userId: $userId,
+    start_date: $start_date
+    end_date: $end_date
+  }) {
+    id
+  }
+}
+`;
+
+export const REMOVE_RESERVATION = gql`
+  mutation ($id: String!){
+    removeReservation(id: $id, ) {
+      name
+    }
+  }
+`;

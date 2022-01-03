@@ -2,6 +2,7 @@ import React from 'react'
 import MenuItem from '../dashboard/MenuItem';
 import styled from "styled-components";
 import { Group, LocalOffer, Phonelink, Send, VerifiedUser, Category, CheckCircle, Dashboard, Work, Home, List, MenuBook, AssignmentTurnedIn  } from "@material-ui/icons";
+import * as routes from '../../routes';
 
 
 const Container = styled.div`
@@ -21,59 +22,70 @@ const Menu = styled.ul`
 const submenuDashboard = [
   {
     name: "Home",
-    icon: <Home />
+    icon: <Home />,
+    url: routes.DASHBOARD_HOME
   }
 ];
 
 const submenuUsers = [
   {
     name: "All users",
-    icon: <List />
+    icon: <List />,
+    url: routes.DASHBOARD_ALL_USERS
   },
   {
     name: "Admins",
-    icon: <VerifiedUser />
+    icon: <VerifiedUser />,
+    url: routes.DASHBOARD_ADMINS
   },
   {
     name: "Staff",
-    icon: <Work />
+    icon: <Work />,
+    url: routes.DASHBOARD_STAFF
   },
   {
     name: "Students",
-    icon: <MenuBook />
+    icon: <MenuBook />,
+    url: routes.DASHBOARD_STUDENTS
   }
 ];
 
 const submenuDevices = [
   {
     name: "All devices",
-    icon: <List />
+    icon: <List />,
+    url: routes.DASHBOARD_ALL_DEVICES
   },
   {
     name: "Borrowed devices",
-    icon: <Send />
+    icon: <Send />,
+    url: routes.DASHBOARD_BORROWED_DEVICES
   },
   {
     name: "Devices in stock",
-    icon: <CheckCircle />
+    icon: <CheckCircle />,
+    url: routes.DASHBOARD_STOCK_DEVICES
   },
   {
     name: "Devices in check",
-    icon: <AssignmentTurnedIn />
+    icon: <AssignmentTurnedIn />,
+    url: routes.DASHBOARD_CHECK_DEVICES
   }
 ];
 
 const submenuStatuses = [
   {
     name: "All statuses",
-    icon: <List />
+    icon: <List />,
+    url: routes.DASHBOARD_ALL_STATUSES
   }
 ];
 
 const submenuTags = [
   {
     name: "All tags",
-    icon: <List />
+    icon: <List />,
+    url: routes.DASHBOARD_ALL_TAGS
   }
 ];
 

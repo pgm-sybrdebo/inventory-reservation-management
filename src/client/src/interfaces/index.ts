@@ -76,6 +76,7 @@ export interface MyButtonProps {
 interface SubMenu {
   name: string,
   icon: any,
+  url: string
 }
 export interface MenuItemProps {
   title: string;

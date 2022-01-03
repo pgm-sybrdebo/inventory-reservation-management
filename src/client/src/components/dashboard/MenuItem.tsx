@@ -1,6 +1,8 @@
 import React from 'react'
+import { NavLink } from 'react-router-dom';
 import styled from "styled-components";
 import { MenuItemProps } from '../../interfaces';
+import * as routes from '../../routes';
 
 const MenuItemComponent = styled.li`
   margin-bottom: 1rem;
@@ -20,6 +22,7 @@ const SubMenuList = styled.ul`
 
   li {
     padding: 0.5rem;
+    color: #000;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -39,7 +42,7 @@ const SubMenuList = styled.ul`
 
 
 
-const MenuItem = ({ title, submenu, icon}:MenuItemProps) => {
+const MenuItem = ({ title, submenu, icon }:MenuItemProps) => {
   return (
     <MenuItemComponent>
       <Container>
@@ -48,17 +51,22 @@ const MenuItem = ({ title, submenu, icon}:MenuItemProps) => {
       </Container>
       <SubMenuList>
         {submenu.map((submenuItem, index) => {
+          const url = submenuItem.url
+          console.log(url);
           return (
-
-          <li key={index}>
-            {submenuItem.icon}
-            <span>{submenuItem.name}</span>
-          </li>
+          
+          <NavLink to={url}>
+            <li key={index}>
+              {submenuItem.icon}
+              <span>{submenuItem.name}</span>
+            </li>
+          </NavLink>
           )
         })}
       </SubMenuList>
     </MenuItemComponent>
   )
 }
+
 
 export default MenuItem

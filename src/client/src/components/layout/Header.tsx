@@ -34,6 +34,7 @@ const TheHeader = styled.div<StyledProps>`
   margin-bottom: ${props => props.t === 'dashboard' ? '0px' : '32px'};
   position: ${props => props.t === 'dashboard' ? 'sticky' : 'static'};
   top: 0;
+  z-index:10;
   background-color: #F58732;
   & .header__wrapper{
     display:flex;
