@@ -75,7 +75,6 @@ export interface MyButtonProps {
   onClick?: () => void,
 }
 
-<<<<<<< HEAD
 interface SubMenu {
   name: string,
   icon: any,
@@ -138,7 +137,8 @@ export interface HeaderProps {
 
 export interface AdminLayoutProps {
   children: React.ReactNode;
-=======
+}
+
 export enum UserRole {
   Regular,
   Admin
@@ -150,5 +150,4 @@ export interface TokenInfo {
   iat: number,
   role: UserRole,
   sub: string
->>>>>>> e05de9584e840bccc75f20e42b00fb987d237fc2
 }

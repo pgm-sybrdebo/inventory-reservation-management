@@ -104,7 +104,6 @@ export class DevicesResolver {
     return this.devicesService.findOneByDeviceId(id);
   }
 
-<<<<<<< HEAD
   @Query(() => Device, { name: 'getDevicesByModelId' })
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.USER)
@@ -112,8 +111,6 @@ export class DevicesResolver {
     return this.devicesService.findAllByModelId(modelId);
   }
 
-=======
->>>>>>> e05de9584e840bccc75f20e42b00fb987d237fc2
   @Mutation(() => Device)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
@@ -135,23 +132,18 @@ export class DevicesResolver {
     return this.devicesService.getDeviceReservations(device.id);
   }
 
-<<<<<<< HEAD
   @ResolveField(returns => [Damage])
   damages(@Parent() device: Device): Promise<Damage[]> {
     return this.devicesService.getDeviceDamages(device.id);
   }
 
   @ResolveField(returns => DeviceStatus)
-=======
-  @ResolveField((returns) => DeviceStatus)
->>>>>>> e05de9584e840bccc75f20e42b00fb987d237fc2
   deviceStatus(@Parent() device: Device): Promise<DeviceStatus> {
     return this.devicesService.getDeviceStatusByDeviceStatusId(
       device.deviceStatusId,
     );
   }
 
-<<<<<<< HEAD
   @ResolveField(returns => User)
   user(@Parent() device: Device): Promise<User> {
     if (device.userId){
@@ -162,9 +154,6 @@ export class DevicesResolver {
   }
 
   @ResolveField(returns => Model)
-=======
-  @ResolveField((returns) => Model)
->>>>>>> e05de9584e840bccc75f20e42b00fb987d237fc2
   model(@Parent() device: Device): Promise<Model> {
     return this.devicesService.getModelByDeviceId(device.modelId);
   }

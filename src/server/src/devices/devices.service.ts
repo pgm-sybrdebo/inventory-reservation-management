@@ -21,16 +21,11 @@ export class DevicesService {
     @InjectRepository(Device) private devicesRepository: Repository<Device>,
     // private reservationsService: ReservationsService,
     private deviceStatusesService: DeviceStatusesService,
-<<<<<<< HEAD
     // private usersService: UsersService,
     private damagesService: DamagesService,
     @Inject(forwardRef(() => ModelsService)) private modelsService: ModelsService,
     @Inject(forwardRef(() => UsersService)) private usersService: UsersService,
     @Inject(forwardRef(() => ReservationsService)) private reservationsService: ReservationsService,
-=======
-    @Inject(forwardRef(() => ModelsService))
-    private modelsService: ModelsService,
->>>>>>> e05de9584e840bccc75f20e42b00fb987d237fc2
   ) {}
 
   create(createDeviceInput: CreateDeviceInput): Promise<Device> {
@@ -105,14 +100,7 @@ export class DevicesService {
   }
 
   findAllByModelId(modelId: string): Promise<Device[]> {
-<<<<<<< HEAD
     return this.devicesRepository.find({modelId: modelId, deviceStatusId: "15c5dbc7-766a-4dcc-a942-9bae3cddd179"});
-=======
-    return this.devicesRepository.find({
-      modelId: modelId,
-      deviceStatusId: '5e36852b-f18a-441b-a44e-8348ec0ca322',
-    });
->>>>>>> e05de9584e840bccc75f20e42b00fb987d237fc2
   }
 
   findOne(id: string): Promise<Device> {
@@ -121,14 +109,7 @@ export class DevicesService {
   }
 
   findOneByDeviceId(id: string): Promise<Device> {
-<<<<<<< HEAD
     return this.devicesRepository.findOne({id: id, deviceStatusId: "15c5dbc7-766a-4dcc-a942-9bae3cddd179"});
-=======
-    return this.devicesRepository.findOne({
-      id: id,
-      deviceStatusId: '5e36852b-f18a-441b-a44e-8348ec0ca322',
-    });
->>>>>>> e05de9584e840bccc75f20e42b00fb987d237fc2
   }
 
   async update(
@@ -152,17 +133,11 @@ export class DevicesService {
     return this.reservationsService.findAllByDeviceId(deviceId);
   }
 
-<<<<<<< HEAD
   getDeviceDamages(deviceId: string): Promise<Damage[]> {
     return this.damagesService.findAllByDeviceId(deviceId);
   }
 
   getDeviceStatusByDeviceStatusId(deviceStatusId: string): Promise<DeviceStatus> {
-=======
-  getDeviceStatusByDeviceStatusId(
-    deviceStatusId: string,
-  ): Promise<DeviceStatus> {
->>>>>>> e05de9584e840bccc75f20e42b00fb987d237fc2
     return this.deviceStatusesService.findOne(deviceStatusId);
   }
 

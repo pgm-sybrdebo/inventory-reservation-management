@@ -10,7 +10,6 @@ import { UsersModule } from 'src/users/users.module';
 import { DamagesModule } from 'src/damages/damages.module';
 
 @Module({
-<<<<<<< HEAD
   imports: [TypeOrmModule.forFeature([Device]),
   // ReservationsModule,
   forwardRef(() => ReservationsModule),
@@ -21,15 +20,6 @@ import { DamagesModule } from 'src/damages/damages.module';
   forwardRef(() => UsersModule),
   // ModelsModule,
 ],
-=======
-  imports: [
-    TypeOrmModule.forFeature([Device]),
-    ReservationsModule,
-    DeviceStatusesModule,
-    forwardRef(() => ModelsModule),
-    // ModelsModule,
-  ],
->>>>>>> e05de9584e840bccc75f20e42b00fb987d237fc2
   providers: [DevicesResolver, DevicesService],
   exports: [DevicesService],
 })

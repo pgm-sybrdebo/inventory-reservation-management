@@ -43,7 +43,7 @@ mutation ($deviceId: String!, $reservationStateId: String!, $userId: String!, $s
 `;
 
 export const UPDATE_RESERVATION = gql`
-mutation ($deviceId: String, $reservationStateId: String, $userId: String, $start_date: Timestamp, $end_date = Timestamp ) {
+mutation ($deviceId: String, $reservationStateId: String, $userId: String, $start_date: Timestamp, $end_date: Timestamp ) {
   updateReservation(updateReservationInput: {
     deviceId: $deviceId,
     reservationStateId: $reservationStateId,

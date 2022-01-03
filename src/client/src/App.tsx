@@ -11,7 +11,6 @@ import {
   Page403,
   Admin
 } from "./pages";
-<<<<<<< HEAD
 import DashboardHome from "./pages/DashboardHome";
 import DashboardUsers from "./pages/DashboardUsers";
 import DashboardAdmins from "./pages/DashboardAdmins";
@@ -23,10 +22,8 @@ import DashboardDevices from "./pages/DashboardDevices";
 import DashboardBorrowedDevices from "./pages/DashboardBorrowedDevices";
 import DashboardStockDevices from "./pages/DashboardStockDevices";
 import DashboardInCheckDevices from "./pages/DashboardInCheckDevices";
-=======
 import { TokenInfo, UserRole } from "./interfaces";
 
->>>>>>> e05de9584e840bccc75f20e42b00fb987d237fc2
 
 const RequireAuth = ({availableRoles} : { availableRoles: UserRole[]}) => {
   const token = localStorage.getItem('token');  
