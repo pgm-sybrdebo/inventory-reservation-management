@@ -51,3 +51,16 @@ export const REMOVE_MODEL = gql`
     }
   }
 `;
+
+export const GET_ALL_MODELS = gql`
+  query {
+    models {
+      name
+      brand
+      description
+      specifications
+      quantity
+      max_reservation_time
+    }
+  }
+`;

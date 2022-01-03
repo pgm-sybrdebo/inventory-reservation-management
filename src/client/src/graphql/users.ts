@@ -39,6 +39,7 @@ export const GET_ALL_USERS_BY_ROLE = gql`
     }
   }
 `;
+
 export const GET_ALL_USERS_BY_PROFESSION = gql`
   query usersByProfession($profession: Int!) {
     usersByProfession(profession: $profession) {
@@ -70,6 +71,24 @@ export const REMOVE_USER = gql`
   mutation ($id: String!){
     removeUser(id: $id, ) {
       name
+    }
+  }
+`;
+
+export const GET_USER_BY_ID = gql`
+  query user($id: String!) {
+    usersByRole(id: $id) {
+      id
+      firstName
+      lastName
+      email
+      role
+      profession
+      reservations {
+        start_date
+        end_date
+        deviceId
+      }
     }
   }
 `;
