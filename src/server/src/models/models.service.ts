@@ -6,7 +6,7 @@ import { Media } from 'src/medias/entities/media.entity';
 import { MediasService } from 'src/medias/medias.service';
 import { Tag } from 'src/tags/entities/tag.entity';
 import { TagsService } from 'src/tags/tags.service';
-import { Repository } from 'typeorm';
+import { Repository, Between, LessThanOrEqual } from 'typeorm';
 import { CreateModelInput } from './dto/create-model.input';
 import { UpdateModelInput } from './dto/update-model.input';
 import { Model } from './entities/model.entity';
@@ -28,6 +28,36 @@ export class ModelsService {
 
   findAll(): Promise<Model[]> {
     return this.modelsRepository.find();
+  }
+
+  findAndCount(): Promise<number> {
+    return this.modelsRepository.count();
+  }
+
+  findRecentModels(from: string, to:string): Promise<Model[]> {
+    const date = new Date(Number(from));
+    const iso = date.toISOString();
+    const date1 = new Date(Number(to));
+    const iso1 = date1.toISOString();
+
+    return this.modelsRepository.find({
+      created_on: Between(iso
+        , iso1),
+    })
+  }
+
+  async findDifferenceLastMonth(): Promise<number> {
+    const date = new Date();
+    const iso = date.toISOString();
+    const previousMonth = new Date();
+    previousMonth.setMonth(previousMonth.getMonth() - 1);
+    const previousIso = previousMonth.toISOString();
+    const totalUsersLastMonth = await this.modelsRepository.count({
+      created_on: LessThanOrEqual(previousIso)
+    })
+    const totalUsersNow = await this.modelsRepository.count();
+    const difference = totalUsersNow - totalUsersLastMonth;
+    return difference;
   }
 
   getMediasByModelId(modelId: string): Promise<Media[]> {
