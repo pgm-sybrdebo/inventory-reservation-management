@@ -1,5 +1,6 @@
 import { DataGrid, GridColDef, } from '@material-ui/data-grid';
 import styled from "styled-components";
+import { TableProps } from '../../interfaces';
 
 const Container = styled.div`
   margin: 1rem 1.5rem 2rem 1.5rem;
@@ -9,20 +10,7 @@ const Container = styled.div`
   box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
 `;
 
-interface User {
-  id: string
-  firstName: string
-  lastName: string
-  email: string
-  role: number
-  profession: number
-  created_on: number
-}
 
-interface TableProps {
-  columns: GridColDef[]
-  data: User[]
-}
 
 
 const Table = ({data, columns}: TableProps) => {

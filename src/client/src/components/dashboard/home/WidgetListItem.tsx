@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components';
 import defaultImg from "../../../assets/device.jpg";
 import moment from "moment";
+import { WidgetListItemProps } from '../../../interfaces';
 
 const WidgetListItemComponent = styled.li`
   display: flex;
@@ -26,15 +27,6 @@ const Small = styled.span`
   margin-right: 0.2rem;
 `;
 
-interface WidgetListItemProps {
-  name: string;
-  time?: number
-  type: string,
-  firstName?: string
-  lastName?: string
-  start?: number
-  end?: number
-}
 
 const WidgetListItem = ({ name, time, type, firstName, lastName, start, end }: WidgetListItemProps) => {
   let dateString;

@@ -5,12 +5,7 @@ import Container from './Container';
 import * as routes from '../../routes';
 import logo from "../../assets/logo.svg"
 import more from "../../assets/more.svg"
-
-interface HeaderProps {
-  type?: string
-}
-
-
+import { HeaderProps } from '../../interfaces';
 interface StyledProps {
   t: string;
 }

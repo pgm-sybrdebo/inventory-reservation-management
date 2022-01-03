@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { Header } from "../components";
 import Sidebar from "../components/layout/Sidebar";
+import { AdminLayoutProps } from "../interfaces";
 
 const Container = styled.div`
   display: flex;
@@ -12,9 +13,6 @@ const MainLayout = styled.main`
   flex: 4;
 `;
 
-interface AdminLayoutProps {
-  children: React.ReactNode;
-}
 
 const AdminLayout = ({ children }: AdminLayoutProps) => {
   return (

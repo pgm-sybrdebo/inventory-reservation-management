@@ -1,3 +1,5 @@
+import { GridColDef } from "@material-ui/data-grid";
+
 // interfaces
 export interface base {
   children: React.ReactNode,
@@ -102,4 +104,37 @@ export interface FeaturedInfoProps {
 export interface ReservationItem {
   month: any,
   count: number
+}
+
+export interface User {
+  id: string
+  firstName: string
+  lastName: string
+  email: string
+  role: number
+  profession: number
+  created_on: number
+}
+
+export interface TableProps {
+  columns: GridColDef[]
+  data: User[]
+}
+
+export interface WidgetListItemProps {
+  name: string;
+  time?: number
+  type: string,
+  firstName?: string
+  lastName?: string
+  start?: number
+  end?: number
+}
+
+export interface HeaderProps {
+  type?: string
+}
+
+export interface AdminLayoutProps {
+  children: React.ReactNode;
 }
