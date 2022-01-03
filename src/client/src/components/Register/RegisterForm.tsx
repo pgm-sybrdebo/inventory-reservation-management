@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useState} from 'react'
 import { useNavigate, NavLink } from "react-router-dom";
 import {useFormik, FormikProps} from 'formik';
 import * as YUP from 'yup';
@@ -16,16 +16,19 @@ import StyledButton from '../Button/StyledButton.style';
 
 
 const RegisterForm : React.FC = () => {
-  const [register, { data, loading, error }] = useMutation(REGISTER);
   let navigate = useNavigate();
-
-    useEffect(() => {
-    if (data && !loading && !error) {
-
-      console.log(data);
+  const [responseError, setResponseError] = useState('');
+  const [register] = useMutation(REGISTER, {
+    onCompleted: (response) => {
+      console.log(response);
       navigate("/login");
+    },
+    onError: (error) => {
+      console.log(`GRAPHQL ERROR: ${error.message}`);
+      setResponseError(error.message)
     }
-  }, [data, error, loading, navigate])
+  });  
+
   const formik: FormikProps<MyRegisterFormValues> = useFormik<MyRegisterFormValues>({
     initialValues:{
       regFname: "",
@@ -70,8 +73,8 @@ const RegisterForm : React.FC = () => {
           password: values.regPass,
           firstName: values.regFname,
           lastName: values.regLname,
-          profession: values.regStatus,
-          cardNumber: values.regNumber,
+          profession: +values.regStatus,
+          cardNumber: +values.regNumber,
         }
       })
       setSubmitting(false);
@@ -82,6 +85,7 @@ const RegisterForm : React.FC = () => {
     <RegSection>
       <div className="wrap">
         <h2>Register</h2>
+        {responseError && <p className="error">{responseError}</p>}
         <form onSubmit={formik.handleSubmit}>
           <Input 
             id="regFname"

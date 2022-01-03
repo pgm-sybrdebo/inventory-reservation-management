@@ -13,6 +13,6 @@ import { UsersModule } from 'src/users/users.module';
     forwardRef(() => UsersModule),
   ],
   providers: [ReservationsResolver, ReservationsService],
-  exports: [ReservationsService]
+  exports: [ReservationsService],
 })
 export class ReservationsModule {}

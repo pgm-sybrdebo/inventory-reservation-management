@@ -56,7 +56,7 @@ export class Model {
 
   @Column()
   @Field((type) => Int)
-  max_reservation_time: number
+  max_reservation_time: number;
 
   // @Column(() => Dates)
   // date: Dates;

@@ -1,4 +1,3 @@
-
 import { Tag } from 'src/tags/entities/tag.entity';
 import { Connection } from 'typeorm';
 import { Factory, Seeder } from 'typeorm-seeding';

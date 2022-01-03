@@ -27,12 +27,12 @@ export class User {
   @Field()
   password: string;
 
-  @Column({type: 'enum', enum: Role, default: Role.USER})
+  @Column({ type: 'enum', enum: Role, default: Role.USER })
   @Field()
   role: Role = 0;
 
-  @Column({nullable: true})
-  @Field((type) => Int, {nullable: true})
+  @Column({ nullable: true })
+  @Field((type) => Int, { nullable: true })
   profession: number;
 
   @Column({ nullable: true })

@@ -1,14 +1,17 @@
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation, Outlet } from "react-router-dom";
 import {GlobalStyles} from './GeneralStyles.style';
 import * as ROUTES from "./routes";
-
+import jwt_decode from "jwt-decode"
 import {
   HomePage,
   Login,
   Register,
   Models,
   ModelDetail,
+  Page403,
+  Admin
 } from "./pages";
+<<<<<<< HEAD
 import DashboardHome from "./pages/DashboardHome";
 import DashboardUsers from "./pages/DashboardUsers";
 import DashboardAdmins from "./pages/DashboardAdmins";
@@ -20,13 +23,23 @@ import DashboardDevices from "./pages/DashboardDevices";
 import DashboardBorrowedDevices from "./pages/DashboardBorrowedDevices";
 import DashboardStockDevices from "./pages/DashboardStockDevices";
 import DashboardInCheckDevices from "./pages/DashboardInCheckDevices";
+=======
+import { TokenInfo, UserRole } from "./interfaces";
 
-function RequireAuth() {
-  const token = localStorage.getItem('token');
+>>>>>>> e05de9584e840bccc75f20e42b00fb987d237fc2
+
+const RequireAuth = ({availableRoles} : { availableRoles: UserRole[]}) => {
+  const token = localStorage.getItem('token');  
   let location = useLocation();
 
   if (!token) {
     return <Navigate to="/login" state={{ from: location }} />;
+  }
+
+  const data = jwt_decode<TokenInfo>(token);
+  console.log(data);
+  if (!availableRoles.filter(r => r === data.role).length) {
+    return <Navigate to="/page403" state={{ from: location }} />;
   }
 
   return <Outlet />;
@@ -36,10 +49,9 @@ function App() {
   return (
     <div className="app">
       <GlobalStyles />
-      <Router>
-        
+      <Router>        
         <Routes>
-        <Route element={<RequireAuth />}>
+        <Route element={<RequireAuth availableRoles={[UserRole.Regular, UserRole.Admin]} />}>
           <Route path={ROUTES.HOME}  element={<Navigate to={ROUTES.LANDING} replace />} />
           <Route 
             path={ROUTES.LANDING} 
@@ -48,21 +60,32 @@ function App() {
           <Route
             path={ROUTES.MODELS}
             element={<Models />}
-          />
+          />  
           <Route
             path={ROUTES.MODEL_DETAILS}
             element={<ModelDetail />}
+          />       
+        </Route>
+
+        <Route element={<RequireAuth availableRoles={[UserRole.Admin]} />}>          
+        <Route
+            path={ROUTES.ADMIN}
+            element={<Admin/>}
           />
         </Route>
 
-          <Route
-            path={ROUTES.LOGIN}
-            element={<Login />}
-          />
-          <Route
-            path={ROUTES.REGISTER}
-            element={<Register />}
-          />
+        <Route
+          path={ROUTES.LOGIN}
+          element={<Login />}
+        />
+        <Route
+          path={ROUTES.REGISTER}
+          element={<Register />}
+        />
+        <Route
+          path={ROUTES.PAGE403}
+          element={<Page403 />}
+        />
 
           <Route
             path={ROUTES.DASHBOARD_HOME}

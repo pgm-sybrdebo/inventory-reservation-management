@@ -120,7 +120,7 @@
 
 
 
-import React, { useEffect } from 'react'
+import React, { useState } from 'react'
 import { useNavigate, NavLink } from "react-router-dom";
 import { Formik } from 'formik';
 import * as YUP from 'yup';
@@ -139,23 +139,24 @@ const validationSchema = YUP.object({
 })
 
 const LoginForm: React.FC = () => {
-  const [login, { data, loading, error }] = useMutation(LOGIN);
-  let navigate = useNavigate();
-
-  useEffect(() => {
-    if (data) {
-
-      console.log(data);
-      localStorage.setItem("token", data.login.access_token);
+  const [responseError, setResponseError] = useState('');
+  const [login] = useMutation(LOGIN, {
+    onCompleted: (response) => {
+      console.log(response);
+      localStorage.setItem("token", response.login.access_token);
       navigate("/");
-
+    },
+    onError: (error) => {
+      console.log(`AUTH ERROR: ${error.message}`);
+      setResponseError("Worng Email or Password!")
     }
-  }, [data, error, loading, navigate])
-
+  });
+  let navigate = useNavigate();
   return (
     <LogSection>
       <div className="wrap">
         <h2>Login</h2>
+        {responseError && <p className="error">{responseError}</p>}
         <Formik 
           initialValues={{
             loginEmail: "",
@@ -198,10 +199,8 @@ const LoginForm: React.FC = () => {
                 onBlur = {handleBlur} 
                 value={values.loginPass}  
               />
-              
               {touched.loginPass && errors.loginPass ? <p className="error">{errors.loginPass}</p> : null}
-              {error && <p className="error">{error.message}</p>}
-              {loading && <p className="error">Trying to find your account...</p>}
+
               <StyledButton 
                 type="submit" 
                 text="Login" 

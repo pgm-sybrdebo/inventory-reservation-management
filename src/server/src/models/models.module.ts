@@ -8,8 +8,13 @@ import { MediasModule } from 'src/medias/medias.module';
 import { DevicesModule } from 'src/devices/devices.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Model]), TagsModule, MediasModule, forwardRef(() => DevicesModule)],
+  imports: [
+    TypeOrmModule.forFeature([Model]),
+    TagsModule,
+    MediasModule,
+    forwardRef(() => DevicesModule),
+  ],
   providers: [ModelsResolver, ModelsService],
-  exports: [ModelsService]
+  exports: [ModelsService],
 })
 export class ModelsModule {}

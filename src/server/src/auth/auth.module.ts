@@ -18,6 +18,13 @@ import { RolesGuard } from './guards/roles.guard';
       secret: 'artevelde-inventory-reservation', // process.env.JWT_SECRET
     }),
   ],
-  providers: [AuthService, AuthResolver, LocalStrategy, JwtStrategy, JwtAuthGuard, RolesGuard],
+  providers: [
+    AuthService,
+    AuthResolver,
+    LocalStrategy,
+    JwtStrategy,
+    JwtAuthGuard,
+    RolesGuard,
+  ],
 })
 export class AuthModule {}
