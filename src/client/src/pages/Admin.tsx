@@ -1,11 +1,12 @@
 import React from 'react'
+import { Container } from '../components';
 
 
 const Admin = () => {
   return (
-    <div>
+    <Container>
       <h2>Admin Area</h2>
-    </div>
+    </Container>
   )
 }
 
