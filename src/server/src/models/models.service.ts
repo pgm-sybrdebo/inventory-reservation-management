@@ -31,13 +31,38 @@ export class ModelsService {
     return this.modelsRepository.find();
   }
 
-  findAllByTagId(tagId: string): Promise<Model[]> {
+  async findAllByTagIds(tagIds: string[]): Promise<Model[]> {
+    // console.log(tagIds);
+    // let tagIds2 = tagIds.join("', '");
+    // tagIds2 = `('${tagIds2}')`;
+    // console.log(tagIds2);
+    // return this.modelsRepository.query(`
+    //   SELECT *
+    //   FROM model_tag
+    //   WHERE tag_id IN ${tagIds2}
+    // `);
+
     return this.modelsRepository.find({
       relations: ['tags'],
       where: (qb: SelectQueryBuilder<Model>) => {
-        qb.where('tag_id = :tagId', {tagId: tagId})
+        qb.where('tag_id IN (:...tagsIds)', {tagsIds: tagIds} )
       }
-    })
+    });
+
+    // return this.modelsRepository.find({
+    //   relations: ['tags'], 
+    //   where: (qb: SelectQueryBuilder<Model>) => {
+    //     qb.where(`tag_id IN :tagIds`, {tagIds: tagIds})
+    //   }
+    // })
+    // return this.modelsRepository.find();
+
+    // return this.modelsRepository.find({
+    //   relations: ['tags'],
+    //   where: (qb: SelectQueryBuilder<Model>) => {
+    //     qb.where('tag_id = :tagId', {tagId: tagId})
+    //   }
+    // })
 
   }
 

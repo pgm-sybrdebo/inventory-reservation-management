@@ -32,18 +32,18 @@ export class ModelsResolver {
   }
 
   @Query(() => [Model], { name: 'models' })
-  // @UseGuards(JwtAuthGuard, RolesGuard)
-  // @Roles(Role.ADMIN, Role.USER)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.USER)
   findAll() {
     return this.modelsService.findAll();
   }
 
 
   @Query(() => [Model], { name: 'modelsByTagId' })
-  // @UseGuards(JwtAuthGuard, RolesGuard)
-  // @Roles(Role.ADMIN, Role.USER)
-  findAllByTagId(@Args('tagId', new ParseUUIDPipe()) tagId: string) {
-    return this.modelsService.findAllByTagId(tagId);
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.USER)
+  findAllByTagId(@Args('tagIds', { type: () => [String] }) tagIds: string[]) {
+    return this.modelsService.findAllByTagIds(tagIds);
   }
 
   @Query(() => Int, { name: 'totalModels' })
