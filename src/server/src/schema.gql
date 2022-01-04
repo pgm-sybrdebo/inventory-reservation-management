@@ -181,6 +181,7 @@ type Query {
   medias: [Media!]!
   model(id: String!): Model!
   models: [Model!]!
+  modelsByTagId(tagIds: [String!]!): [Model!]!
   recentDevices(from: String!, to: String!): [Device!]!
   recentModels(from: String!, to: String!): [Model!]!
   recentNewDevices: [Device!]!

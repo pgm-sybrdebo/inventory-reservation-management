@@ -18,6 +18,7 @@ import { Roles } from 'src/auth/decorators/roles.decorator';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Role } from 'src/auth/role.enum';
+import { Tag } from 'src/tags/entities/tag.entity';
 
 @Resolver(() => Model)
 export class ModelsResolver {
@@ -35,6 +36,14 @@ export class ModelsResolver {
   @Roles(Role.ADMIN, Role.USER)
   findAll() {
     return this.modelsService.findAll();
+  }
+
+
+  @Query(() => [Model], { name: 'modelsByTagId' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.USER)
+  findAllByTagId(@Args('tagIds', { type: () => [String] }) tagIds: string[]) {
+    return this.modelsService.findAllByTagIds(tagIds);
   }
 
   @Query(() => Int, { name: 'totalModels' })
@@ -107,5 +116,10 @@ export class ModelsResolver {
   @ResolveField((returns) => [Device])
   devices(@Parent() model: Model): Promise<Device[]> {
     return this.modelsService.getDevicesByModelId(model.id);
+  }
+
+  @ResolveField((returns) => [Tag])
+  tags(@Parent() model: Model): Promise<Tag[]> {
+    return this.modelsService.getTagsByModelId(model.id);
   }
 }
