@@ -6,10 +6,13 @@ import { ReservationState } from 'src/reservation-states/entities/reservation-st
 import { User } from 'src/users/entities/user.entity';
 import {
   Column,
+  CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
@@ -39,8 +42,20 @@ export class Reservation {
   @Field({ nullable: true })
   end_date: Date;
 
-  @Column(() => Dates)
-  date: Dates;
+  // @Column(() => Dates)
+  // date: Dates;
+
+  @CreateDateColumn()
+  @Field()
+  created_on: Date;
+
+  @UpdateDateColumn()
+  @Field()
+  updated_on: Date;
+
+  @DeleteDateColumn()
+  @Field()
+  deleted_on: Date;
 
   @ManyToOne(() => User, (user) => user.reservations)
   @Field((type) => User)

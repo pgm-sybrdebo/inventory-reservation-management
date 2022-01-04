@@ -1,12 +1,15 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 import {
   Column,
+  CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   JoinTable,
   ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import JSON, { GraphQLJSONObject } from 'graphql-type-json';
 import { Dates } from 'src/mixins/date.entity';
@@ -55,8 +58,20 @@ export class Model {
   @Field((type) => Int)
   max_reservation_time: number;
 
-  @Column(() => Dates)
-  date: Dates;
+  // @Column(() => Dates)
+  // date: Dates;
+
+  @CreateDateColumn()
+  @Field()
+  created_on: Date;
+
+  @UpdateDateColumn()
+  @Field()
+  updated_on: Date;
+
+  @DeleteDateColumn()
+  @Field()
+  deleted_on: Date;
 
   @OneToMany(() => Device, (device) => device.model)
   @Field((type) => [Device], { nullable: true })

@@ -37,6 +37,27 @@ export class ModelsResolver {
     return this.modelsService.findAll();
   }
 
+  @Query(() => Int, { name: 'totalModels' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
+  async findTotal() {
+    return this.modelsService.findAndCount();
+  }
+
+  @Query(() => Int, { name: 'differenceLastMonthModels' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
+  async findDifferenceLastMonth() {
+    return this.modelsService.findDifferenceLastMonth();
+  }
+
+  @Query(() => [Model], { name: 'recentModels' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
+  async findRecentUsers(@Args('from', { type: () => String }) from: string, @Args('to', { type: () => String }) to: string) {
+    return this.modelsService.findRecentModels(from, to);
+  }
+
   @Query(() => Model, { name: 'model' })
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.USER)
