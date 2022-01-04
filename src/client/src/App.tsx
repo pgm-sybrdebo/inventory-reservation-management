@@ -69,20 +69,6 @@ function App() {
             path={ROUTES.ADMIN}
             element={<Admin/>}
           />
-        </Route>
-
-        <Route
-          path={ROUTES.LOGIN}
-          element={<Login />}
-        />
-        <Route
-          path={ROUTES.REGISTER}
-          element={<Register />}
-        />
-        <Route
-          path={ROUTES.PAGE403}
-          element={<Page403 />}
-        />
 
           <Route
             path={ROUTES.DASHBOARD_HOME}
@@ -131,6 +117,20 @@ function App() {
             path={ROUTES.DASHBOARD_CHECK_DEVICES}
             element={<DashboardInCheckDevices />}
           />
+        </Route>
+
+        <Route
+          path={ROUTES.LOGIN}
+          element={<Login />}
+        />
+        <Route
+          path={ROUTES.REGISTER}
+          element={<Register />}
+        />
+        <Route
+          path={ROUTES.PAGE403}
+          element={<Page403 />}
+        />
 
 
         </Routes>

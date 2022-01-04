@@ -88,6 +88,11 @@ export const GET_USER_BY_ID = gql`
         start_date
         end_date
         deviceId
+        device {
+          model {
+            name
+          }
+        }
       }
     }
   }

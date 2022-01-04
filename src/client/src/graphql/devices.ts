@@ -142,14 +142,21 @@ export const GET_DEVICE_BY_ID = gql`
   query ($id: String!){
     getDeviceById(id: $id, ) {
       id
+      userId
       qr_code
       model {
         name
+        max_reservation_time
       }
       damages {
         title
         picture 
         description
+      }
+      reservations {
+        start_date
+        end_date
+        actual_end_date
       }
     }
   }

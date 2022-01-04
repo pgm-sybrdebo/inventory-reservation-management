@@ -64,3 +64,18 @@ export const GET_ALL_MODELS = gql`
     }
   }
 `;
+
+
+export const GET_MODEL_BY_ID = gql`
+  query model($id: String!) {
+    model(id: $id) {
+      name
+      brand
+      description
+      specifications
+      quantity
+      max_reservation_time
+    }
+  }
+`;
+

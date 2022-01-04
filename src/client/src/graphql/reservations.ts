@@ -33,7 +33,6 @@ export const CREATE_RESERVATION = gql`
 mutation ($deviceId: String!, $reservationStateId: String!, $userId: String!, $start_date: Timestamp! ) {
   createReservation(createReservationInput: {
     deviceId: $deviceId,
-    reservationStateId: $reservationStateId,
     userId: $userId,
     start_date: $start_date
   }) {
