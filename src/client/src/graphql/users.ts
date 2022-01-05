@@ -55,8 +55,9 @@ export const GET_ALL_USERS_BY_PROFESSION = gql`
 `;
 
 export const UPDATE_USER = gql`
-mutation ($firstName: String, $lastName: String, $email: String, $password: String ) {
+mutation ( $id: String!, $firstName: String, $lastName: String, $email: String, $password: String ) {
   updateUser(updateUserInput: {
+    id: $id,
     firstName: $firstName,
     lastName: $lastName,
     email: $email,

@@ -6,7 +6,7 @@ import { Media } from 'src/medias/entities/media.entity';
 import { MediasService } from 'src/medias/medias.service';
 import { Tag } from 'src/tags/entities/tag.entity';
 import { TagsService } from 'src/tags/tags.service';
-import { Repository, Between, LessThanOrEqual } from 'typeorm';
+import { Repository, Between, LessThanOrEqual, In, SelectQueryBuilder } from 'typeorm';
 import { CreateModelInput } from './dto/create-model.input';
 import { UpdateModelInput } from './dto/update-model.input';
 import { Model } from './entities/model.entity';
@@ -29,6 +29,41 @@ export class ModelsService {
 
   findAll(): Promise<Model[]> {
     return this.modelsRepository.find();
+  }
+
+  async findAllByTagIds(tagIds: string[]): Promise<Model[]> {
+    // console.log(tagIds);
+    // let tagIds2 = tagIds.join("', '");
+    // tagIds2 = `('${tagIds2}')`;
+    // console.log(tagIds2);
+    // return this.modelsRepository.query(`
+    //   SELECT *
+    //   FROM model_tag
+    //   WHERE tag_id IN ${tagIds2}
+    // `);
+
+    return this.modelsRepository.find({
+      relations: ['tags'],
+      where: (qb: SelectQueryBuilder<Model>) => {
+        qb.where('tag_id IN (:...tagsIds)', {tagsIds: tagIds} )
+      }
+    });
+
+    // return this.modelsRepository.find({
+    //   relations: ['tags'], 
+    //   where: (qb: SelectQueryBuilder<Model>) => {
+    //     qb.where(`tag_id IN :tagIds`, {tagIds: tagIds})
+    //   }
+    // })
+    // return this.modelsRepository.find();
+
+    // return this.modelsRepository.find({
+    //   relations: ['tags'],
+    //   where: (qb: SelectQueryBuilder<Model>) => {
+    //     qb.where('tag_id = :tagId', {tagId: tagId})
+    //   }
+    // })
+
   }
 
   findAndCount(): Promise<number> {
@@ -67,6 +102,14 @@ export class ModelsService {
 
   getDevicesByModelId(modelId: string): Promise<Device[]> {
     return this.devicesService.findAllByModelId(modelId);
+  }
+  
+  async getTagsByModelId(modelId: string): Promise<Tag[]> {
+    const model = await this.modelsRepository.findOneOrFail(modelId, {
+      relations: ['tags']
+    });
+    if (model.tags) return model.tags;
+    return []
   }
 
   findOne(id: string): Promise<Model> {
