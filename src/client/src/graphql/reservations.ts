@@ -44,8 +44,9 @@ mutation ($deviceId: String!, $reservationStateId: String!, $userId: String!, $s
 `;
 
 export const UPDATE_RESERVATION = gql`
-mutation ($deviceId: String, $reservationStateId: String, $userId: String, $start_date: Timestamp, $end_date: Timestamp ) {
+mutation ($id: String! $deviceId: String, $reservationStateId: String, $userId: String, $start_date: Timestamp, $end_date: Timestamp ) {
   updateReservation(updateReservationInput: {
+    id: $id
     deviceId: $deviceId,
     reservationStateId: $reservationStateId,
     userId: $userId,
@@ -56,6 +57,21 @@ mutation ($deviceId: String, $reservationStateId: String, $userId: String, $star
   }
 }
 `;
+
+
+export const TAKEN_CONFIRMED = gql`
+mutation ($id: String!) {
+  takenConfirmed(updateReservationInput: {
+    id: $id
+  }) {
+    id,
+    start_date
+    deviceId
+    expected_end_date
+  }
+}
+`;
+
 
 export const REMOVE_RESERVATION = gql`
   mutation ($id: String!){

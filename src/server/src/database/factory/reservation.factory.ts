@@ -14,7 +14,7 @@ interface Context {
 
 define(Reservation, (faker: typeof Faker, context: Context) => {
   const { id, reservation_states, userId } = context;
-  console.log("reservation User", userId)
+  // console.log("reservation User", userId)
 
   // 25% chance for no endDate
   // const boolean = Math.random() < 0.25;

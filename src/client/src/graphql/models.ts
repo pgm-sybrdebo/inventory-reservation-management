@@ -30,8 +30,9 @@ mutation ($name: String!, $brand: String!, $description: String!, $quantity: Int
 
 export const UPDATE_MODEL = gql`
 
-mutation ($name: String, $brand: String, $description: String, $quantity: Int, $specifications: String, $max_reservation_time: Int ) {
+mutation ($id: String!, $name: String, $brand: String, $description: String, $quantity: Int, $specifications: String, $max_reservation_time: Int ) {
   updateModel(updateModelInput: {
+    id: $id,
     name: $name,
     brand: $brand,
     description: $description,

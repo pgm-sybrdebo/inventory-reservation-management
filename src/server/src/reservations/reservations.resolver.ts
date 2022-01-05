@@ -68,13 +68,26 @@ export class ReservationsResolver {
   }
 
   @Mutation(() => Reservation)
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN, Role.USER)
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles(Role.ADMIN, Role.USER)
   updateReservation(
     @Args('updateReservationInput')
     updateReservationInput: UpdateReservationInput,
   ) {
     return this.reservationsService.update(
+      updateReservationInput.id,
+      updateReservationInput,
+    );
+  }
+
+  @Mutation(() => Reservation, { name: 'takenConfirmed' })
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles(Role.ADMIN, Role.USER)
+  takenConfirmed(
+    @Args('updateReservationInput')
+    updateReservationInput: UpdateReservationInput,
+  ) {
+    return this.reservationsService.updateTakenConfirmed(
       updateReservationInput.id,
       updateReservationInput,
     );

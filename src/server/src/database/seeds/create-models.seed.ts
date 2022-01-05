@@ -15,7 +15,7 @@ export default class CreateModels implements Seeder {
     const tags = await factory(Tag)().createMany(5);
     const device_statuses = await factory(DeviceStatus)().createMany(4);
     const reservation_states = await factory(ReservationState)().createMany(3);
-    const models = await factory(Model)({ tags }).createMany(4); // 90
+    const models = await factory(Model)({ tags }).createMany(90); // 90
     // console.log('models', models);
     const devs = [];
 
@@ -47,7 +47,7 @@ export default class CreateModels implements Seeder {
       await factory(Media)({ id }).create();
     }
 
-    console.log("devs", devs);
+    // console.log("devs", devs);
 
     for (const d of devs) {
       const { id, userId } = d;

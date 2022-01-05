@@ -95,6 +95,20 @@ export class ReservationsService {
     return this.reservationsRepository.save(updatedReservation);
   }
 
+
+  async updateTakenConfirmed(
+    id: string,
+    updateReservationInput: UpdateReservationInput,
+  ): Promise<Reservation> {
+    const updatedReservation = await this.reservationsRepository.preload({
+      id: id,
+      reservationStateId: "1d6e3e78-024e-4bed-bc5e-065b6fb7d1c4",
+      ...updateReservationInput,
+    });
+
+    return this.reservationsRepository.save(updatedReservation);
+  }
+
   async remove(id: string): Promise<Reservation> {
     const reservation = await this.findOne(id);
     console.log(reservation);
