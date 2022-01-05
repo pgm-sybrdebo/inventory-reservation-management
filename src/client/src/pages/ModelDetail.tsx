@@ -3,7 +3,7 @@ import device from '../assets/device.jpg';
 import { useQuery } from '@apollo/client';
 import {GET_MODEL_BY_ID} from '../graphql/models';
 import { useParams } from 'react-router-dom';
-const tags = ['Lorem ipsum dolor sit amet','Lorem ipsum dolor sit amet', 'Lorem ipsum dolor sit amet','Lorem ipsum dolor sit amet' ];
+
 const ModelDetail = () => {
   let { id } = useParams();
   const { loading, error, data } = useQuery(GET_MODEL_BY_ID, {
@@ -12,6 +12,7 @@ const ModelDetail = () => {
   if(loading) {return <div className="loading"><h1 className="loading__text">Loading...</h1></div>}
   if(error) {return <div className="loading"><h1 className="loading__text">Error {error.message}</h1></div>}
   const result = data.model;
+  const tags = result.tags.map((i: { name: any; }) => i.name)
   const info = JSON.parse(result.specifications)
   const arr = Object.entries(info)
   const joinedArr = arr.map(i => i.join(": "))

@@ -77,6 +77,9 @@ export const GET_MODEL_BY_ID = gql`
       specifications
       quantity
       max_reservation_time
+      tags {
+        name
+      } 
     }
   }
 `;
