@@ -24,8 +24,9 @@ mutation ($name: String! ) {
 
 export const UPDATE_TAG = gql`
 
-mutation ($name: String ) {
+mutation ($id: String!, $name: String ) {
   updateTag(updateTagInput: {
+    id: $id,
     name: name,
   }) {
     id

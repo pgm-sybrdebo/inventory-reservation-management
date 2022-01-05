@@ -38,7 +38,8 @@ input CreateModelInput {
 
 input CreateReservationInput {
   deviceId: String!
-  end_date: Timestamp!
+  end_date: Timestamp
+  expected_end_date: Timestamp!
   reservationStateId: String!
   start_date: Timestamp!
   userId: String!
@@ -151,6 +152,7 @@ type Mutation {
   removeTag(id: String!): Tag!
   removeUser(id: String!): User!
   signup(signupUserInput: SignupUserInput!): User!
+  takenConfirmed(updateReservationInput: UpdateReservationInput!): Reservation!
   updateDamage(updateDamageInput: UpdateDamageInput!): Damage!
   updateDevice(updateDeviceInput: UpdateDeviceInput!): Device!
   updateDeviceStatus(updateDeviceStatusInput: UpdateDeviceStatusInput!): DeviceStatus!
@@ -215,6 +217,7 @@ type Reservation {
   device: Device!
   deviceId: String!
   end_date: Timestamp
+  expected_end_date: Timestamp!
   id: String!
   reservationState: ReservationState!
   reservationStateId: String!
@@ -306,6 +309,7 @@ input UpdateModelInput {
 input UpdateReservationInput {
   deviceId: String
   end_date: Timestamp
+  expected_end_date: Timestamp
   id: String!
   reservationStateId: String
   start_date: Timestamp

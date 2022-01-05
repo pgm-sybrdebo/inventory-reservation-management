@@ -52,7 +52,7 @@ export class DevicesService {
 
   findAllInCheckDevices(): Promise<Device[]> {
     return this.devicesRepository.find({
-      deviceStatusId: "f2b5ac3c-de05-4ae2-b9ef-3d3b1d86fd91"
+      deviceStatusId: "ec2ed711-e4a3-42f6-b441-0e91f98f31ba"
     });
   }
 
@@ -100,7 +100,7 @@ export class DevicesService {
   }
 
   findAllByModelId(modelId: string): Promise<Device[]> {
-    return this.devicesRepository.find({modelId: modelId, deviceStatusId: "15c5dbc7-766a-4dcc-a942-9bae3cddd179"});
+    return this.devicesRepository.find({modelId: modelId, deviceStatusId: "7b4a3256-6005-402b-916b-810f4d6669c8"});
   }
 
   findOne(id: string): Promise<Device> {
@@ -109,7 +109,7 @@ export class DevicesService {
   }
 
   findOneByDeviceId(id: string): Promise<Device> {
-    return this.devicesRepository.findOne({id: id, deviceStatusId: "15c5dbc7-766a-4dcc-a942-9bae3cddd179"});
+    return this.devicesRepository.findOne({id: id, deviceStatusId: "7b4a3256-6005-402b-916b-810f4d6669c8"});
   }
 
   async update(

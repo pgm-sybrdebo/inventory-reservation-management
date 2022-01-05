@@ -3,6 +3,7 @@ import * as Faker from 'faker';
 import { Device } from 'src/devices/entities/device.entity';
 import { Model } from 'src/models/entities/model.entity';
 import { DeviceStatus } from 'src/device-statuses/entities/device-status.entity';
+import { User } from 'src/users/entities/user.entity';
 
 interface Context {
   id: string;
@@ -18,10 +19,11 @@ define(Device, (faker: typeof Faker, context: Context) => {
   const deviceSt = device_statuses[faker.random.number({ min: 0, max: 3 })];
   // console.log("device", deviceSt);
   device.modelId = id;
-  // device.deviceStatusId = faker.random.uuid();
-  // device.is_available = faker.datatype.boolean();
+  // 70% chance for no current user
+  const boolean = Math.random() < 0.7;
+  device.user = boolean ? null : factory(User)() as any;
+
   device.deviceStatus = deviceSt;
   device.qr_code = 'default_qr_code';
-  // console.log("decice", device);
   return device;
 });

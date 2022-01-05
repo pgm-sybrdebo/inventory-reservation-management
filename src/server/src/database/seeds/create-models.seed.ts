@@ -16,7 +16,7 @@ export default class CreateModels implements Seeder {
     const device_statuses = await factory(DeviceStatus)().createMany(4);
     const reservation_states = await factory(ReservationState)().createMany(3);
     const models = await factory(Model)({ tags }).createMany(90); // 90
-    console.log('models', models);
+    // console.log('models', models);
     const devs = [];
 
     for (const mod of models) {
@@ -50,12 +50,13 @@ export default class CreateModels implements Seeder {
     // console.log("devs", devs);
 
     for (const d of devs) {
-      const { id } = d;
+      const { id, userId } = d;
 
       const reserv = await factory(Reservation)({
         id,
         reservation_states,
-      }).createMany(2);
+        userId,
+      }).createMany(userId ? 1 : 2);
       // console.log("reserv", reserv);
       // console.log("one", reserv[0]);
       // console.log("one id", reserv[0].id);
@@ -64,3 +65,6 @@ export default class CreateModels implements Seeder {
     }
   }
 }
+
+
+// yarn seed:run -s CreateModels

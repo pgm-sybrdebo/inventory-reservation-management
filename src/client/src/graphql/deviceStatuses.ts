@@ -24,8 +24,9 @@ mutation ($name: String! ) {
 
 export const UPDATE_DEVICESTATUS = gql`
 
-mutation ($name: String ) {
+mutation ($id: String!, $name: String ) {
   updateDeviceStatus(updateDeviceStatusInput: {
+    id: $id,
     name: $name,
   }) {
     id

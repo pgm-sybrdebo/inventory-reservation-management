@@ -14,19 +14,19 @@ interface Context {
 
 define(Model, (faker: typeof Faker, context: Context) => {
   const { tags } = context;
-  console.log('tagssssss', tags);
+  // console.log('tagssssss', tags);
   const model = new Model();
-  console.log('fact', context);
+  // console.log('fact', context);
   // console.log("rt", context.tags[1]);
   const copyTags = tags.slice(0);
-  console.log('cpoy', copyTags);
+  // console.log('cpoy', copyTags);
   const newTags = copyTags.splice(
     faker.random.number({ min: 0, max: 4 }),
     faker.random.number({ min: 1, max: 4 }),
   );
   // const deviceStatuses = context.context[1];
 
-  console.log(newTags);
+  // console.log(newTags);
   model.max_reservation_time = faker.random.number({ min: 1, max: 100 });
   model.name = MODELS[number].Name;
   model.description = faker.lorem.sentence();
