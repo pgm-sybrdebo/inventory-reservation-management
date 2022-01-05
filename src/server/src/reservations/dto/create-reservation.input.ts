@@ -26,8 +26,14 @@ export class CreateReservationInput {
   userId: string;
 
   @IsNotEmpty()
+  @IsDate()
   @Field((type) => Date)
   start_date: Date;
+  
+  @IsNotEmpty()
+  @IsDate()
+  @Field((type) => Date)
+  expected_end_date: Date;
 
   @IsOptional()
   @IsDate()

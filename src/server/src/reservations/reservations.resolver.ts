@@ -81,8 +81,8 @@ export class ReservationsResolver {
   }
 
   @Mutation(() => Reservation)
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles(Role.ADMIN)
   removeReservation(@Args('id', new ParseUUIDPipe()) id: string) {
     return this.reservationsService.remove(id);
   }

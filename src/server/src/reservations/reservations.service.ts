@@ -97,7 +97,9 @@ export class ReservationsService {
 
   async remove(id: string): Promise<Reservation> {
     const reservation = await this.findOne(id);
-    return this.reservationsRepository.remove(reservation);
+    console.log(reservation);
+    return this.reservationsRepository.softRemove(reservation);
+    // return reservation
   }
 
   getReservationByDeviceId(deviceId: string): Promise<Device> {

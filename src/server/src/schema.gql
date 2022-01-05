@@ -39,6 +39,7 @@ input CreateModelInput {
 input CreateReservationInput {
   deviceId: String!
   end_date: Timestamp!
+  expected_end_date: Timestamp!
   reservationStateId: String!
   start_date: Timestamp!
   userId: String!
@@ -215,6 +216,7 @@ type Reservation {
   device: Device!
   deviceId: String!
   end_date: Timestamp
+  expected_end_date: Timestamp!
   id: String!
   reservationState: ReservationState!
   reservationStateId: String!
@@ -306,6 +308,7 @@ input UpdateModelInput {
 input UpdateReservationInput {
   deviceId: String
   end_date: Timestamp
+  expected_end_date: Timestamp
   id: String!
   reservationStateId: String
   start_date: Timestamp
