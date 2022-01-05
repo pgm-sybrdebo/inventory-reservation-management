@@ -1,4 +1,12 @@
-import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  Int,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 import { UsersService } from './users.service';
 import { User } from './entities/user.entity';
 import { CreateUserInput } from './dto/create-user.input';
@@ -29,14 +37,19 @@ export class UsersResolver {
   @Query(() => [User], { name: 'usersByRole' })
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
-  findAllByRole(@Args('role', { type: () => Int }, new ParseIntPipe()) role: number) {
+  findAllByRole(
+    @Args('role', { type: () => Int }, new ParseIntPipe()) role: number,
+  ) {
     return this.usersService.findAllByRole(role);
   }
 
   @Query(() => [User], { name: 'usersByProfession' })
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
-  findAllByProfession(@Args('profession', { type: () => Int }, new ParseIntPipe()) profession: number) {
+  findAllByProfession(
+    @Args('profession', { type: () => Int }, new ParseIntPipe())
+    profession: number,
+  ) {
     return this.usersService.findAllByProfession(profession);
   }
 
@@ -57,7 +70,10 @@ export class UsersResolver {
   @Query(() => [User], { name: 'recentUsers' })
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
-  async findRecentUsers(@Args('from', { type: () => String }) from: string, @Args('to', { type: () => String }) to: string) {
+  async findRecentUsers(
+    @Args('from', { type: () => String }) from: string,
+    @Args('to', { type: () => String }) to: string,
+  ) {
     return this.usersService.findRecentUsers(from, to);
   }
 
@@ -91,7 +107,7 @@ export class UsersResolver {
     return this.usersService.remove(id);
   }
 
-  @ResolveField(returns => [Reservation])
+  @ResolveField((returns) => [Reservation])
   reservations(@Parent() user: User): Promise<Reservation[]> {
     return this.usersService.getReservationsByUserId(user.id);
   }

@@ -32,10 +32,10 @@ export const CREATE_RESERVATION = gql`
 
 mutation ($deviceId: String!, $reservationStateId: String!, $userId: String!, $start_date: Timestamp!, $expected_end_date: Timestamp! ) {
   createReservation(createReservationInput: {
-    deviceId: $deviceId,
-    reservationStateId,
-    userId: $userId,
-    start_date: $start_date,
+    deviceId: $deviceId
+    reservationStateId: $reservationStateId
+    userId: $userId
+    start_date: $start_date
     expected_end_date: $expected_end_date
   }) {
     id
@@ -44,12 +44,12 @@ mutation ($deviceId: String!, $reservationStateId: String!, $userId: String!, $s
 `;
 
 export const UPDATE_RESERVATION = gql`
-mutation ($id: String! $deviceId: String, $reservationStateId: String, $userId: String, $start_date: Timestamp, $end_date: Timestamp ) {
+mutation ($id: String! $deviceId: String!, $reservationStateId: String!, $userId: String!, $start_date: Timestamp!, $end_date: Timestamp! ) {
   updateReservation(updateReservationInput: {
     id: $id
-    deviceId: $deviceId,
-    reservationStateId: $reservationStateId,
-    userId: $userId,
+    deviceId: $deviceId
+    reservationStateId: $reservationStateId
+    userId: $userId
     start_date: $start_date
     end_date: $end_date
   }) {
@@ -75,7 +75,7 @@ mutation ($id: String!) {
 
 export const REMOVE_RESERVATION = gql`
   mutation ($id: String!){
-    removeReservation(id: $id, ) {
+    removeReservation(id: $id) {
       name
     }
   }

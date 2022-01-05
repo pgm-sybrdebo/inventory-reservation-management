@@ -15,7 +15,7 @@ export class CreateDeviceInput {
 
   @IsOptional()
   @IsUUID('all')
-  @Field({nullable: true})
+  @Field({ nullable: true })
   userId: string;
 
   // @IsNotEmpty()

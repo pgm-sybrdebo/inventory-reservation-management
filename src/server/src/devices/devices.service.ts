@@ -10,7 +10,14 @@ import { Reservation } from 'src/reservations/entities/reservation.entity';
 import { ReservationsService } from 'src/reservations/reservations.service';
 import { User } from 'src/users/entities/user.entity';
 import { UsersService } from 'src/users/users.service';
-import { Repository, Between, LessThanOrEqual, Not, Equal, IsNull } from 'typeorm';
+import {
+  Repository,
+  Between,
+  LessThanOrEqual,
+  Not,
+  Equal,
+  IsNull,
+} from 'typeorm';
 import { CreateDeviceInput } from './dto/create-device.input';
 import { UpdateDeviceInput } from './dto/update-device.input';
 import { Device } from './entities/device.entity';
@@ -23,9 +30,11 @@ export class DevicesService {
     private deviceStatusesService: DeviceStatusesService,
     // private usersService: UsersService,
     private damagesService: DamagesService,
-    @Inject(forwardRef(() => ModelsService)) private modelsService: ModelsService,
+    @Inject(forwardRef(() => ModelsService))
+    private modelsService: ModelsService,
     @Inject(forwardRef(() => UsersService)) private usersService: UsersService,
-    @Inject(forwardRef(() => ReservationsService)) private reservationsService: ReservationsService,
+    @Inject(forwardRef(() => ReservationsService))
+    private reservationsService: ReservationsService,
   ) {}
 
   create(createDeviceInput: CreateDeviceInput): Promise<Device> {
@@ -40,26 +49,26 @@ export class DevicesService {
 
   findAllBorrowedDevices(): Promise<Device[]> {
     return this.devicesRepository.find({
-      userId: Not(IsNull())
+      userId: Not(IsNull()),
     });
   }
 
   findAllStockDevices(): Promise<Device[]> {
     return this.devicesRepository.find({
-      userId: IsNull()
+      userId: IsNull(),
     });
   }
 
   findAllInCheckDevices(): Promise<Device[]> {
     return this.devicesRepository.find({
-      deviceStatusId: "ec2ed711-e4a3-42f6-b441-0e91f98f31ba"
+      deviceStatusId: 'ec2ed711-e4a3-42f6-b441-0e91f98f31ba',
     });
   }
 
   findRecentNewDevices(): Promise<Device[]> {
     return this.devicesRepository.find({
       order: {
-        created_on: "DESC"
+        created_on: 'DESC',
       },
       take: 5,
     });
@@ -76,14 +85,14 @@ export class DevicesService {
     previousMonth.setMonth(previousMonth.getMonth() - 1);
     const previousIso = previousMonth.toISOString();
     const totalUsersLastMonth = await this.devicesRepository.count({
-      created_on: LessThanOrEqual(previousIso)
-    })
+      created_on: LessThanOrEqual(previousIso),
+    });
     const totalUsersNow = await this.devicesRepository.count();
     const difference = totalUsersNow - totalUsersLastMonth;
     return difference;
   }
 
-  findRecentDevices(from: string, to:string): Promise<Device[]> {
+  findRecentDevices(from: string, to: string): Promise<Device[]> {
     const date = new Date(Number(from));
     const iso = date.toISOString();
     const date1 = new Date(Number(to));
@@ -91,25 +100,29 @@ export class DevicesService {
     console.log(date);
     console.log(date1);
     console.log(iso);
-    console.log(iso1)
+    console.log(iso1);
 
     return this.devicesRepository.find({
-      created_on: Between(iso
-        , iso1),
-    })
+      created_on: Between(iso, iso1),
+    });
   }
 
   findAllByModelId(modelId: string): Promise<Device[]> {
-    return this.devicesRepository.find({modelId: modelId, deviceStatusId: "7b4a3256-6005-402b-916b-810f4d6669c8"});
+    return this.devicesRepository.find({
+      modelId: modelId,
+      deviceStatusId: '7b4a3256-6005-402b-916b-810f4d6669c8',
+    });
   }
 
   findOne(id: string): Promise<Device> {
     return this.devicesRepository.findOneOrFail(id);
- 
   }
 
   findOneByDeviceId(id: string): Promise<Device> {
-    return this.devicesRepository.findOne({id: id, deviceStatusId: "7b4a3256-6005-402b-916b-810f4d6669c8"});
+    return this.devicesRepository.findOne({
+      id: id,
+      deviceStatusId: '7b4a3256-6005-402b-916b-810f4d6669c8',
+    });
   }
 
   async update(
@@ -137,7 +150,9 @@ export class DevicesService {
     return this.damagesService.findAllByDeviceId(deviceId);
   }
 
-  getDeviceStatusByDeviceStatusId(deviceStatusId: string): Promise<DeviceStatus> {
+  getDeviceStatusByDeviceStatusId(
+    deviceStatusId: string,
+  ): Promise<DeviceStatus> {
     return this.deviceStatusesService.findOne(deviceStatusId);
   }
 

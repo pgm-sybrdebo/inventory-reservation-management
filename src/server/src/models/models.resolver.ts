@@ -38,7 +38,6 @@ export class ModelsResolver {
     return this.modelsService.findAll();
   }
 
-
   @Query(() => [Model], { name: 'modelsByTagId' })
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.USER)
@@ -63,7 +62,10 @@ export class ModelsResolver {
   @Query(() => [Model], { name: 'recentModels' })
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
-  async findRecentUsers(@Args('from', { type: () => String }) from: string, @Args('to', { type: () => String }) to: string) {
+  async findRecentUsers(
+    @Args('from', { type: () => String }) from: string,
+    @Args('to', { type: () => String }) to: string,
+  ) {
     return this.modelsService.findRecentModels(from, to);
   }
 

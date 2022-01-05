@@ -24,10 +24,10 @@ mutation ($name: String! ) {
 
 export const UPDATE_DEVICESTATUS = gql`
 
-mutation ($id: String!, $name: String ) {
+mutation ($id: String!, $name: String! ) {
   updateDeviceStatus(updateDeviceStatusInput: {
-    id: $id,
-    name: $name,
+    id: $id
+    name: $name
   }) {
     id
   }
@@ -36,7 +36,7 @@ mutation ($id: String!, $name: String ) {
 
 export const REMOVE_DEVICESTATUS = gql`
   mutation ($id: String!){
-    removeDeviceStatus(id: $id, ) {
+    removeDeviceStatus(id: $id) {
       name
     }
   }

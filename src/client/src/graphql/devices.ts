@@ -119,10 +119,10 @@ mutation ($modelId: String!, $deviceStatusId: String!, $qr_code: String! ) {
 
 export const UPDATE_DEVICE = gql`
 
-mutation ($id: String!, $modelId: String, $deviceStatusId: String, $qr_code: String ) {
+mutation ($id: String!, $modelId: String!, $deviceStatusId: String!, $qr_code: String! ) {
   updateDevice(updateDeviceInput: {
     id: $id
-    modelId: modelId,
+    modelId: $modelId,
     deviceStatusId: $deviceStatusId,
     qr_code: $qr_code,
   }) {
@@ -133,7 +133,7 @@ mutation ($id: String!, $modelId: String, $deviceStatusId: String, $qr_code: Str
 
 export const REMOVE_DEVICE = gql`
   mutation ($id: String!){
-    removeDevice(id: $id, ) {
+    removeDevice(id: $id) {
       id
     }
   }
@@ -141,7 +141,7 @@ export const REMOVE_DEVICE = gql`
 
 export const GET_DEVICE_BY_ID = gql`
   query ($id: String!){
-    getDeviceById(id: $id, ) {
+    getDeviceById(id: $id) {
       id
       userId
       qr_code

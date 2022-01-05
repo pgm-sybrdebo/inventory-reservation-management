@@ -30,9 +30,9 @@ export class Device {
   @Column()
   @Field()
   deviceStatusId: string;
-  
-  @Column({nullable: true})
-  @Field({nullable: true})
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
   userId: string;
 
   // @Column()

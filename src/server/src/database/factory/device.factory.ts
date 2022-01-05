@@ -21,7 +21,7 @@ define(Device, (faker: typeof Faker, context: Context) => {
   device.modelId = id;
   // 70% chance for no current user
   const boolean = Math.random() < 0.7;
-  device.user = boolean ? null : factory(User)() as any;
+  device.user = boolean ? null : (factory(User)() as any);
 
   device.deviceStatus = deviceSt;
   device.qr_code = 'default_qr_code';

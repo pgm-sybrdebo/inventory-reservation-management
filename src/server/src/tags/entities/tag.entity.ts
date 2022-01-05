@@ -1,7 +1,15 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { Dates } from 'src/mixins/date.entity';
 import { Model } from 'src/models/entities/model.entity';
-import { PrimaryGeneratedColumn, Column, Entity, ManyToMany, CreateDateColumn, DeleteDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  PrimaryGeneratedColumn,
+  Column,
+  Entity,
+  ManyToMany,
+  CreateDateColumn,
+  DeleteDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
 @ObjectType()

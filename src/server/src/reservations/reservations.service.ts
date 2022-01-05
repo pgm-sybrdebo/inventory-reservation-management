@@ -16,7 +16,8 @@ export class ReservationsService {
     @InjectRepository(Reservation)
     private reservationsRepository: Repository<Reservation>,
     @Inject(forwardRef(() => UsersService)) private usersService: UsersService,
-    @Inject(forwardRef(() => DevicesService)) private devicesService: DevicesService,
+    @Inject(forwardRef(() => DevicesService))
+    private devicesService: DevicesService,
   ) {}
 
   create(createReservationInput: CreateReservationInput): Promise<Reservation> {
@@ -34,7 +35,7 @@ export class ReservationsService {
   findRecentReservations(): Promise<Reservation[]> {
     return this.reservationsRepository.find({
       order: {
-        created_on: "DESC"
+        created_on: 'DESC',
       },
       take: 8,
     });
@@ -45,7 +46,7 @@ export class ReservationsService {
   }
 
   findAllByUserId(userId: string): Promise<Reservation[]> {
-    return this.reservationsRepository.find({userId});
+    return this.reservationsRepository.find({ userId });
   }
 
   findTotalMonthReservations(month: string): Promise<number> {
@@ -54,14 +55,12 @@ export class ReservationsService {
     console.log(startDate);
     console.log(endDate);
 
-
     return this.reservationsRepository.count({
-      start_date: Between(startDate, endDate) 
+      start_date: Between(startDate, endDate),
     });
   }
 
-  async reservationsOverview(today: string):Promise<any> {
-
+  async reservationsOverview(today: string): Promise<any> {
     const rawData = await this.reservationsRepository.query(`
       SELECT
         DATE_TRUNC('month', start_date) AS month,
@@ -75,7 +74,7 @@ export class ReservationsService {
         month DESC
       LIMIT 12
     `);
-    console.log(rawData)
+    console.log(rawData);
     return rawData;
   }
 
@@ -95,14 +94,13 @@ export class ReservationsService {
     return this.reservationsRepository.save(updatedReservation);
   }
 
-
   async updateTakenConfirmed(
     id: string,
     updateReservationInput: UpdateReservationInput,
   ): Promise<Reservation> {
     const updatedReservation = await this.reservationsRepository.preload({
       id: id,
-      reservationStateId: "1d6e3e78-024e-4bed-bc5e-065b6fb7d1c4",
+      reservationStateId: '1d6e3e78-024e-4bed-bc5e-065b6fb7d1c4',
       ...updateReservationInput,
     });
 

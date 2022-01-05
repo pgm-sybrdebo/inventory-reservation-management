@@ -24,10 +24,10 @@ mutation ($name: String! ) {
 
 export const UPDATE_TAG = gql`
 
-mutation ($id: String!, $name: String ) {
+mutation ($id: String!, $name: String! ) {
   updateTag(updateTagInput: {
     id: $id,
-    name: name,
+    name: $name,
   }) {
     id
   }
@@ -36,7 +36,7 @@ mutation ($id: String!, $name: String ) {
 
 export const REMOVE_TAG = gql`
   mutation ($id: String!){
-    removeTag(id: $id, ) {
+    removeTag(id: $id ) {
       name
     }
   }

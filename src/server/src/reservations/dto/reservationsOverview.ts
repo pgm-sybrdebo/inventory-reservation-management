@@ -12,17 +12,11 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-
 @ObjectType()
 export class ReservationsOverview {
-
   @Field()
   month: string;
 
-
   @Field()
   total_reservations: number;
-
-
- 
 }

@@ -11,7 +11,8 @@ import { User } from './entities/user.entity';
 export class UsersService {
   constructor(
     @InjectRepository(User) private usersRepository: Repository<User>,
-    @Inject(forwardRef(() => ReservationsService)) private reservationsService: ReservationsService,
+    @Inject(forwardRef(() => ReservationsService))
+    private reservationsService: ReservationsService,
   ) {}
 
   create(createUserInput: CreateUserInput): Promise<User> {
@@ -25,11 +26,11 @@ export class UsersService {
   }
 
   findAllByRole(role: number): Promise<User[]> {
-    return this.usersRepository.find({role});
+    return this.usersRepository.find({ role });
   }
 
   findAllByProfession(profession: number): Promise<User[]> {
-    return this.usersRepository.find({profession});
+    return this.usersRepository.find({ profession });
   }
 
   findAndCount(): Promise<number> {
@@ -43,14 +44,14 @@ export class UsersService {
     previousMonth.setMonth(previousMonth.getMonth() - 1);
     const previousIso = previousMonth.toISOString();
     const totalUsersLastMonth = await this.usersRepository.count({
-      created_on: LessThanOrEqual(previousIso)
-    })
+      created_on: LessThanOrEqual(previousIso),
+    });
     const totalUsersNow = await this.usersRepository.count();
     const difference = totalUsersNow - totalUsersLastMonth;
     return difference;
   }
 
-  findRecentUsers(from: string, to:string): Promise<User[]> {
+  findRecentUsers(from: string, to: string): Promise<User[]> {
     const date = new Date(Number(from));
     const iso = date.toISOString();
     const date1 = new Date(Number(to));
@@ -58,12 +59,11 @@ export class UsersService {
     console.log(date);
     console.log(date1);
     console.log(iso);
-    console.log(iso1)
+    console.log(iso1);
 
     return this.usersRepository.find({
-      created_on: Between(iso
-        , iso1),
-    })
+      created_on: Between(iso, iso1),
+    });
   }
 
   findOne(id: string): Promise<User> {

@@ -16,9 +16,9 @@ export const CREATE_MODEL = gql`
 
 mutation ($name: String!, $brand: String!, $description: String!, $quantity: Int!, $specifications: String!, $max_reservation_time: Int! ) {
   createModel(createModelInput: {
-    name: $name,
-    brand: $brand,
-    description: $description,
+    name: $name
+    brand: $brand
+    description: $description
     quantity: $quantity
     specifications: $specifications
     max_reservation_time: $max_reservation_time
@@ -30,12 +30,12 @@ mutation ($name: String!, $brand: String!, $description: String!, $quantity: Int
 
 export const UPDATE_MODEL = gql`
 
-mutation ($id: String!, $name: String, $brand: String, $description: String, $quantity: Int, $specifications: String, $max_reservation_time: Int ) {
+mutation ($id: String!, $name: String!, $brand: String!, $description: String!, $quantity: Int!, $specifications: String!, $max_reservation_time: Int! ) {
   updateModel(updateModelInput: {
-    id: $id,
-    name: $name,
-    brand: $brand,
-    description: $description,
+    id: $id
+    name: $name
+    brand: $brand
+    description: $description
     quantity: $quantity
     specifications: $specifications
     max_reservation_time: $max_reservation_time
@@ -47,7 +47,7 @@ mutation ($id: String!, $name: String, $brand: String, $description: String, $qu
 
 export const REMOVE_MODEL = gql`
   mutation ($id: String!){
-    removeModel(id: $id, ) {
+    removeModel(id: $id) {
       name
     }
   }

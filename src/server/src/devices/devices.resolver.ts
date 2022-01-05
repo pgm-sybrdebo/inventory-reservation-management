@@ -86,7 +86,10 @@ export class DevicesResolver {
   @Query(() => [Device], { name: 'recentDevices' })
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
-  async findRecentDevices(@Args('from', { type: () => String }) from: string, @Args('to', { type: () => String }) to: string) {
+  async findRecentDevices(
+    @Args('from', { type: () => String }) from: string,
+    @Args('to', { type: () => String }) to: string,
+  ) {
     return this.devicesService.findRecentDevices(from, to);
   }
 
@@ -132,28 +135,28 @@ export class DevicesResolver {
     return this.devicesService.getDeviceReservations(device.id);
   }
 
-  @ResolveField(returns => [Damage])
+  @ResolveField((returns) => [Damage])
   damages(@Parent() device: Device): Promise<Damage[]> {
     return this.devicesService.getDeviceDamages(device.id);
   }
 
-  @ResolveField(returns => DeviceStatus)
+  @ResolveField((returns) => DeviceStatus)
   deviceStatus(@Parent() device: Device): Promise<DeviceStatus> {
     return this.devicesService.getDeviceStatusByDeviceStatusId(
       device.deviceStatusId,
     );
   }
 
-  @ResolveField(returns => User)
+  @ResolveField((returns) => User)
   user(@Parent() device: Device): Promise<User> {
-    if (device.userId){
+    if (device.userId) {
       return this.devicesService.getUserByUserId(device.userId);
     } else {
       return;
     }
   }
 
-  @ResolveField(returns => Model)
+  @ResolveField((returns) => Model)
   model(@Parent() device: Device): Promise<Model> {
     return this.devicesService.getModelByDeviceId(device.modelId);
   }

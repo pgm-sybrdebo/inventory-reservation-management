@@ -66,5 +66,4 @@ export default class CreateModels implements Seeder {
   }
 }
 
-
 // yarn seed:run -s CreateModels

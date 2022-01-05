@@ -29,7 +29,7 @@ export class CreateReservationInput {
   @IsDate()
   @Field((type) => Date)
   start_date: Date;
-  
+
   @IsNotEmpty()
   @IsDate()
   @Field((type) => Date)
@@ -37,6 +37,6 @@ export class CreateReservationInput {
 
   @IsOptional()
   @IsDate()
-  @Field((type) => Date, {nullable: true})
+  @Field((type) => Date, { nullable: true })
   end_date: Date;
 }

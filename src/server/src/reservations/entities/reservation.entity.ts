@@ -37,7 +37,7 @@ export class Reservation {
   @Column()
   @Field()
   start_date: Date;
-  
+
   @Column()
   @Field()
   expected_end_date: Date;

@@ -2,7 +2,15 @@ import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { Device } from 'src/devices/entities/device.entity';
 import { Dates } from 'src/mixins/date.entity';
 import { Reservation } from 'src/reservations/entities/reservation.entity';
-import { PrimaryGeneratedColumn, Column, Entity, OneToMany, CreateDateColumn, DeleteDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  PrimaryGeneratedColumn,
+  Column,
+  Entity,
+  OneToMany,
+  CreateDateColumn,
+  DeleteDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Role } from '../../auth/role.enum';
 @Entity()
 @ObjectType()

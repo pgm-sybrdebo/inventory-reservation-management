@@ -6,8 +6,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ReservationsModule } from 'src/reservations/reservations.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User]), 
-  forwardRef(() => ReservationsModule)],
+  imports: [
+    TypeOrmModule.forFeature([User]),
+    forwardRef(() => ReservationsModule),
+  ],
   providers: [UsersResolver, UsersService],
   exports: [UsersService],
 })

@@ -8,7 +8,7 @@ import { UsersModule } from 'src/users/users.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Reservation]),  
+    TypeOrmModule.forFeature([Reservation]),
     forwardRef(() => DevicesModule),
     forwardRef(() => UsersModule),
   ],
