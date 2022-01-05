@@ -30,11 +30,13 @@ export const RECENT_RESERVATIONS = gql`
 
 export const CREATE_RESERVATION = gql`
 
-mutation ($deviceId: String!, $reservationStateId: String!, $userId: String!, $start_date: Timestamp! ) {
+mutation ($deviceId: String!, $reservationStateId: String!, $userId: String!, $start_date: Timestamp!, $expected_end_date: Timestamp! ) {
   createReservation(createReservationInput: {
     deviceId: $deviceId,
+    reservationStateId,
     userId: $userId,
-    start_date: $start_date
+    start_date: $start_date,
+    expected_end_date: $expected_end_date
   }) {
     id
   }

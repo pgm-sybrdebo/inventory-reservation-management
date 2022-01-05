@@ -22,8 +22,8 @@ export class ReservationsResolver {
   constructor(private readonly reservationsService: ReservationsService) {}
 
   @Mutation(() => Reservation)
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN, Role.USER)
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles(Role.ADMIN, Role.USER)
   createReservation(
     @Args('createReservationInput')
     createReservationInput: CreateReservationInput,
@@ -68,8 +68,8 @@ export class ReservationsResolver {
   }
 
   @Mutation(() => Reservation)
-  // @UseGuards(JwtAuthGuard, RolesGuard)
-  // @Roles(Role.ADMIN, Role.USER)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.USER)
   updateReservation(
     @Args('updateReservationInput')
     updateReservationInput: UpdateReservationInput,
@@ -82,7 +82,7 @@ export class ReservationsResolver {
 
   @Mutation(() => Reservation)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.USER)
   removeReservation(@Args('id', new ParseUUIDPipe()) id: string) {
     return this.reservationsService.remove(id);
   }
