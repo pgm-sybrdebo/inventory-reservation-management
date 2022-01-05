@@ -1,9 +1,9 @@
 import { Container, GeneralList, Header, ModelImage, ModelInfo } from '../components';
-import device from '../assets/device.jpg'
+import device from '../assets/device.jpg';
 import { useQuery } from '@apollo/client';
 import {GET_MODEL_BY_ID} from '../graphql/models';
 import { useParams } from 'react-router-dom';
-
+const tags = ['Lorem ipsum dolor sit amet','Lorem ipsum dolor sit amet', 'Lorem ipsum dolor sit amet','Lorem ipsum dolor sit amet' ];
 const ModelDetail = () => {
   let { id } = useParams();
   const { loading, error, data } = useQuery(GET_MODEL_BY_ID, {
@@ -16,17 +16,14 @@ const ModelDetail = () => {
   const arr = Object.entries(info)
   const joinedArr = arr.map(i => i.join(": "))
   const newArr = Array.prototype.concat.apply([], joinedArr)
-  console.log(newArr)
   return (
     <>
       <Header />
-      
       <Container>
         <GeneralList>
           <ModelImage src={device}/>
           <ModelInfo name={result.name} quantity={result.quantity} description={result.description} specifications={newArr} tags={tags}/>
         </GeneralList>
-        
       </Container>
     </>
 
