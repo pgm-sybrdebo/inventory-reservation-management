@@ -56,6 +56,7 @@ export const REMOVE_MODEL = gql`
 export const GET_ALL_MODELS = gql`
   query {
     models {
+      id
       name
       brand
       description

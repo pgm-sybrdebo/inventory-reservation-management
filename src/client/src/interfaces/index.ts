@@ -26,7 +26,15 @@ export interface ModelCardPic {
   src: string,
   title: string,
   quantity: number,
-  description: string
+  description: string,
+  id: string
+}
+
+export interface ModelCardData {
+  name: string;
+  quantity: number;
+  description: string;
+  id: string;
 }
 
 

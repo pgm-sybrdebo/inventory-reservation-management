@@ -5,7 +5,7 @@ import { ModelCardPic } from '../../interfaces'
 import CardBtn from '../CardBtn/CardBtn';
 
 
-const ModelCard : React.FC<ModelCardPic>= ({src, title, quantity, description}) => {
+const ModelCard : React.FC<ModelCardPic>= ({src, title, quantity, description, id}) => {
   let navigate = useNavigate();
   return(
     <BigCard>
@@ -26,7 +26,7 @@ const ModelCard : React.FC<ModelCardPic>= ({src, title, quantity, description}) 
       type="button" 
       text="Learn More" 
       name="lm"
-      onClick = {()=> navigate("/models/detail")}
+      onClick = {()=> navigate(`/models/detail/${id}`)}
     />
     <CardBtn
       type="button" 
@@ -67,12 +67,13 @@ const BigCard = styled.div`
     & .top{
       display:flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: start;
       margin-bottom: 8px;
       & h2{
-        font-size:24px;
+        font-size:18px;
         font-weight: 600;
         color: #000;
+        width: 80%;
       }
       & h6{
         color:#2E3939;

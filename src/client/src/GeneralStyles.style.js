@@ -260,4 +260,16 @@ article ul, ol{
   font-size: .8rem;
   color:#717171;
 }
+
+.loading{
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+.loading__text{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
 `;

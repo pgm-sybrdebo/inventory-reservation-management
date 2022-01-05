@@ -12,6 +12,7 @@ import ModelImage from './ModelImage/ModelImage';
 import ModelInfo from './ModelInfo/ModelInfo'; 
 import GeneralList from './GeneralList/GeneralList';
 
+
 export {
   RegisterForm,
   Input,
