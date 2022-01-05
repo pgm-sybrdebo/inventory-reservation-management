@@ -56,6 +56,7 @@ const BigCard = styled.div`
     & img{
       width: 100%;
       height: 100%;
+      aspect-ratio: 16 / 9;
       border-radius: .25rem .25rem 0 0 ;
       object-fit: cover;
     }
