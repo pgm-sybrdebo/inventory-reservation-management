@@ -9,8 +9,8 @@ type Props = {
 };
 
 const StyledButton = styled(Button)<Props>`
-  width:95%;
-  max-width: 95%;
+  /* width:95%; */
+  width: 100%;
   height:50px;
   color: ${props=>props.color};
   font-weight: bold;

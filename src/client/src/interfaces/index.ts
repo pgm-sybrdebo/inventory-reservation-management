@@ -124,6 +124,10 @@ export interface User {
   created_on: number
 }
 
+export interface UserById extends User {
+  reservations:any[]
+}
+
 export interface TableProps {
   columns: GridColDef[]
   data: User[]
@@ -158,4 +162,12 @@ export interface TokenInfo {
   iat: number,
   role: UserRole,
   sub: string
+}
+
+export interface EditProfileValues {
+  editFname: string,
+  editLname:string,
+  editEmail:string,
+  editPass:string,
+  repeatEditPass:string,
 }

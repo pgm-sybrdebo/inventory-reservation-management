@@ -13,7 +13,6 @@ const Models = () => {
   if(error) {return <div className="loading"><h1 className="loading__text">Error {error.message}</h1></div>}
   const result = data.models;
   const quantity=result.length;
-  console.log(result)
   return (
     <>
       <Header />

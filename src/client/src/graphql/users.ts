@@ -78,7 +78,7 @@ export const REMOVE_USER = gql`
 
 export const GET_USER_BY_ID = gql`
   query user($id: String!) {
-    usersByRole(id: $id) {
+    user(id: $id) {
       id
       firstName
       lastName

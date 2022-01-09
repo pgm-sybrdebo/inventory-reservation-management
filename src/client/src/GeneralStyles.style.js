@@ -64,6 +64,11 @@ body {
 .picLog{
   background-image: url('https://images.unsplash.com/photo-1605595971596-d6f55f6987b7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80');
 }
+
+.picEdit{
+  background-image: url('https://images.unsplash.com/photo-1596839808531-218de5fbc3b4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80');
+}
+
 .picture{
   background-position: center;
   background-size: cover;

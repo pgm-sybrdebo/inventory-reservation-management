@@ -22,8 +22,8 @@ const WidgetTableMd = ({recentReservations}: any) => {
         {recentReservations.map((reservation:any) => {
           const start = reservation.start_date;
           const maxDays = reservation.device.model.max_reservation_time;
-          console.log(start)
-          console.log(maxDays)
+          // console.log(start)
+          // console.log(maxDays)
           const end = start + (maxDays * 86400000)
 
 

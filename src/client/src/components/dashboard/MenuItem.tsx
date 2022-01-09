@@ -2,7 +2,7 @@ import React from 'react'
 import { NavLink } from 'react-router-dom';
 import styled from "styled-components";
 import { MenuItemProps } from '../../interfaces';
-import * as routes from '../../routes';
+//import * as routes from '../../routes';
 
 const MenuItemComponent = styled.li`
   margin-bottom: 1rem;
@@ -52,7 +52,6 @@ const MenuItem = ({ title, submenu, icon }:MenuItemProps) => {
       <SubMenuList>
         {submenu.map((submenuItem, index) => {
           const url = submenuItem.url
-          console.log(url);
           return (
           
           <NavLink to={url}>

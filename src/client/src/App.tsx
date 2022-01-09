@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Navigate, useLocation, Outlet } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation, Outlet, useNavigate } from "react-router-dom";
 import {GlobalStyles} from './GeneralStyles.style';
 import * as ROUTES from "./routes";
 import jwt_decode from "jwt-decode"
@@ -9,7 +9,8 @@ import {
   Models,
   ModelDetail,
   Page403,
-  Admin
+  Admin,
+  EditProfile
 } from "./pages";
 import DashboardHome from "./pages/DashboardHome";
 import DashboardUsers from "./pages/DashboardUsers";
@@ -26,6 +27,7 @@ import { TokenInfo, UserRole } from "./interfaces";
 
 
 const RequireAuth = ({availableRoles} : { availableRoles: UserRole[]}) => {
+  let navigate = useNavigate();
   const token = localStorage.getItem('token');  
   let location = useLocation();
 
@@ -34,11 +36,14 @@ const RequireAuth = ({availableRoles} : { availableRoles: UserRole[]}) => {
   }
 
   const data = jwt_decode<TokenInfo>(token);
-  console.log(data);
+  if (data.exp  < Date.now() / 1000) {
+    localStorage.removeItem('token');
+    navigate("/login");
+  }
+  console.log("Token is Active")
   if (!availableRoles.filter(r => r === data.role).length) {
     return <Navigate to="/page403" state={{ from: location }} />;
   }
-
   return <Outlet />;
 }
 
@@ -61,6 +66,10 @@ function App() {
           <Route
             path={ROUTES.MODEL_DETAILS}
             element={<ModelDetail />}
+          /> 
+          <Route
+            path={ROUTES.EDIT_PROFILE}
+            element={<EditProfile />}
           />       
         </Route>
 

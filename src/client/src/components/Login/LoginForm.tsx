@@ -142,7 +142,7 @@ const LoginForm: React.FC = () => {
   const [responseError, setResponseError] = useState('');
   const [login] = useMutation(LOGIN, {
     onCompleted: (response) => {
-      console.log(response);
+
       localStorage.setItem("token", response.login.access_token);
       navigate("/");
     },
@@ -165,8 +165,6 @@ const LoginForm: React.FC = () => {
           validationSchema={validationSchema}
           onSubmit={(formData, {setSubmitting}) => {
             setSubmitting(true);
-
-            console.log('submitting');
 
             login({
               variables: {

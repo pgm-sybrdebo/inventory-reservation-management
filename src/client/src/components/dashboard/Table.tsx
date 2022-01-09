@@ -1,4 +1,5 @@
-import { DataGrid, GridColDef, } from '@material-ui/data-grid';
+// import { DataGrid, GridColDef, } from '@material-ui/data-grid';
+import { DataGrid } from '@material-ui/data-grid';
 import styled from "styled-components";
 import { TableProps } from '../../interfaces';
 
