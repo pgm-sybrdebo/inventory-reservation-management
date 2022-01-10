@@ -53,7 +53,7 @@ function App() {
       <GlobalStyles />
       <Router>        
         <Routes>
-        <Route element={<RequireAuth availableRoles={[UserRole.Regular, UserRole.Admin]} />}>
+        <Route element={<RequireAuth availableRoles={[UserRole.Regular, UserRole.Admin, UserRole.SuperAdmin]} />}>
           <Route path={ROUTES.HOME}  element={<Navigate to={ROUTES.LANDING} replace />} />
           <Route 
             path={ROUTES.LANDING} 
@@ -73,7 +73,7 @@ function App() {
           />       
         </Route>
 
-        <Route element={<RequireAuth availableRoles={[UserRole.Admin]} />}>          
+        <Route element={<RequireAuth availableRoles={[UserRole.Admin, UserRole.SuperAdmin]} />}>          
         <Route
             path={ROUTES.ADMIN}
             element={<Admin/>}
