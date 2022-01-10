@@ -25,6 +25,10 @@ export class DamagesService {
     return this.damagesRepository.findOneOrFail(id);
   }
 
+  findAllByDeviceId(deviceId: string): Promise<Damage[]> {
+    return this.damagesRepository.find({ deviceId });
+  }
+
   async update(
     id: string,
     updateDamageInput: UpdateDamageInput,

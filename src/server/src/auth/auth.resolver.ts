@@ -5,7 +5,7 @@ import { AuthService } from './auth.service';
 import { LoginResponse } from './dto/login-response';
 import { LoginUserInput } from './dto/login-user.input';
 import { SignupUserInput } from './dto/signup-user.input';
-import { GqlAuthGuard } from './gql-auth.guard';
+import { GqlAuthGuard } from './guards/gql-auth.guard';
 
 @Resolver()
 export class AuthResolver {
@@ -17,7 +17,7 @@ export class AuthResolver {
     @Args('loginUserInput') loginUserInput: LoginUserInput,
     @Context() context,
   ) {
-    console.log("server", this.authService.login(context.user));
+    console.log('server', this.authService.login(context.user));
     return this.authService.login(context.user);
   }
 

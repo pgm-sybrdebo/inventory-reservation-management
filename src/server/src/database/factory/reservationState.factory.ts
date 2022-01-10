@@ -3,10 +3,11 @@ import * as Faker from 'faker';
 import { ReservationState } from 'src/reservation-states/entities/reservation-state.entity';
 
 const reservationStates = ['reserved', 'taken', 'returned'];
+let number = 0;
 
 define(ReservationState, (faker: typeof Faker) => {
   const reservationState = new ReservationState();
-  reservationState.name =
-    reservationStates[faker.datatype.number({ min: 0, max: 2 })];
+  reservationState.name = reservationStates[number];
+  number++;
   return reservationState;
 });

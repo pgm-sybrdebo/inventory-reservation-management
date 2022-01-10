@@ -5,9 +5,13 @@ import Container from './Container';
 import * as routes from '../../routes';
 import logo from "../../assets/logo.svg"
 import more from "../../assets/more.svg"
+import { HeaderProps } from '../../interfaces';
+interface StyledProps {
+  t: string;
+}
 
-const Header: React.FC = () => (
-  <TheHeader>
+const Header = ({type="base"}:HeaderProps) => (
+  <TheHeader t={type}>
     <Container>
       <div className="header__wrapper">
         <NavLink to={routes.LANDING}>
@@ -19,10 +23,13 @@ const Header: React.FC = () => (
   </TheHeader>
 )
 
-const TheHeader = styled.div`
+const TheHeader = styled.div<StyledProps>`
   width: 100%;
   height: 90px;
-  margin-bottom: 32px;
+  margin-bottom: ${props => props.t === 'dashboard' ? '0px' : '32px'};
+  position: ${props => props.t === 'dashboard' ? 'sticky' : 'static'};
+  top: 0;
+  z-index:10;
   background-color: #F58732;
   & .header__wrapper{
     display:flex;

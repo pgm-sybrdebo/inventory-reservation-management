@@ -8,8 +8,8 @@ const Select : React.FC<MySingleSelectProps> = ({id, name,  onChange, onBlur}) =
     <label htmlFor={id}>Status</label>
     <select id={id} name={name} onChange={onChange} onBlur={onBlur}>
       <option selected disabled>Choose Status</option>
-      <option value="student">Student</option>
-      <option value ="staff"> Staff</option>
+      <option value={0}>Student</option>
+      <option value ={1}> Staff</option>
     </select>
   </SelectField>
 )

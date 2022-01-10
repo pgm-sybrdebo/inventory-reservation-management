@@ -3,6 +3,9 @@ import Login from "./Login";
 import Register from "./Register";
 import Models from './Models';
 import ModelDetail from "./ModelDetail";
+import Page403 from './Page403';
+import Admin from "./Admin";
+import EditProfile from './EditProfile';
 
 export {
   HomePage,
@@ -10,4 +13,7 @@ export {
   Register,
   Models,
   ModelDetail,
+  Page403,
+  Admin, 
+  EditProfile,
 };

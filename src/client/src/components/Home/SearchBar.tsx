@@ -8,7 +8,8 @@ import { MySearchValues } from '../../interfaces';
 
 import StyledButton from '../Button/StyledButton.style';
 
-const LoginForm: React.FC = () => {
+const SearchBar: React.FC = () => {
+
 
   let navigate = useNavigate();
   const formik: FormikProps<MySearchValues> = useFormik<MySearchValues>({
@@ -90,12 +91,15 @@ const SearchSection = styled.div`
         display: flex;
       }
       & .search__wrapper__form__input{
-        width: 90%;
+        width: 80%;
         height: 50px;
         border: 2px solid #F58732;
         border-radius: .25rem 0 0 .25rem;
         padding: 0 .5rem;
         outline: none;
+      }
+      & button{
+        width: 20%;
       }
   
     }
@@ -116,4 +120,4 @@ const SearchSection = styled.div`
   
 `;
 
-export default LoginForm;
+export default SearchBar;

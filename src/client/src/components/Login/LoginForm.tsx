@@ -120,12 +120,12 @@
 
 
 
-import React, { useEffect } from 'react'
-import { useNavigate, NavLink, Navigate } from "react-router-dom";
-import {useFormik, FormikProps, Formik} from 'formik';
+import React, { useState } from 'react'
+import { useNavigate, NavLink } from "react-router-dom";
+import { Formik } from 'formik';
 import * as YUP from 'yup';
 import styled from "styled-components";
-import { MyLoginFormValues } from '../../interfaces';
+//import { MyLoginFormValues } from '../../interfaces';
 import * as routes from '../../routes';
 
 import Input from '../Input/Input';
@@ -139,22 +139,24 @@ const validationSchema = YUP.object({
 })
 
 const LoginForm: React.FC = () => {
-  const [login, { data, loading, error }] = useMutation(LOGIN);
-  let navigate = useNavigate();
+  const [responseError, setResponseError] = useState('');
+  const [login] = useMutation(LOGIN, {
+    onCompleted: (response) => {
 
-  useEffect(() => {
-    if (data) {
-
-      console.log(data);
-      localStorage.setItem("token", data.login.access_token);
+      localStorage.setItem("token", response.login.access_token);
       navigate("/");
+    },
+    onError: (error) => {
+      console.log(`AUTH ERROR: ${error.message}`);
+      setResponseError("Worng Email or Password!")
     }
-  }, [data])
-
+  });
+  let navigate = useNavigate();
   return (
     <LogSection>
       <div className="wrap">
         <h2>Login</h2>
+        {responseError && <p className="error">{responseError}</p>}
         <Formik 
           initialValues={{
             loginEmail: "",
@@ -163,8 +165,6 @@ const LoginForm: React.FC = () => {
           validationSchema={validationSchema}
           onSubmit={(formData, {setSubmitting}) => {
             setSubmitting(true);
-
-            console.log('submitting');
 
             login({
               variables: {
@@ -197,9 +197,8 @@ const LoginForm: React.FC = () => {
                 onBlur = {handleBlur} 
                 value={values.loginPass}  
               />
-              
               {touched.loginPass && errors.loginPass ? <p className="error">{errors.loginPass}</p> : null}
-              {error && <p>Wrong email or password!</p>}
+
               <StyledButton 
                 type="submit" 
                 text="Login" 
@@ -240,6 +239,7 @@ const LogSection = styled.div`
       font-size: 1.8rem !important;
       font-weight: 600;
       color:#000;
+      margin-bottom: 1rem !important;
     }
   }
 `;

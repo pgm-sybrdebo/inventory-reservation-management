@@ -122,6 +122,7 @@ const Wrapper = styled.div`
         & .tag{
           font-weight:400;
           font-style: italic;
+          text-transform:capitalize;
         }
         & .spec{
           font-weight:600;

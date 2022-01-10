@@ -4,7 +4,7 @@ import { ReservationTime } from 'src/reservation-times/entities/reservation-time
 
 define(ReservationTime, (faker: typeof Faker) => {
   const reservationTime = new ReservationTime();
-  reservationTime.amount = faker.datatype.datetime();
+  reservationTime.amount = faker.random.number({ min: 1, max: 30 });
   reservationTime.name = faker.lorem.word();
   return reservationTime;
 });

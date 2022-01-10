@@ -21,6 +21,10 @@ export class MediasService {
     return this.mediasRepository.find();
   }
 
+  findAllByModelId(modelId: string): Promise<Media[]> {
+    return this.mediasRepository.find({ modelId });
+  }
+
   findOne(id: string): Promise<Media> {
     return this.mediasRepository.findOneOrFail(id);
   }

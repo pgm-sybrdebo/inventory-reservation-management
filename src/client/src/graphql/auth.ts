@@ -9,6 +9,9 @@ export const LOGIN = gql`
       access_token
       user {
         id
+        firstName
+        lastName
+        role
       }
     }
   }

@@ -1,22 +1,27 @@
 import { InputType, Int, Field } from '@nestjs/graphql';
-import { IsBoolean, IsNotEmpty, IsUUID } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsOptional, IsUUID } from 'class-validator';
 
 @InputType()
 export class CreateDeviceInput {
   @IsNotEmpty()
   @IsUUID('all')
   @Field()
-  model_id: string;
+  modelId: string;
 
   @IsNotEmpty()
   @IsUUID('all')
   @Field()
-  device_status_id: string;
+  deviceStatusId: string;
 
-  @IsNotEmpty()
-  @IsBoolean()
-  @Field((type) => Boolean)
-  is_available: boolean;
+  @IsOptional()
+  @IsUUID('all')
+  @Field({ nullable: true })
+  userId: string;
+
+  // @IsNotEmpty()
+  // @IsBoolean()
+  // @Field((type) => Boolean)
+  // is_available: boolean;
 
   @IsNotEmpty()
   @Field()
