@@ -17,8 +17,8 @@ const Models = () => {
     <>
       <Header />
       
+      <Topic quantity={quantity}/>
       <Container>
-        <Topic quantity={quantity}/>
         <ListCards>
           {result.map((model: ModelCardData) => 
             <ModelCard key={model.id} src={defaultPicture} title={model.name.slice(0,60)} quantity={model.quantity} description={`${model.description.slice(0,120)}...`} id={model.id}/>

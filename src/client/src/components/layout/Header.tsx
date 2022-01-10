@@ -36,8 +36,10 @@ const Header = ({type="base"}:HeaderProps) => {
 const TheHeader = styled.div<StyledProps>`
   width: 100%;
   height: 90px;
-  margin-bottom: ${props => props.t === 'dashboard' ? '0px' : '32px'};
-  position: ${props => props.t === 'dashboard' ? 'sticky' : 'static'};
+  /* margin-bottom: ${props => props.t === 'dashboard' ? '0px' : '32px'};
+  position: ${props => props.t === 'dashboard' ? 'sticky' : 'static'}; */
+  margin-bottom:0px;
+  position: sticky;
   top: 0;
   z-index:10;
   background-color: #F58732;
