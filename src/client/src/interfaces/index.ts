@@ -153,7 +153,8 @@ export interface AdminLayoutProps {
 
 export enum UserRole {
   Regular,
-  Admin
+  Admin,
+  SuperAdmin,
 }
 
 export interface TokenInfo {

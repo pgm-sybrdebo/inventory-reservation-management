@@ -15,7 +15,7 @@ export class DeviceStatusesResolver {
 
   @Mutation(() => DeviceStatus)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   createDeviceStatus(
     @Args('createDeviceStatusInput')
     createDeviceStatusInput: CreateDeviceStatusInput,
@@ -25,21 +25,21 @@ export class DeviceStatusesResolver {
 
   @Query(() => [DeviceStatus], { name: 'deviceStatuses' })
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   findAll() {
     return this.deviceStatusesService.findAll();
   }
 
   @Query(() => DeviceStatus, { name: 'deviceStatus' })
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   findOne(@Args('id', new ParseUUIDPipe()) id: string) {
     return this.deviceStatusesService.findOne(id);
   }
 
   @Mutation(() => DeviceStatus)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   updateDeviceStatus(
     @Args('updateDeviceStatusInput')
     updateDeviceStatusInput: UpdateDeviceStatusInput,
@@ -52,7 +52,7 @@ export class DeviceStatusesResolver {
 
   @Mutation(() => DeviceStatus)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   removeDeviceStatus(@Args('id', new ParseUUIDPipe()) id: string) {
     return this.deviceStatusesService.remove(id);
   }

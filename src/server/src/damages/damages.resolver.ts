@@ -15,7 +15,7 @@ export class DamagesResolver {
 
   @Mutation(() => Damage)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   createDamage(
     @Args('createDamageInput') createDamageInput: CreateDamageInput,
   ) {
@@ -24,21 +24,21 @@ export class DamagesResolver {
 
   @Query(() => [Damage], { name: 'damages' })
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   findAll() {
     return this.damagesService.findAll();
   }
 
   @Query(() => Damage, { name: 'damage' })
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   findOne(@Args('id', new ParseUUIDPipe()) id: string) {
     return this.damagesService.findOne(id);
   }
 
   @Mutation(() => Damage)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   updateDamage(
     @Args('updateDamageInput') updateDamageInput: UpdateDamageInput,
   ) {
@@ -47,7 +47,7 @@ export class DamagesResolver {
 
   @Mutation(() => Damage)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   removeDamage(@Args('id', new ParseUUIDPipe()) id: string) {
     return this.damagesService.remove(id);
   }

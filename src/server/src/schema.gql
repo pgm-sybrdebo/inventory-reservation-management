@@ -152,6 +152,7 @@ type Mutation {
   removeTag(id: String!): Tag!
   removeUser(id: String!): User!
   signup(signupUserInput: SignupUserInput!): User!
+  softRemoveUser(id: String!): User!
   takenConfirmed(updateReservationInput: UpdateReservationInput!): Reservation!
   updateDamage(updateDamageInput: UpdateDamageInput!): Damage!
   updateDevice(updateDeviceInput: UpdateDeviceInput!): Device!

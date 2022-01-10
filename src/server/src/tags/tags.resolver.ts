@@ -15,35 +15,35 @@ export class TagsResolver {
 
   @Mutation(() => Tag)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   createTag(@Args('createTagInput') createTagInput: CreateTagInput) {
     return this.tagsService.create(createTagInput);
   }
 
   @Query(() => [Tag], { name: 'tags' })
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN, Role.USER)
+  @Roles(Role.ADMIN, Role.USER, Role.SUPER_ADMIN)
   findAll() {
     return this.tagsService.findAll();
   }
 
   @Query(() => Tag, { name: 'tag' })
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   findOne(@Args('id', new ParseUUIDPipe()) id: string) {
     return this.tagsService.findOne(id);
   }
 
   @Mutation(() => Tag)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   updateTag(@Args('updateTagInput') updateTagInput: UpdateTagInput) {
     return this.tagsService.update(updateTagInput.id, updateTagInput);
   }
 
   @Mutation(() => Tag)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   removeTag(@Args('id', new ParseUUIDPipe()) id: string) {
     return this.tagsService.remove(id);
   }

@@ -101,6 +101,11 @@ export class UsersService {
     return this.usersRepository.remove(user);
   }
 
+  async softRemove(id: string): Promise<User> {
+    const user = await this.findOne(id);
+    return this.usersRepository.softRemove(user);
+  }
+
   getReservationsByUserId(userId: string): Promise<Reservation[]> {
     return this.reservationsService.findAllByUserId(userId);
   }

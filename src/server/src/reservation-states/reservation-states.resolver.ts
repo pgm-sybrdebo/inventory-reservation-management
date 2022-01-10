@@ -17,7 +17,7 @@ export class ReservationStatesResolver {
 
   @Mutation(() => ReservationState)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   createReservationState(
     @Args('createReservationStateInput')
     createReservationStateInput: CreateReservationStateInput,
@@ -27,21 +27,21 @@ export class ReservationStatesResolver {
 
   @Query(() => [ReservationState], { name: 'reservationStates' })
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   findAll() {
     return this.reservationStatesService.findAll();
   }
 
   @Query(() => ReservationState, { name: 'reservationState' })
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   findOne(@Args('id', new ParseUUIDPipe()) id: string) {
     return this.reservationStatesService.findOne(id);
   }
 
   @Mutation(() => ReservationState)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   updateReservationState(
     @Args('updateReservationStateInput')
     updateReservationStateInput: UpdateReservationStateInput,
@@ -54,7 +54,7 @@ export class ReservationStatesResolver {
 
   @Mutation(() => ReservationState)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   removeReservationState(@Args('id', new ParseUUIDPipe()) id: string) {
     return this.reservationStatesService.remove(id);
   }
