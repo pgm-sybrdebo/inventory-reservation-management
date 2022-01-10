@@ -26,42 +26,42 @@ export class ModelsResolver {
 
   @Mutation(() => Model)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   createModel(@Args('createModelInput') createModelInput: CreateModelInput) {
     return this.modelsService.create(createModelInput);
   }
 
   @Query(() => [Model], { name: 'models' })
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN, Role.USER)
+  @Roles(Role.ADMIN, Role.USER, Role.SUPER_ADMIN)
   findAll() {
     return this.modelsService.findAll();
   }
 
   @Query(() => [Model], { name: 'modelsByTagId' })
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN, Role.USER)
+  @Roles(Role.ADMIN, Role.USER, Role.SUPER_ADMIN)
   findAllByTagId(@Args('tagIds', { type: () => [String] }) tagIds: string[]) {
     return this.modelsService.findAllByTagIds(tagIds);
   }
 
   @Query(() => Int, { name: 'totalModels' })
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   async findTotal() {
     return this.modelsService.findAndCount();
   }
 
   @Query(() => Int, { name: 'differenceLastMonthModels' })
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   async findDifferenceLastMonth() {
     return this.modelsService.findDifferenceLastMonth();
   }
 
   @Query(() => [Model], { name: 'recentModels' })
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   async findRecentUsers(
     @Args('from', { type: () => String }) from: string,
     @Args('to', { type: () => String }) to: string,
@@ -71,28 +71,35 @@ export class ModelsResolver {
 
   @Query(() => Model, { name: 'model' })
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN, Role.USER)
+  @Roles(Role.ADMIN, Role.USER, Role.SUPER_ADMIN)
   findOne(@Args('id', new ParseUUIDPipe()) id: string) {
     return this.modelsService.findOne(id);
   }
 
   @Mutation(() => Model)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   updateModel(@Args('updateModelInput') updateModelInput: UpdateModelInput) {
     return this.modelsService.update(updateModelInput.id, updateModelInput);
   }
 
   @Mutation(() => Model)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   removeModel(@Args('id', new ParseUUIDPipe()) id: string) {
     return this.modelsService.remove(id);
   }
 
+  @Mutation(() => Model)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  softRemoveModel(@Args('id', new ParseUUIDPipe()) id: string) {
+    return this.modelsService.softRemove(id);
+  }
+
   @Mutation(() => Model, { name: 'addModelToTag' })
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   addToTag(
     @Args('modelId', { type: () => String, nullable: false }) modelId: string,
     @Args('tagId', { type: () => String, nullable: false }) tagId: string,
@@ -102,7 +109,7 @@ export class ModelsResolver {
 
   @Mutation(() => Model, { name: 'removeModelFromTag' })
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   removeFromTag(
     @Args('modelId', { type: () => String, nullable: false }) modelId: string,
     @Args('tagId', { type: () => String, nullable: false }) tagId: string,

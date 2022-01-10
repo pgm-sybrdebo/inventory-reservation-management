@@ -36,4 +36,9 @@ export class TagsService {
     const tag = await this.findOne(id);
     return this.tagsRepository.remove(tag);
   }
+
+  async softRemove(id: string): Promise<Tag> {
+    const tag = await this.findOne(id);
+    return this.tagsRepository.softRemove(tag);
+  }
 }

@@ -46,4 +46,9 @@ export class DeviceStatusesService {
     const deviceStatus = await this.findOne(id);
     return this.deviceStatusesRepository.remove(deviceStatus);
   }
+
+  async softRemove(id: string): Promise<DeviceStatus> {
+    const deviceStatus = await this.findOne(id);
+    return this.deviceStatusesRepository.softRemove(deviceStatus);
+  }
 }

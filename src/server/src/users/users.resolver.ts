@@ -29,14 +29,14 @@ export class UsersResolver {
 
   @Query(() => [User], { name: 'users' })
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   findAll() {
     return this.usersService.findAll();
   }
 
   @Query(() => [User], { name: 'usersByRole' })
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   findAllByRole(
     @Args('role', { type: () => Int }, new ParseIntPipe()) role: number,
   ) {
@@ -45,7 +45,7 @@ export class UsersResolver {
 
   @Query(() => [User], { name: 'usersByProfession' })
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   findAllByProfession(
     @Args('profession', { type: () => Int }, new ParseIntPipe())
     profession: number,
@@ -55,21 +55,21 @@ export class UsersResolver {
 
   @Query(() => Int, { name: 'totalUsers' })
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   async findTotal() {
     return this.usersService.findAndCount();
   }
 
   @Query(() => Int, { name: 'differenceLastMonthUsers' })
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   async findDifferenceLastMonth() {
     return this.usersService.findDifferenceLastMonth();
   }
 
   @Query(() => [User], { name: 'recentUsers' })
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   async findRecentUsers(
     @Args('from', { type: () => String }) from: string,
     @Args('to', { type: () => String }) to: string,
@@ -81,30 +81,37 @@ export class UsersResolver {
 
   @Query(() => User, { name: 'user' })
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN, Role.USER)
+  @Roles(Role.ADMIN, Role.USER, Role.SUPER_ADMIN)
   findOne(@Args('id', new ParseUUIDPipe()) id: string) {
     return this.usersService.findOne(id);
   }
 
   @Query(() => User, { name: 'userByEmail' })
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN, Role.USER)
+  @Roles(Role.ADMIN, Role.USER, Role.SUPER_ADMIN)
   findOneByEmail(@Args('email', { type: () => String }) email: string) {
     return this.usersService.findOneByEmail(email);
   }
 
   @Mutation(() => User)
-  // @UseGuards(JwtAuthGuard, RolesGuard)
-  // @Roles(Role.ADMIN, Role.USER)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.USER, Role.SUPER_ADMIN)
   updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
     return this.usersService.update(updateUserInput.id, updateUserInput);
   }
 
   @Mutation(() => User)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN, Role.USER)
+  @Roles(Role.SUPER_ADMIN, Role.SUPER_ADMIN)
   removeUser(@Args('id', new ParseUUIDPipe()) id: string) {
     return this.usersService.remove(id);
+  }
+
+  @Mutation(() => User)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.USER, Role.SUPER_ADMIN)
+  softRemoveUser(@Args('id', new ParseUUIDPipe()) id: string) {
+    return this.usersService.softRemove(id);
   }
 
   @ResolveField((returns) => [Reservation])

@@ -134,6 +134,11 @@ export class ModelsService {
     return this.modelsRepository.remove(model);
   }
 
+  async softRemove(id: string): Promise<Model> {
+    const model = await this.findOne(id);
+    return this.modelsRepository.softRemove(model);
+  }
+
   async addToTag(modelId: string, tagId: string): Promise<Model> {
     const foundModel = await this.modelsRepository.findOne(
       { id: modelId },
