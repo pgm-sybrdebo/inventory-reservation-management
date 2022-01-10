@@ -10,7 +10,7 @@ const ModelImage: React.FC<image> = ({src}) => (
 
 const Picture = styled.div`
   width: 100%;
-  margin-bottom: 32px;
+  margin: 32px 0;
   & img {
     object-fit: cover;
     width: 100%;
@@ -18,7 +18,7 @@ const Picture = styled.div`
     border-radius:.25rem
   }
   @media(min-width:1023px){
-    width: 48%;
+    width: 45%;
     & img {
     height: calc(100vh - 164px);
   }

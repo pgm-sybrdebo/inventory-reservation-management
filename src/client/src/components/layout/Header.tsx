@@ -21,7 +21,7 @@ const Header = ({type="base"}:HeaderProps) => {
         <Container>
           <div className="header__wrapper">
             <NavLink to={routes.LANDING}>
-              <img src={logo} alt="logo artevelde" />
+              <img className="logo" src={logo} alt="logo artevelde" />
             </NavLink>
             <img src={more} alt="more icon" onClick={()=> setModalVisible(true)} />
           </div>

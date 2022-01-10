@@ -10,7 +10,7 @@ const Topic: React.FC<topic> = ({quantity}) => {
     <>
       <TopicSection>
         <img src={filter} alt="icon filter" onClick={()=> setModalVisible(true)}/>
-        <p>{quantity} Models</p>
+        <p>{quantity} {quantity > 1 ? "Models" : "Model"}</p>
       </TopicSection>
       {modalVisible && <Filter setModalVisible={setModalVisible}/>}
     </>

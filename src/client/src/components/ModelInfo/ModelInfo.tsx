@@ -20,13 +20,13 @@ const ModelImage: React.FC<modelInfo> = ({name, quantity, description , specific
         <div className="speces">
           <h4>Specifications</h4>
           <ul>
-            {specifications.map(specification => <li className="spec">{specification}</li>)}
+            {specifications.map((specification, index) => <li key={index} className="spec">{specification}</li>)}
           </ul>
         </div>
         <div className="tags">
           <h4>Tags</h4>
           <ul>
-            {tags.map(tag => <li className="tag">{tag}</li>)}
+            {tags.map((tag, index) => <li key={index}  className="tag">{tag}</li>)}
           </ul>
         </div>
         
