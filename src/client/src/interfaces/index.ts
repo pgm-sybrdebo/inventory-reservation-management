@@ -134,7 +134,7 @@ export interface TableProps {
 }
 
 export interface WidgetListItemProps {
-  name: string;
+  name: string
   time?: number
   type: string,
   firstName?: string

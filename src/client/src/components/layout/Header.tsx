@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import Container from './Container';
@@ -6,22 +6,32 @@ import * as routes from '../../routes';
 import logo from "../../assets/logo.svg"
 import more from "../../assets/more.svg"
 import { HeaderProps } from '../../interfaces';
+import SideNavMenu from './SideNavMenu';
 interface StyledProps {
   t: string;
 }
 
-const Header = ({type="base"}:HeaderProps) => (
-  <TheHeader t={type}>
-    <Container>
-      <div className="header__wrapper">
-        <NavLink to={routes.LANDING}>
-          <img src={logo} alt="logo artevelde" />
-        </NavLink>
-        <img src={more} alt="more icon" />
-      </div>
-    </Container>
-  </TheHeader>
-)
+const Header = ({type="base"}:HeaderProps) => {
+
+  const [modalVisible, setModalVisible] = useState(false);
+  console.log(modalVisible);
+  return(
+    <>
+      <TheHeader t={type}>
+        <Container>
+          <div className="header__wrapper">
+            <NavLink to={routes.LANDING}>
+              <img src={logo} alt="logo artevelde" />
+            </NavLink>
+            <img src={more} alt="more icon" onClick={()=> setModalVisible(true)} />
+          </div>
+        </Container>
+      </TheHeader>
+      {modalVisible  && <SideNavMenu setModalVisible={setModalVisible}/>}
+    </>
+  );
+}
+
 
 const TheHeader = styled.div<StyledProps>`
   width: 100%;
@@ -35,6 +45,9 @@ const TheHeader = styled.div<StyledProps>`
     display:flex;
     justify-content: space-between;
     align-items: center;
+    & img{
+      cursor: pointer !important;
+    }
   }
 `;
 

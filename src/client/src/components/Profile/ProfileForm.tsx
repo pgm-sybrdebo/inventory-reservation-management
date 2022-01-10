@@ -14,6 +14,7 @@ import StyledButton from '../Button/StyledButton.style';
 
 const ProfileForm : React.FC = () => {
   let navigate = useNavigate();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [id, setId] = useState(() => {
     const token = localStorage.getItem('token');
     if(token){

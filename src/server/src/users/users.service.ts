@@ -80,7 +80,7 @@ export class UsersService {
     if (updateUserInput.password) {
       console.log(updateUserInput.password);
       const hashPassword = await bcrypt.hash(updateUserInput.password, 10);
-      console.log("hash",hashPassword);
+      console.log('hash', hashPassword);
       updatedUser = await this.usersRepository.preload({
         id: id,
         ...updateUserInput,
