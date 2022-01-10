@@ -10,7 +10,6 @@ function TegSelect({name, onChange}:FilterParams) {
   data && data.tags.forEach((item: { id: string; name: string; }) => {
     items.push({id: `${item.id}`, name: `${item.name}`}) 
   })
-  console.log(items);
   return (
     <div className="selectWrapper">
     <label className="mutiselect-label">By Tags</label>

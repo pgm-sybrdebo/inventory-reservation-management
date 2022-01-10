@@ -73,7 +73,7 @@ const BigCard = styled.div`
         font-size:18px;
         font-weight: 600;
         color: #000;
-        width: 80%;
+        width: 70%;
       }
       & h6{
         color:#2E3939;
