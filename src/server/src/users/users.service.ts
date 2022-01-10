@@ -6,6 +6,7 @@ import { Repository, Between, LessThanOrEqual } from 'typeorm';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { User } from './entities/user.entity';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -75,10 +76,22 @@ export class UsersService {
   }
 
   async update(id: string, updateUserInput: UpdateUserInput): Promise<User> {
-    const updatedUser = await this.usersRepository.preload({
-      id: id,
-      ...updateUserInput,
-    });
+    let updatedUser;
+    if (updateUserInput.password) {
+      console.log(updateUserInput.password);
+      const hashPassword = await bcrypt.hash(updateUserInput.password, 10);
+      console.log("hash",hashPassword);
+      updatedUser = await this.usersRepository.preload({
+        id: id,
+        ...updateUserInput,
+        password: hashPassword,
+      });
+    } else {
+      updatedUser = await this.usersRepository.preload({
+        id: id,
+        ...updateUserInput,
+      });
+    }
 
     return this.usersRepository.save(updatedUser);
   }

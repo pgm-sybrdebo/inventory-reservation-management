@@ -10,8 +10,10 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   UpdateDateColumn,
+  BeforeInsert,
 } from 'typeorm';
 import { Role } from '../../auth/role.enum';
+import * as bcrypt from 'bcrypt';
 @Entity()
 @ObjectType()
 export class User {
@@ -70,4 +72,10 @@ export class User {
   @OneToMany(() => Device, (device) => device.user)
   @Field((type) => [Device], { nullable: true })
   devices?: Device[];
+
+  @BeforeInsert()
+  async setPassword(password: string) {
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(password || this.password, salt);
+  }
 }
