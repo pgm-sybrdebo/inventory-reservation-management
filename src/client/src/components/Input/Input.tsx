@@ -2,7 +2,7 @@ import React from 'react';
 import { MyInputFormProps } from '../../interfaces';
 import styled from "styled-components";
 
-const Input : React.FC<MyInputFormProps> = ({text, type, id, name, onChange=null, onBlur=null, value}) => (
+const Input : React.FC<MyInputFormProps> = ({text, type, id, name, onChange=null, onBlur=null, value }) => (
   <FormInput>
       <label htmlFor={id}>{text}</label>
       <input type={type} id={id} name={name} onChange={onChange} onBlur={onBlur} value={value} />

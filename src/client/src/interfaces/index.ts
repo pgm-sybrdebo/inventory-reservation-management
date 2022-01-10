@@ -172,3 +172,13 @@ export interface EditProfileValues {
   editPass:string,
   repeatEditPass:string,
 }
+export interface FilterValues {
+  filterName: string,
+  filterSelect: any[];
+
+}
+export interface FilterParams {
+  name: string,
+  onChange: (value: any) => void,
+  value: any
+}

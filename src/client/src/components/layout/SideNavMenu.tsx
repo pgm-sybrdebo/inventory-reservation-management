@@ -39,7 +39,7 @@ const Modal = styled.div`
   right:0;
   z-index: 1000;
   @media(min-width:1050px){
-    width:25vw;
+    width:33vw;
   }
   @media(min-width:1300px){
     width:20vw;
