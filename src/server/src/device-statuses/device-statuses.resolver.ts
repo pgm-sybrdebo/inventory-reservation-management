@@ -56,4 +56,11 @@ export class DeviceStatusesResolver {
   removeDeviceStatus(@Args('id', new ParseUUIDPipe()) id: string) {
     return this.deviceStatusesService.remove(id);
   }
+
+  @Mutation(() => DeviceStatus)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  softRemoveDeviceStatus(@Args('id', new ParseUUIDPipe()) id: string) {
+    return this.deviceStatusesService.softRemove(id);
+  }
 }

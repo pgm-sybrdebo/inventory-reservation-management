@@ -130,6 +130,13 @@ export class DevicesResolver {
     return this.devicesService.remove(id);
   }
 
+  @Mutation(() => Device)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  softRemoveDevice(@Args('id', new ParseUUIDPipe()) id: string) {
+    return this.devicesService.softRemove(id);
+  }
+
   @ResolveField((returns) => [Reservation])
   reservations(@Parent() device: Device): Promise<Reservation[]> {
     return this.devicesService.getDeviceReservations(device.id);

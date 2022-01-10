@@ -97,11 +97,6 @@ export class DevicesService {
     const iso = date.toISOString();
     const date1 = new Date(Number(to));
     const iso1 = date1.toISOString();
-    console.log(date);
-    console.log(date1);
-    console.log(iso);
-    console.log(iso1);
-
     return this.devicesRepository.find({
       created_on: Between(iso, iso1),
     });
@@ -140,6 +135,11 @@ export class DevicesService {
   async remove(id: string): Promise<Device> {
     const device = await this.findOne(id);
     return this.devicesRepository.remove(device);
+  }
+
+  async softRemove(id: string): Promise<Device> {
+    const device = await this.findOne(id);
+    return this.devicesRepository.softRemove(device);
   }
 
   getDeviceReservations(deviceId: string): Promise<Reservation[]> {

@@ -90,6 +90,13 @@ export class ModelsResolver {
     return this.modelsService.remove(id);
   }
 
+  @Mutation(() => Model)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  softRemoveModel(@Args('id', new ParseUUIDPipe()) id: string) {
+    return this.modelsService.softRemove(id);
+  }
+
   @Mutation(() => Model, { name: 'addModelToTag' })
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.SUPER_ADMIN)

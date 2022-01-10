@@ -42,4 +42,9 @@ export class MediasService {
     const media = await this.findOne(id);
     return this.mediasRepository.remove(media);
   }
+
+  async softRemove(id: string): Promise<Media> {
+    const media = await this.findOne(id);
+    return this.mediasRepository.softRemove(media);
+  }
 }

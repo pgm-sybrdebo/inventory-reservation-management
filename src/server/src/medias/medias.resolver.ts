@@ -47,4 +47,11 @@ export class MediasResolver {
   removeMedia(@Args('id', new ParseUUIDPipe()) id: string) {
     return this.mediasService.remove(id);
   }
+
+  @Mutation(() => Media)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  softRemoveMedia(@Args('id', new ParseUUIDPipe()) id: string) {
+    return this.mediasService.softRemove(id);
+  }
 }

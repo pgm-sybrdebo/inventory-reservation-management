@@ -47,4 +47,11 @@ export class TagsResolver {
   removeTag(@Args('id', new ParseUUIDPipe()) id: string) {
     return this.tagsService.remove(id);
   }
+
+  @Mutation(() => Tag)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  softRemoveTag(@Args('id', new ParseUUIDPipe()) id: string) {
+    return this.tagsService.softRemove(id);
+  }
 }

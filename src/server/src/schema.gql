@@ -152,6 +152,14 @@ type Mutation {
   removeTag(id: String!): Tag!
   removeUser(id: String!): User!
   signup(signupUserInput: SignupUserInput!): User!
+  softRemoveDamage(id: String!): Damage!
+  softRemoveDevice(id: String!): Device!
+  softRemoveDeviceStatus(id: String!): DeviceStatus!
+  softRemoveMedia(id: String!): Media!
+  softRemoveModel(id: String!): Model!
+  softRemoveReservation(id: String!): Reservation!
+  softRemoveReservationState(id: String!): ReservationState!
+  softRemoveTag(id: String!): Tag!
   softRemoveUser(id: String!): User!
   takenConfirmed(updateReservationInput: UpdateReservationInput!): Reservation!
   updateDamage(updateDamageInput: UpdateDamageInput!): Damage!

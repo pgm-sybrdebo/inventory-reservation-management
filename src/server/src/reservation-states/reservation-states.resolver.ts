@@ -58,4 +58,11 @@ export class ReservationStatesResolver {
   removeReservationState(@Args('id', new ParseUUIDPipe()) id: string) {
     return this.reservationStatesService.remove(id);
   }
+
+  @Mutation(() => ReservationState)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  softRemoveReservationState(@Args('id', new ParseUUIDPipe()) id: string) {
+    return this.reservationStatesService.softRemove(id);
+  }
 }

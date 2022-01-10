@@ -51,4 +51,11 @@ export class DamagesResolver {
   removeDamage(@Args('id', new ParseUUIDPipe()) id: string) {
     return this.damagesService.remove(id);
   }
+
+  @Mutation(() => Damage)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  softRemoveDamage(@Args('id', new ParseUUIDPipe()) id: string) {
+    return this.damagesService.softRemove(id);
+  }
 }

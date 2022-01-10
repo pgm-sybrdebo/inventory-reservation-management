@@ -47,4 +47,9 @@ export class ReservationStatesService {
     const reservationState = await this.findOne(id);
     return this.reservationStatesRepository.remove(reservationState);
   }
+
+  async softRemove(id: string): Promise<ReservationState> {
+    const reservationState = await this.findOne(id);
+    return this.reservationStatesRepository.softRemove(reservationState);
+  }
 }
