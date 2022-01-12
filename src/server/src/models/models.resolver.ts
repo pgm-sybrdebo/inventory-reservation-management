@@ -50,25 +50,36 @@ export class ModelsResolver {
     return this.modelsService.findAllByPagination(offset, limit);
   }
 
-  @Query(() => [Model], { name: 'modelsByTagIdWithPagination' })
+  // @Query(() => [Model], { name: 'modelsByTagIdWithPagination' })
+  // // @UseGuards(JwtAuthGuard, RolesGuard)
+  // // @Roles(Role.ADMIN, Role.USER, Role.SUPER_ADMIN)
+  // findAllByTagId(
+  //   @Args('tagIds', { type: () => [String] }) tagIds: string[],
+  //   @Args('offset', { type: () => Int }, new ParseIntPipe()) offset: number,
+  //   @Args('limit', { type: () => Int }, new ParseIntPipe()) limit: number,
+  // ) {
+  //   return this.modelsService.findAllByTagIdsPagination(tagIds, offset, limit);
+  // }
+
+  @Query(() => [Model], { name: 'modelsByFilterWithPagination' })
   // @UseGuards(JwtAuthGuard, RolesGuard)
   // @Roles(Role.ADMIN, Role.USER, Role.SUPER_ADMIN)
-  findAllByTagId(
-    @Args('tagIds', { type: () => [String] }) tagIds: string[],
+  findAllByFilterWithPagination(
+    @Args('filter') filter: Filter,
     @Args('offset', { type: () => Int }, new ParseIntPipe()) offset: number,
     @Args('limit', { type: () => Int }, new ParseIntPipe()) limit: number,
   ) {
-    return this.modelsService.findAllByTagIdsPagination(tagIds, offset, limit);
+    return this.modelsService.findAllByFilterWithPagination(filter, offset, limit);
   }
 
-  @Query(() => [Model], { name: 'modelsByTagId' })
-  // @UseGuards(JwtAuthGuard, RolesGuard)
-  // @Roles(Role.ADMIN, Role.USER, Role.SUPER_ADMIN)
-  findAllByTagIdWithPagination(
-    @Args('tagIds', { type: () => [String] }) tagIds: string[],
-  ) {
-    return this.modelsService.findAllByTagIds(tagIds);
-  }
+  // @Query(() => [Model], { name: 'modelsByTagId' })
+  // // @UseGuards(JwtAuthGuard, RolesGuard)
+  // // @Roles(Role.ADMIN, Role.USER, Role.SUPER_ADMIN)
+  // findAllByTagIdWithPagination(
+  //   @Args('tagIds', { type: () => [String] }) tagIds: string[],
+  // ) {
+  //   return this.modelsService.findAllByTagIds(tagIds);
+  // }
 
   @Query(() => Int, { name: 'totalModels' })
   @UseGuards(JwtAuthGuard, RolesGuard)

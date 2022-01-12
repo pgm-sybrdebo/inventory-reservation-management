@@ -199,8 +199,7 @@ type Query {
   medias: [Media!]!
   model(id: String!): Model!
   models: [Model!]!
-  modelsByTagId(tagIds: [String!]!): [Model!]!
-  modelsByTagIdWithPagination(limit: Int!, offset: Int!, tagIds: [String!]!): [Model!]!
+  modelsByFilterWithPagination(filter: Filter!, limit: Int!, offset: Int!): [Model!]!
   modelsWithPagination(limit: Int!, offset: Int!): [Model!]!
   recentDevices(from: String!, to: String!): [Device!]!
   recentModels(from: String!, to: String!): [Model!]!

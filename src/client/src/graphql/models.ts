@@ -112,3 +112,38 @@ export const GET_MODEL_BY_ID = gql`
   }
 `;
 
+export const GET_TOTAL_MODELS_WITH_FILTER = gql`
+  query totalModelsWithFilter ($name: String!, $tagIds: [String]) {
+    totalModelsWithFilter (
+      filter: {
+        name; $name,
+        tagIds: $tagIds,
+      }
+    ) {
+      total
+    }
+  }
+`;
+
+
+export const GET_MODELS_BY_FILTER_WITH_PAGINATION = gql`
+  query modelsByFilterWithPagination ($name: String!, $tagIds: [String], $limit: Int!, offset: Int!) {
+    modelsByFilterWithPagination (
+      filter: {
+        name: $name,
+        tagIds: $tagIds,
+      },
+      limit: $limit,
+      offset: $offset
+    ) {
+      id
+      name
+      brand
+      description
+      specifications
+      quantity
+      max_reservation_time
+    }
+  }
+`
+
