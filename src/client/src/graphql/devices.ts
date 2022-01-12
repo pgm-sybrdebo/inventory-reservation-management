@@ -214,7 +214,7 @@ export const GET_DEVICES_BY_MODELID = gql`
 
 
 export const GET_DEVICES_TOTAL_BY_MODELID = gql`
-  query ($modelId = String!) {
+  query ($modelId: String!) {
     totalDevicesByModelId(modelId: $modelId) {
       total
     }

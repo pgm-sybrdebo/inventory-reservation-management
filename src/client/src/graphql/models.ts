@@ -116,7 +116,7 @@ export const GET_TOTAL_MODELS_WITH_FILTER = gql`
   query totalModelsWithFilter ($name: String!, $tagIds: [String]) {
     totalModelsWithFilter (
       filter: {
-        name; $name,
+        name: $name,
         tagIds: $tagIds,
       }
     ) {
@@ -127,7 +127,7 @@ export const GET_TOTAL_MODELS_WITH_FILTER = gql`
 
 
 export const GET_MODELS_BY_FILTER_WITH_PAGINATION = gql`
-  query modelsByFilterWithPagination ($name: String!, $tagIds: [String], $limit: Int!, offset: Int!) {
+  query modelsByFilterWithPagination ($name: String!, $tagIds: [String], $limit: Int!, $offset: Int!) {
     modelsByFilterWithPagination (
       filter: {
         name: $name,
