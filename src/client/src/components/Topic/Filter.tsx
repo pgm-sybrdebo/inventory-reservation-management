@@ -19,7 +19,6 @@ function Filter({setModalVisible}:any) {
 
       filterName: YUP.string().min(2, "Title must contain minimum 2 characters "),
       filterSelect: YUP.array()
-      .min(1, 'Pick at least 1 members')
       .of(
         YUP.object().shape({
           id: YUP.string().required(),
@@ -31,6 +30,7 @@ function Filter({setModalVisible}:any) {
     onSubmit:(values, {setSubmitting}) => {
       setSubmitting(true);
       console.log(values);
+
     }
   });
   const handleSelection = (items: any) => {

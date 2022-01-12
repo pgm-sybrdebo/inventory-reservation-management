@@ -186,7 +186,7 @@ export const GET_DEVICE_BY_ID = gql`
 
 export const GET_DEVICES_BY_MODELID = gql`
   query ($modelId: String!){
-    getDevicesByModelId(modelId: $modelId, ) {
+    getDevicesByModelId(modelId: $modelId) {
       id
       qr_code
       damages {

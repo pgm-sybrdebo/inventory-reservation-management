@@ -3,9 +3,10 @@ import styled from "styled-components";
 import StyledButton from '../Button/StyledButton.style';
 import { useNavigate } from "react-router-dom";
 import {modelInfo} from '../../interfaces'
+import { useParams } from 'react-router-dom';
 const ModelImage: React.FC<modelInfo> = ({name, quantity, description , specifications, tags}) => { 
   let navigate = useNavigate();
-
+  let { id } = useParams();
   return(
     <Wrapper>
       <div className="topic">
@@ -48,7 +49,7 @@ const ModelImage: React.FC<modelInfo> = ({name, quantity, description , specific
             width="48%"
             backgroundcolor="#F58732"
             radius=".25rem"
-            
+            onClick = {()=> navigate(`/models/${id}/devices`)}
           />
         </div>
     </Wrapper>

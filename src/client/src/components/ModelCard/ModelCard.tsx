@@ -32,6 +32,7 @@ const ModelCard : React.FC<ModelCardPic>= ({src, title, quantity, description, i
       type="button" 
       text="Devices Overview" 
       name="do"
+      onClick = {()=> navigate(`/models/${id}/devices`)}
     />
     </div>
   </BigCard>
