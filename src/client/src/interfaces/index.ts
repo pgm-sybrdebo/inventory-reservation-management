@@ -30,6 +30,14 @@ export interface ModelCardPic {
   id: string
 }
 
+export interface DeviceCardParams {
+  availability: string,
+  deviceId: string,
+  className?: string,
+  children?: React.ReactNode,
+  onClick?: () => void,
+}
+
 export interface ModelCardData {
   name: string;
   quantity: number;

@@ -10,19 +10,21 @@ import {
   ModelDetail,
   Page403,
   Admin,
-  EditProfile
+  EditProfile,
+  Devices,
+  DashboardHome,
+  DashboardUsers,
+  DashboardAdmins,
+  DashboardStaff,
+  DashboardStudents,
+  DashboardStatuses,
+  DashboardTags,
+  DashboardDevices,
+  DashboardBorrowedDevices,
+  DashboardStockDevices,
+  DashboardInCheckDevices,
 } from "./pages";
-import DashboardHome from "./pages/DashboardHome";
-import DashboardUsers from "./pages/DashboardUsers";
-import DashboardAdmins from "./pages/DashboardAdmins";
-import DashboardStaff from "./pages/DashboardStaff";
-import DashboardStudents from "./pages/DashboardStudents";
-import DashboardStatuses from "./pages/DashboardStatuses";
-import DashboardTags from "./pages/DashboardTags";
-import DashboardDevices from "./pages/DashboardDevices";
-import DashboardBorrowedDevices from "./pages/DashboardBorrowedDevices";
-import DashboardStockDevices from "./pages/DashboardStockDevices";
-import DashboardInCheckDevices from "./pages/DashboardInCheckDevices";
+
 import { TokenInfo, UserRole } from "./interfaces";
 
 
@@ -66,6 +68,10 @@ function App() {
           <Route
             path={ROUTES.MODEL_DETAILS}
             element={<ModelDetail />}
+          /> 
+          <Route
+            path={ROUTES.DEVICES}
+            element={<Devices />}
           /> 
           <Route
             path={ROUTES.EDIT_PROFILE}

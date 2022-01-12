@@ -12,6 +12,7 @@ import ModelImage from './ModelImage/ModelImage';
 import ModelInfo from './ModelInfo/ModelInfo'; 
 import GeneralList from './GeneralList/GeneralList';
 import ProfileForm from './Profile/ProfileForm';
+import StyledDeviceCard from './DeviceCard/StyledDeviceCard.style';
 
 
 export {
@@ -28,5 +29,6 @@ export {
   ModelInfo,
   ListCards,
   Topic,
-  ProfileForm
+  ProfileForm,
+  StyledDeviceCard,
 }
