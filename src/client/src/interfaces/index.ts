@@ -30,6 +30,14 @@ export interface ModelCardPic {
   id: string
 }
 
+export interface DeviceCardParams {
+  availability: string,
+  deviceId: string,
+  className?: string,
+  children?: React.ReactNode,
+  onClick?: () => void,
+}
+
 export interface ModelCardData {
   name: string;
   quantity: number;
@@ -134,7 +142,7 @@ export interface TableProps {
 }
 
 export interface WidgetListItemProps {
-  name: string;
+  name: string
   time?: number
   type: string,
   firstName?: string
@@ -171,4 +179,14 @@ export interface EditProfileValues {
   editEmail:string,
   editPass:string,
   repeatEditPass:string,
+}
+export interface FilterValues {
+  filterName: string,
+  filterSelect: any[];
+
+}
+export interface FilterParams {
+  name: string,
+  onChange: (value: any) => void,
+  value: any
 }

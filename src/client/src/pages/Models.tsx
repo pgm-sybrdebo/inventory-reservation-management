@@ -17,11 +17,11 @@ const Models = () => {
     <>
       <Header />
       
+      <Topic quantity={quantity}/>
       <Container>
-        <Topic quantity={quantity}/>
         <ListCards>
           {result.map((model: ModelCardData) => 
-            <ModelCard key={model.id} src={defaultPicture} title={model.name.slice(0,60)} quantity={model.quantity} description={`${model.description.slice(0,120)}...`} id={model.id}/>
+            <ModelCard key={model.id} src={defaultPicture} title={model.name.slice(0,21)} quantity={model.quantity} description={`${model.description.slice(0,42)}...`} id={model.id}/>
           )}
         </ListCards>
       </Container>

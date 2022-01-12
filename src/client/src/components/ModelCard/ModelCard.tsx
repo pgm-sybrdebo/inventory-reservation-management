@@ -15,7 +15,7 @@ const ModelCard : React.FC<ModelCardPic>= ({src, title, quantity, description, i
     <div className="info">
       <div className="top">
         <h2>{title}</h2>
-        <h6>{quantity} pieces</h6>
+        <h6>{quantity} {quantity > 1 ? "Pieces" : "Piece"}</h6>
       </div>
       <div className="text">
         {description}
@@ -73,7 +73,7 @@ const BigCard = styled.div`
         font-size:18px;
         font-weight: 600;
         color: #000;
-        width: 80%;
+        width: 70%;
       }
       & h6{
         color:#2E3939;

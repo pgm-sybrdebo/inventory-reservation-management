@@ -14,6 +14,7 @@ const List = styled.div`
   flex-wrap: wrap;
   width: 100%;
   margin-bottom:32px;
+  margin-top:32px;
 `;
 
 export default ListCards
