@@ -13,6 +13,7 @@ import ModelInfo from './ModelInfo/ModelInfo';
 import GeneralList from './GeneralList/GeneralList';
 import ProfileForm from './Profile/ProfileForm';
 import StyledDeviceCard from './DeviceCard/StyledDeviceCard.style';
+import TopicDevices from "./TopicDevices/TopicDevices";
 
 
 export {
@@ -31,4 +32,5 @@ export {
   Topic,
   ProfileForm,
   StyledDeviceCard,
+  TopicDevices,
 }

@@ -226,10 +226,14 @@ query ($modelId: String!, $offset: Int!, $limit: Int!){
   getDevicesByModelIdWithPagination(modelId: $modelId, offset: $offset, limit: $limit) {
     id
     qr_code
+    userId
     damages {
       title
       picture 
       description
+    }
+    model {
+      name
     }
   }
 }

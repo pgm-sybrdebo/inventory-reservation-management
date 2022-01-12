@@ -8,6 +8,9 @@ export interface base {
 export interface topic {
   quantity: number,
 }
+export interface TopicDevice {
+  title:string,
+}
 
 export interface image {
   src: string,
@@ -43,6 +46,10 @@ export interface ModelCardData {
   quantity: number;
   description: string;
   id: string;
+}
+export interface ModelDeviceData {
+  id: string;
+  userId: string | null;
 }
 
 
