@@ -15,7 +15,7 @@ import {
   Like,
 } from 'typeorm';
 import { CreateModelInput } from './dto/create-model.input';
-import { Filter } from './dto/filter';
+import { Filter } from './dto/filter-model.input';
 import { UpdateModelInput } from './dto/update-model.input';
 import { Model } from './entities/model.entity';
 

@@ -101,6 +101,22 @@ export class DevicesService {
     return this.devicesRepository.count();
   }
 
+  async getTotalDevicesByModelId(modelId: String): Promise<number> {
+    const rawData = await this.devicesRepository.query(`
+      SELECT
+        COUNT(id) AS total
+      FROM
+        device
+      WHERE "deleted_on" IS NULL
+      AND "modelId" =  '${modelId}'
+      AND "deviceStatusId" = '7b4a3256-6005-402b-916b-810f4d6669c8'
+    `);
+    console.log(rawData);
+    return rawData;
+  }
+
+
+
   // findAndCountReadyDevices(): Promise<number> {
   //   return this.devicesRepository.findAndCount({
   //     deviceStatusId: 'ec2ed711-e4a3-42f6-b441-0e91f98f31ba'
@@ -148,7 +164,7 @@ export class DevicesService {
         modelId: modelId,
         deviceStatusId: '7b4a3256-6005-402b-916b-810f4d6669c8',
       },
-      skip: offset,
+      skip: (offset - 1) * limit,
       take: limit,
       order: {
         id: 'ASC',

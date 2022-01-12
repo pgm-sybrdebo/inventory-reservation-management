@@ -198,19 +198,41 @@ export const GET_DEVICES_BY_MODELID = gql`
   }
 `;
 
-export const GET_DEVICES_BY_MODELID_WITH_PAGINATION = gql`
-  query ($modelId: String!, $offset: Int!, $limit: Int!){
-    getDevicesByModelIdWithPagination(modelId: $modelId, offset: $offset, limit: $limit) {
-      id
-      qr_code
-      damages {
-        title
-        picture 
-        description
-      }
+// export const GET_DEVICES_BY_MODELID_WITH_PAGINATION = gql`
+//   query ($modelId: String!, $offset: Int!, $limit: Int!){
+//     getDevicesByModelIdWithPagination(modelId: $modelId, offset: $offset, limit: $limit) {
+//       id
+//       qr_code
+//       damages {
+//         title
+//         picture 
+//         description
+//       }
+//     }
+//   }
+// `;
+
+
+export const GET_DEVICES_TOTAL_BY_MODELID = gql`
+  query ($modelId = String!) {
+    totalDevicesByModelId(modelId: $modelId) {
+      total
     }
   }
 `;
 
+export const GET_DEVICES_BY_MODELID_WITH_PAGINATION = gql`
+query ($modelId: String!, $offset: Int!, $limit: Int!){
+  getDevicesByModelIdWithPagination(modelId: $modelId, offset: $offset, limit: $limit) {
+    id
+    qr_code
+    damages {
+      title
+      picture 
+      description
+    }
+  }
+}
+`;
 
 

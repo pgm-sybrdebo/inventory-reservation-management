@@ -19,7 +19,7 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Role } from 'src/auth/role.enum';
 import { Tag } from 'src/tags/entities/tag.entity';
-import { Filter } from './dto/filter';
+import { Filter } from './dto/filter-model.input';
 import { Total } from './dto/total';
 
 @Resolver(() => Model)
@@ -41,8 +41,8 @@ export class ModelsResolver {
   }
 
   @Query(() => [Model], { name: 'modelsWithPagination' })
-  // @UseGuards(JwtAuthGuard, RolesGuard)
-  // @Roles(Role.ADMIN, Role.USER, Role.SUPER_ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.USER, Role.SUPER_ADMIN)
   findAllByPagination(
     @Args('offset', { type: () => Int }, new ParseIntPipe()) offset: number,
     @Args('limit', { type: () => Int }, new ParseIntPipe()) limit: number,
@@ -90,8 +90,8 @@ export class ModelsResolver {
 
 
   @Query(() => [Total], { name: 'totalModelsWithFilter' })
-  // @UseGuards(JwtAuthGuard, RolesGuard)
-  // @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   async findTotalWithFilter(
     @Args('filter') filter: Filter
     // @Optional()

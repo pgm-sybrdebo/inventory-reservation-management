@@ -26,6 +26,7 @@ import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Role } from 'src/auth/role.enum';
 import { User } from 'src/users/entities/user.entity';
 import { Damage } from 'src/damages/entities/damage.entity';
+import { Total } from 'src/models/dto/total';
 
 @Resolver(() => Device)
 export class DevicesResolver {
@@ -48,8 +49,8 @@ export class DevicesResolver {
   }
 
   @Query(() => [Device], { name: 'devicesWithPagination' })
-  // @UseGuards(JwtAuthGuard, RolesGuard)
-  // @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   findAllWithPagination(
     @Args('offset', { type: () => Int }, new ParseIntPipe()) offset: number,
     @Args('limit', { type: () => Int }, new ParseIntPipe()) limit: number,
@@ -91,6 +92,16 @@ export class DevicesResolver {
     return this.devicesService.findAndCount();
   }
 
+
+  @Query(() => [Total], { name: 'totalDevicesByModelId' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  async GetTotalDevicesByModelId(
+    @Args('modelId', new ParseUUIDPipe()) modelId: string
+  ) {
+    return this.devicesService.getTotalDevicesByModelId(modelId);
+  }
+
   // @Query(() => Int, { name: 'totalReadyDevices' })
   // @UseGuards(JwtAuthGuard, RolesGuard)
   // @Roles(Role.ADMIN, Role.SUPER_ADMIN)
@@ -129,16 +140,16 @@ export class DevicesResolver {
     return this.devicesService.findOneByDeviceId(id);
   }
 
-  @Query(() => Device, { name: 'getDevicesByModelId' })
+  @Query(() => [Device], { name: 'getDevicesByModelId' })
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.USER, Role.SUPER_ADMIN)
   findAllByModelId(@Args('modelId', new ParseUUIDPipe()) modelId: string) {
     return this.devicesService.findAllByModelId(modelId);
   }
 
-  @Query(() => Device, { name: 'getDevicesByModelIdWithPagination' })
-  // @UseGuards(JwtAuthGuard, RolesGuard)
-  // @Roles(Role.ADMIN, Role.USER, Role.SUPER_ADMIN)
+  @Query(() => [Device], { name: 'getDevicesByModelIdWithPagination' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.USER, Role.SUPER_ADMIN)
   findAllByModelIdWithPagination(
     @Args('modelId', new ParseUUIDPipe()) modelId: string,
     @Args('offset', { type: () => Int }, new ParseIntPipe()) offset: number,

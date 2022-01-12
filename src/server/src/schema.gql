@@ -192,8 +192,8 @@ type Query {
   differenceLastMonthModels: Int!
   differenceLastMonthUsers: Int!
   getDeviceById(id: String!): Device!
-  getDevicesByModelId(modelId: String!): Device!
-  getDevicesByModelIdWithPagination(limit: Int!, modelId: String!, offset: Int!): Device!
+  getDevicesByModelId(modelId: String!): [Device!]!
+  getDevicesByModelIdWithPagination(limit: Int!, modelId: String!, offset: Int!): [Device!]!
   inCheckDevices: [Device!]!
   media(id: String!): Media!
   medias: [Media!]!
@@ -217,6 +217,7 @@ type Query {
   tag(id: String!): Tag!
   tags: [Tag!]!
   totalDevices: Int!
+  totalDevicesByModelId(modelId: String!): [Total!]!
   totalModels: Int!
   totalModelsWithFilter(filter: Filter!): [Total!]!
   totalMonthReservations(month: String!): Int!
