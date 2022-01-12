@@ -12,8 +12,10 @@ import {
   LessThanOrEqual,
   In,
   SelectQueryBuilder,
+  Like,
 } from 'typeorm';
 import { CreateModelInput } from './dto/create-model.input';
+import { Filter } from './dto/filter-model.input';
 import { UpdateModelInput } from './dto/update-model.input';
 import { Model } from './entities/model.entity';
 
@@ -35,6 +37,16 @@ export class ModelsService {
 
   findAll(): Promise<Model[]> {
     return this.modelsRepository.find();
+  }
+
+  findAllByPagination(offset: number, limit: number): Promise<Model[]> {
+    return this.modelsRepository.find({
+      skip: offset,
+      take: limit,
+      order: {
+        id: 'ASC',
+      },
+    });
   }
 
   async findAllByTagIds(tagIds: string[]): Promise<Model[]> {
@@ -71,8 +83,79 @@ export class ModelsService {
     // })
   }
 
+
+  // async findAllByFilterWithPagination(filter: Filter, offset: number, limit: number): Promise<Model[]> {
+  //   return this.modelsRepository.find({
+  //     relations: ['tags'],
+  //     where: (qb: SelectQueryBuilder<Model>) => {
+  //       qb.where('tag_id IN (:...tagsIds)', { tagsIds: filter.tagIds });
+  //     },
+  //     where: {
+  //       name: Like(`${filter.name}%`),
+        
+  //     }, 
+  //     skip: (offset - 1) * limit,
+  //     take: limit,
+  //     order: {
+  //       id: 'ASC'
+  //     }
+  //   });
+  // }
+  async findAllByFilterWithPagination(filter: Filter, offset: number, limit: number): Promise<Model[]> {
+    const rawData = await this.modelsRepository.query(`
+      SELECT
+        ${filter.tagIds ? 'DISTINCT ON (model.id) *' : '*'}
+      FROM
+        model
+      ${filter.tagIds ? 'INNER JOIN model_tag on model.id = model_tag.model_id' : ''}
+      WHERE "deleted_on" IS NULL
+      AND LOWER("name") LIKE LOWER('${filter.name}%')
+      ${filter.tagIds ? `AND model_tag.tag_id in ('${filter.tagIds.join("', '")}')` : ""}
+      ORDER BY model.id ASC
+      LIMIT ${limit}
+      OFFSET ${(offset - 1) * limit}
+    `);
+    console.log(rawData);
+    return rawData;
+  }
+
+  async findAllByTagIdsPagination(
+    tagIds: string[],
+    offset: number,
+    limit: number,
+  ): Promise<Model[]> {
+    return this.modelsRepository.find({
+      relations: ['tags'],
+      where: (qb: SelectQueryBuilder<Model>) => {
+        qb.where('tag_id IN (:...tagsIds)', { tagsIds: tagIds });
+      },
+      skip: offset,
+      take: limit,
+      order: {
+        id: 'ASC',
+      },
+    });
+  }
+
   findAndCount(): Promise<number> {
     return this.modelsRepository.count();
+  }
+
+  async countWithFilter(filter: Filter): Promise<number> {
+    console.log(filter.name);
+    console.log(filter.tagIds)
+    const rawData = await this.modelsRepository.query(`
+      SELECT
+        COUNT(id) AS total
+      FROM
+        model
+      ${filter.tagIds ? 'INNER JOIN model_tag on model.id = model_tag.model_id' : ''}
+      WHERE "deleted_on" IS NULL
+      AND LOWER("name") LIKE LOWER('${filter.name}%')
+      ${filter.tagIds ? `AND model_tag.tag_id in ('${filter.tagIds.join("', '")}')` : ""}
+    `);
+    console.log(rawData);
+    return rawData;
   }
 
   findRecentModels(from: string, to: string): Promise<Model[]> {

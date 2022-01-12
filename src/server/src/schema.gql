@@ -94,6 +94,11 @@ type DeviceStatus {
   updated_on: Timestamp!
 }
 
+input Filter {
+  name: String
+  tagIds: [String!]
+}
+
 type LoginResponse {
   access_token: String!
   user: User!
@@ -182,17 +187,20 @@ type Query {
   deviceStatus(id: String!): DeviceStatus!
   deviceStatuses: [DeviceStatus!]!
   devices: [Device!]!
+  devicesWithPagination(limit: Int!, offset: Int!): [Device!]!
   differenceLastMonthDevices: Int!
   differenceLastMonthModels: Int!
   differenceLastMonthUsers: Int!
   getDeviceById(id: String!): Device!
-  getDevicesByModelId(modelId: String!): Device!
+  getDevicesByModelId(modelId: String!): [Device!]!
+  getDevicesByModelIdWithPagination(limit: Int!, modelId: String!, offset: Int!): [Device!]!
   inCheckDevices: [Device!]!
   media(id: String!): Media!
   medias: [Media!]!
   model(id: String!): Model!
   models: [Model!]!
-  modelsByTagId(tagIds: [String!]!): [Model!]!
+  modelsByFilterWithPagination(filter: Filter!, limit: Int!, offset: Int!): [Model!]!
+  modelsWithPagination(limit: Int!, offset: Int!): [Model!]!
   recentDevices(from: String!, to: String!): [Device!]!
   recentModels(from: String!, to: String!): [Model!]!
   recentNewDevices: [Device!]!
@@ -209,7 +217,9 @@ type Query {
   tag(id: String!): Tag!
   tags: [Tag!]!
   totalDevices: Int!
+  totalDevicesByModelId(modelId: String!): [Total!]!
   totalModels: Int!
+  totalModelsWithFilter(filter: Filter!): [Total!]!
   totalMonthReservations(month: String!): Int!
   totalUsers: Int!
   user(id: String!): User!
@@ -217,6 +227,7 @@ type Query {
   users: [User!]!
   usersByProfession(profession: Int!): [User!]!
   usersByRole(role: Int!): [User!]!
+  usersWithPagination(limit: Int!, offset: Int!): [User!]!
 }
 
 type Reservation {
@@ -275,6 +286,10 @@ type Tag {
 `Date` type as integer. Type represents date and time as number of milliseconds from start of UNIX epoch.
 """
 scalar Timestamp
+
+type Total {
+  total: Float!
+}
 
 input UpdateDamageInput {
   description: String

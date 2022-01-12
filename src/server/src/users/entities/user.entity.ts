@@ -14,8 +14,10 @@ import {
 } from 'typeorm';
 import { Role } from '../../auth/role.enum';
 import * as bcrypt from 'bcrypt';
+import { QueryOptions } from '@nestjs-query/query-graphql';
 @Entity()
 @ObjectType()
+// @QueryOptions({pagingStrategy: PagingStrategies.OFFSET})
 export class User {
   @PrimaryGeneratedColumn('uuid')
   @Field()

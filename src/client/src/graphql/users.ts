@@ -26,6 +26,20 @@ export const GET_ALL_USERS = gql`
   }
 `;
 
+export const GET_ALL_USERS_WITH_PAGINATION = gql`
+  query ($offset: Int!, $limit: Int!){
+    usersWithPagination(offset: $offset, limit: $limit) {
+      id
+      firstName
+      lastName
+      email
+      role
+      profession
+      created_on
+    }
+  }
+`;
+
 export const GET_ALL_USERS_BY_ROLE = gql`
   query usersByRole($role: Int!) {
     usersByRole(role: $role) {

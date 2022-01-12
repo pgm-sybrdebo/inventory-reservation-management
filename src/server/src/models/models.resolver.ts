@@ -11,7 +11,7 @@ import { ModelsService } from './models.service';
 import { Model } from './entities/model.entity';
 import { CreateModelInput } from './dto/create-model.input';
 import { UpdateModelInput } from './dto/update-model.input';
-import { ParseUUIDPipe, UseGuards } from '@nestjs/common';
+import { Optional, ParseIntPipe, ParseUUIDPipe, UseGuards } from '@nestjs/common';
 import { Media } from 'src/medias/entities/media.entity';
 import { Device } from 'src/devices/entities/device.entity';
 import { Roles } from 'src/auth/decorators/roles.decorator';
@@ -19,6 +19,8 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Role } from 'src/auth/role.enum';
 import { Tag } from 'src/tags/entities/tag.entity';
+import { Filter } from './dto/filter-model.input';
+import { Total } from './dto/total';
 
 @Resolver(() => Model)
 export class ModelsResolver {
@@ -38,18 +40,69 @@ export class ModelsResolver {
     return this.modelsService.findAll();
   }
 
-  @Query(() => [Model], { name: 'modelsByTagId' })
+  @Query(() => [Model], { name: 'modelsWithPagination' })
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.USER, Role.SUPER_ADMIN)
-  findAllByTagId(@Args('tagIds', { type: () => [String] }) tagIds: string[]) {
-    return this.modelsService.findAllByTagIds(tagIds);
+  findAllByPagination(
+    @Args('offset', { type: () => Int }, new ParseIntPipe()) offset: number,
+    @Args('limit', { type: () => Int }, new ParseIntPipe()) limit: number,
+  ) {
+    return this.modelsService.findAllByPagination(offset, limit);
   }
+
+  // @Query(() => [Model], { name: 'modelsByTagIdWithPagination' })
+  // // @UseGuards(JwtAuthGuard, RolesGuard)
+  // // @Roles(Role.ADMIN, Role.USER, Role.SUPER_ADMIN)
+  // findAllByTagId(
+  //   @Args('tagIds', { type: () => [String] }) tagIds: string[],
+  //   @Args('offset', { type: () => Int }, new ParseIntPipe()) offset: number,
+  //   @Args('limit', { type: () => Int }, new ParseIntPipe()) limit: number,
+  // ) {
+  //   return this.modelsService.findAllByTagIdsPagination(tagIds, offset, limit);
+  // }
+
+  @Query(() => [Model], { name: 'modelsByFilterWithPagination' })
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles(Role.ADMIN, Role.USER, Role.SUPER_ADMIN)
+  findAllByFilterWithPagination(
+    @Args('filter') filter: Filter,
+    @Args('offset', { type: () => Int }, new ParseIntPipe()) offset: number,
+    @Args('limit', { type: () => Int }, new ParseIntPipe()) limit: number,
+  ) {
+    return this.modelsService.findAllByFilterWithPagination(filter, offset, limit);
+  }
+
+  // @Query(() => [Model], { name: 'modelsByTagId' })
+  // // @UseGuards(JwtAuthGuard, RolesGuard)
+  // // @Roles(Role.ADMIN, Role.USER, Role.SUPER_ADMIN)
+  // findAllByTagIdWithPagination(
+  //   @Args('tagIds', { type: () => [String] }) tagIds: string[],
+  // ) {
+  //   return this.modelsService.findAllByTagIds(tagIds);
+  // }
 
   @Query(() => Int, { name: 'totalModels' })
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   async findTotal() {
     return this.modelsService.findAndCount();
+  }
+
+
+  @Query(() => [Total], { name: 'totalModelsWithFilter' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  async findTotalWithFilter(
+    @Args('filter') filter: Filter
+    // @Optional()
+    // @Args('tagIds', { type: () => [String] }) tagIds: string[], nullable: true
+    // @Args({
+    //   name: 'tagIds', 
+    //   type: () =>  [String],
+    //   nullable: true,
+    // }
+  ) {
+    return this.modelsService.countWithFilter(filter);
   }
 
   @Query(() => Int, { name: 'differenceLastMonthModels' })

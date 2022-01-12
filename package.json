@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@nestjs-query/query-graphql": "^0.30.0"
+  }
+}

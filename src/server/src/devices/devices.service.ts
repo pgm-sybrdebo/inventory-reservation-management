@@ -22,6 +22,10 @@ import { CreateDeviceInput } from './dto/create-device.input';
 import { UpdateDeviceInput } from './dto/update-device.input';
 import { Device } from './entities/device.entity';
 
+interface DeviceCount {
+  devices: Device[];
+  count: number;
+}
 @Injectable()
 export class DevicesService {
   constructor(
@@ -41,6 +45,25 @@ export class DevicesService {
     const newDevice = this.devicesRepository.create(createDeviceInput);
 
     return this.devicesRepository.save(newDevice);
+  }
+
+  // (Device[] | number)[]
+  async findAllPagination(offset: number, limit: number): Promise<any> {
+    const test = await this.devicesRepository.findAndCount({
+      skip: offset,
+      take: limit,
+      order: {
+        id: 'ASC',
+      },
+    });
+    console.log(test);
+    return this.devicesRepository.find({
+      skip: offset,
+      take: limit,
+      order: {
+        id: 'ASC',
+      },
+    });
   }
 
   findAll(): Promise<Device[]> {
@@ -78,6 +101,28 @@ export class DevicesService {
     return this.devicesRepository.count();
   }
 
+  async getTotalDevicesByModelId(modelId: String): Promise<number> {
+    const rawData = await this.devicesRepository.query(`
+      SELECT
+        COUNT(id) AS total
+      FROM
+        device
+      WHERE "deleted_on" IS NULL
+      AND "modelId" =  '${modelId}'
+      AND "deviceStatusId" = '7b4a3256-6005-402b-916b-810f4d6669c8'
+    `);
+    console.log(rawData);
+    return rawData;
+  }
+
+
+
+  // findAndCountReadyDevices(): Promise<number> {
+  //   return this.devicesRepository.findAndCount({
+  //     deviceStatusId: 'ec2ed711-e4a3-42f6-b441-0e91f98f31ba'
+  //   });
+  // }
+
   async findDifferenceLastMonth(): Promise<number> {
     const date = new Date();
     const iso = date.toISOString();
@@ -106,6 +151,24 @@ export class DevicesService {
     return this.devicesRepository.find({
       modelId: modelId,
       deviceStatusId: '7b4a3256-6005-402b-916b-810f4d6669c8',
+    });
+  }
+
+  findAllByModelIdWithPagination(
+    modelId: string,
+    offset: number,
+    limit: number,
+  ): Promise<Device[]> {
+    return this.devicesRepository.find({
+      where: {
+        modelId: modelId,
+        deviceStatusId: '7b4a3256-6005-402b-916b-810f4d6669c8',
+      },
+      skip: (offset - 1) * limit,
+      take: limit,
+      order: {
+        id: 'ASC',
+      },
     });
   }
 
