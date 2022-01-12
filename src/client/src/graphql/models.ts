@@ -67,6 +67,34 @@ export const GET_ALL_MODELS = gql`
   }
 `;
 
+export const GET_ALL_MODELS_WITH_PAGINATION = gql`
+  query ($offset: Int!, $limit: Int!){
+    modelsWithPagination(offset: $offset, limit: $limit) {
+      id
+      name
+      brand
+      description
+      specifications
+      quantity
+      max_reservation_time
+    }
+  }
+`;
+
+export const GET_ALL_MODELS_BY_TAG_ID_WITH_PAGINATION = gql`
+  query ($tagIds: [String]!, $offset: Int!, $limit: Int!){
+    modelsWithPagination(tagIds: $tagIds, offset: $offset, limit: $limit) {
+      id
+      name
+      brand
+      description
+      specifications
+      quantity
+      max_reservation_time
+    }
+  }
+`;
+
 
 export const GET_MODEL_BY_ID = gql`
   query model($id: String!) {

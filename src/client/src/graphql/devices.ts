@@ -43,6 +43,27 @@ export const GET_ALL_DEVICES = gql`
     }
   }
 `;
+
+export const GET_ALL_DEVICES_WITH_PAGINATION = gql`
+  query ($offset: Int!, $limit: Int!){
+    getDeviceById(offset: $offset, limit: $limit) {
+      id
+      deviceStatus {
+        name
+      }
+      model {
+        name
+        brand
+        description
+        specifications
+        max_reservation_time
+      }
+      created_on
+      updated_on
+    }
+  }
+`;
+
 export const GET_ALL_STOCK_DEVICES = gql`
   query stockDevices {
     stockDevices {
@@ -166,6 +187,20 @@ export const GET_DEVICE_BY_ID = gql`
 export const GET_DEVICES_BY_MODELID = gql`
   query ($modelId: String!){
     getDevicesByModelId(modelId: $modelId, ) {
+      id
+      qr_code
+      damages {
+        title
+        picture 
+        description
+      }
+    }
+  }
+`;
+
+export const GET_DEVICES_BY_MODELID_WITH_PAGINATION = gql`
+  query ($modelId: String!, $offset: Int!, $limit: Int!){
+    getDevicesByModelIdWithPagination(modelId: $modelId, offset: $offset, limit: $limit) {
       id
       qr_code
       damages {

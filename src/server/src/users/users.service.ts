@@ -26,6 +26,16 @@ export class UsersService {
     return this.usersRepository.find();
   }
 
+  findAllByPagination(offset: number, limit: number): Promise<User[]> {
+    return this.usersRepository.find({
+      skip: offset,
+      take: limit,
+      order: {
+        id: 'ASC',
+      },
+    });
+  }
+
   findAllByRole(role: number): Promise<User[]> {
     return this.usersRepository.find({ role });
   }
@@ -80,7 +90,7 @@ export class UsersService {
     if (updateUserInput.password) {
       console.log(updateUserInput.password);
       const hashPassword = await bcrypt.hash(updateUserInput.password, 10);
-      console.log("hash",hashPassword);
+      console.log('hash', hashPassword);
       updatedUser = await this.usersRepository.preload({
         id: id,
         ...updateUserInput,

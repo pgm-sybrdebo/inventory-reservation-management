@@ -11,7 +11,12 @@ import { DevicesService } from './devices.service';
 import { Device } from './entities/device.entity';
 import { CreateDeviceInput } from './dto/create-device.input';
 import { UpdateDeviceInput } from './dto/update-device.input';
-import { ParseUUIDPipe, UseGuards } from '@nestjs/common';
+import {
+  Optional,
+  ParseIntPipe,
+  ParseUUIDPipe,
+  UseGuards,
+} from '@nestjs/common';
 import { Reservation } from 'src/reservations/entities/reservation.entity';
 import { DeviceStatus } from 'src/device-statuses/entities/device-status.entity';
 import { Model } from 'src/models/entities/model.entity';
@@ -40,6 +45,16 @@ export class DevicesResolver {
   @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   findAll() {
     return this.devicesService.findAll();
+  }
+
+  @Query(() => [Device], { name: 'devicesWithPagination' })
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  findAllWithPagination(
+    @Args('offset', { type: () => Int }, new ParseIntPipe()) offset: number,
+    @Args('limit', { type: () => Int }, new ParseIntPipe()) limit: number,
+  ) {
+    return this.devicesService.findAllPagination(offset, limit);
   }
 
   @Query(() => [Device], { name: 'borrowedDevices' })
@@ -75,6 +90,13 @@ export class DevicesResolver {
   async findTotal() {
     return this.devicesService.findAndCount();
   }
+
+  // @Query(() => Int, { name: 'totalReadyDevices' })
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  // async findTotalReady() {
+  //   return this.devicesService.findAndCountReadyDevices();
+  // }
 
   @Query(() => Int, { name: 'differenceLastMonthDevices' })
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -112,6 +134,21 @@ export class DevicesResolver {
   @Roles(Role.ADMIN, Role.USER, Role.SUPER_ADMIN)
   findAllByModelId(@Args('modelId', new ParseUUIDPipe()) modelId: string) {
     return this.devicesService.findAllByModelId(modelId);
+  }
+
+  @Query(() => Device, { name: 'getDevicesByModelIdWithPagination' })
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles(Role.ADMIN, Role.USER, Role.SUPER_ADMIN)
+  findAllByModelIdWithPagination(
+    @Args('modelId', new ParseUUIDPipe()) modelId: string,
+    @Args('offset', { type: () => Int }, new ParseIntPipe()) offset: number,
+    @Args('limit', { type: () => Int }, new ParseIntPipe()) limit: number,
+  ) {
+    return this.devicesService.findAllByModelIdWithPagination(
+      modelId,
+      offset,
+      limit,
+    );
   }
 
   @Mutation(() => Device)

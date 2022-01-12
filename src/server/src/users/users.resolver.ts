@@ -17,6 +17,7 @@ import { Roles } from 'src/auth/decorators/roles.decorator';
 import { Role } from 'src/auth/role.enum';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Reservation } from 'src/reservations/entities/reservation.entity';
+import { PaginationParams } from 'src/mixins/paginationParams';
 
 @Resolver(() => User)
 export class UsersResolver {
@@ -32,6 +33,16 @@ export class UsersResolver {
   @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   findAll() {
     return this.usersService.findAll();
+  }
+
+  @Query(() => [User], { name: 'usersWithPagination' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  findAllByPagination(
+    @Args('offset', { type: () => Int }, new ParseIntPipe()) offset: number,
+    @Args('limit', { type: () => Int }, new ParseIntPipe()) limit: number,
+  ) {
+    return this.usersService.findAllByPagination(offset, limit);
   }
 
   @Query(() => [User], { name: 'usersByRole' })
