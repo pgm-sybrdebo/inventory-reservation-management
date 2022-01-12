@@ -8,10 +8,13 @@ type Props = {
 const StyledDeviceCard = styled(DeviceCard)<Props>`
   width: 100%;
 
-@media(min-width:767px) and (max-width:1049px){
+@media(min-width:500px) and (max-width:767px){
+  width: 45%;
+}
+@media(min-width:768px) and (max-width:1049px){
   width: 30%;
 }
-@media(min-width:1050px){
+@media(min-width:1050px) {
   width: 22%;
 }
 height: 80px;
@@ -30,12 +33,12 @@ cursor:pointer;
   justify-content: center;
   align-items: center;
   height: 100%;
-  width: calc(100% - );
-  font-size:24px
+  font-size:14px;
+  padding: 0 16px 0 46px;
 }
 & .status{
   position: absolute;
-  bottom: 30px;
+  bottom: 28px;
   left:-30px;
   width: 80px;
   background-color: ${props=>props.backgroundcolor};
@@ -45,7 +48,9 @@ cursor:pointer;
   align-items: center;
   color: white;
   border-radius: .25rem .25rem 0 0;
- 
+  font-size:12px;
+  height: 25px;
+  padding: 0 4px;
 }
 `;
 export default StyledDeviceCard;
