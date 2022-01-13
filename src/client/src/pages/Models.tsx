@@ -18,8 +18,10 @@ const Models = () => {
       tagIds: ["762f42b0-9c9e-4a80-be95-db7f84921654", "9e137f8b-9438-471c-9be2-346779f18577", "be835163-2e80-4e23-a8d3-f705a5ec36bf"],
     },
     onCompleted: (response) => {
-      console.log(response)
-      setTotal(response.totalModelsWithFilter[0].total)
+      console.log("res", response);
+      console.log("pls", response.totalModelsWithFilter[0].total);
+      setTotal(Number(response.totalModelsWithFilter[0].total))
+      console.log("total" , total);
     },
     onError: (error) => {
       console.log(`GRAPHQL ERROR: ${error.message}`);
@@ -37,20 +39,22 @@ const Models = () => {
   }, [getModels, pageNumber])
 
   let result;
-  let quantity;
+  //let quantity;
   if (data) {
     console.log(data)
     result = data.modelsByFilterWithPagination;
-    quantity=result.length;
+    //quantity=result.length;
   }
 
+  console.log("ttt", Math.ceil(total / 24));
   if(loading) {return <div className="loading"><h1 className="loading__text">Loading...</h1></div>}
   if(loadinging) {return <div className="loading"><h1 className="loading__text">Loading...</h1></div>}
   if(error) {return <div className="loading"><h1 className="loading__text">Error {error.message}</h1></div>}
 
 
   const changePage = ({ selected }: any) => {
-    setPageNumber(selected);
+    setPageNumber(selected + 1);
+    console.log("s",selected)
   };
   console.log("PN:",pageNumber)
   return (
@@ -58,7 +62,7 @@ const Models = () => {
       <Header />
       {data && 
       <>
-        <Topic quantity={quantity}/>
+        <Topic quantity={total}/>
         <Container>
           <ListCards>
             {result.map((model: ModelCardData) => 
@@ -77,7 +81,7 @@ const Models = () => {
               nextLinkClassName={"nextBttn"}
               disabledClassName={"paginationDisabled"}
               activeClassName={"paginationActive"}
-              // forcePage={pageNumber}
+              forcePage={pageNumber-1}
             />
             </StyledPaginateContainer>
         </Container>
