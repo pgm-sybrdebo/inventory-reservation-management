@@ -51,14 +51,11 @@ const Models = () => {
 
   const changePage = ({ selected }: any) => {
     setPageNumber(selected);
-    console.log("s",selected)
-
   };
   console.log("PN:",pageNumber)
   return (
     <>
       <Header />
-      
       {data && 
       <>
         <Topic quantity={quantity}/>
@@ -80,7 +77,7 @@ const Models = () => {
               nextLinkClassName={"nextBttn"}
               disabledClassName={"paginationDisabled"}
               activeClassName={"paginationActive"}
-              forcePage={pageNumber}
+              // forcePage={pageNumber}
             />
             </StyledPaginateContainer>
         </Container>
