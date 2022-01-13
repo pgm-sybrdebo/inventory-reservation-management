@@ -14,7 +14,6 @@ interface StyledProps {
 const Header = ({type="base"}:HeaderProps) => {
 
   const [modalVisible, setModalVisible] = useState(false);
-  console.log(modalVisible);
   return(
     <>
       <TheHeader t={type}>

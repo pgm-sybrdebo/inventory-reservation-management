@@ -18,10 +18,7 @@ const Models = () => {
       tagIds: ["762f42b0-9c9e-4a80-be95-db7f84921654", "9e137f8b-9438-471c-9be2-346779f18577", "be835163-2e80-4e23-a8d3-f705a5ec36bf"],
     },
     onCompleted: (response) => {
-      console.log("res", response);
-      console.log("pls", response.totalModelsWithFilter[0].total);
       setTotal(Number(response.totalModelsWithFilter[0].total))
-      console.log("total" , total);
     },
     onError: (error) => {
       console.log(`GRAPHQL ERROR: ${error.message}`);
@@ -41,12 +38,9 @@ const Models = () => {
   let result;
   //let quantity;
   if (data) {
-    console.log(data)
     result = data.modelsByFilterWithPagination;
-    //quantity=result.length;
   }
 
-  console.log("ttt", Math.ceil(total / 24));
   if(loading) {return <div className="loading"><h1 className="loading__text">Loading...</h1></div>}
   if(loadinging) {return <div className="loading"><h1 className="loading__text">Loading...</h1></div>}
   if(error) {return <div className="loading"><h1 className="loading__text">Error {error.message}</h1></div>}
@@ -54,9 +48,7 @@ const Models = () => {
 
   const changePage = ({ selected }: any) => {
     setPageNumber(selected + 1);
-    console.log("s",selected)
   };
-  console.log("PN:",pageNumber)
   return (
     <>
       <Header />
@@ -97,9 +89,10 @@ const StyledPaginateContainer = styled.div`
     list-style: none;
     margin: 1rem 0 3rem 0;
     display: flex;
-    width: 100%;
+    width: 90%;
     justify-content: center;
     flex-wrap: wrap;
+
   }
   .paginationBttns li {
     margin: 1.5rem 0;
@@ -108,7 +101,7 @@ const StyledPaginateContainer = styled.div`
     padding: 0.5rem;
     margin: 0.5rem;
     border-radius: 3px;
-    border: 1px solid orange;
+    border: 1px solid #F58732;
     color: black;
     cursor: pointer;
     @media (min-width: 62rem) {
@@ -116,11 +109,13 @@ const StyledPaginateContainer = styled.div`
     }
   }
   .paginationBttns a:hover {
-    background-color: #e52626;
+    background-color: #ED1534;
     color: black;
   }
   .paginationActive a {
-    background-color: #e52626 !important;
+    background-color: #ED1534 !important;
+    color: #fff !important;
+    border-color: #ED1534 !important;
   }
   .paginationDisabled a {
     color: transparent;
