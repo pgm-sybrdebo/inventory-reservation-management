@@ -212,6 +212,7 @@ type Query {
   reservationTime(id: String!): ReservationTime!
   reservationTimes: [ReservationTime!]!
   reservations: [Reservation!]!
+  reservationsByUserIdAndReservationState(reservationStateId: String!, userId: String!): [Reservation!]!
   reservationsOverview(today: String!): [ReservationsOverview!]!
   stockDevices: [Device!]!
   tag(id: String!): Tag!

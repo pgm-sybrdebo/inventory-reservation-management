@@ -46,6 +46,18 @@ export class ReservationsResolver {
     return this.reservationsService.findAll();
   }
 
+  @Query(() => [Reservation], { name: 'reservationsByUserIdAndReservationState' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  findAllByUserIdAndReservationState(
+    @Args('userId', new ParseUUIDPipe()) userId: string,
+    @Args('reservationStateId', new ParseUUIDPipe()) reservationStateId: string
+  ) {
+    return this.reservationsService.findAllByUSerIdAndReservationState(userId, reservationStateId);
+  }
+
+
+
   @Query(() => [Reservation], { name: 'recentReservations' })
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.SUPER_ADMIN)
