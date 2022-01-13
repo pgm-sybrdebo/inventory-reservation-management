@@ -146,7 +146,7 @@ export class ModelsService {
     console.log(filter.tagIds)
     const rawData = await this.modelsRepository.query(`
       SELECT
-        COUNT(id) AS total
+        COUNT(DISTINCT id) AS total
       FROM
         model
       ${filter.tagIds ? 'INNER JOIN model_tag on model.id = model_tag.model_id' : ''}
