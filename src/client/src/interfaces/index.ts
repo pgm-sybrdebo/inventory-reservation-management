@@ -20,6 +20,8 @@ export interface Filters {
 }
 export interface TopicDevice {
   title:string,
+  setSelection:(value:string)=>void,
+  selection:string,
 }
 
 export interface image {

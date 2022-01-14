@@ -18,6 +18,7 @@ function Devices() {
   const token = localStorage.getItem('token'); 
   const data = jwt_decode<TokenInfo>(token!);
   const currentUserId = data.sub;
+  const [selection, setSelection] = useState('all');
 
   const {data:modelById} = useQuery(GET_MODEL_BY_ID, {
     variables: {id: modelId}
@@ -50,6 +51,16 @@ function Devices() {
   //let quantity;
   if (devPag) {
     result = devPag.getDevicesByModelIdWithPagination;
+    if(selection && selection === 'all'){
+      result = devPag.getDevicesByModelIdWithPagination;
+    }else if(selection && selection === 'inStock'){
+      result = devPag.getDevicesByModelIdWithPagination.filter((i: { userId: null | string; }) => i.userId === null)
+    }else if(selection && selection === 'outOfStock'){
+      result = devPag.getDevicesByModelIdWithPagination.filter((i: { userId: null | string; }) => i.userId !== currentUserId && i.userId !== null)
+    }
+    else if(selection && selection === 'withMe'){
+      result = devPag.getDevicesByModelIdWithPagination.filter((i: { userId: null | string; }) => i.userId === currentUserId)
+    }
   }
 
   if(loading) {return <div className="loading"><h1 className="loading__text">Loading...</h1></div>}
@@ -60,11 +71,12 @@ function Devices() {
   const changePage = ({ selected }: any) => {
     setPageNumber(selected + 1);
   };
-
+  console.log(devPag)
+  console.log(selection)
   return (
     <>
       <Header />
-      <TopicDevices title={title ? title : "Loading..."}/>
+      <TopicDevices title={title ? title : "Loading..."} setSelection={setSelection} selection={selection}/>
       {devPag && 
       <Container>
         <ListCards>
