@@ -10,12 +10,15 @@ import styled from 'styled-components';
 const limitItems = 24;
 const defaultPicture = device;
 const Models = () => {
+  const query = localStorage.getItem("query");
+  const selection = localStorage.getItem('selection');
+  console.log(selection);
   const [pageNumber, setPageNumber] = useState(1)
   const [total, setTotal]=useState(0);
   const {loading:loadinging} = useQuery(GET_TOTAL_MODELS_WITH_FILTER, {
     variables:{ 
-      name: "",
-      // tagIds: ["762f42b0-9c9e-4a80-be95-db7f84921654", "9e137f8b-9438-471c-9be2-346779f18577", "be835163-2e80-4e23-a8d3-f705a5ec36bf"],
+      name:query || "",
+      tagIds: selection || null,
     },
     onCompleted: (response) => {
       setTotal(Number(response.totalModelsWithFilter[0].total))
@@ -24,17 +27,24 @@ const Models = () => {
       console.log(`GRAPHQL ERROR: ${error.message}`);
     }
   })
+  // const [getTotal, { error:totalError, loading:totalLoading, data:totalModels}] = useLazyQuery(GET_TOTAL_MODELS_WITH_FILTER);
+  // useEffect(()=>{
+  //   getTotal({variables:{
+  //     name:query || "",
+  //     tagIds: selection || null,
+  //   }})
+  // },[getTotal, query, selection])
+
   const [getModels, { error, loading, data}] = useLazyQuery(GET_MODELS_BY_FILTER_WITH_PAGINATION);
   useEffect(() => {
     
     getModels({variables: {
-      name: "",
-      tagIds: ["762f42b0-9c9e-4a80-be95-db7f84921654", "9e137f8b-9438-471c-9be2-346779f18577", "be835163-2e80-4e23-a8d3-f705a5ec36bf"],
+      name:query || "",
+      tagIds: selection || null,
       limit: limitItems,
-
       offset: pageNumber
     }})
-  }, [getModels, pageNumber])
+  }, [getModels, pageNumber, query, selection])
 
   let result;
   //let quantity;

@@ -10,14 +10,16 @@ import StyledButton from '../Button/StyledButton.style';
 
 
 function Filter({setModalVisible}:any) {
+  const query = localStorage.getItem("query");
+  const selection = JSON.parse(localStorage.getItem('selection')!);
   const formik: FormikProps<FilterValues> = useFormik<FilterValues>({
     initialValues:{
-      filterName: "",
-      filterSelect:[],
+      filterName:query || "",
+      filterSelect: [],
     },
     validationSchema: YUP.object({
 
-      filterName: YUP.string().min(2, "Title must contain minimum 2 characters "),
+      filterName: YUP.string().min(2, "Title must contain minimum 2 characters ").required(),
       filterSelect: YUP.array()
       .of(
         YUP.object().shape({
@@ -29,8 +31,12 @@ function Filter({setModalVisible}:any) {
      }),
     onSubmit:(values, {setSubmitting}) => {
       setSubmitting(true);
-      console.log(values);
-
+      const selection = values.filterSelect?.map(i=>i.id);
+      localStorage.setItem("query", values.filterName);
+      if(values.filterSelect.length > 0){
+        localStorage.setItem("selection", JSON.stringify(selection));
+      }
+      setModalVisible(false)
     }
   });
   const handleSelection = (items: any) => {
@@ -65,7 +71,23 @@ function Filter({setModalVisible}:any) {
             backgroundcolor="#fff"
             radius = ".25rem"
           />
+           <StyledButton 
+            type="button" 
+            text="Reset Filters" 
+            name="reset"
+            color="#F58732"
+            width="100%"
+            backgroundcolor="#fff"
+            radius = ".25rem"
+            onClick = {()=>{
+              localStorage.removeItem("query");
+              localStorage.removeItem("selection");
+              setModalVisible(false);
+
+            }}
+          />
       </form>
+
 
     </FilterModal>
   )
