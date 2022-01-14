@@ -18,6 +18,8 @@ import DashboardDevices from "./DashboardDevices";
 import DashboardBorrowedDevices from "./DashboardBorrowedDevices";
 import DashboardStockDevices from "./DashboardStockDevices";
 import DashboardInCheckDevices from "./DashboardInCheckDevices";
+import ReturnDevice from "./ReturnDevice";
+import TakeOrReserveDevice from "./TakeOrReserveDevice";
 
 export {
   HomePage,
@@ -40,4 +42,6 @@ export {
   DashboardBorrowedDevices,
   DashboardStockDevices,
   DashboardInCheckDevices,
+  ReturnDevice,
+  TakeOrReserveDevice,
 };

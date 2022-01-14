@@ -7,7 +7,7 @@ import {GET_MODELS_BY_FILTER_WITH_PAGINATION, GET_TOTAL_MODELS_WITH_FILTER } fro
 import {ModelCardData} from '../interfaces'
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-
+const limitItems = 24;
 const defaultPicture = device;
 const Models = () => {
   const [pageNumber, setPageNumber] = useState(1)
@@ -30,7 +30,7 @@ const Models = () => {
     getModels({variables: {
       name: "",
       tagIds: ["762f42b0-9c9e-4a80-be95-db7f84921654", "9e137f8b-9438-471c-9be2-346779f18577", "be835163-2e80-4e23-a8d3-f705a5ec36bf"],
-      limit: 24,
+      limit: limitItems,
       offset: pageNumber
     }})
   }, [getModels, pageNumber])
@@ -61,11 +61,12 @@ const Models = () => {
               <ModelCard key={model.id} src={defaultPicture} title={model.name.slice(0,21)} quantity={model.quantity} description={`${model.description.slice(0,42)}...`} id={model.id}/>
             )}
           </ListCards>
+          {total > limitItems && 
           <StyledPaginateContainer>
           <ReactPaginate 
               previousLabel={"Back"}
               nextLabel={"Next"}
-              pageCount={Math.ceil((total / 24))}
+              pageCount={Math.ceil((total / limitItems))}
               pageRangeDisplayed={0}
               onPageChange={changePage}
               containerClassName={"paginationBttns"}
@@ -76,6 +77,7 @@ const Models = () => {
               forcePage={pageNumber-1}
             />
             </StyledPaginateContainer>
+          }
         </Container>
       </>
       }

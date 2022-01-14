@@ -23,29 +23,50 @@ import {
   DashboardBorrowedDevices,
   DashboardStockDevices,
   DashboardInCheckDevices,
+  ReturnDevice,
+  TakeOrReserveDevice,
 } from "./pages";
 
 import { TokenInfo, UserRole } from "./interfaces";
+// import { useQuery } from "@apollo/client";
+// import { GET_DEVICE_BY_ID } from "./graphql/devices";
 
 
 const RequireAuth = ({availableRoles} : { availableRoles: UserRole[]}) => {
   let navigate = useNavigate();
   const token = localStorage.getItem('token');  
   let location = useLocation();
-
+  // const routeDetail = location.pathname.split( '/' );
+  // console.log(routeDetail);
+  // const deviceId = routeDetail[3];
+  // const {data:deviceData} = useQuery(GET_DEVICE_BY_ID, {
+  //   variables: {id: deviceId}
+  // })
   if (!token) {
     return <Navigate to="/login" state={{ from: location }} />;
   }
 
-  const data = jwt_decode<TokenInfo>(token);
-  if (data.exp  < Date.now() / 1000) {
+  const userData = jwt_decode<TokenInfo>(token);
+  if (userData.exp  < Date.now() / 1000) {
     localStorage.removeItem('token');
     navigate("/login");
   }
-  console.log("Token is Active")
-  if (!availableRoles.filter(r => r === data.role).length) {
+  if (!availableRoles.filter(r => r === userData.role).length) {
     return <Navigate to="/page403" state={{ from: location }} />;
   }
+
+
+  // console.log("d:",deviceData)
+  // if(location.pathname === ROUTES.ReturnDevice || location.pathname === ROUTES.TAKE_OR_RESERVE_DEVICE){
+  //   console.log("match");
+  //   if(userData.sub !== deviceData.getDeviceById.userId) {
+  //     return <Navigate to={`/device/take-or-reserve/${deviceId}`}  state={{ from: location }} />;
+  //   }
+  //   else{
+  //     return <Navigate to={`/device/return/${deviceId}`}  state={{ from: location }} />;
+  //   }
+
+  //   }
   return <Outlet />;
 }
 
@@ -72,6 +93,14 @@ function App() {
           <Route
             path={ROUTES.DEVICES}
             element={<Devices />}
+          /> 
+          <Route
+            path={ROUTES.ReturnDevice}
+            element={<ReturnDevice />}
+          /> 
+          <Route
+            path={ROUTES.TAKE_OR_RESERVE_DEVICE}
+            element={<TakeOrReserveDevice />}
           /> 
           <Route
             path={ROUTES.EDIT_PROFILE}

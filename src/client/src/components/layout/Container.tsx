@@ -10,7 +10,7 @@ const Container : React.FC<base> = ({children}) => (
 
 const TheContainer = styled.div`
   margin: 0 auto;
-  width: 100%;
+  max-width: 100%;
   padding: 0 16px;
   @media(min-width:767px){
     padding: 0 64px;

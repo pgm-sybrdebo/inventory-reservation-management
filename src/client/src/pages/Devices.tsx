@@ -1,16 +1,17 @@
 import { useQuery, useLazyQuery } from '@apollo/client';
 import React, { useState,  useEffect } from 'react'
 import ReactPaginate from 'react-paginate';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Container, Header, ListCards, StyledDeviceCard, TopicDevices } from '../components'
 import { GET_DEVICES_BY_MODELID_WITH_PAGINATION, GET_DEVICES_TOTAL_BY_MODELID } from '../graphql/devices';
 import { ModelDeviceData, TokenInfo } from '../interfaces';
 import jwt_decode from "jwt-decode"
 import { GET_MODEL_BY_ID } from '../graphql/models';
 import styled from 'styled-components';
-
+const limitItems = 24;
 
 function Devices() {
+  let navigate = useNavigate();
   let { modelId } = useParams();
   const [pageNumber, setPageNumber] = useState(1)
   const [total, setTotal]=useState(0);
@@ -40,7 +41,7 @@ function Devices() {
     
     getDevices({variables: {
       modelId: modelId,
-      limit: 24,
+      limit: limitItems,
       offset: pageNumber
     }})
   }, [getDevices, modelId, pageNumber])
@@ -68,14 +69,25 @@ function Devices() {
       <Container>
         <ListCards>
         {result.map((device : ModelDeviceData)  => 
-          <StyledDeviceCard key={device.id} availability={(device.userId === null && "In Stock" )|| (device.userId === currentUserId ? "With Me" : "Out Of Stock")} deviceId={device.id} backgroundcolor={(device.userId === null && "#5AB946" )|| (device.userId === currentUserId ? "#00A5D9" : "#ED1534")} onClick={()=> console.log("clicked")}/>
-          )}
+          <StyledDeviceCard 
+            key={device.id} 
+            availability={(device.userId === null && "In Stock" )|| (device.userId === currentUserId ? "With Me" : "Out Of Stock")} 
+            deviceId={device.id} backgroundcolor={(device.userId === null && "#5AB946" )|| (device.userId === currentUserId ? "#00A5D9" : "#ED1534")} 
+            onClick={()=>{
+              if(device.userId === currentUserId){
+                navigate(`/device/return/${device.id}`);
+              }else{
+                navigate(`/device/take-or-reserve/${device.id}`)
+              }
+            }}/>
+        )}
         </ListCards>
+        {total > limitItems && 
         <StyledPaginateContainer>
           <ReactPaginate 
               previousLabel={"Back"}
               nextLabel={"Next"}
-              pageCount={Math.ceil((total / 24))}
+              pageCount={Math.ceil((total / limitItems))}
               pageRangeDisplayed={0}
               onPageChange={changePage}
               containerClassName={"paginationBttns"}
@@ -86,6 +98,7 @@ function Devices() {
               forcePage={pageNumber-1}
             />
             </StyledPaginateContainer>
+        }
       </Container>
       
       }

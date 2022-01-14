@@ -178,7 +178,7 @@ export const GET_DEVICE_BY_ID = gql`
       reservations {
         start_date
         end_date
-        actual_end_date
+        expected_end_date
       }
     }
   }

@@ -40,6 +40,8 @@ const TheHeader = styled.div<StyledProps>`
   margin-bottom:0px;
   position: sticky;
   top: 0;
+  right: 0;
+  left: 0;
   z-index:10;
   background-color: #F58732;
   & .header__wrapper{

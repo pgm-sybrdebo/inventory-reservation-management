@@ -3,15 +3,22 @@ import { useNavigate } from "react-router-dom";
 import {useFormik, FormikProps} from 'formik';
 import * as YUP from 'yup';
 import styled from "styled-components";
-import { MySearchValues } from '../../interfaces';
-
+import { MySearchValues, TokenInfo } from '../../interfaces';
+import jwt_decode from "jwt-decode"
 
 import StyledButton from '../Button/StyledButton.style';
+import { useLazyQuery } from '@apollo/client';
+import { GET_DEVICE_BY_ID } from '../../graphql/devices';
 
 const SearchBar: React.FC = () => {
 
-
+  const token = localStorage.getItem('token');  
+  const currentUserData = jwt_decode<TokenInfo>(token!);
+  const currentUser = currentUserData.sub;
+  let errorResponse = '';
   let navigate = useNavigate();
+  let [getDeviceData, { error, loading }] = useLazyQuery(GET_DEVICE_BY_ID);
+  
   const formik: FormikProps<MySearchValues> = useFormik<MySearchValues>({
     initialValues:{
       query: ""
@@ -19,10 +26,26 @@ const SearchBar: React.FC = () => {
     validationSchema: YUP.object({
       query: YUP.string().min(6, "This field must contain as minimum 6 characters ").required("This field is required")
     }),
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values) => {
+      
+      const result = await getDeviceData({
+        variables:{id: values.query}
+      })
+      if (!result.data) {
+        errorResponse = result.error?.message || "Couldn't get device data";
+        return
+      }
+      if(result.data.getDeviceById.userId === currentUser){
+        navigate(`/device/return/${values.query}`);
+      }else{
+        navigate(`/device/take-or-reserve/${values.query}`)
+      }
+
     },
   });
+
+  if(loading) {return <div className="loading"><h1 className="loading__text">Loading...</h1></div>}
+  if(error) {return <div className="loading"><h1 className="loading__text">{errorResponse}</h1></div>}
   return (
     <SearchSection>
       <section>

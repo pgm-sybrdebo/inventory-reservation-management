@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from "styled-components";
-import { Container } from '..';
+
 import back from '../../assets/back.svg';
 import {TopicDevice} from '../../interfaces'
 import { useNavigate } from "react-router-dom";
