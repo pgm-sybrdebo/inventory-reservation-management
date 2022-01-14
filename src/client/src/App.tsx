@@ -56,7 +56,7 @@ const RequireAuth = ({availableRoles} : { availableRoles: UserRole[]}) => {
   }
 
 
-  // console.log("d:",deviceData)
+  /// console.log("d:",deviceData)
   // if(location.pathname === ROUTES.ReturnDevice || location.pathname === ROUTES.TAKE_OR_RESERVE_DEVICE){
   //   console.log("match");
   //   if(userData.sub !== deviceData.getDeviceById.userId) {
