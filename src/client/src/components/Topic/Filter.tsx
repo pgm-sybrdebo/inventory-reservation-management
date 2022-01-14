@@ -4,17 +4,16 @@ import close from '../../assets/close.svg'
 import {useFormik, FormikProps} from 'formik';
 import * as YUP from 'yup';
 import TegSelect from './TegSelect';
-import { FilterValues } from '../../interfaces';
+import {Filters, FilterValues } from '../../interfaces';
 import { Input } from '..';
 import StyledButton from '../Button/StyledButton.style';
 
 
-function Filter({setModalVisible}:any) {
-  const query = localStorage.getItem("query");
-  const selection = JSON.parse(localStorage.getItem('selection')!);
+const Filter: React.FC<Filters> = ({setModalVisible, searchQuery, setSearchTags, setSearchQuery}) => {
+
   const formik: FormikProps<FilterValues> = useFormik<FilterValues>({
     initialValues:{
-      filterName:query || "",
+      filterName:searchQuery,
       filterSelect: [],
     },
     validationSchema: YUP.object({
@@ -32,9 +31,9 @@ function Filter({setModalVisible}:any) {
     onSubmit:(values, {setSubmitting}) => {
       setSubmitting(true);
       const selection = values.filterSelect?.map(i=>i.id);
-      localStorage.setItem("query", values.filterName);
+      setSearchQuery(values.filterName);
       if(values.filterSelect.length > 0){
-        localStorage.setItem("selection", JSON.stringify(selection));
+        setSearchTags(selection);
       }
       setModalVisible(false)
     }
@@ -80,8 +79,8 @@ function Filter({setModalVisible}:any) {
             backgroundcolor="#fff"
             radius = ".25rem"
             onClick = {()=>{
-              localStorage.removeItem("query");
-              localStorage.removeItem("selection");
+              setSearchTags(null);
+              setSearchQuery('');
               setModalVisible(false);
 
             }}

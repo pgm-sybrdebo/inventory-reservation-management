@@ -56,7 +56,7 @@ export class DevicesService {
         id: 'ASC',
       },
     });
-    console.log(test);
+    //console.log(test);
     return this.devicesRepository.find({
       skip: offset,
       take: limit,
@@ -111,7 +111,7 @@ export class DevicesService {
       AND "modelId" =  '${modelId}'
       AND "deviceStatusId" = '7b4a3256-6005-402b-916b-810f4d6669c8'
     `);
-    console.log(rawData);
+    //console.log(rawData);
     return rawData;
   }
 

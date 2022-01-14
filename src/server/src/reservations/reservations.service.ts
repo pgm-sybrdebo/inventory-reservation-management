@@ -56,8 +56,8 @@ export class ReservationsService {
   findTotalMonthReservations(month: string): Promise<number> {
     const startDate = moment(month).startOf('month').toISOString();
     const endDate = moment(month).endOf('month').toISOString();
-    console.log(startDate);
-    console.log(endDate);
+    //console.log(startDate);
+    //console.log(endDate);
 
     return this.reservationsRepository.count({
       start_date: Between(startDate, endDate),
@@ -78,7 +78,7 @@ export class ReservationsService {
         month DESC
       LIMIT 12
     `);
-    console.log(rawData);
+    //console.log(rawData);
     return rawData;
   }
 
@@ -113,14 +113,14 @@ export class ReservationsService {
 
   async remove(id: string): Promise<Reservation> {
     const reservation = await this.findOne(id);
-    console.log(reservation);
+    //console.log(reservation);
     return this.reservationsRepository.remove(reservation);
     // return reservation
   }
 
   async softRemove(id: string): Promise<Reservation> {
     const reservation = await this.findOne(id);
-    console.log(reservation);
+    //console.log(reservation);
     return this.reservationsRepository.softRemove(reservation);
   }
 

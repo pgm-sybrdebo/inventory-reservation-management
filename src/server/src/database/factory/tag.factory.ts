@@ -9,6 +9,6 @@ define(Tag, (faker: typeof Faker) => {
   const tag = new Tag();
   tag.name = types[number];
   number++;
-  console.log('tag', tag);
+  //console.log('tag', tag);
   return tag;
 });

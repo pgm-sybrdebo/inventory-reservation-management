@@ -7,6 +7,16 @@ export interface base {
 
 export interface topic {
   quantity: number,
+  setSearchTags:any,
+  setSearchQuery:any,
+  searchQuery:string
+}
+export interface Filters {
+  setSearchTags:(value:string[] | null)=>void,
+  setSearchQuery:(value:string)=>void,
+  searchQuery:string,
+  setModalVisible:any,
+  
 }
 export interface TopicDevice {
   title:string,
@@ -189,7 +199,7 @@ export interface EditProfileValues {
 }
 export interface FilterValues {
   filterName: string,
-  filterSelect: any[];
+  filterSelect: any[],
 
 }
 export interface FilterParams {

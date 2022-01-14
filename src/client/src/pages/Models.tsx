@@ -10,15 +10,15 @@ import styled from 'styled-components';
 const limitItems = 24;
 const defaultPicture = device;
 const Models = () => {
-  const query = localStorage.getItem("query");
-  const selection = localStorage.getItem('selection');
-  console.log(selection);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchTags, setSearchTags] = useState();
+
   const [pageNumber, setPageNumber] = useState(1)
   const [total, setTotal]=useState(0);
   const {loading:loadinging} = useQuery(GET_TOTAL_MODELS_WITH_FILTER, {
     variables:{ 
-      name:query || "",
-      tagIds: selection || null,
+      name:searchQuery,
+      tagIds: searchTags,
     },
     onCompleted: (response) => {
       setTotal(Number(response.totalModelsWithFilter[0].total))
@@ -27,24 +27,16 @@ const Models = () => {
       console.log(`GRAPHQL ERROR: ${error.message}`);
     }
   })
-  // const [getTotal, { error:totalError, loading:totalLoading, data:totalModels}] = useLazyQuery(GET_TOTAL_MODELS_WITH_FILTER);
-  // useEffect(()=>{
-  //   getTotal({variables:{
-  //     name:query || "",
-  //     tagIds: selection || null,
-  //   }})
-  // },[getTotal, query, selection])
-
   const [getModels, { error, loading, data}] = useLazyQuery(GET_MODELS_BY_FILTER_WITH_PAGINATION);
   useEffect(() => {
     
     getModels({variables: {
-      name:query || "",
-      tagIds: selection || null,
+      name:searchQuery,
+      tagIds: searchTags,
       limit: limitItems,
       offset: pageNumber
     }})
-  }, [getModels, pageNumber, query, selection])
+  }, [getModels, pageNumber, searchQuery, searchTags])
 
   let result;
   //let quantity;
@@ -60,12 +52,13 @@ const Models = () => {
   const changePage = ({ selected }: any) => {
     setPageNumber(selected + 1);
   };
+  console.log(searchTags)
   return (
     <>
       <Header />
       {data && 
       <>
-        <Topic quantity={total}/>
+        <Topic quantity={total} setSearchTags={setSearchTags} searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
         <Container>
           <ListCards>
             {result.map((model: ModelCardData) => 

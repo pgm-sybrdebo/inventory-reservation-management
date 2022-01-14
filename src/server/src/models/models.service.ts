@@ -115,7 +115,7 @@ export class ModelsService {
       LIMIT ${limit}
       OFFSET ${(offset - 1) * limit}
     `);
-    console.log(rawData);
+    //console.log(rawData);
     return rawData;
   }
 
@@ -142,8 +142,8 @@ export class ModelsService {
   }
 
   async countWithFilter(filter: Filter): Promise<number> {
-    console.log(filter.name);
-    console.log(filter.tagIds)
+    //console.log(filter.name);
+    //console.log(filter.tagIds)
     const rawData = await this.modelsRepository.query(`
       SELECT
         COUNT(DISTINCT id) AS total
@@ -154,7 +154,7 @@ export class ModelsService {
       AND LOWER("name") LIKE LOWER('${filter.name}%')
       ${filter.tagIds ? `AND model_tag.tag_id in ('${filter.tagIds.join("', '")}')` : ""}
     `);
-    console.log(rawData);
+    //console.log(rawData);
     return rawData;
   }
 
