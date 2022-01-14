@@ -96,7 +96,7 @@ type DeviceStatus {
 
 input Filter {
   name: String
-  tagIds: [String!]
+  tagIds: [String]
 }
 
 type LoginResponse {

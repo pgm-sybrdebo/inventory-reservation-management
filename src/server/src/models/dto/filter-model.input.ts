@@ -21,6 +21,6 @@ export class Filter {
   name?: string;
 
   @IsOptional()
-  @Field(() => [String], { nullable: true })
+  @Field(() => [String], { nullable: 'itemsAndList' })
   tagIds?: string[];
 }

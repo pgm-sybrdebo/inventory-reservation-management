@@ -15,7 +15,7 @@ const Models = () => {
   const {loading:loadinging} = useQuery(GET_TOTAL_MODELS_WITH_FILTER, {
     variables:{ 
       name: "",
-      tagIds: ["762f42b0-9c9e-4a80-be95-db7f84921654", "9e137f8b-9438-471c-9be2-346779f18577", "be835163-2e80-4e23-a8d3-f705a5ec36bf"],
+      // tagIds: ["762f42b0-9c9e-4a80-be95-db7f84921654", "9e137f8b-9438-471c-9be2-346779f18577", "be835163-2e80-4e23-a8d3-f705a5ec36bf"],
     },
     onCompleted: (response) => {
       setTotal(Number(response.totalModelsWithFilter[0].total))
@@ -29,7 +29,7 @@ const Models = () => {
     
     getModels({variables: {
       name: "",
-      tagIds: ["762f42b0-9c9e-4a80-be95-db7f84921654", "9e137f8b-9438-471c-9be2-346779f18577", "be835163-2e80-4e23-a8d3-f705a5ec36bf"],
+      // tagIds: ["762f42b0-9c9e-4a80-be95-db7f84921654", "9e137f8b-9438-471c-9be2-346779f18577", "be835163-2e80-4e23-a8d3-f705a5ec36bf"],
       limit: 24,
       offset: pageNumber
     }})
