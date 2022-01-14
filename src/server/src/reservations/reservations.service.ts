@@ -49,6 +49,10 @@ export class ReservationsService {
     return this.reservationsRepository.find({ userId });
   }
 
+  findAllByUSerIdAndReservationState(userId: string, reservationStateId: string):Promise<Reservation[]>{
+    return this.reservationsRepository.find({userId, reservationStateId});
+  }
+
   findTotalMonthReservations(month: string): Promise<number> {
     const startDate = moment(month).startOf('month').toISOString();
     const endDate = moment(month).endOf('month').toISOString();
