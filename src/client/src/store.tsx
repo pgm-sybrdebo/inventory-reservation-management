@@ -9,6 +9,8 @@ type Store = {
   selection:string,
   fullTags:{id:string, name:string}[] | null,
   setFullTags:(value : {id:string, name:string}[] | null)=>void,
+  reset:boolean,
+  setReset:(value:boolean)=>void,
 }
 
 const useStore = create<Store>((set)=>({
@@ -16,7 +18,15 @@ const useStore = create<Store>((set)=>({
   searchQuery:"",
   selection:"all",
   fullTags:null,
+  reset:false,
 
+  
+  setReset(value:boolean){
+    set((state)=>({
+      ...state,
+      reset:value
+    }));
+  },
   setSearchTags(value:string[] | null){
     set((state)=>({
       ...state,

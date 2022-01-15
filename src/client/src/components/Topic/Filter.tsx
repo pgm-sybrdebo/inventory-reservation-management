@@ -43,7 +43,8 @@ const Filter: React.FC<Filters> = ({setModalVisible}) => {
     onSubmit:(values, {setSubmitting}) => {
       setSubmitting(true);
       handleSubmit(values)
-      setModalVisible(false)
+      setModalVisible(false);
+      store.setReset(true)
     }
   });
 
@@ -81,9 +82,10 @@ const Filter: React.FC<Filters> = ({setModalVisible}) => {
             backgroundcolor="#fff"
             radius = ".25rem"
           />
-           <StyledButton 
+           {store.reset && 
+            <StyledButton 
             type="button" 
-            text="Reset Filters" 
+            text="Show all Models" 
             name="reset"
             color="#F58732"
             width="100%"
@@ -92,10 +94,11 @@ const Filter: React.FC<Filters> = ({setModalVisible}) => {
             onClick = {()=>{
               store.setSearchTags(null);
               store.setFullTags(null)
-              setModalVisible(false)
+              store.setReset(false)
               navigate(0)
             }}
           />
+           }
       </form>
 
 
