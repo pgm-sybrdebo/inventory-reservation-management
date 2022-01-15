@@ -53,6 +53,7 @@ const Modal = styled.div`
     top:32px;
     right:32px;
     fill:white;
+    transition: all 0.2s ease-in-out;
     @media(min-width:768px){
       top:64px;
       right:64px;
@@ -60,6 +61,8 @@ const Modal = styled.div`
     @media(min-width:1050px){
       top:106px;
       right:45px;
+    }&:hover{
+      transform: rotate(90deg);
     }
   }
   & ul{

@@ -43,6 +43,8 @@ const BigCard = styled.div`
   width: 100%;
   @media(min-width:500px){
     width: 90%;
+    margin-right: 5%;
+    margin-left: 5%;
   }
   @media(min-width:650px) and (max-width:1049px){
     width: 48%;

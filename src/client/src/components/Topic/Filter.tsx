@@ -128,6 +128,10 @@ const FilterModal = styled.div`
     top:32px;
     right:32px;
     fill:white;
+    transition: all 0.2s ease-in-out;
+    &:hover {
+      transform:rotate(90deg);
+    }
   }
   & form{
     height: 100%;
