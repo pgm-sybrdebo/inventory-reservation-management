@@ -1,4 +1,5 @@
 import React from 'react'
+import {useNavigate} from "react-router-dom";
 import styled from "styled-components";
 import close from '../../assets/close.svg'
 import {useFormik, FormikProps} from 'formik';
@@ -12,7 +13,7 @@ import useStore from '../../store';
 
 const Filter: React.FC<Filters> = ({setModalVisible}) => {
   const store = useStore();
-
+  let navigate = useNavigate();
   const handleSubmit = (values: { filterSelect: any[]; filterName: string; }) => {
     const selection = values.filterSelect?.map(i=>i.id);
       store.setSearchQuery(values.filterName);
@@ -80,7 +81,7 @@ const Filter: React.FC<Filters> = ({setModalVisible}) => {
             backgroundcolor="#fff"
             radius = ".25rem"
           />
-           {/* <StyledButton 
+           <StyledButton 
             type="button" 
             text="Reset Filters" 
             name="reset"
@@ -90,11 +91,11 @@ const Filter: React.FC<Filters> = ({setModalVisible}) => {
             radius = ".25rem"
             onClick = {()=>{
               store.setSearchTags(null);
-              store.setSearchQuery('');
-              setModalVisible(false);
-
+              store.setFullTags(null)
+              setModalVisible(false)
+              navigate(0)
             }}
-          /> */}
+          />
       </form>
 
 
