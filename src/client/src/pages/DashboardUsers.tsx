@@ -6,16 +6,18 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { BiEdit } from "react-icons/bi";
 import { useQuery } from "@apollo/client";
 import { GET_ALL_USERS } from "../graphql/users";
+import { TokenInfo } from "../interfaces";
+import jwt_decode from "jwt-decode";
 
 const Title = styled.h1`
   margin: 1.5rem;
 `;
 
-const Actions = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-`;
+// const Actions = styled.div`
+//   display: flex;
+//   justify-content: space-between;
+//   width: 100%;
+// `;
 
 const Button = styled.button`
   width: 2rem;
@@ -44,7 +46,11 @@ const Button = styled.button`
   }
 `;
 
-
+const token:string = localStorage.getItem('token') || ""; 
+const tokenData = jwt_decode<TokenInfo>(token);
+console.log("data",tokenData);
+console.log("token", tokenData.role);
+console.log("token", typeof tokenData.role);
 const columns: GridColDef[] = [
   { field: "firstName", headerName: "First name", width: 200 },
   { field: "lastName", headerName: "Last name", width: 200 },
@@ -69,29 +75,51 @@ const columns: GridColDef[] = [
       )
     }
   },
+];
+
+const columnsSuperUser: GridColDef[] = [
+  { field: "firstName", headerName: "First name", width: 200 },
+  { field: "lastName", headerName: "Last name", width: 200 },
+  { field: "email", headerName: "Email", width: 300 },
+  { 
+    field: "profession", 
+    headerName: "Profession", 
+    width: 150,
+    renderCell: (params) => {
+      return (
+        <span>{params.row.profession === 0 ? "Student" : "Staff"}</span>
+      )
+    }
+  },
+  { 
+    field: "role", 
+    headerName: "Role", 
+    width: 150,
+    renderCell: (params) => {
+      return (
+        <span>{params.row.role === 0 ? "User" : "Admin"}</span>
+      )
+    }
+  },
+
   {
-    field: "action",
-    headerName: "Action",
+    field: "edit",
+    headerName: "Edit",
     width: 120,
     renderCell: (params) => {
 
       return (
-        <Actions>
-        
-            <Button onClick={() => console.log('click')}>
-              <BiEdit />
-            </Button>
-
-         
-            <Button type="submit">
-                <RiDeleteBin6Line />
-              </Button>
-            
-        </Actions>
+        <Button onClick={() => console.log('click')}>
+          <BiEdit />
+        </Button>
       );
     },
   },
 ];
+
+{/* <Button type="submit">
+<RiDeleteBin6Line />
+</Button> */}
 
 
 
@@ -99,7 +127,8 @@ const DashboardUsers = () => {
 
   const { error, loading, data } = useQuery(GET_ALL_USERS);
   if (data) {
-    console.log(data);
+    // console.log(data.role);
+    // console.log(typeof data.role)
   }
 
   // if (loading) return 
@@ -112,7 +141,7 @@ const DashboardUsers = () => {
 
       {loading && (<p>Loading ...</p>)}
       {error && (<p>{error.message}</p>)}
-      {data && <Table  data={data.users} columns={columns} />}
+      {data && <Table  data={data.users} columns={tokenData.role === 1 ? columnsSuperUser : columns} />}
 
 
     </AdminLayout>

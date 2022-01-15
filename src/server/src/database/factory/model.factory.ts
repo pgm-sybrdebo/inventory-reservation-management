@@ -33,7 +33,7 @@ define(Model, (faker: typeof Faker, context: Context) => {
   model.quantity = MODELS[number].quantity;
   model.brand = faker.lorem.word();
   model.specifications =
-    '{"numberOfCores":4,"RAM":"2GB","size":"3.35 x 2.2 (85mm x 56mm"}';
+    '{"numberOfCores":4,"RAM":"2GB","size":"3.35 x 2.2 (85mm x 56mm)"}';
   model.tags = newTags;
   // model.devices = createDevices() as any;
   // model.tags = factory(Tag)().makeMany(2) as any;
