@@ -7,18 +7,20 @@ import {GET_MODELS_BY_FILTER_WITH_PAGINATION, GET_TOTAL_MODELS_WITH_FILTER } fro
 import {ModelCardData} from '../interfaces'
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import useStore from '../store';
 const limitItems = 24;
 const defaultPicture = device;
+
+
 const Models = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [searchTags, setSearchTags] = useState();
+  const store = useStore();
 
   const [pageNumber, setPageNumber] = useState(1)
   const [total, setTotal]=useState(0);
   const {loading:loadinging} = useQuery(GET_TOTAL_MODELS_WITH_FILTER, {
     variables:{ 
-      name:searchQuery,
-      tagIds: searchTags,
+      name:store.searchQuery,
+      tagIds: store.searchTags,
     },
     onCompleted: (response) => {
       setTotal(Number(response.totalModelsWithFilter[0].total))
@@ -31,12 +33,12 @@ const Models = () => {
   useEffect(() => {
     
     getModels({variables: {
-      name:searchQuery,
-      tagIds: searchTags,
+      name:store.searchQuery,
+      tagIds: store.searchTags,
       limit: limitItems,
       offset: pageNumber
     }})
-  }, [getModels, pageNumber, searchQuery, searchTags])
+  }, [getModels, pageNumber,store.searchQuery, store.searchTags])
 
   let result;
   //let quantity;
@@ -52,13 +54,12 @@ const Models = () => {
   const changePage = ({ selected }: any) => {
     setPageNumber(selected + 1);
   };
-  console.log(searchTags)
   return (
     <>
       <Header />
       {data && 
       <>
-        <Topic quantity={total} setSearchTags={setSearchTags} searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
+        <Topic quantity={total} />
         <Container>
           <ListCards>
             {result.map((model: ModelCardData) => 

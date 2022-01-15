@@ -7,13 +7,24 @@ import TegSelect from './TegSelect';
 import {Filters, FilterValues } from '../../interfaces';
 import { Input } from '..';
 import StyledButton from '../Button/StyledButton.style';
+import useStore from '../../store';
 
 
-const Filter: React.FC<Filters> = ({setModalVisible, searchQuery, setSearchTags, setSearchQuery}) => {
+const Filter: React.FC<Filters> = ({setModalVisible}) => {
+  const store = useStore();
 
+  const handleSubmit = (values: { filterSelect: any[]; filterName: string; }) => {
+    const selection = values.filterSelect?.map(i=>i.id);
+      store.setSearchQuery(values.filterName);
+      if(values.filterSelect.length > 0){
+        store.setSearchTags(selection);
+        store.setFullTags(values.filterSelect);
+      }
+  }
+  
   const formik: FormikProps<FilterValues> = useFormik<FilterValues>({
     initialValues:{
-      filterName:searchQuery,
+      filterName:store.searchQuery,
       filterSelect: [],
     },
     validationSchema: YUP.object({
@@ -30,14 +41,12 @@ const Filter: React.FC<Filters> = ({setModalVisible, searchQuery, setSearchTags,
      }),
     onSubmit:(values, {setSubmitting}) => {
       setSubmitting(true);
-      const selection = values.filterSelect?.map(i=>i.id);
-      setSearchQuery(values.filterName);
-      if(values.filterSelect.length > 0){
-        setSearchTags(selection);
-      }
+      handleSubmit(values)
       setModalVisible(false)
     }
   });
+
+  
   const handleSelection = (items: any) => {
     formik.setFieldValue('filterSelect', items);
   }
@@ -60,6 +69,7 @@ const Filter: React.FC<Filters> = ({setModalVisible, searchQuery, setSearchTags,
           name = "filterSelect"
           onChange={handleSelection}
           value={formik.values.filterSelect}
+          //fullSelection={fullSelection}
         />
         <StyledButton 
             type="submit" 
@@ -70,7 +80,7 @@ const Filter: React.FC<Filters> = ({setModalVisible, searchQuery, setSearchTags,
             backgroundcolor="#fff"
             radius = ".25rem"
           />
-           <StyledButton 
+           {/* <StyledButton 
             type="button" 
             text="Reset Filters" 
             name="reset"
@@ -79,12 +89,12 @@ const Filter: React.FC<Filters> = ({setModalVisible, searchQuery, setSearchTags,
             backgroundcolor="#fff"
             radius = ".25rem"
             onClick = {()=>{
-              setSearchTags(null);
-              setSearchQuery('');
+              store.setSearchTags(null);
+              store.setSearchQuery('');
               setModalVisible(false);
 
             }}
-          />
+          /> */}
       </form>
 
 

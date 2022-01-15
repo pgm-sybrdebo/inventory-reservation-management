@@ -8,9 +8,12 @@ import { ModelDeviceData, TokenInfo } from '../interfaces';
 import jwt_decode from "jwt-decode"
 import { GET_MODEL_BY_ID } from '../graphql/models';
 import styled from 'styled-components';
+import useStore from '../store';
+
 const limitItems = 24;
 
 function Devices() {
+  const store = useStore();
   let navigate = useNavigate();
   let { modelId } = useParams();
   const [pageNumber, setPageNumber] = useState(1)
@@ -18,7 +21,6 @@ function Devices() {
   const token = localStorage.getItem('token'); 
   const data = jwt_decode<TokenInfo>(token!);
   const currentUserId = data.sub;
-  const [selection, setSelection] = useState('all');
 
   const {data:modelById} = useQuery(GET_MODEL_BY_ID, {
     variables: {id: modelId}
@@ -51,14 +53,14 @@ function Devices() {
   //let quantity;
   if (devPag) {
     result = devPag.getDevicesByModelIdWithPagination;
-    if(selection && selection === 'all'){
+    if(store.selection && store.selection === 'all'){
       result = devPag.getDevicesByModelIdWithPagination;
-    }else if(selection && selection === 'inStock'){
+    }else if(store.selection && store.selection === 'inStock'){
       result = devPag.getDevicesByModelIdWithPagination.filter((i: { userId: null | string; }) => i.userId === null)
-    }else if(selection && selection === 'outOfStock'){
+    }else if(store.selection && store.selection === 'outOfStock'){
       result = devPag.getDevicesByModelIdWithPagination.filter((i: { userId: null | string; }) => i.userId !== currentUserId && i.userId !== null)
     }
-    else if(selection && selection === 'withMe'){
+    else if(store.selection && store.selection === 'withMe'){
       result = devPag.getDevicesByModelIdWithPagination.filter((i: { userId: null | string; }) => i.userId === currentUserId)
     }
   }
@@ -72,11 +74,10 @@ function Devices() {
     setPageNumber(selected + 1);
   };
   console.log(devPag)
-  console.log(selection)
   return (
     <>
       <Header />
-      <TopicDevices title={title ? title : "Loading..."} setSelection={setSelection} selection={selection}/>
+      <TopicDevices title={title ? title : "Loading..."}/>
       {devPag && 
       <Container>
         <ListCards>

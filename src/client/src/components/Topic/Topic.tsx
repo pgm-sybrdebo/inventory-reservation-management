@@ -3,16 +3,15 @@ import styled from "styled-components";
 import filter from '../../assets/filter.svg';
 import {topic} from '../../interfaces'
 import Filter from './Filter';
-const Topic: React.FC<topic> = ({quantity, searchQuery, setSearchTags, setSearchQuery}) => {
+const Topic: React.FC<topic> = ({quantity}) => {
   const [modalVisible, setModalVisible] = useState(false);
-  console.log(modalVisible)
   return (
     <>
       <TopicSection>
         <img src={filter} alt="icon filter" onClick={()=> setModalVisible(true)}/>
         <p>{quantity} {quantity > 1 ? "Models" : "Model"}</p>
       </TopicSection>
-      {modalVisible && <Filter setModalVisible={setModalVisible} searchQuery={searchQuery} setSearchQuery={setSearchQuery} setSearchTags={setSearchTags}/>}
+      {modalVisible && <Filter setModalVisible={setModalVisible}/>}
     </>
   )
 

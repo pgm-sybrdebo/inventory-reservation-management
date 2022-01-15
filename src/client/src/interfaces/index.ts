@@ -7,21 +7,19 @@ export interface base {
 
 export interface topic {
   quantity: number,
-  setSearchTags:any,
-  setSearchQuery:any,
-  searchQuery:string
+  // setSearchTags:any,
+  // setSearchQuery:any,
+  // searchQuery:string
 }
 export interface Filters {
-  setSearchTags:(value:string[] | null)=>void,
-  setSearchQuery:(value:string)=>void,
-  searchQuery:string,
+  // setSearchTags:(value:string[] | null)=>void,
+  // setSearchQuery:(value:string)=>void,
+  // searchQuery:string,
   setModalVisible:any,
   
 }
 export interface TopicDevice {
   title:string,
-  setSelection:(value:string)=>void,
-  selection:string,
 }
 
 export interface image {

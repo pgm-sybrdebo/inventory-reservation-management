@@ -1,11 +1,13 @@
 import React from 'react'
+
 import { Multiselect } from 'multiselect-react-dropdown';
 import {useQuery } from "@apollo/client"
 import { GET_TAGS } from '../../graphql/tags';
 import { FilterParams } from '../../interfaces';
+import useStore from '../../store';
 
 function TegSelect({name, onChange}:FilterParams) {
-  //const fullSelection = JSON.parse(localStorage.getItem("fullSelection")!);
+  const store = useStore();
   const {data} = useQuery(GET_TAGS);
   let items: { id: string; name: string; }[] = []
   data && data.tags.forEach((item: { id: string; name: string; }) => {
@@ -20,7 +22,7 @@ function TegSelect({name, onChange}:FilterParams) {
     onSelect={onChange}
     options={items}
     displayValue="name"
-    // selectedValues={fullSelection}
+    selectedValues={store.fullTags}
   />
     </div>
   )

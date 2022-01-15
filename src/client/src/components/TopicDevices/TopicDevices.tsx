@@ -4,17 +4,19 @@ import styled from "styled-components";
 import back from '../../assets/back.svg';
 import {TopicDevice} from '../../interfaces'
 import { useNavigate } from "react-router-dom";
+import useStore from '../../store';
 
-const TopicDevices: React.FC<TopicDevice> = ({title,selection, setSelection}) => {
+const TopicDevices: React.FC<TopicDevice> = ({title}) => {
+  const store = useStore();
   let navigate = useNavigate();
   const handleChange=(event: { target: { value: string; }; })=>{
-    setSelection(event.target.value);
+    store.setSelection(event.target.value);
   }
   return (
     <>
       <TopicDevicesSection>
         <img src={back} alt="icon back" onClick={()=> navigate(-1)}/>
-        <select onChange={handleChange} value={selection}>
+        <select onChange={handleChange} value={store.selection}>
           <option value="all">All</option>
           <option value="inStock">In Stock</option>
           <option value="outOfStock">Out Of Stock</option>
