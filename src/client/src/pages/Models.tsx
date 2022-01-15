@@ -63,7 +63,7 @@ const Models = () => {
         <Container>
           <ListCards>
             {result.map((model: ModelCardData) => 
-              <ModelCard key={model.id} src={defaultPicture} title={model.name.slice(0,21)} quantity={model.quantity} description={`${model.description.slice(0,42)}...`} id={model.id}/>
+              <ModelCard key={model.id} src={defaultPicture} title={`${model.name.slice(0,24)}...`} quantity={model.quantity} description={`${model.description.slice(0,30)}...`} id={model.id}/>
             )}
           </ListCards>
           {total > limitItems && 

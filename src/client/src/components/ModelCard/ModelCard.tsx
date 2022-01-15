@@ -41,12 +41,23 @@ const ModelCard : React.FC<ModelCardPic>= ({src, title, quantity, description, i
 
 const BigCard = styled.div`
   width: 100%;
-
-  @media(min-width:767px) and (max-width:1049px){
+  @media(min-width:500px){
+    width: 90%;
+  }
+  @media(min-width:650px) and (max-width:1049px){
     width: 48%;
+    margin-right: 1%;
+  margin-left: 1%;
   }
   @media(min-width:1050px){
-    width: 30%;
+    width: 31%;
+  margin-right: 1.15%;
+  margin-left: 1.15%;
+  }
+  @media(min-width:1300px){
+    width: 23%;
+    margin-right: 1%;
+  margin-left: 1%;
   }
   height: 320px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, .2);
@@ -65,6 +76,9 @@ const BigCard = styled.div`
   & .info{
     height: 30%;
     padding: 16px;
+    & .text{
+      margin-bottom:8px
+    }
     & .top{
       display:flex;
       justify-content: space-between;
@@ -85,13 +99,19 @@ const BigCard = styled.div`
 
   }
   & .btns{
-    padding: 16px;
+    padding: 16px 8px;
     height: 20%;
     width: 100%;
     display:flex;
+    @media (min-width:375px){
+      padding: 16px;
+    }
 
     & button{
-      margin-right:32px;
+      margin-right:8px;
+      @media (min-width:375px){
+        margin-right:16px;
+    }
     }
   }
   

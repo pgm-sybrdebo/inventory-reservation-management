@@ -9,13 +9,20 @@ const StyledDeviceCard = styled(DeviceCard)<Props>`
   width: 100%;
 
 @media(min-width:500px) and (max-width:767px){
-  width: 45%;
+  width: 48%;
+  margin-right: 1%;
+  margin-left: 1%;
+
 }
-@media(min-width:768px) and (max-width:1049px){
-  width: 30%;
+@media(min-width:768px) and (max-width:1199px){
+  width: 31%;
+  margin-right: 1.15%;
+  margin-left: 1.15%;
+
 }
-@media(min-width:1050px) {
-  width: 22%;
+@media(min-width:1200px) {
+  width: 14.6%;
+  margin-right: 2%;
 }
 height: 80px;
 box-shadow: 0px 4px 8px rgba(0, 0, 0, .2);
