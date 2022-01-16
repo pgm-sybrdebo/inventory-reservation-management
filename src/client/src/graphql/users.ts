@@ -21,6 +21,7 @@ export const GET_ALL_USERS = gql`
       email
       role
       profession
+      cardNumber
       created_on
     }
   }
@@ -35,6 +36,7 @@ export const GET_ALL_USERS_WITH_PAGINATION = gql`
       email
       role
       profession
+      cardNumber
       created_on
     }
   }
@@ -76,6 +78,22 @@ mutation ( $id: String!, $firstName: String!, $lastName: String!, $email: String
     lastName: $lastName,
     email: $email,
     password: $password
+  }) {
+    id
+  }
+}
+`;
+
+export const UPDATE_USER_ADMIN = gql`
+mutation ( $id: String!, $firstName: String!, $lastName: String!, $email: String!, $cardNumber: Int, $role: Int!, $profession: Int! ) {
+  updateUserAdmin (updateUserAdminInput: {
+    id: $id,
+    firstName: $firstName,
+    lastName: $lastName,
+    email: $email,
+    cardNumber: $cardNumber,
+    role: $role,
+    profession: $profession
   }) {
     id
   }

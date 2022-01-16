@@ -7,6 +7,8 @@ import {
   IsOptional,
   IsInt,
   IsPositive,
+  Min,
+  Max,
 } from 'class-validator';
 import { CreateDateInput } from 'src/mixins/create-date.input';
 import { Dates } from 'src/mixins/date.entity';
@@ -38,8 +40,10 @@ export class CreateUserInput {
   @Field((type) => Int)
   cardNumber: number;
 
-  @IsPositive()
-  @IsOptional()
+  // @IsPositive()
+  // @IsOptional()
+  @Min(0)
+  @Max(1)
   @IsInt()
   @Field((type) => Int)
   profession: number;

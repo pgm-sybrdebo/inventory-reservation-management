@@ -1,4 +1,5 @@
 import { GridColDef } from "@material-ui/data-grid";
+import { GridCellParams, MuiEvent } from "@mui/x-data-grid";
 
 // interfaces
 export interface base {
@@ -146,6 +147,7 @@ export interface UserById extends User {
 export interface TableProps {
   columns: GridColDef[]
   data: User[]
+  onCellClick?: any
 }
 
 export interface WidgetListItemProps {

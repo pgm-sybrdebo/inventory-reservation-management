@@ -177,6 +177,7 @@ type Mutation {
   updateReservationTime(updateReservationTimeInput: UpdateReservationTimeInput!): ReservationTime!
   updateTag(updateTagInput: UpdateTagInput!): Tag!
   updateUser(updateUserInput: UpdateUserInput!): User!
+  updateUserAdmin(updateUserAdminInput: UpdateUserAdminInput!): User!
 }
 
 type Query {
@@ -355,6 +356,17 @@ input UpdateReservationTimeInput {
 input UpdateTagInput {
   id: String!
   name: String
+}
+
+input UpdateUserAdminInput {
+  cardNumber: Int
+  email: String
+  firstName: String
+  id: String!
+  lastName: String
+  password: String
+  profession: Int
+  role: Int!
 }
 
 input UpdateUserInput {

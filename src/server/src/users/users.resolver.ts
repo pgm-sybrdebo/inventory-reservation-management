@@ -18,6 +18,7 @@ import { Role } from 'src/auth/role.enum';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Reservation } from 'src/reservations/entities/reservation.entity';
 import { PaginationParams } from 'src/mixins/paginationParams';
+import { UpdateUserAdminInput } from './dto/update-user-admin.input';
 
 @Resolver(() => User)
 export class UsersResolver {
@@ -109,6 +110,13 @@ export class UsersResolver {
   @Roles(Role.ADMIN, Role.USER, Role.SUPER_ADMIN)
   updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
     return this.usersService.update(updateUserInput.id, updateUserInput);
+  }
+
+  @Mutation(() => User, { name: "updateUserAdmin"})
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.USER, Role.SUPER_ADMIN)
+  updateUserAdmin(@Args('updateUserAdminInput') updateUserAdminInput: UpdateUserAdminInput) {
+    return this.usersService.update(updateUserAdminInput.id, updateUserAdminInput);
   }
 
   @Mutation(() => User)

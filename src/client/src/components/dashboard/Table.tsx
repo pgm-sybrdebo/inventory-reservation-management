@@ -14,14 +14,21 @@ const Container = styled.div`
 
 
 
-const Table = ({data, columns}: TableProps) => {
+const Table = ({data, columns, onCellClick}: TableProps) => {
   
 
   return (
      
       <Container>
           <>
-            <DataGrid rows={data} columns={columns} pageSize={12} checkboxSelection disableSelectionOnClick />
+            <DataGrid 
+              rows={data} 
+              columns={columns} 
+              pageSize={12} 
+              checkboxSelection 
+              disableSelectionOnClick
+              onCellClick={onCellClick} 
+            />
           </>
       </Container>
 
