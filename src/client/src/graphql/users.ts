@@ -102,8 +102,15 @@ mutation ( $id: String!, $firstName: String!, $lastName: String!, $email: String
 
 export const REMOVE_USER = gql`
   mutation ($id: String!){
-    removeUser(id: $id) {
-      name
+    removeUser(id: $id)
+  }
+`;
+
+
+export const SOFT_REMOVE_USER = gql`
+  mutation ($id: String!){
+    softRemoveUser(id: $id) {
+      id
     }
   }
 `;

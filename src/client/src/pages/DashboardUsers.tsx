@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState, useReducer } from 'react';
 import styled from "styled-components";
 import AdminLayout from '../layouts/AdminLayout';
 import { GridColDef, } from '@material-ui/data-grid';
@@ -6,7 +6,7 @@ import Table from "../components/dashboard/Table";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { BiEdit } from "react-icons/bi";
 import { useMutation, useQuery } from "@apollo/client";
-import { GET_ALL_USERS, UPDATE_USER } from "../graphql/users";
+import { GET_ALL_USERS, REMOVE_USER, SOFT_REMOVE_USER, UPDATE_USER } from "../graphql/users";
 import { TokenInfo } from "../interfaces";
 import jwt_decode from "jwt-decode";
 import { GridCellParams, MuiEvent } from "@mui/x-data-grid";
@@ -90,7 +90,30 @@ const columns: GridColDef[] = [
 <RiDeleteBin6Line />
 </Button> */}
 
+interface initState {
+  action: string
+}
 
+
+type ActionType = 
+  | { action: "anonymize" }
+  | { action: "softDelete" }
+  | { action: "delete" }
+
+
+const initialState = { action: "" }
+function actionReducer (state: initState, action: ActionType): initState {
+  switch (action.action) {
+    case 'anonymize':
+      return { action: 'anonymize' };
+    case 'softDelete':
+      return { action: "softDelete" };
+    case 'delete':
+      return { action: "delete" };
+    default:
+      return state;  
+  }
+}
 
 const DashboardUsers = () => {
   const [selectedRow, setSelectedRow] = useState();
@@ -98,9 +121,12 @@ const DashboardUsers = () => {
   const [isOpenDialog, setIsOpenDialog] = useState(false);
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
+  const [state, dispatch] = React.useReducer(actionReducer, initialState)
 
   const { error, loading, data } = useQuery(GET_ALL_USERS);
   const [updateUser] = useMutation(UPDATE_USER);
+  const [softDeleteUser] = useMutation(SOFT_REMOVE_USER);
+  const [deleteUser] = useMutation(REMOVE_USER);
 
 
 
@@ -199,7 +225,7 @@ const DashboardUsers = () => {
   ) => {
     const { field } = params;
 
-    if (field !== "edit" && field !== "anonymize") {
+    if (field !== "edit" && field !== "anonymize" && field !== "delete" && field !== "softDelete" ) {
       return;
     }
 
@@ -212,7 +238,22 @@ const DashboardUsers = () => {
       setSelectedRow(params.row);
       setIsOpenDialog(true);
       setTitle("Confirm anonymization of this user");
-      setMessage("Are you sure you want to anonymize this user?")
+      setMessage("Are you sure you want to anonymize this user?");
+      dispatch({ action: "anonymize" })
+    } else if (field === "softDelete" && event.target instanceof Element && (event.target.tagName === "BUTTON" || event.target.tagName === "svg" || event.target.tagName === "path")){
+      console.log("ano");
+      setSelectedRow(params.row);
+      setIsOpenDialog(true);
+      setTitle("Confirm soft delete of this user");
+      setMessage("Are you sure you want to soft delete this user?");
+      dispatch({ action: "softDelete" })
+    } else if (field === "delete" && event.target instanceof Element && (event.target.tagName === "BUTTON" || event.target.tagName === "svg" || event.target.tagName === "path")){
+      console.log("ano");
+      setSelectedRow(params.row);
+      setIsOpenDialog(true);
+      setTitle("Confirm delete of this user");
+      setMessage("Are you sure you want to delete this user? The data of this user will be lost for ever.");
+      dispatch({ action: "delete" })
     }
   };
 
@@ -243,6 +284,42 @@ const DashboardUsers = () => {
     }
   }
 
+  const softDeleteCurrentUser = async (id:string) => {
+    try {
+      await softDeleteUser({
+        variables: {
+          id: id,
+        }, 
+        refetchQueries: [
+          {
+            query: GET_ALL_USERS
+          }
+        ]
+      });
+      handleClose();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const deleteCurrentUser = async (id:string) => {
+    try {
+      await deleteUser({
+        variables: {
+          id: id,
+        }, 
+        refetchQueries: [
+          {
+            query: GET_ALL_USERS
+          }
+        ]
+      });
+      handleClose();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
 
   
 
@@ -255,6 +332,8 @@ const DashboardUsers = () => {
     setIsOpenDialog(false);
   }
 
+
+  console.log("action", state.action);
   return (
     <AdminLayout>
       <Title>All Users</Title>
@@ -279,8 +358,7 @@ const DashboardUsers = () => {
           message={message}
           open={isOpenDialog}
           handleClose={handleClose}
-          // @ts-ignore
-          handleConfirm={anonymize}
+          handleConfirm={state.action === 'anonymize' ? anonymize : state.action === 'softDelete' ? softDeleteCurrentUser : deleteCurrentUser}
         />
       )}
 

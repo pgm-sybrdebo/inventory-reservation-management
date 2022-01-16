@@ -119,14 +119,19 @@ export class UsersResolver {
     return this.usersService.update(updateUserAdminInput.id, updateUserAdminInput);
   }
 
-  @Mutation(() => User)
+  @Mutation(() => Boolean)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.SUPER_ADMIN, Role.SUPER_ADMIN)
-  removeUser(@Args('id', new ParseUUIDPipe()) id: string) {
-    return this.usersService.remove(id);
+  @Roles(Role.SUPER_ADMIN, Role.ADMIN)
+  async removeUser(@Args('id', new ParseUUIDPipe()) id: string) {
+    try {
+      await this.usersService.remove(id);
+      return true;
+    } catch (error) {
+      throw error
+    }
   }
 
-  @Mutation(() => User)
+  @Mutation(() => User, {name: "softRemoveUser"})
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.USER, Role.SUPER_ADMIN)
   softRemoveUser(@Args('id', new ParseUUIDPipe()) id: string) {
