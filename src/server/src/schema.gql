@@ -227,6 +227,7 @@ type Query {
   user(id: String!): User!
   userByEmail(email: String!): User!
   users: [User!]!
+  usersByLastName(lastName: String!): [User!]!
   usersByProfession(profession: Int!): [User!]!
   usersByRole(role: Int!): [User!]!
   usersWithPagination(limit: Int!, offset: Int!): [User!]!

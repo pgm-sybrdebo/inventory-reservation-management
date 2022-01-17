@@ -15,7 +15,6 @@ const Container = styled.div`
 
 
 const Table = ({data, columns, onCellClick}: TableProps) => {
-  
 
   return (
      

@@ -55,6 +55,15 @@ export class UsersResolver {
     return this.usersService.findAllByRole(role);
   }
 
+  @Query(() => [User], { name: 'usersByLastName' })
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  findAllByLastName(
+    @Args('lastName', { type: () => String }) lastName: string,
+  ) {
+    return this.usersService.findAllByLastName(lastName);
+  }
+
   @Query(() => [User], { name: 'usersByProfession' })
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.SUPER_ADMIN)
@@ -121,7 +130,7 @@ export class UsersResolver {
 
   @Mutation(() => Boolean)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.SUPER_ADMIN, Role.ADMIN)
+  @Roles(Role.SUPER_ADMIN)
   async removeUser(@Args('id', new ParseUUIDPipe()) id: string) {
     try {
       await this.usersService.remove(id);

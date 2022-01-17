@@ -56,6 +56,21 @@ export const GET_ALL_USERS_BY_ROLE = gql`
   }
 `;
 
+export const GET_ALL_USERS_BY_LASTNAME = gql`
+  query usersByLastName($lastName: String!) {
+    usersByLastName(lastName: $lastName) {
+      id
+      firstName
+      lastName
+      email
+      role
+      profession
+      cardNumber
+      created_on
+    }
+  }
+`;
+
 export const GET_ALL_USERS_BY_PROFESSION = gql`
   query usersByProfession($profession: Int!) {
     usersByProfession(profession: $profession) {

@@ -2,7 +2,7 @@ import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Reservation } from 'src/reservations/entities/reservation.entity';
 import { ReservationsService } from 'src/reservations/reservations.service';
-import { Repository, Between, LessThanOrEqual } from 'typeorm';
+import { Repository, Between, LessThanOrEqual, Like, Raw } from 'typeorm';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { User } from './entities/user.entity';
@@ -42,6 +42,14 @@ export class UsersService {
 
   findAllByRole(role: number): Promise<User[]> {
     return this.usersRepository.find({ role });
+  }
+
+  findAllByLastName(lastName: string): Promise<User[]> {
+    return this.usersRepository.find({
+      where: {
+        lastName: Raw(alias => `LOWER(${alias}) Like '${lastName}%'`)
+      }
+    });
   }
 
   findAllByProfession(profession: number): Promise<User[]> {

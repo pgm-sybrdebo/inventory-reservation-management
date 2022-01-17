@@ -1,18 +1,19 @@
-import React, { useState, useReducer } from 'react';
+import React, { useState, useReducer, useEffect } from 'react';
 import styled from "styled-components";
 import AdminLayout from '../layouts/AdminLayout';
 import { GridColDef, } from '@material-ui/data-grid';
 import Table from "../components/dashboard/Table";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { BiEdit } from "react-icons/bi";
-import { useMutation, useQuery } from "@apollo/client";
-import { GET_ALL_USERS, REMOVE_USER, SOFT_REMOVE_USER, UPDATE_USER } from "../graphql/users";
+import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
+import { GET_ALL_USERS, GET_ALL_USERS_BY_LASTNAME, REMOVE_USER, SOFT_REMOVE_USER, UPDATE_USER } from "../graphql/users";
 import { TokenInfo } from "../interfaces";
 import jwt_decode from "jwt-decode";
 import { GridCellParams, MuiEvent } from "@mui/x-data-grid";
 import UpdateFormUser from '../components/dashboard/updateForms/UpdateFormUser';
 import { Delete, DeleteForever, VisibilityOff } from '@material-ui/icons';
 import ConfirmDialog from '../components/dashboard/dialogs/ConfirmDialog';
+import SearchBar from 'material-ui-search-bar';
 
 
 const Title = styled.h1`
@@ -53,10 +54,18 @@ const Button = styled.button`
   }
 `;
 
+const SearchContainer = styled.div`
+  margin: 0 1.5rem;
+
+  h2 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+`;
+
 const token:string = localStorage.getItem('token') || ""; 
 const tokenData = jwt_decode<TokenInfo>(token);
-
-
 
 const columns: GridColDef[] = [
   { field: "firstName", headerName: "First name", width: 200 },
@@ -84,11 +93,6 @@ const columns: GridColDef[] = [
   },
 ];
 
-
-
-{/* <Button type="submit">
-<RiDeleteBin6Line />
-</Button> */}
 
 interface initState {
   action: string
@@ -121,13 +125,30 @@ const DashboardUsers = () => {
   const [isOpenDialog, setIsOpenDialog] = useState(false);
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
-  const [state, dispatch] = React.useReducer(actionReducer, initialState)
+  const [searchChange, setSearchChange] = useState("");
+  const [searchValue, setSearchValue] = useState("");
+  const [state, dispatch] = React.useReducer(actionReducer, initialState);
 
-  const { error, loading, data } = useQuery(GET_ALL_USERS);
+  const [getUsers, { error, loading, data }] = useLazyQuery(GET_ALL_USERS);
+  const [getUsersByLastName, {data: dataByLastName, loading: loadingByLastName, error: errorByLastName}] = useLazyQuery(GET_ALL_USERS_BY_LASTNAME);
   const [updateUser] = useMutation(UPDATE_USER);
   const [softDeleteUser] = useMutation(SOFT_REMOVE_USER);
   const [deleteUser] = useMutation(REMOVE_USER);
 
+
+  useEffect(() => {
+    if (searchValue === "") {
+      console.log("searcheeeffect", searchValue);
+      getUsers();
+    } else {
+      console.log("searcheffect", searchValue)
+      getUsersByLastName({
+        variables: {
+          lastName: searchValue
+        }
+      });
+    }
+  }, [searchValue])
 
 
   const columnsSuperUser: GridColDef[] = [
@@ -320,7 +341,10 @@ const DashboardUsers = () => {
     }
   }
 
-
+  if (dataByLastName) {
+    console.log("hey", dataByLastName)
+    console.log("hey", dataByLastName.usersByLastName)
+  }
   
 
   // if (loading) return 
@@ -334,13 +358,27 @@ const DashboardUsers = () => {
 
 
   console.log("action", state.action);
+  console.log("change", searchChange);
+  console.log("searchChange", searchValue);
   return (
     <AdminLayout>
       <Title>All Users</Title>
+      <SearchContainer>
+      <h2>Search on last name:</h2>
+      <SearchBar
+        value={searchChange}
+        onChange={(newValue) => {
+          console.log(typeof newValue)
+          setSearchChange(newValue)
+        }}
+        onRequestSearch={() => setSearchValue(searchChange)}
+      />
+      </SearchContainer>
 
       {loading && (<p>Loading ...</p>)}
       {error && (<p>{error.message}</p>)}
-      {data && <Table  data={data.users} columns={tokenData.role === 1 ? columnsSuperUser : columns} onCellClick={currentlySelectedRow}/>}
+      {data && !dataByLastName && <Table  data={data.users} columns={tokenData.role === 1 ? columnsSuperUser : columns} onCellClick={currentlySelectedRow}/>}
+      {dataByLastName && !loadingByLastName && <Table  data={dataByLastName.usersByLastName} columns={tokenData.role === 1 ? columnsSuperUser : columns} onCellClick={currentlySelectedRow}/>}
 
 
       {isOpen && (
