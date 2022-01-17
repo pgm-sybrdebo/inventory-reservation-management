@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Raw, Repository } from 'typeorm';
 import { CreateDeviceStatusInput } from './dto/create-device-status.input';
 import { UpdateDeviceStatusInput } from './dto/update-device-status.input';
 import { DeviceStatus } from './entities/device-status.entity';
@@ -22,8 +22,33 @@ export class DeviceStatusesService {
     return this.deviceStatusesRepository.save(newDeviceStatus);
   }
 
+  async countWithName(name: string): Promise<number> {
+    const rawData = await this.deviceStatusesRepository.query(`
+    SELECT
+      COUNT(DISTINCT id) AS total
+    FROM
+      "device_status"
+    WHERE "deleted_on" IS NULL
+    AND LOWER("name") LIKE LOWER('${name}%')
+    `);
+    return rawData[0].total;
+  }
+
   findAll(): Promise<DeviceStatus[]> {
     return this.deviceStatusesRepository.find();
+  }
+
+  findAllByNameWithPagination(name: string, offset: number, limit: number): Promise<DeviceStatus[]> {
+    return this.deviceStatusesRepository.find({
+      where: {
+        name: Raw(alias => `LOWER(${alias}) Like '${name}%'`)
+      },
+      skip: offset,
+      take: limit,
+      order: {
+        id: 'ASC',
+      },
+    });
   }
 
   findOne(id: string): Promise<DeviceStatus> {
