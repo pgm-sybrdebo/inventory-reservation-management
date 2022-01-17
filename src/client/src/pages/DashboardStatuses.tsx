@@ -214,7 +214,14 @@ const DashboardStatuses = () => {
             }}
             onRequestSearch={() => setSearchValue(searchChange)}
           />
-
+          <Button
+            variant='contained'
+            size='large'
+            onClick={() => setIsOpenCreate(true)}
+            style={{
+              backgroundColor: '#F58732',
+            }}
+          >Create</Button>
         </SearchButtonContainer>
       </SearchContainer>
 
@@ -233,6 +240,12 @@ const DashboardStatuses = () => {
         />
       )}
 
+      {isOpenCreate && (
+        <CreateFormDeviceStatus
+          handleClose={handleClose}
+          open={isOpenCreate}
+        />
+      )}
 
       {isOpenDialog && (
         <ConfirmDialog
