@@ -168,6 +168,7 @@ export const GET_DEVICE_BY_ID = gql`
       qr_code
       model {
         name
+        description
         max_reservation_time
       }
       damages {
