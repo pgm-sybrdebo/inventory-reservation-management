@@ -132,6 +132,73 @@ const DashboardTags = () => {
     }
   };
 
+  const softDeleteCurrentTag = async (id:string) => {
+    try {
+      await softDeleteTag({
+        variables: {
+          id: id,
+        }, 
+        refetchQueries: [
+          {
+            query: GET_ALL_TAGS_BY_NAME_WITH_PAGINATION,
+            variables: {
+              name: searchValue,
+              offset: page * 10,
+              limit: 10
+            }
+          },
+          {
+            query: 
+            TOTAL_TAGS_BY_NAME,
+            variables: {
+              name: searchValue,
+            }
+          }
+        ]
+      });
+      handleClose();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const deleteCurrentTag = async (id:string) => {
+    try {
+      await deleteTag({
+        variables: {
+          id: id,
+        }, 
+        refetchQueries: [
+          {
+            query: GET_ALL_TAGS_BY_NAME_WITH_PAGINATION,
+            variables: {
+              name: searchValue,
+              offset: page * 10,
+              limit: 10
+            }
+          },
+          {
+            query: 
+            TOTAL_TAGS_BY_NAME,
+            variables: {
+              name: searchValue,
+            }
+          }
+        ]
+      });
+      handleClose();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  
+  const handleClose = () => {
+    console.log("close");
+    setIsOpen(false);
+    setIsOpenDialog(false);
+    setIsOpenCreate(false);
+  }
+
   return (
     <AdminLayout>
       <Title>All Tags</Title>
@@ -164,6 +231,18 @@ const DashboardTags = () => {
       setPage={setPage}
       />}
 
+
+
+      {isOpenDialog && (
+        <ConfirmDialog
+          selectedRow={selectedRow}
+          title={title}
+          message={message}
+          open={isOpenDialog}
+          handleClose={handleClose}
+          handleConfirm={ state.action === 'softDelete' ? softDeleteCurrentTag : deleteCurrentTag}
+        />
+      )}
 
     </AdminLayout>
 
