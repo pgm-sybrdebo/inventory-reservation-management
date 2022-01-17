@@ -224,10 +224,16 @@ type Query {
   totalModelsWithFilter(filter: Filter!): [Total!]!
   totalMonthReservations(month: String!): Int!
   totalUsers: Int!
+  totalUsersByLastName(lastName: String!): Int!
+  totalUsersByLastNameAndProfession(lastName: String!, profession: Int!): Int!
+  totalUsersByLastNameAndRole(lastName: String!, role: Int!): Int!
   user(id: String!): User!
   userByEmail(email: String!): User!
   users: [User!]!
   usersByLastName(lastName: String!): [User!]!
+  usersByLastNameAndProfessionWithPagination(lastName: String!, limit: Int!, offset: Int!, profession: Int!): [User!]!
+  usersByLastNameAndRoleWithPagination(lastName: String!, limit: Int!, offset: Int!, role: Int!): [User!]!
+  usersByLastNameWithPagination(lastName: String!, limit: Int!, offset: Int!): [User!]!
   usersByProfession(profession: Int!): [User!]!
   usersByRole(role: Int!): [User!]!
   usersWithPagination(limit: Int!, offset: Int!): [User!]!

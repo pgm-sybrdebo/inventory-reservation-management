@@ -7,6 +7,7 @@ import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
+import { raw } from 'express';
 
 @Injectable()
 export class UsersService {
@@ -40,10 +41,6 @@ export class UsersService {
     });
   }
 
-  findAllByRole(role: number): Promise<User[]> {
-    return this.usersRepository.find({ role });
-  }
-
   findAllByLastName(lastName: string): Promise<User[]> {
     return this.usersRepository.find({
       where: {
@@ -52,12 +49,99 @@ export class UsersService {
     });
   }
 
+  findAllByLastNameWithPagination(lastName: string, offset: number, limit: number): Promise<User[]> {
+    return this.usersRepository.find({
+      where: {
+        lastName: Raw(alias => `LOWER(${alias}) Like '${lastName}%'`)
+      },
+      skip: offset,
+      take: limit,
+      order: {
+        id: 'ASC',
+      },
+    });
+  }
+
+  async findAllByLastNameAndRoleWithPagination(role: number, lastName: string, offset: number, limit: number): Promise<User[]> {
+    const rawData = await this.usersRepository.find({
+      where: {
+        lastName: Raw(alias => `LOWER(${alias}) Like '${lastName.toLowerCase()}%'`),
+        role: Raw(a => `${a} = '${role}'`)
+      },
+      skip: offset,
+      take: limit,
+      order: {
+        id: 'ASC',
+      },
+    });
+    return rawData;
+  
+  }
+
+  findAllByLastNameAndProfessionWithPagination(profession: number, lastName: string, offset: number, limit: number): Promise<User[]> {
+    return this.usersRepository.find({
+      where: {
+        lastName: Raw(alias => `LOWER(${alias}) Like '${lastName.toLowerCase()}%'`),
+        profession: profession
+      },
+      skip: offset,
+      take: limit,
+      order: {
+        id: 'ASC',
+      },
+    });
+  }
+
+  findAllByRole(role: number): Promise<User[]> {
+    return this.usersRepository.find({ role });
+  }
+
+  
+
   findAllByProfession(profession: number): Promise<User[]> {
     return this.usersRepository.find({ profession });
   }
 
   findAndCount(): Promise<number> {
     return this.usersRepository.count();
+  }
+
+  async countWithLastName(lastName: string): Promise<number> {
+    const rawData = await this.usersRepository.query(`
+    SELECT
+      COUNT(DISTINCT id) AS total
+    FROM
+      "user"
+    WHERE "deleted_on" IS NULL
+    AND LOWER("lastName") LIKE LOWER('${lastName}%')
+    `);
+    return rawData[0].total;
+  }
+
+  async countWithLastNameAndRole(lastName: string, role: number): Promise<number> {
+    const rawData = await this.usersRepository.query(`
+    SELECT
+      COUNT(DISTINCT id) AS total
+    FROM
+      "user"
+    WHERE "deleted_on" IS NULL
+    AND "role" = '${role}'
+    AND LOWER("lastName") LIKE LOWER('${lastName}%')
+    `);
+    return rawData[0].total;
+  }
+
+  async countWithLastNameAndProfession(lastName: string, profession: number): Promise<number> {
+    const rawData = await this.usersRepository.query(`
+    SELECT
+      COUNT(DISTINCT id) AS total
+    FROM
+      "user"
+    WHERE "deleted_on" IS NULL
+    AND "profession" = ${profession}
+    AND LOWER("lastName") LIKE LOWER('${lastName}%')
+    `);
+    return rawData[0].total;
   }
 
   async findDifferenceLastMonth(): Promise<number> {

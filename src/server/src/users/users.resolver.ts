@@ -19,6 +19,7 @@ import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Reservation } from 'src/reservations/entities/reservation.entity';
 import { PaginationParams } from 'src/mixins/paginationParams';
 import { UpdateUserAdminInput } from './dto/update-user-admin.input';
+import { Total } from 'src/models/dto/total';
 
 @Resolver(() => User)
 export class UsersResolver {
@@ -46,15 +47,6 @@ export class UsersResolver {
     return this.usersService.findAllByPagination(offset, limit);
   }
 
-  @Query(() => [User], { name: 'usersByRole' })
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
-  findAllByRole(
-    @Args('role', { type: () => Int }, new ParseIntPipe()) role: number,
-  ) {
-    return this.usersService.findAllByRole(role);
-  }
-
   @Query(() => [User], { name: 'usersByLastName' })
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.SUPER_ADMIN)
@@ -62,6 +54,51 @@ export class UsersResolver {
     @Args('lastName', { type: () => String }) lastName: string,
   ) {
     return this.usersService.findAllByLastName(lastName);
+  }
+
+  @Query(() => [User], { name: 'usersByLastNameWithPagination' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  findAllByLastNameWithPagination(
+    @Args('lastName', { type: () => String }) lastName: string,
+    @Args('offset', { type: () => Int }, new ParseIntPipe()) offset: number,
+    @Args('limit', { type: () => Int }, new ParseIntPipe()) limit: number,
+  ) {
+    return this.usersService.findAllByLastNameWithPagination(lastName, offset, limit);
+  }
+
+  @Query(() => [User], { name: 'usersByLastNameAndRoleWithPagination' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  findAllByLastNameAndRoleWithPagination(
+    @Args('role', { type: () => Int }, new ParseIntPipe()) role: number,
+    @Args('lastName', { type: () => String }) lastName: string,
+    @Args('offset', { type: () => Int }, new ParseIntPipe()) offset: number,
+    @Args('limit', { type: () => Int }, new ParseIntPipe()) limit: number,
+  ) {
+    return this.usersService.findAllByLastNameAndRoleWithPagination(role, lastName, offset, limit);
+  }
+
+  @Query(() => [User], { name: 'usersByLastNameAndProfessionWithPagination' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  findAllByLastNameAndProfessionWithPagination(
+    @Args('profession', { type: () => Int }, new ParseIntPipe())
+    profession: number,
+    @Args('lastName', { type: () => String }) lastName: string,
+    @Args('offset', { type: () => Int }, new ParseIntPipe()) offset: number,
+    @Args('limit', { type: () => Int }, new ParseIntPipe()) limit: number,
+  ) {
+    return this.usersService.findAllByLastNameAndProfessionWithPagination(profession, lastName, offset, limit);
+  }
+
+  @Query(() => [User], { name: 'usersByRole' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  findAllByRole(
+    @Args('role', { type: () => Int }, new ParseIntPipe()) role: number,
+  ) {
+    return this.usersService.findAllByRole(role);
   }
 
   @Query(() => [User], { name: 'usersByProfession' })
@@ -79,6 +116,36 @@ export class UsersResolver {
   @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   async findTotal() {
     return this.usersService.findAndCount();
+  }
+
+  @Query(() => Int, { name: 'totalUsersByLastName' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  async totalUsersByLastName(
+    @Args('lastName', { type: () => String }) lastName: string,
+  ) {
+    return this.usersService.countWithLastName(lastName);
+  }
+
+  @Query(() => Int, { name: 'totalUsersByLastNameAndRole' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  async totalUsersByLastNameAndRole(
+    @Args('lastName', { type: () => String }) lastName: string,
+    @Args('role', { type: () => Int }, new ParseIntPipe()) role: number,
+    
+  ) {
+    return this.usersService.countWithLastNameAndRole(lastName, role);
+  }
+
+  @Query(() => Int, { name: 'totalUsersByLastNameAndProfession' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  async totalUsersByLastNameAndProfession(
+    @Args('lastName', { type: () => String }) lastName: string,
+    @Args('profession', { type: () => Int }, new ParseIntPipe()) profession: number,
+  ) {
+    return this.usersService.countWithLastNameAndProfession(lastName, profession);
   }
 
   @Query(() => Int, { name: 'differenceLastMonthUsers' })

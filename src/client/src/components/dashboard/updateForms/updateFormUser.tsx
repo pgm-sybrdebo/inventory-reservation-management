@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Formik, Form, Field } from 'formik'
 import * as yup from "yup";
 import { useMutation } from '@apollo/client';
-import { GET_ALL_USERS, UPDATE_USER_ADMIN } from '../../../graphql/users';
+import { GET_ALL_USERS, GET_ALL_USERS_BY_LAST_NAME_AND_PROFESSION_WITH_PAGINATION, GET_ALL_USERS_BY_LAST_NAME_AND_ROLE_WITH_PAGINATION, GET_ALL_USERS_BY_LAST_NAME_WITH_PAGINATION, TOTAL_USERS_BY_LAST_NAME, TOTAL_USERS_BY_LAST_NAME_AND_PROFESSION, TOTAL_USERS_BY_LAST_NAME_AND_ROLE, UPDATE_USER_ADMIN } from '../../../graphql/users';
 import { Button, Dialog, DialogContent, DialogTitle, Grid, MenuItem, Select, TextField } from '@material-ui/core';
 
 const ButtonContainer = styled.div`
@@ -70,14 +70,76 @@ const UpdateFormUser = ({selectedRow, open, handleClose}: UpdateFormUserProps) =
                     firstName: values.firstName,
                     lastName: values.lastName,
                     email: values.email,
-                    role: values.role,
-                    profession: values.profession,
+                    role: Number(values.role),
+                    profession: Number(values.profession),
                     cardNumber: values.cardNumber
                   }, 
                   refetchQueries: [
                     {
-                      query: GET_ALL_USERS
-                    }
+                      query: GET_ALL_USERS,
+                    },
+                    {
+                      query: GET_ALL_USERS_BY_LAST_NAME_AND_PROFESSION_WITH_PAGINATION,
+                      variables: {
+                        lastName: "",
+                        profession: 0,
+                        limit: 10,
+                        offset: 0
+                      }
+                    },
+                    {
+                      query: GET_ALL_USERS_BY_LAST_NAME_AND_PROFESSION_WITH_PAGINATION,
+                      variables: {
+                        lastName: "",
+                        profession: 1,
+                        limit: 10,
+                        offset: 0
+                      }
+                    },
+                    {
+                      query: GET_ALL_USERS_BY_LAST_NAME_AND_ROLE_WITH_PAGINATION,
+                      variables: {
+                        lastName: "",
+                        role: 1,
+                        limit: 10,
+                        offset: 0
+                      }
+                    },
+                    {
+                      query: GET_ALL_USERS_BY_LAST_NAME_WITH_PAGINATION,
+                      variables: {
+                        lastName: "",
+                        limit: 10,
+                        offset: 0
+                      }
+                    },
+                    {
+                      query: TOTAL_USERS_BY_LAST_NAME_AND_ROLE,
+                      variables: {
+                        lastName: "",
+                        role: 1,
+                      }
+                    },
+                    {
+                      query: TOTAL_USERS_BY_LAST_NAME_AND_PROFESSION,
+                      variables: {
+                        lastName: "",
+                        profession: 1,
+                      }
+                    },
+                    {
+                      query: TOTAL_USERS_BY_LAST_NAME_AND_PROFESSION,
+                      variables: {
+                        lastName: "",
+                        profession: 0,
+                      }
+                    },
+                    {
+                      query: TOTAL_USERS_BY_LAST_NAME,
+                      variables: {
+                        lastName: "",
+                      }
+                    },
                   ]
                 });
                 console.log("done");

@@ -6,6 +6,24 @@ export const TOTAL_USERS = gql`
   }
 `;
 
+export const TOTAL_USERS_BY_LAST_NAME = gql`
+  query totalUsersByLastName($lastName: String!) {
+    totalUsersByLastName(lastName: $lastName)
+  }
+`;
+
+export const TOTAL_USERS_BY_LAST_NAME_AND_ROLE = gql`
+  query totalUsersByLastNameAndRole($lastName: String!, $role: Int!) {
+    totalUsersByLastNameAndRole(lastName: $lastName, role: $role)
+  }
+`;
+
+export const TOTAL_USERS_BY_LAST_NAME_AND_PROFESSION = gql`
+  query totalUsersByLastNameAndProfession($lastName: String!, $profession: Int!) {
+    totalUsersByLastNameAndProfession(lastName: $lastName, profession: $profession)
+  }
+`;
+
 export const DIFFERENCE_LAST_MONTH_USERS = gql`
   query differenceLastMonthUsers {
     differenceLastMonthUsers
@@ -30,6 +48,52 @@ export const GET_ALL_USERS = gql`
 export const GET_ALL_USERS_WITH_PAGINATION = gql`
   query ($offset: Int!, $limit: Int!){
     usersWithPagination(offset: $offset, limit: $limit) {
+      id
+      firstName
+      lastName
+      email
+      role
+      profession
+      cardNumber
+      created_on
+    }
+  }
+`;
+
+
+export const GET_ALL_USERS_BY_LAST_NAME_WITH_PAGINATION = gql`
+  query ($lastName: String!, $offset: Int!, $limit: Int!){
+    usersByLastNameWithPagination(lastName: $lastName, offset: $offset, limit: $limit) {
+      id
+      firstName
+      lastName
+      email
+      role
+      profession
+      cardNumber
+      created_on
+    }
+  }
+`;
+
+export const GET_ALL_USERS_BY_LAST_NAME_AND_PROFESSION_WITH_PAGINATION = gql`
+  query ($profession: Int!, $lastName: String!, $offset: Int!, $limit: Int!){
+    usersByLastNameAndProfessionWithPagination(profession: $profession, lastName: $lastName, offset: $offset, limit: $limit) {
+      id
+      firstName
+      lastName
+      email
+      role
+      profession
+      cardNumber
+      created_on
+    }
+  }
+`;
+
+export const GET_ALL_USERS_BY_LAST_NAME_AND_ROLE_WITH_PAGINATION = gql`
+  query ($role: Int!, $lastName: String!, $offset: Int!, $limit: Int!){
+    usersByLastNameAndRoleWithPagination(role: $role, lastName: $lastName, offset: $offset, limit: $limit) {
       id
       firstName
       lastName

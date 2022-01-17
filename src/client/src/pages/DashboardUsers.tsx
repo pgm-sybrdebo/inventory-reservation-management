@@ -1,18 +1,13 @@
 import React, { useState, useReducer, useEffect } from 'react';
 import styled from "styled-components";
 import AdminLayout from '../layouts/AdminLayout';
-// import { GridColDef, } from '@material-ui/data-grid';
-import { GridColDef, GridCellProps } from '@mui/x-data-grid';
 import Table from "../components/dashboard/Table";
-import { RiDeleteBin6Line } from "react-icons/ri";
-import { BiEdit } from "react-icons/bi";
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
-import { GET_ALL_USERS, GET_ALL_USERS_BY_LASTNAME, GET_ALL_USERS_WITH_PAGINATION, REMOVE_USER, SOFT_REMOVE_USER, TOTAL_USERS, UPDATE_USER } from "../graphql/users";
+import { GET_ALL_USERS, GET_ALL_USERS_BY_LAST_NAME_WITH_PAGINATION, REMOVE_USER, SOFT_REMOVE_USER, TOTAL_USERS, TOTAL_USERS_BY_LAST_NAME, UPDATE_USER } from "../graphql/users";
 import { TokenInfo } from "../interfaces";
 import jwt_decode from "jwt-decode";
 import { GridCellParams, MuiEvent } from "@mui/x-data-grid";
 import UpdateFormUser from '../components/dashboard/updateForms/UpdateFormUser';
-import { Delete, DeleteForever, VisibilityOff } from '@material-ui/icons';
 import ConfirmDialog from '../components/dashboard/dialogs/ConfirmDialog';
 import SearchBar from 'material-ui-search-bar';
 import Loading from '../components/dashboard/Loading';
@@ -73,54 +68,27 @@ const DashboardUsers = () => {
   const [page, setPage] = useState(0);
   const [state, dispatch] = React.useReducer(actionReducer, initialState);
 
-  const {data: totalData} = useQuery(TOTAL_USERS);
-  const [getUsers, { error, loading, data }] = useLazyQuery(GET_ALL_USERS);
-  const [getUsersByPagination, { error:errorPagination, loading:loadingPagination, data:dataPagination }] = useLazyQuery(GET_ALL_USERS_WITH_PAGINATION);
-  const [getUsersByLastName, {data: dataByLastName, loading: loadingByLastName, error: errorByLastName}] = useLazyQuery(GET_ALL_USERS_BY_LASTNAME);
+  const {data: totalData} = useQuery(TOTAL_USERS_BY_LAST_NAME, {
+    variables: {
+      lastName: searchValue
+    }
+  });
+  const [getUsersByLastNameWithPagination, { error, loading, data }] = useLazyQuery(GET_ALL_USERS_BY_LAST_NAME_WITH_PAGINATION);
   const [updateUser] = useMutation(UPDATE_USER);
   const [softDeleteUser] = useMutation(SOFT_REMOVE_USER);
   const [deleteUser] = useMutation(REMOVE_USER);
 
 
-  const handlePageChange = (isSelected: number) => {
-    console.log("selected", isSelected);
-    setPage(isSelected);
-  }
-
-
-  // useEffect(() => {
-  //   if (searchValue === "") {
-  //     console.log("searcheeeffect", searchValue);
-  //     getUsers();
-  //   } else {
-  //     console.log("searcheffect", searchValue)
-  //     getUsersByLastName({
-  //       variables: {
-  //         lastName: searchValue
-  //       }
-  //     });
-  //   }
-  // }, [searchValue])
-
-
-
   useEffect(() => {
-    console.log("paaage", page)
-    getUsersByPagination({
+    getUsersByLastNameWithPagination({
       variables: {
-        offset: page * 12,
-        limit: 12
+        lastName: searchValue,
+        offset: page * 10,
+        limit: 10
       }
     })
 
-  }, [page])
-
-
-  // const [getUsersByPagination, { error:errorPagination, loading:loadingPagination, data:dataPagination }] = useLazyQuery(GET_ALL_USERS_WITH_PAGINATION);
-
-
-
-
+  }, [page, searchValue])
 
 
   const currentlySelectedRow = (
@@ -164,8 +132,6 @@ const DashboardUsers = () => {
 
   const anonymize = async (id:string) => {
     try {
-      console.log("update ano");
-      console.log("iddddd",id);
       await updateUser({
         variables: {
           id: id,
@@ -176,11 +142,22 @@ const DashboardUsers = () => {
         }, 
         refetchQueries: [
           {
-            query: GET_ALL_USERS
+            query: GET_ALL_USERS_BY_LAST_NAME_WITH_PAGINATION,
+            variables: {
+              lastName: searchValue,
+              offset: page * 10,
+              limit: 10
+            }
+          },
+          {
+            query: 
+            TOTAL_USERS_BY_LAST_NAME,
+            variables: {
+              lastName: searchValue,
+            }
           }
         ]
       });
-      console.log("done");
       handleClose();
     } catch (error) {
       console.log(error);
@@ -195,7 +172,19 @@ const DashboardUsers = () => {
         }, 
         refetchQueries: [
           {
-            query: GET_ALL_USERS
+            query: GET_ALL_USERS_BY_LAST_NAME_WITH_PAGINATION,
+            variables: {
+              lastName: searchValue,
+              offset: page * 10,
+              limit: 10
+            }
+          },
+          {
+            query: 
+            TOTAL_USERS_BY_LAST_NAME,
+            variables: {
+              lastName: searchValue,
+            }
           }
         ]
       });
@@ -213,7 +202,19 @@ const DashboardUsers = () => {
         }, 
         refetchQueries: [
           {
-            query: GET_ALL_USERS
+            query: GET_ALL_USERS_BY_LAST_NAME_WITH_PAGINATION,
+            variables: {
+              lastName: searchValue,
+              offset: page * 10,
+              limit: 10
+            }
+          },
+          {
+            query: 
+            TOTAL_USERS_BY_LAST_NAME,
+            variables: {
+              lastName: searchValue,
+            }
           }
         ]
       });
@@ -234,22 +235,22 @@ const DashboardUsers = () => {
     <AdminLayout>
       <Title>All Users</Title>
       <SearchContainer>
-      <h2>Search on last name:</h2>
-      <SearchBar
-        value={searchChange}
-        onChange={(newValue) => {
-          console.log(typeof newValue)
-          setSearchChange(newValue)
-        }}
-        onRequestSearch={() => setSearchValue(searchChange)}
-      />
+        <h2>Search on last name:</h2>
+        <SearchBar
+          value={searchChange}
+          onChange={(newValue) => {
+            setSearchChange(newValue)
+          }}
+          onRequestSearch={() => setSearchValue(searchChange)}
+        />
       </SearchContainer>
 
-      {loading || loadingByLastName && (<Loading />)}
+      {loading && (<Loading />)}
       {error && (<p>{error.message}</p>)}
-      {dataPagination && !dataByLastName && <Table  data={dataPagination.usersWithPagination} columns={tokenData.role === 1 ? columnsSuperUser : columnsUser} onCellClick={currentlySelectedRow} total={totalData.totalUsers} dataPage={getUsersByPagination} onPageChange={handlePageChange} />}
-      {dataByLastName && !loadingByLastName && <Table  data={dataByLastName.usersByLastName} columns={tokenData.role === 1 ? columnsSuperUser : columnsUser} onCellClick={currentlySelectedRow} total={totalData.totalUsers}/>}
-
+      {data && totalData && <Table  data={data.usersByLastNameWithPagination} columns={tokenData.role === 1 ? columnsSuperUser : columnsUser} onCellClick={currentlySelectedRow} total={totalData.totalUsersByLastName}
+      page={page}
+      setPage={setPage}
+      />}
 
       {isOpen && (
         <UpdateFormUser

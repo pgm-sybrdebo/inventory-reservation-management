@@ -150,8 +150,8 @@ export interface TableProps {
   data: any
   onCellClick?: any
   total?: number
-  dataPage?: any
-  onPageChange?: any
+  page?: any
+  setPage?: any
 }
 
 export interface WidgetListItemProps {
