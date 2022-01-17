@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import AdminLayout from '../layouts/AdminLayout';
-import { GridColDef, } from '@material-ui/data-grid';
+import { GridColDef} from '@mui/x-data-grid';
 import Table from "../components/dashboard/Table";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { BiEdit } from "react-icons/bi";

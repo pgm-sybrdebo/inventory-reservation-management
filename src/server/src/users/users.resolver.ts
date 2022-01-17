@@ -56,8 +56,8 @@ export class UsersResolver {
   }
 
   @Query(() => [User], { name: 'usersByLastName' })
-  // @UseGuards(JwtAuthGuard, RolesGuard)
-  // @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   findAllByLastName(
     @Args('lastName', { type: () => String }) lastName: string,
   ) {

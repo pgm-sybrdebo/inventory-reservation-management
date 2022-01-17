@@ -1,11 +1,13 @@
 import styled from "styled-components";
 import AdminLayout from '../layouts/AdminLayout';
-import { GridColDef, } from '@material-ui/data-grid';
+import { GridColDef} from '@mui/x-data-grid';
 import Table from "../components/dashboard/Table";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { BiEdit } from "react-icons/bi";
 import { useQuery } from "@apollo/client";
 import { GET_ALL_USERS_BY_PROFESSION } from "../graphql/users";
+import { CircularProgress } from "@material-ui/core";
+import Loading from "../components/dashboard/Loading";
 
 const Title = styled.h1`
   margin: 1.5rem;
@@ -102,19 +104,14 @@ const DashboardStudents = () => {
       profession: 0
     }
   });
-  if (data) {
-    console.log(data);
-  }
 
-  // if (loading) return 
-  // if (error) return <p>{error.message}</p>
   
 
   return (
     <AdminLayout>
       <Title>All Students</Title>
 
-      {loading && (<p>Loading ...</p>)}
+      {loading && (<Loading />)}
       {error && (<p>{error.message}</p>)}
       {data && <Table  data={data.usersByProfession} columns={columns} />}
 

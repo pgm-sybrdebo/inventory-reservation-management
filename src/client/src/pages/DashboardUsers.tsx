@@ -1,12 +1,13 @@
 import React, { useState, useReducer, useEffect } from 'react';
 import styled from "styled-components";
 import AdminLayout from '../layouts/AdminLayout';
-import { GridColDef, } from '@material-ui/data-grid';
+// import { GridColDef, } from '@material-ui/data-grid';
+import { GridColDef, GridCellProps } from '@mui/x-data-grid';
 import Table from "../components/dashboard/Table";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { BiEdit } from "react-icons/bi";
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
-import { GET_ALL_USERS, GET_ALL_USERS_BY_LASTNAME, REMOVE_USER, SOFT_REMOVE_USER, UPDATE_USER } from "../graphql/users";
+import { GET_ALL_USERS, GET_ALL_USERS_BY_LASTNAME, GET_ALL_USERS_WITH_PAGINATION, REMOVE_USER, SOFT_REMOVE_USER, TOTAL_USERS, UPDATE_USER } from "../graphql/users";
 import { TokenInfo } from "../interfaces";
 import jwt_decode from "jwt-decode";
 import { GridCellParams, MuiEvent } from "@mui/x-data-grid";
@@ -14,44 +15,13 @@ import UpdateFormUser from '../components/dashboard/updateForms/UpdateFormUser';
 import { Delete, DeleteForever, VisibilityOff } from '@material-ui/icons';
 import ConfirmDialog from '../components/dashboard/dialogs/ConfirmDialog';
 import SearchBar from 'material-ui-search-bar';
+import Loading from '../components/dashboard/Loading';
+import { columnsSuperUser } from '../components/dashboard/columns/columnsSuperUser';
+import { columnsUser } from '../components/dashboard/columns/columnUser';
 
 
 const Title = styled.h1`
   margin: 1.5rem;
-`;
-
-// const Actions = styled.div`
-//   display: flex;
-//   justify-content: space-between;
-//   width: 100%;
-// `;
-
-const Button = styled.button`
-  width: 2rem;
-  height: 2rem;
-  min-width: 2rem;
-  min-height: 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #CBBEC5;
-  border: 1px solid #CBBEC5;
-  background-color: transparent;
-  color: #F58732;
-  border: 1px solid #F58732;
-  border-radius: 3px;
-  cursor:pointer;
-  font-size: 1rem;
-  font-weight: bold;
-  transition: all 0.2s ease-in-out;
-  margin: 0 auto;
-
-  &:hover {
-    background-color: #F58732;
-    color: #FFF;
-    // border: 1px solid #F58732;
-
-  }
 `;
 
 const SearchContainer = styled.div`
@@ -66,33 +36,6 @@ const SearchContainer = styled.div`
 
 const token:string = localStorage.getItem('token') || ""; 
 const tokenData = jwt_decode<TokenInfo>(token);
-
-const columns: GridColDef[] = [
-  { field: "firstName", headerName: "First name", width: 200 },
-  { field: "lastName", headerName: "Last name", width: 200 },
-  { field: "email", headerName: "Email", width: 300 },
-  { 
-    field: "profession", 
-    headerName: "Profession", 
-    width: 150,
-    renderCell: (params) => {
-      return (
-        <span>{params.row.profession === 0 ? "Student" : "Staff"}</span>
-      )
-    }
-  },
-  { 
-    field: "role", 
-    headerName: "Role", 
-    width: 150,
-    renderCell: (params) => {
-      return (
-        <span>{params.row.role === 0 ? "User" : "Admin"}</span>
-      )
-    }
-  },
-];
-
 
 interface initState {
   action: string
@@ -129,7 +72,9 @@ const DashboardUsers = () => {
   const [searchValue, setSearchValue] = useState("");
   const [state, dispatch] = React.useReducer(actionReducer, initialState);
 
+  const {data: totalData} = useQuery(TOTAL_USERS);
   const [getUsers, { error, loading, data }] = useLazyQuery(GET_ALL_USERS);
+  const [getUsersByPagination, { error:errorPagination, loading:loadingPagination, data:dataPagination }] = useLazyQuery(GET_ALL_USERS_WITH_PAGINATION);
   const [getUsersByLastName, {data: dataByLastName, loading: loadingByLastName, error: errorByLastName}] = useLazyQuery(GET_ALL_USERS_BY_LASTNAME);
   const [updateUser] = useMutation(UPDATE_USER);
   const [softDeleteUser] = useMutation(SOFT_REMOVE_USER);
@@ -149,96 +94,6 @@ const DashboardUsers = () => {
       });
     }
   }, [searchValue])
-
-
-  const columnsSuperUser: GridColDef[] = [
-    { field: "firstName", headerName: "First name", width: 200 },
-    { field: "lastName", headerName: "Last name", width: 200 },
-    { field: "email", headerName: "Email", width: 300 },
-    {field: "cardNumber", headerName:"Card number", width: 200},
-    { 
-      field: "profession", 
-      headerName: "Profession", 
-      width: 150,
-      renderCell: (params) => {
-        return (
-          <span>{params.row.profession === 0 ? "Student" : "Staff"}</span>
-        )
-      }
-    },
-    { 
-      field: "role", 
-      headerName: "Role", 
-      width: 150,
-      renderCell: (params) => {
-        return (
-          //<span>{params.row.role === 0 ? "User" : "Admin"}</span>
-          <span>{ params.row.role === 0 ? "User" : params.row.role === 1 ? "Admin" : "Super admin"}</span>
-        )
-      }
-    },
-  
-    {
-      field: "edit",
-      headerName: "Edit",
-      width: 100,
-      sortable: false,
-      renderCell: (params) => {
-  
-        return (
-          <Button>
-            <BiEdit />
-          </Button>
-        );
-      },
-    },
-    {
-      field: "anonymize",
-      headerName: "Anonymize",
-      width: 100,
-      sortable: false,
-      renderCell: (params) => {
-  
-        return (
-          <Button>
-            <VisibilityOff />
-          </Button>
-        );
-      },
-    },
-    {
-      field: "softDelete",
-      headerName: "Soft Delete",
-      width: 100,
-      sortable: false,
-      renderCell: (params) => {
-  
-        return (
-          <Button>
-            <Delete />
-          </Button>
-        );
-      },
-    },
-    {
-      field: "delete",
-      headerName: "Hard Delete",
-      width: 100,
-      sortable: false,
-      renderCell: (params) => {
-  
-        return (
-          <Button>
-            <DeleteForever />
-          </Button>
-        );
-      },
-    },
-  ];
-
-
-
-
 
   const currentlySelectedRow = (
     params: GridCellParams,
@@ -277,7 +132,6 @@ const DashboardUsers = () => {
       dispatch({ action: "delete" })
     }
   };
-
 
 
   const anonymize = async (id:string) => {
@@ -340,15 +194,6 @@ const DashboardUsers = () => {
       console.log(error);
     }
   }
-
-  if (dataByLastName) {
-    console.log("hey", dataByLastName)
-    console.log("hey", dataByLastName.usersByLastName)
-  }
-  
-
-  // if (loading) return 
-  // if (error) return <p>{error.message}</p>
   
   const handleClose = () => {
     console.log("close");
@@ -357,9 +202,6 @@ const DashboardUsers = () => {
   }
 
 
-  console.log("action", state.action);
-  console.log("change", searchChange);
-  console.log("searchChange", searchValue);
   return (
     <AdminLayout>
       <Title>All Users</Title>
@@ -375,10 +217,10 @@ const DashboardUsers = () => {
       />
       </SearchContainer>
 
-      {loading && (<p>Loading ...</p>)}
+      {loading || loadingByLastName && (<Loading />)}
       {error && (<p>{error.message}</p>)}
-      {data && !dataByLastName && <Table  data={data.users} columns={tokenData.role === 1 ? columnsSuperUser : columns} onCellClick={currentlySelectedRow}/>}
-      {dataByLastName && !loadingByLastName && <Table  data={dataByLastName.usersByLastName} columns={tokenData.role === 1 ? columnsSuperUser : columns} onCellClick={currentlySelectedRow}/>}
+      {data && !dataByLastName && <Table  data={dataPagination.usersWithPagination} columns={tokenData.role === 1 ? columnsSuperUser : columnsUser} onCellClick={currentlySelectedRow} total={totalData.totalUsers} dataPage={getUsersByPagination} />}
+      {dataByLastName && !loadingByLastName && <Table  data={dataByLastName.usersByLastName} columns={tokenData.role === 1 ? columnsSuperUser : columnsUser} onCellClick={currentlySelectedRow} total={totalData.totalUsers}/>}
 
 
       {isOpen && (
