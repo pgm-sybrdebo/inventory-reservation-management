@@ -133,7 +133,65 @@ const DashboardStatuses = () => {
 
 
 
+  const softDeleteCurrentDeviceStatus = async (id:string) => {
+    try {
+      await softDeleteDeviceStatus({
+        variables: {
+          id: id,
+        }, 
+        refetchQueries: [
+          {
+            query: GET_ALL_DEVICE_STATUSES_BY_NAME_WITH_PAGINATION,
+            variables: {
+              name: searchValue,
+              offset: page * 10,
+              limit: 10
+            }
+          },
+          {
+            query: 
+            TOTAL_DEVICE_STATUSES_BY_NAME,
+            variables: {
+              name: searchValue,
+            }
+          }
+        ]
+      });
+      handleClose();
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
+  const deleteCurrentDeviceStatus = async (id:string) => {
+    try {
+      await deleteDeviceStatus({
+        variables: {
+          id: id,
+        }, 
+        refetchQueries: [
+          {
+            query: GET_ALL_DEVICE_STATUSES_BY_NAME_WITH_PAGINATION,
+            variables: {
+              name: searchValue,
+              offset: page * 10,
+              limit: 10
+            }
+          },
+          {
+            query: 
+            TOTAL_DEVICE_STATUSES_BY_NAME,
+            variables: {
+              name: searchValue,
+            }
+          }
+        ]
+      });
+      handleClose();
+    } catch (error) {
+      console.log(error);
+    }
+  }
   
   const handleClose = () => {
     console.log("close");
@@ -156,14 +214,7 @@ const DashboardStatuses = () => {
             }}
             onRequestSearch={() => setSearchValue(searchChange)}
           />
-          <Button
-            variant='contained'
-            size='large'
-            onClick={() => setIsOpenCreate(true)}
-            style={{
-              backgroundColor: '#F58732',
-            }}
-          >Create</Button>
+
         </SearchButtonContainer>
       </SearchContainer>
 
@@ -183,6 +234,16 @@ const DashboardStatuses = () => {
       )}
 
 
+      {isOpenDialog && (
+        <ConfirmDialog
+          selectedRow={selectedRow}
+          title={title}
+          message={message}
+          open={isOpenDialog}
+          handleClose={handleClose}
+          handleConfirm={ state.action === 'softDelete' ? softDeleteCurrentDeviceStatus : deleteCurrentDeviceStatus}
+        />
+      )}
 
 
     </AdminLayout>
