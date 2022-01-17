@@ -3,6 +3,8 @@ import { DataGrid } from "@mui/x-data-grid";
 import styled from "styled-components";
 import { TableProps } from '../../interfaces';
 import { useState, useEffect } from "react";
+import { useLazyQuery } from "@apollo/client";
+import { GET_ALL_USERS_WITH_PAGINATION } from "../../graphql/users";
 
 const Container = styled.div`
   margin: 1rem 1.5rem 2rem 1.5rem;
@@ -15,34 +17,50 @@ const Container = styled.div`
 
 
 
-const Table = ({data, columns, onCellClick, total, dataPage}: TableProps) => {
-  console.log(dataPage);
+const Table = ({data, columns, onCellClick, total, dataPage, onPageChange}: TableProps) => {
+  // console.log(dataPage);
+  //console.log("total", total)
 
   const [page, setPage] = useState(0);
-  // let 
-  // if (total) {
-
-  // } 
 
   useEffect(() => {
-    dataPage({
-      variables: {
-        offset: page * 12,
-        limit: 12
-      }});
-  }, [page])
+    if(typeof onPageChange === 'function') {
+      onPageChange(page);
+    }
+  }, [page]);
+
+
+  // useEffect(() => {
+  //   // dataPage({
+  //   //   variables: {
+  //   //     offset: page * 12,
+  //   //     limit: 12
+  //   //   }});
+  //   getUsersByPagination({
+  //     variables: {
+  //       offset: page * 12,
+  //       limit: 12
+  //     }
+  //   })
+
+  //   // dat = data.usersWithPagination
+  // }, [page])
+
+
+  // const [getUsersByPagination, { error:errorPagination, loading:loadingPagination, data:dataPagination }] = useLazyQuery(GET_ALL_USERS_WITH_PAGINATION);
 
   const handleChangePage = (event:any, newPage:any) => {
     console.log("changePage");
     console.log("event", event);
-    console.log(newPage);
     setPage(event);
   }
   return (
      
       <Container>
           <>
+            {/* {dataPagination &&  */}
             <DataGrid 
+              // rows={dataPagination.usersWithPagination} 
               rows={data} 
               columns={columns} 
               pageSize={12} 
@@ -54,6 +72,7 @@ const Table = ({data, columns, onCellClick, total, dataPage}: TableProps) => {
               rowCount={total}
               onPageChange={handleChangePage}
             />
+            {/* } */}
           </>
       </Container>
 

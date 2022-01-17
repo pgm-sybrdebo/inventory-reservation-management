@@ -70,6 +70,7 @@ const DashboardUsers = () => {
   const [message, setMessage] = useState("");
   const [searchChange, setSearchChange] = useState("");
   const [searchValue, setSearchValue] = useState("");
+  const [page, setPage] = useState(0);
   const [state, dispatch] = React.useReducer(actionReducer, initialState);
 
   const {data: totalData} = useQuery(TOTAL_USERS);
@@ -81,19 +82,46 @@ const DashboardUsers = () => {
   const [deleteUser] = useMutation(REMOVE_USER);
 
 
+  const handlePageChange = (isSelected: number) => {
+    console.log("selected", isSelected);
+    setPage(isSelected);
+  }
+
+
+  // useEffect(() => {
+  //   if (searchValue === "") {
+  //     console.log("searcheeeffect", searchValue);
+  //     getUsers();
+  //   } else {
+  //     console.log("searcheffect", searchValue)
+  //     getUsersByLastName({
+  //       variables: {
+  //         lastName: searchValue
+  //       }
+  //     });
+  //   }
+  // }, [searchValue])
+
+
+
   useEffect(() => {
-    if (searchValue === "") {
-      console.log("searcheeeffect", searchValue);
-      getUsers();
-    } else {
-      console.log("searcheffect", searchValue)
-      getUsersByLastName({
-        variables: {
-          lastName: searchValue
-        }
-      });
-    }
-  }, [searchValue])
+    console.log("paaage", page)
+    getUsersByPagination({
+      variables: {
+        offset: page * 12,
+        limit: 12
+      }
+    })
+
+  }, [page])
+
+
+  // const [getUsersByPagination, { error:errorPagination, loading:loadingPagination, data:dataPagination }] = useLazyQuery(GET_ALL_USERS_WITH_PAGINATION);
+
+
+
+
+
 
   const currentlySelectedRow = (
     params: GridCellParams,
@@ -219,7 +247,7 @@ const DashboardUsers = () => {
 
       {loading || loadingByLastName && (<Loading />)}
       {error && (<p>{error.message}</p>)}
-      {data && !dataByLastName && <Table  data={dataPagination.usersWithPagination} columns={tokenData.role === 1 ? columnsSuperUser : columnsUser} onCellClick={currentlySelectedRow} total={totalData.totalUsers} dataPage={getUsersByPagination} />}
+      {dataPagination && !dataByLastName && <Table  data={dataPagination.usersWithPagination} columns={tokenData.role === 1 ? columnsSuperUser : columnsUser} onCellClick={currentlySelectedRow} total={totalData.totalUsers} dataPage={getUsersByPagination} onPageChange={handlePageChange} />}
       {dataByLastName && !loadingByLastName && <Table  data={dataByLastName.usersByLastName} columns={tokenData.role === 1 ? columnsSuperUser : columnsUser} onCellClick={currentlySelectedRow} total={totalData.totalUsers}/>}
 
 

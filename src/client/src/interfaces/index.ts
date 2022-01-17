@@ -146,10 +146,12 @@ export interface UserById extends User {
 
 export interface TableProps {
   columns: GridColDef[]
-  data: User[]
+  // data: User[]
+  data: any
   onCellClick?: any
   total?: number
   dataPage?: any
+  onPageChange?: any
 }
 
 export interface WidgetListItemProps {

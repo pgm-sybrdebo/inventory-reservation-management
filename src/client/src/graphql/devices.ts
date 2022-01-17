@@ -140,7 +140,7 @@ mutation ($modelId: String!, $deviceStatusId: String!, $qr_code: String! ) {
 
 export const UPDATE_DEVICE = gql`
 
-mutation ($id: String!, $modelId: String!, $deviceStatusId: String!, $qr_code: String! ) {
+mutation ($id: String!, $modelId: String, $deviceStatusId: String, $qr_code: String ) {
   updateDevice(updateDeviceInput: {
     id: $id
     modelId: $modelId,

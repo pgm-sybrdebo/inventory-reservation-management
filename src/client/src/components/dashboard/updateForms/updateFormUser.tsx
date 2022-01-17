@@ -230,5 +230,4 @@ const UpdateFormUser = ({selectedRow, open, handleClose}: UpdateFormUserProps) =
   )
 }
 
-// TS-ignore
 export default UpdateFormUser;
