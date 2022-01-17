@@ -80,7 +80,6 @@ export class DeviceStatusesResolver {
     } catch (error) {
       throw error
     }
-    
   }
 
   @Mutation(() => DeviceStatus)
