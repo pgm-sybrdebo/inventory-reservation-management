@@ -41,11 +41,16 @@ export class TagsResolver {
     return this.tagsService.update(updateTagInput.id, updateTagInput);
   }
 
-  @Mutation(() => Tag)
+  @Mutation(() => Boolean)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.SUPER_ADMIN)
-  removeTag(@Args('id', new ParseUUIDPipe()) id: string) {
-    return this.tagsService.remove(id);
+  async removeTag(@Args('id', new ParseUUIDPipe()) id: string) {
+    try {
+      await this.tagsService.remove(id);
+      return true;
+    } catch (error) {
+      throw error
+    }
   }
 
   @Mutation(() => Tag)
