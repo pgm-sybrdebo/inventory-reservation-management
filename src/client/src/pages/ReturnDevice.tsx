@@ -1,12 +1,9 @@
 import React from 'react'
-import { Container, GeneralList, Header, ModelImage } from '../components';
+import { Container, GeneralList, Header, ModelImage,DeviceInfo } from '../components';
 import device from '../assets/device.jpg';
 import { useParams } from 'react-router-dom';
 import {  useQuery } from '@apollo/client';
 import {GET_DEVICE_BY_ID} from '../graphql/devices';
-
-import DeviceInfo from '../components/DeviceInfo/DeviceInfo';
-import { UPDATE_RESERVATION } from '../graphql/reservations';
 
 function ReturnDevice() {
   let { id } = useParams();
