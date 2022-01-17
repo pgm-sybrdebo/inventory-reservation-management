@@ -14,6 +14,8 @@ import GeneralList from './GeneralList/GeneralList';
 import ProfileForm from './Profile/ProfileForm';
 import StyledDeviceCard from './DeviceCard/StyledDeviceCard.style';
 import TopicDevices from "./TopicDevices/TopicDevices";
+import DeviceInfo from "./DeviceInfo/DeviceInfo"
+import DeviceInfoReserve from "./DeviceInfo/DeviceInfoReserve";
 
 
 export {
@@ -33,4 +35,6 @@ export {
   ProfileForm,
   StyledDeviceCard,
   TopicDevices,
+  DeviceInfo,
+  DeviceInfoReserve
 }

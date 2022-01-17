@@ -47,6 +47,7 @@ const RequireAuth = ({availableRoles} : { availableRoles: UserRole[]}) => {
   }
 
   const userData = jwt_decode<TokenInfo>(token);
+  console.log(userData.sub);
   if (userData.exp  < Date.now() / 1000) {
     localStorage.removeItem('token');
     navigate("/login");

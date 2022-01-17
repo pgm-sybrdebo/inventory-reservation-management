@@ -35,6 +35,12 @@ export interface modelInfo {
   tags: string[],
 }
 
+export interface InfoDevice {
+  name: string,
+  description: string,
+  damages: {title: string, description: string, picture: string}[]
+}
+
 
 export interface ModelCardPic {
   src: string,

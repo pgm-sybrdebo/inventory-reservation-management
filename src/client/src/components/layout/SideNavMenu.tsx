@@ -8,7 +8,6 @@ import { TokenInfo } from '../../interfaces';
 function SideNavMenu({setModalVisible}:any) {
   const token = localStorage.getItem('token');
   const data = jwt_decode<TokenInfo>(token!);
-  console.log(data.role)
   let navigate = useNavigate();
   return (
     <Modal>
