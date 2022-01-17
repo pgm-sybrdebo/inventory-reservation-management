@@ -4,10 +4,47 @@ import StyledButton from '../Button/StyledButton.style';
 import { useNavigate } from "react-router-dom";
 import {InfoDevice} from '../../interfaces'
 import { useParams } from 'react-router-dom';
+import { useMutation } from '@apollo/client';
+import { UPDATE_RESERVATION } from '../../graphql/reservations';
+import { UPDATE_DEVICE } from '../../graphql/devices';
 const DeviceInfo: React.FC<InfoDevice> = ({name, description , damages}) => { 
   let navigate = useNavigate();
   let { id } = useParams();
-  
+  let dt = Date.now()
+  const [UpdateReservation] = useMutation(UPDATE_RESERVATION, {
+    onCompleted: (response: any) => {
+      console.log(response)
+    },
+    onError: (error) => {
+      console.log(`GRAPHQL ERROR: ${error.message}`);
+    }
+  });
+  const [UpdateDevice] = useMutation(UPDATE_DEVICE, {
+    onCompleted: (response: any) => {
+      console.log(response)
+    },
+    onError: (error) => {
+      console.log(`GRAPHQL ERROR: ${error.message}`);
+    }
+  });
+
+  const handleReturn = async()=>{
+    await UpdateReservation({
+      variables: {
+        id:id,
+        reservationStateId: "45e2e05a-f498-4be1-9a58-d29219f6bbea",
+        end_date: dt
+      }
+    })
+    UpdateDevice({
+      variables: {
+        id:id,
+        deviceStatusId: "ec2ed711-e4a3-42f6-b441-0e91f98f31ba",
+        userId: null,
+      }
+    })
+    navigate(-1)
+  }
   return(
     <Wrapper>
       <div className="topic">
@@ -43,7 +80,7 @@ const DeviceInfo: React.FC<InfoDevice> = ({name, description , damages}) => {
             width="48%"
             backgroundcolor="#F58732"
             radius=".25rem"
-            onClick = {()=> console.log("Return")}
+            onClick = {handleReturn}
           />
         </div>
     </Wrapper>

@@ -2,15 +2,15 @@ import React from 'react'
 import { Container, GeneralList, Header, ModelImage } from '../components';
 import device from '../assets/device.jpg';
 import { useParams } from 'react-router-dom';
-import { useMutation, useQuery } from '@apollo/client';
-import {GET_DEVICE_BY_ID, UPDATE_DEVICE} from '../graphql/devices';
+import {  useQuery } from '@apollo/client';
+import {GET_DEVICE_BY_ID} from '../graphql/devices';
 
 import DeviceInfo from '../components/DeviceInfo/DeviceInfo';
 import { UPDATE_RESERVATION } from '../graphql/reservations';
 
 function ReturnDevice() {
   let { id } = useParams();
-  
+
   const { loading, error, data } = useQuery(GET_DEVICE_BY_ID, {
     variables: { id },
   });
