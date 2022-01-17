@@ -3,7 +3,7 @@ import { TagsService } from './tags.service';
 import { Tag } from './entities/tag.entity';
 import { CreateTagInput } from './dto/create-tag.input';
 import { UpdateTagInput } from './dto/update-tag.input';
-import { ParseUUIDPipe, UseGuards } from '@nestjs/common';
+import { ParseIntPipe, ParseUUIDPipe, UseGuards } from '@nestjs/common';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
@@ -20,11 +20,31 @@ export class TagsResolver {
     return this.tagsService.create(createTagInput);
   }
 
+  @Query(() => Int, { name: 'totalTagsByName' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  async totalTagsByName(
+    @Args('name', { type: () => String }) name: string,
+  ) {
+    return this.tagsService.countWithName(name);
+  }
+
   @Query(() => [Tag], { name: 'tags' })
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.USER, Role.SUPER_ADMIN)
   findAll() {
     return this.tagsService.findAll();
+  }
+
+  @Query(() => [Tag], { name: 'tagsByNameWithPagination' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  findAllByNameWithPagination(
+    @Args('name', { type: () => String }) name: string,
+    @Args('offset', { type: () => Int }, new ParseIntPipe()) offset: number,
+    @Args('limit', { type: () => Int }, new ParseIntPipe()) limit: number,
+  ) {
+    return this.tagsService.findAllByNameWithPagination(name, offset, limit);
   }
 
   @Query(() => Tag, { name: 'tag' })
