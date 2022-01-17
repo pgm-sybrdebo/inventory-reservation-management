@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation, Outlet, useNavigate } from "react-router-dom";
 import {GlobalStyles} from './GeneralStyles.style';
 import * as ROUTES from "./routes";
-import jwt_decode from "jwt-decode"
+import jwt_decode from "jwt-decode";
 import {
   HomePage,
   Login,

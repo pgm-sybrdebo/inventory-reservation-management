@@ -34,7 +34,7 @@ export class Damage {
   @Column(() => Dates)
   date: Dates;
 
-  @ManyToOne(() => Reservation, (reservation) => reservation.damages)
+  @ManyToOne(() => Reservation, (reservation) => reservation.damages, {onDelete: "CASCADE"})
   @Field((type) => Reservation)
   reservation: Reservation;
 

@@ -155,7 +155,7 @@ type Mutation {
   removeReservationState(id: String!): ReservationState!
   removeReservationTime(id: String!): ReservationTime!
   removeTag(id: String!): Tag!
-  removeUser(id: String!): User!
+  removeUser(id: String!): Boolean!
   signup(signupUserInput: SignupUserInput!): User!
   softRemoveDamage(id: String!): Damage!
   softRemoveDevice(id: String!): Device!
@@ -177,6 +177,7 @@ type Mutation {
   updateReservationTime(updateReservationTimeInput: UpdateReservationTimeInput!): ReservationTime!
   updateTag(updateTagInput: UpdateTagInput!): Tag!
   updateUser(updateUserInput: UpdateUserInput!): User!
+  updateUserAdmin(updateUserAdminInput: UpdateUserAdminInput!): User!
 }
 
 type Query {
@@ -223,9 +224,16 @@ type Query {
   totalModelsWithFilter(filter: Filter!): [Total!]!
   totalMonthReservations(month: String!): Int!
   totalUsers: Int!
+  totalUsersByLastName(lastName: String!): Int!
+  totalUsersByLastNameAndProfession(lastName: String!, profession: Int!): Int!
+  totalUsersByLastNameAndRole(lastName: String!, role: Int!): Int!
   user(id: String!): User!
   userByEmail(email: String!): User!
   users: [User!]!
+  usersByLastName(lastName: String!): [User!]!
+  usersByLastNameAndProfessionWithPagination(lastName: String!, limit: Int!, offset: Int!, profession: Int!): [User!]!
+  usersByLastNameAndRoleWithPagination(lastName: String!, limit: Int!, offset: Int!, role: Int!): [User!]!
+  usersByLastNameWithPagination(lastName: String!, limit: Int!, offset: Int!): [User!]!
   usersByProfession(profession: Int!): [User!]!
   usersByRole(role: Int!): [User!]!
   usersWithPagination(limit: Int!, offset: Int!): [User!]!
@@ -355,6 +363,17 @@ input UpdateReservationTimeInput {
 input UpdateTagInput {
   id: String!
   name: String
+}
+
+input UpdateUserAdminInput {
+  cardNumber: Int
+  email: String
+  firstName: String
+  id: String!
+  lastName: String
+  password: String
+  profession: Int
+  role: Int!
 }
 
 input UpdateUserInput {
