@@ -4,16 +4,13 @@ import AdminLayout from '../layouts/AdminLayout';
 import Table from "../components/dashboard/Table";
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { GridCellParams, MuiEvent } from "@mui/x-data-grid";
-import UpdateFormDeviceStatus from '../components/dashboard/updateForms/UpdateFormStatus';
 import ConfirmDialog from '../components/dashboard/dialogs/ConfirmDialog';
 import SearchBar from 'material-ui-search-bar';
 import Loading from '../components/dashboard/Loading';
-import { columnsDeviceStatus } from '../components/dashboard/columns/columnsDeviceStatus';
-import { GET_ALL_DEVICE_STATUSES_BY_NAME_WITH_PAGINATION,  REMOVE_DEVICE_STATUS, SOFT_REMOVE_DEVICE_STATUS, TOTAL_DEVICE_STATUSES_BY_NAME, UPDATE_DEVICE_STATUS } from '../graphql/deviceStatuses';
 import { Button } from '@material-ui/core';
-import CreateFormDeviceStatus from '../components/dashboard/createForms/CreateFormDeviceStatus';
 import { GET_ALL_TAGS_BY_NAME_WITH_PAGINATION, REMOVE_TAG, SOFT_REMOVE_TAG, TOTAL_TAGS_BY_NAME, UPDATE_TAG } from '../graphql/tags';
 import { columnsTag } from '../components/dashboard/columns/columnsTag';
+import UpdateFormTag from '../components/dashboard/updateForms/UpdateFormTag';
 
 
 const Title = styled.h1`
@@ -231,7 +228,13 @@ const DashboardTags = () => {
       setPage={setPage}
       />}
 
-
+      {isOpen && (
+        <UpdateFormTag
+          selectedRow={selectedRow}
+          handleClose={handleClose}
+          open={isOpen}
+        />
+      )}
 
       {isOpenDialog && (
         <ConfirmDialog
