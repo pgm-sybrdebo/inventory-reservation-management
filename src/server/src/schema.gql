@@ -147,7 +147,7 @@ type Mutation {
   login(loginUserInput: LoginUserInput!): LoginResponse!
   removeDamage(id: String!): Damage!
   removeDevice(id: String!): Device!
-  removeDeviceStatus(id: String!): DeviceStatus!
+  removeDeviceStatus(id: String!): Boolean!
   removeMedia(id: String!): Media!
   removeModel(id: String!): Model!
   removeModelFromTag(modelId: String!, tagId: String!): Model!
@@ -187,6 +187,7 @@ type Query {
   device(id: String!): Device!
   deviceStatus(id: String!): DeviceStatus!
   deviceStatuses: [DeviceStatus!]!
+  deviceStatusesByNameWithPagination(limit: Int!, name: String!, offset: Int!): [DeviceStatus!]!
   devices: [Device!]!
   devicesWithPagination(limit: Int!, offset: Int!): [Device!]!
   differenceLastMonthDevices: Int!
@@ -218,6 +219,7 @@ type Query {
   stockDevices: [Device!]!
   tag(id: String!): Tag!
   tags: [Tag!]!
+  totalDeviceStatusesByName(name: String!): Int!
   totalDevices: Int!
   totalDevicesByModelId(modelId: String!): [Total!]!
   totalModels: Int!
