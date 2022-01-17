@@ -86,6 +86,7 @@ const DeviceInfo: React.FC<InfoDevice> = ({name, description , damages}) => {
             backgroundcolor="#F58732"
             radius=".25rem"
             onClick = {()=>{
+              
               if(window.confirm(`Confirm Returning This Device:  \nName : "${name}"  \nId: "${id}"`)){handleReturn()}}
             }
           />
