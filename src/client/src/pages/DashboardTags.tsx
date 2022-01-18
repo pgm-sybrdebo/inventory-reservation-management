@@ -11,6 +11,7 @@ import { Button } from '@material-ui/core';
 import { GET_ALL_TAGS_BY_NAME_WITH_PAGINATION, REMOVE_TAG, SOFT_REMOVE_TAG, TOTAL_TAGS_BY_NAME, UPDATE_TAG } from '../graphql/tags';
 import { columnsTag } from '../components/dashboard/columns/columnsTag';
 import UpdateFormTag from '../components/dashboard/updateForms/UpdateFormTag';
+import CreateFormTag from '../components/dashboard/createForms/CreateFormTag';
 
 
 const Title = styled.h1`
@@ -233,6 +234,13 @@ const DashboardTags = () => {
           selectedRow={selectedRow}
           handleClose={handleClose}
           open={isOpen}
+        />
+      )}
+
+      {isOpenCreate && (
+        <CreateFormTag
+          handleClose={handleClose}
+          open={isOpenCreate}
         />
       )}
 
