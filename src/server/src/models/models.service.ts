@@ -13,6 +13,7 @@ import {
   In,
   SelectQueryBuilder,
   Like,
+  Raw,
 } from 'typeorm';
 import { CreateModelInput } from './dto/create-model.input';
 import { Filter } from './dto/filter-model.input';
@@ -35,8 +36,33 @@ export class ModelsService {
     return this.modelsRepository.save(newModel);
   }
 
+  async countWithName(name: string): Promise<number> {
+    const rawData = await this.modelsRepository.query(`
+    SELECT
+      COUNT(DISTINCT id) AS total
+    FROM
+      "model"
+    WHERE "deleted_on" IS NULL
+    AND LOWER("name") LIKE LOWER('${name}%')
+    `);
+    return rawData[0].total;
+  }
+
   findAll(): Promise<Model[]> {
     return this.modelsRepository.find();
+  }
+
+  findAllByNameWithPagination(name: string, offset: number, limit: number): Promise<Model[]> {
+    return this.modelsRepository.find({
+      where: {
+        name: Raw(alias => `LOWER(${alias}) Like '${name}%'`)
+      },
+      skip: offset,
+      take: limit,
+      order: {
+        id: 'ASC',
+      },
+    });
   }
 
   findAllByPagination(offset: number, limit: number): Promise<Model[]> {

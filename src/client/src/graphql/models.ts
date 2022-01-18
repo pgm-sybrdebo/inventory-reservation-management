@@ -1,5 +1,29 @@
 import { gql } from "@apollo/client";
 
+
+export const TOTAL_MODELS_BY_NAME = gql`
+query totalModelsByName($name: String!) {
+  totalModelsByName(name: $name)
+}
+`;
+
+
+export const GET_ALL_MODELS_BY_NAME_WITH_PAGINATION = gql`
+  query ($name: String!, $offset: Int!, $limit: Int!){
+    modelsByNameWithPagination(name: $name, offset: $offset, limit: $limit) {
+      id
+      name
+      brand
+      description
+      specifications
+      quantity
+      max_reservation_time
+      created_on
+      updated_on
+    }
+  }
+`;
+
 export const TOTAL_MODELS = gql`
   query totalModels {
     totalModels
@@ -47,8 +71,14 @@ mutation ($id: String!, $name: String!, $brand: String!, $description: String!, 
 
 export const REMOVE_MODEL = gql`
   mutation ($id: String!){
-    removeModel(id: $id) {
-      name
+    removeModel(id: $id)
+  }
+`;
+
+export const SOFT_REMOVE_MODEL = gql`
+  mutation ($id: String!){
+    softRemoveModel(id: $id) {
+      id
     }
   }
 `;
