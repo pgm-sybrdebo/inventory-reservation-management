@@ -28,6 +28,7 @@ import {
 } from "./pages";
 
 import { TokenInfo, UserRole } from "./interfaces";
+import DashboardModels from "./pages/DashboardModels";
 // import { useQuery } from "@apollo/client";
 // import { GET_DEVICE_BY_ID } from "./graphql/devices";
 
@@ -146,6 +147,10 @@ function App() {
             element={<DashboardTags />}
           />
 
+          <Route
+            path={ROUTES.DASHBOARD_ALL_MODELS}
+            element={<DashboardModels />}
+          />
           <Route
             path={ROUTES.DASHBOARD_ALL_DEVICES}
             element={<DashboardDevices />}

@@ -149,7 +149,7 @@ type Mutation {
   removeDevice(id: String!): Device!
   removeDeviceStatus(id: String!): Boolean!
   removeMedia(id: String!): Media!
-  removeModel(id: String!): Model!
+  removeModel(id: String!): Boolean!
   removeModelFromTag(modelId: String!, tagId: String!): Model!
   removeReservation(id: String!): Reservation!
   removeReservationState(id: String!): ReservationState!
@@ -202,6 +202,7 @@ type Query {
   model(id: String!): Model!
   models: [Model!]!
   modelsByFilterWithPagination(filter: Filter!, limit: Int!, offset: Int!): [Model!]!
+  modelsByNameWithPagination(limit: Int!, name: String!, offset: Int!): [Model!]!
   modelsWithPagination(limit: Int!, offset: Int!): [Model!]!
   recentDevices(from: String!, to: String!): [Device!]!
   recentModels(from: String!, to: String!): [Model!]!
@@ -224,6 +225,7 @@ type Query {
   totalDevices: Int!
   totalDevicesByModelId(modelId: String!): [Total!]!
   totalModels: Int!
+  totalModelsByName(name: String!): Int!
   totalModelsWithFilter(filter: Filter!): [Total!]!
   totalMonthReservations(month: String!): Int!
   totalTagsByName(name: String!): Int!
