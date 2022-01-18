@@ -130,6 +130,73 @@ const DashboardModels = () => {
     }
   };
 
+  const softDeleteCurrentModel = async (id:string) => {
+    try {
+      await softDeleteModel({
+        variables: {
+          id: id,
+        }, 
+        refetchQueries: [
+          {
+            query: GET_ALL_MODELS_BY_NAME_WITH_PAGINATION,
+            variables: {
+              name: searchValue,
+              offset: page * 10,
+              limit: 10
+            }
+          },
+          {
+            query: 
+            TOTAL_MODELS_BY_NAME,
+            variables: {
+              name: searchValue,
+            }
+          }
+        ]
+      });
+      handleClose();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const deleteCurrentModel = async (id:string) => {
+    try {
+      await deleteModel({
+        variables: {
+          id: id,
+        }, 
+        refetchQueries: [
+          {
+            query: GET_ALL_MODELS_BY_NAME_WITH_PAGINATION,
+            variables: {
+              name: searchValue,
+              offset: page * 10,
+              limit: 10
+            }
+          },
+          {
+            query: 
+            TOTAL_MODELS_BY_NAME,
+            variables: {
+              name: searchValue,
+            }
+          }
+        ]
+      });
+      handleClose();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  
+  const handleClose = () => {
+    console.log("close");
+    setIsOpen(false);
+    setIsOpenDialog(false);
+    setIsOpenCreate(false);
+  }
+
 
   return (
     <AdminLayout>
@@ -162,6 +229,17 @@ const DashboardModels = () => {
       page={page}
       setPage={setPage}
       />}
+
+      {isOpenDialog && (
+        <ConfirmDialog
+          selectedRow={selectedRow}
+          title={title}
+          message={message}
+          open={isOpenDialog}
+          handleClose={handleClose}
+          handleConfirm={ state.action === 'softDelete' ? softDeleteCurrentModel : deleteCurrentModel}
+        />
+      )}
 
     </AdminLayout>
   )

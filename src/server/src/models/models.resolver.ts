@@ -156,11 +156,16 @@ export class ModelsResolver {
     return this.modelsService.update(updateModelInput.id, updateModelInput);
   }
 
-  @Mutation(() => Model)
+  @Mutation(() => Boolean)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.SUPER_ADMIN)
-  removeModel(@Args('id', new ParseUUIDPipe()) id: string) {
-    return this.modelsService.remove(id);
+  async removeModel(@Args('id', new ParseUUIDPipe()) id: string) { 
+    try {
+      await this.modelsService.remove(id);
+      return true;
+    } catch (error) {
+      throw error
+    }
   }
 
   @Mutation(() => Model)
