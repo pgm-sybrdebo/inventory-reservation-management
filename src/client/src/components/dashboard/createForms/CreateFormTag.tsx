@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
-import styled from 'styled-components';
-import { Formik, Form, Field } from 'formik'
-import * as yup from "yup";
 import { useMutation } from '@apollo/client';
+import React from 'react'
+import styled from 'styled-components';
+import * as yup from 'yup'
 import { Button, Dialog, DialogContent, DialogTitle, Grid, MenuItem, Select, TextField } from '@material-ui/core';
-import { GET_ALL_DEVICE_STATUSES_BY_NAME_WITH_PAGINATION, TOTAL_DEVICE_STATUSES_BY_NAME, UPDATE_DEVICE_STATUS } from '../../../graphql/deviceStatuses';
+import { Formik, Form, Field } from 'formik'
+import { CREATE_TAG, GET_ALL_TAGS_BY_NAME_WITH_PAGINATION, TOTAL_TAGS_BY_NAME } from '../../../graphql/tags';
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -13,27 +13,18 @@ const ButtonContainer = styled.div`
   margin: 3rem 0;
 `;
 
-
-interface UpdateFormStatusProps {
-  selectedRow: any
+interface CreateFormTagProps {
   open: boolean,
-  handleClose: () => void
+  handleClose: any
 }
 
-
 const validationSchema = yup.object({
-  name: yup.string().min(1).required("Required"),
+  name: yup.string().min(1).required("Required")
 })
 
+const CreateFormTag = ({open, handleClose }: CreateFormTagProps ) => {
+  const [createTag] = useMutation(CREATE_TAG);
 
-
-
-const UpdateFormStatus = ({selectedRow, open, handleClose}: UpdateFormStatusProps) => {
-  
-  const [updateDeviceStatus] = useMutation(UPDATE_DEVICE_STATUS);
-
-
-  console.log("row", selectedRow)
   return (
     <Dialog 
       fullWidth
@@ -42,25 +33,24 @@ const UpdateFormStatus = ({selectedRow, open, handleClose}: UpdateFormStatusProp
     >
       <>
         <DialogTitle>
-          Update {selectedRow.name}
+          Create new tag
         </DialogTitle>
         <DialogContent>
           <Formik
             initialValues={{
-              name: selectedRow.name,
+              name: "",
             }}
             onSubmit={async (values, { setSubmitting }) => {
               setSubmitting(true);
               try {
-                console.log("update");
-                await updateDeviceStatus({
+                console.log("create");
+                await createTag({
                   variables: {
-                    id: selectedRow.id,
                     name: values.name
                   }, 
                   refetchQueries: [
                     {
-                      query: GET_ALL_DEVICE_STATUSES_BY_NAME_WITH_PAGINATION,
+                      query: GET_ALL_TAGS_BY_NAME_WITH_PAGINATION,
                       variables: {
                         name: "",
                         offset: 0,
@@ -69,7 +59,7 @@ const UpdateFormStatus = ({selectedRow, open, handleClose}: UpdateFormStatusProp
                     },
                     {
                       query: 
-                      TOTAL_DEVICE_STATUSES_BY_NAME,
+                      TOTAL_TAGS_BY_NAME,
                       variables: {
                         name: "",
                       }
@@ -126,7 +116,7 @@ const UpdateFormStatus = ({selectedRow, open, handleClose}: UpdateFormStatusProp
                       marginRight: '3rem'
                     }}
                   >
-                    Update
+                    Create
                   </Button>
                   <Button
                     onClick={handleClose}
@@ -146,10 +136,8 @@ const UpdateFormStatus = ({selectedRow, open, handleClose}: UpdateFormStatusProp
           </Formik>
         </DialogContent>
       </>
-
     </Dialog>
   )
 }
 
-export default UpdateFormStatus;
-
+export default CreateFormTag;

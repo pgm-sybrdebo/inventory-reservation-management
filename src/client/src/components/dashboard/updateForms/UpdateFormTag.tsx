@@ -4,7 +4,7 @@ import { Formik, Form, Field } from 'formik'
 import * as yup from "yup";
 import { useMutation } from '@apollo/client';
 import { Button, Dialog, DialogContent, DialogTitle, Grid, MenuItem, Select, TextField } from '@material-ui/core';
-import { GET_ALL_DEVICE_STATUSES_BY_NAME_WITH_PAGINATION, TOTAL_DEVICE_STATUSES_BY_NAME, UPDATE_DEVICE_STATUS } from '../../../graphql/deviceStatuses';
+import { GET_ALL_TAGS_BY_NAME_WITH_PAGINATION, TOTAL_TAGS_BY_NAME, UPDATE_TAG } from '../../../graphql/tags';
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -25,12 +25,9 @@ const validationSchema = yup.object({
   name: yup.string().min(1).required("Required"),
 })
 
-
-
-
-const UpdateFormStatus = ({selectedRow, open, handleClose}: UpdateFormStatusProps) => {
+const UpdateFormTag = ({selectedRow, open, handleClose}: UpdateFormStatusProps) => {
   
-  const [updateDeviceStatus] = useMutation(UPDATE_DEVICE_STATUS);
+  const [updateTag] = useMutation(UPDATE_TAG);
 
 
   console.log("row", selectedRow)
@@ -53,14 +50,14 @@ const UpdateFormStatus = ({selectedRow, open, handleClose}: UpdateFormStatusProp
               setSubmitting(true);
               try {
                 console.log("update");
-                await updateDeviceStatus({
+                await updateTag({
                   variables: {
                     id: selectedRow.id,
                     name: values.name
                   }, 
                   refetchQueries: [
                     {
-                      query: GET_ALL_DEVICE_STATUSES_BY_NAME_WITH_PAGINATION,
+                      query: GET_ALL_TAGS_BY_NAME_WITH_PAGINATION,
                       variables: {
                         name: "",
                         offset: 0,
@@ -69,7 +66,7 @@ const UpdateFormStatus = ({selectedRow, open, handleClose}: UpdateFormStatusProp
                     },
                     {
                       query: 
-                      TOTAL_DEVICE_STATUSES_BY_NAME,
+                      TOTAL_TAGS_BY_NAME,
                       variables: {
                         name: "",
                       }
@@ -151,5 +148,5 @@ const UpdateFormStatus = ({selectedRow, open, handleClose}: UpdateFormStatusProp
   )
 }
 
-export default UpdateFormStatus;
+export default UpdateFormTag;
 
