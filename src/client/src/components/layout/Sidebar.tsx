@@ -1,7 +1,7 @@
 import React from 'react'
 import MenuItem from '../dashboard/MenuItem';
 import styled from "styled-components";
-import { Group, LocalOffer, Phonelink, Send, VerifiedUser, Category, CheckCircle, Dashboard, Work, Home, List, MenuBook, AssignmentTurnedIn  } from "@material-ui/icons";
+import { Group, LocalOffer, Phonelink, Send, VerifiedUser, Category, CheckCircle, Dashboard, Work, Home, List, MenuBook, AssignmentTurnedIn, Class } from "@material-ui/icons";
 import * as routes from '../../routes';
 
 
@@ -81,6 +81,14 @@ const submenuStatuses = [
   }
 ];
 
+const submenuModels = [
+  {
+    name: "All models",
+    icon: <List />,
+    url: routes.DASHBOARD_ALL_MODELS
+  }
+];
+
 const submenuTags = [
   {
     name: "All tags",
@@ -97,6 +105,7 @@ const Sidebar = () => {
         <Menu>
           <MenuItem title={"Dashboard"} icon={<Dashboard />} submenu={submenuDashboard}/>
           <MenuItem title={"Users"} icon={<Group />} submenu={submenuUsers}/>
+          <MenuItem title={"Models"} icon={<Class />} submenu={submenuModels}/>
           <MenuItem title={"Devices"} icon={<Phonelink />} submenu={submenuDevices}/>
           <MenuItem title={"Statuses"} icon={<Category />} submenu={submenuStatuses}/>
           <MenuItem title={"Tags"} icon={<LocalOffer />} submenu={submenuTags}/>
