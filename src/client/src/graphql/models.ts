@@ -175,6 +175,7 @@ export const GET_MODELS_BY_FILTER_WITH_PAGINATION = gql`
       description
       specifications
       quantity
+      readyQuantity
       max_reservation_time
     }
   }
