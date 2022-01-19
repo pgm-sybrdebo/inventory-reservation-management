@@ -20,6 +20,7 @@ import DashboardStockDevices from "./DashboardStockDevices";
 import DashboardInCheckDevices from "./DashboardInCheckDevices";
 import ReturnDevice from "./ReturnDevice";
 import TakeOrReserveDevice from "./TakeOrReserveDevice";
+import MyReservations from "./MyReservations";
 
 export {
   HomePage,
@@ -44,4 +45,5 @@ export {
   DashboardInCheckDevices,
   ReturnDevice,
   TakeOrReserveDevice,
+  MyReservations,
 };

@@ -4,6 +4,7 @@ export const LOGIN = "/login";
 export const REGISTER = "/register";
 export const EDIT_PROFILE = "/edit-profile";
 export const MODELS = "/models";
+export const MY_RESERVATIONS = "/my-reservations";
 export const ReturnDevice = '/device/return/:id';
 export const TAKE_OR_RESERVE_DEVICE = '/device/take-or-reserve/:id';
 export const MODEL_DETAILS = "/models/detail/:id"; //id

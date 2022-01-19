@@ -25,6 +25,7 @@ import {
   DashboardInCheckDevices,
   ReturnDevice,
   TakeOrReserveDevice,
+  MyReservations,
 } from "./pages";
 
 import { TokenInfo, UserRole } from "./interfaces";
@@ -107,7 +108,11 @@ function App() {
           <Route
             path={ROUTES.EDIT_PROFILE}
             element={<EditProfile />}
-          />       
+          /> 
+          <Route
+            path={ROUTES.MY_RESERVATIONS}
+            element={<MyReservations />}
+          />      
         </Route>
 
         <Route element={<RequireAuth availableRoles={[UserRole.Admin, UserRole.SuperAdmin]} />}>          
@@ -167,6 +172,7 @@ function App() {
             path={ROUTES.DASHBOARD_CHECK_DEVICES}
             element={<DashboardInCheckDevices />}
           />
+
         </Route>
 
         <Route

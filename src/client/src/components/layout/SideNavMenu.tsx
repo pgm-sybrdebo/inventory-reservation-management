@@ -14,7 +14,7 @@ function SideNavMenu({setModalVisible}:any) {
       <img src={close} alt="close icon" onClick={()=>setModalVisible(false)} />
       <ul>
         <li onClick={()=> navigate('/edit-profile')}>Edit Profile</li>
-        <li>My Reservations</li>
+        <li onClick={()=> navigate('/my-reservations')}>My Reservations</li>
         
         <li className={data && data.role > 0 ? "available" : "disabled"} onClick={()=> navigate("/dashboard-home")}>Admin Panel</li>
         <li 
