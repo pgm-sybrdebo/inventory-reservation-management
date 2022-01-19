@@ -113,7 +113,7 @@ const ReserveCard : React.FC<ModelCardPic>= ({src, title, start_date, end_date, 
       {
         (store.selectionReserv==="b89fe2ec-f5b8-4461-943c-15073ac0438a"  && start_date && 
         <div className="btns">
-        {start_date >= dt ?
+        {start_date <= dt ?
         <CardBtn
           type="button" 
           text="Confirm Taking" 
@@ -144,7 +144,6 @@ const ReserveCard : React.FC<ModelCardPic>= ({src, title, start_date, end_date, 
           if(window.confirm(`Confirm Returning This Device:  \nName : "${title}"`)){handleReturn()}}
         }
       />
-      )
     </div>
 
     )}
