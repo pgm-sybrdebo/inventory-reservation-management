@@ -179,6 +179,8 @@ export const GET_DEVICE_BY_ID = gql`
         description
       }
       reservations {
+        userId
+        reservationStateId
         start_date
         end_date
         expected_end_date
