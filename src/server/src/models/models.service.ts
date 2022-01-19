@@ -238,6 +238,41 @@ export class ModelsService {
     return this.modelsRepository.save(updatedModel);
   }
 
+  async recalculateQuantity(id: string): Promise<Model> {
+    const newTotal = await this.modelsRepository.query(`
+    SELECT
+      COUNT(DISTINCT id)
+    FROM
+      device
+    WHERE "deleted_on" IS NULL
+    AND "modelId" = '${id}'
+    `);
+    console.log("total", newTotal)
+    const updatedModel = await this.modelsRepository.preload({
+      id: id,
+      quantity: Number(newTotal[0].count)
+    });
+    return this.modelsRepository.save(updatedModel);
+  }
+  
+  async recalculateReadyQuantity(id: string): Promise<Model> {
+    const newTotal = await this.modelsRepository.query(`
+    SELECT
+      COUNT(DISTINCT id)
+    FROM
+      device
+    WHERE "deleted_on" IS NULL
+    AND "modelId" = '${id}'
+    AND "deviceStatusId" = '${process.env.DEVICE_STATUS_READY}'
+    `);
+    console.log("total", newTotal)
+    const updatedModel = await this.modelsRepository.preload({
+      id: id,
+      readyQuantity: Number(newTotal[0].count)
+    });
+    return this.modelsRepository.save(updatedModel);
+  }
+
   async remove(id: string): Promise<Model> {
     const model = await this.findOne(id);
     return this.modelsRepository.remove(model);

@@ -24,7 +24,9 @@ import { Total } from './dto/total';
 
 @Resolver(() => Model)
 export class ModelsResolver {
-  constructor(private readonly modelsService: ModelsService) {}
+  constructor(
+    private readonly modelsService: ModelsService,
+  ) {}
 
   @Mutation(() => Model)
   @UseGuards(JwtAuthGuard, RolesGuard)

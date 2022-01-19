@@ -109,7 +109,7 @@ export class DevicesService {
         device
       WHERE "deleted_on" IS NULL
       AND "modelId" =  '${modelId}'
-      AND "deviceStatusId" = '7b4a3256-6005-402b-916b-810f4d6669c8'
+      AND "deviceStatusId" = '${process.env.DEVICE_STATUS_READY}'
     `);
     //console.log(rawData);
     return rawData;
@@ -150,7 +150,7 @@ export class DevicesService {
   findAllByModelId(modelId: string): Promise<Device[]> {
     return this.devicesRepository.find({
       modelId: modelId,
-      deviceStatusId: '7b4a3256-6005-402b-916b-810f4d6669c8',
+      deviceStatusId: `'${process.env.DEVICE_STATUS_READY}'`,
     });
   }
 
@@ -162,7 +162,7 @@ export class DevicesService {
     return this.devicesRepository.find({
       where: {
         modelId: modelId,
-        deviceStatusId: '7b4a3256-6005-402b-916b-810f4d6669c8',
+        deviceStatusId: `'${process.env.DEVICE_STATUS_READY}'`,
       },
       skip: (offset - 1) * limit,
       take: limit,
@@ -179,7 +179,7 @@ export class DevicesService {
   findOneByDeviceId(id: string): Promise<Device> {
     return this.devicesRepository.findOne({
       id: id,
-      deviceStatusId: '7b4a3256-6005-402b-916b-810f4d6669c8',
+      deviceStatusId: `'${process.env.DEVICE_STATUS_READY}'`,
     });
   }
 

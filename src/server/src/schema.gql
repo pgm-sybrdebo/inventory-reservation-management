@@ -33,6 +33,7 @@ input CreateModelInput {
   max_reservation_time: Int!
   name: String!
   quantity: Int!
+  readyQuantity: Int!
   specifications: String!
 }
 
@@ -128,6 +129,7 @@ type Model {
   medias: [Media!]
   name: String!
   quantity: Int!
+  readyQuantity: Int
   specifications: String!
   tags: [Tag!]
   updated_on: Timestamp!
@@ -342,6 +344,7 @@ input UpdateModelInput {
   max_reservation_time: Int
   name: String
   quantity: Int
+  readyQuantity: Int
   specifications: String
 }
 
@@ -402,7 +405,7 @@ type User {
   id: String!
   lastName: String!
   password: String!
-  profession: Int
+  profession: Int!
   reservations: [Reservation!]
   role: Float!
   updated_on: Timestamp!

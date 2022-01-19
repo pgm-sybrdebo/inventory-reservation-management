@@ -16,6 +16,7 @@ import { DeviceStatusesModule } from './device-statuses/device-statuses.module';
 import { MediasModule } from './medias/medias.module';
 import { TagsModule } from './tags/tags.module';
 import { AuthModule } from './auth/auth.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 import * as dotenv from 'dotenv';
 dotenv.config();
@@ -71,6 +72,7 @@ const nodeEnvironment = `${(
     MediasModule,
     TagsModule,
     AuthModule,
+    ScheduleModule.forRoot()
   ],
   controllers: [AppController],
   providers: [AppService],
