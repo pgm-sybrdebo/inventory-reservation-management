@@ -73,6 +73,14 @@ mutation ($id: String!) {
 }
 `;
 
+export const SOFT_REMOVE_RESERVATION = gql`
+  mutation ($id: String!){
+    softRemoveReservation(id: $id) {
+      id
+    }
+  }
+`;
+
 
 export const REMOVE_RESERVATION = gql`
   mutation ($id: String!){
