@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from "styled-components";
 import AdminLayout from '../layouts/AdminLayout';
 import Table from "../components/dashboard/Table";
@@ -9,7 +9,7 @@ import ConfirmDialog from '../components/dashboard/dialogs/ConfirmDialog';
 import SearchBar from 'material-ui-search-bar';
 import Loading from '../components/dashboard/Loading';
 import { columnsDeviceStatus } from '../components/dashboard/columns/columnsDeviceStatus';
-import { GET_ALL_DEVICE_STATUSES_BY_NAME_WITH_PAGINATION,  REMOVE_DEVICE_STATUS, SOFT_REMOVE_DEVICE_STATUS, TOTAL_DEVICE_STATUSES_BY_NAME, UPDATE_DEVICE_STATUS } from '../graphql/deviceStatuses';
+import { REMOVE_DEVICE_STATUS, GET_ALL_DEVICE_STATUSES_BY_NAME_WITH_PAGINATION, SOFT_REMOVE_DEVICE_STATUS, TOTAL_DEVICE_STATUSES_BY_NAME } from '../graphql/deviceStatuses';
 import { Button } from '@material-ui/core';
 import CreateFormDeviceStatus from '../components/dashboard/createForms/CreateFormDeviceStatus';
 
@@ -82,7 +82,7 @@ const DashboardStatuses = () => {
     }
   });
   const [getDeviceStatusesByNameWithPagination, { error, loading, data }] = useLazyQuery(GET_ALL_DEVICE_STATUSES_BY_NAME_WITH_PAGINATION);
-  const [updateDeviceStatus] = useMutation(UPDATE_DEVICE_STATUS);
+  //const [updateDeviceStatus] = useMutation(UPDATE_DEVICE_STATUS);
   const [softDeleteDeviceStatus] = useMutation(SOFT_REMOVE_DEVICE_STATUS);
   const [deleteDeviceStatus] = useMutation(REMOVE_DEVICE_STATUS);
 
@@ -97,7 +97,7 @@ const DashboardStatuses = () => {
       }
     })
 
-  }, [page, searchValue])
+  }, [getDeviceStatusesByNameWithPagination, page, searchValue])
 
 
   const currentlySelectedRow = (

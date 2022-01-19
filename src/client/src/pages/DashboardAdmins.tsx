@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from "styled-components";
 import AdminLayout from '../layouts/AdminLayout';
 import Table from "../components/dashboard/Table";
@@ -7,13 +7,12 @@ import { GET_ALL_USERS_BY_LAST_NAME_AND_ROLE_WITH_PAGINATION,  REMOVE_USER, SOFT
 import { TokenInfo } from "../interfaces";
 import jwt_decode from "jwt-decode";
 import { GridCellParams, MuiEvent } from "@mui/x-data-grid";
-import UpdateFormUser from '../components/dashboard/updateForms/UpdateFormUser';
+import UpdateFormUser from '../components/dashboard/updateForms/updateFormUser';
 import ConfirmDialog from '../components/dashboard/dialogs/ConfirmDialog';
 import SearchBar from 'material-ui-search-bar';
 import Loading from '../components/dashboard/Loading';
 import { columnsSuperUser } from '../components/dashboard/columns/columnsSuperUser';
 import { columnsUser } from '../components/dashboard/columns/columnUser';
-
 
 const Title = styled.h1`
   margin: 1.5rem;
@@ -90,7 +89,7 @@ const DashboardAdmins = () => {
       }
     })
 
-  }, [page, searchValue])
+  }, [getUsersByLastNameAndRoleWithPagination, page, searchValue])
 
 
   const currentlySelectedRow = (

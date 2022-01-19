@@ -1,5 +1,5 @@
 import { GridColDef } from "@mui/x-data-grid";
-import { GridCellParams, MuiEvent } from "@mui/x-data-grid";
+
 
 // interfaces
 export interface base {

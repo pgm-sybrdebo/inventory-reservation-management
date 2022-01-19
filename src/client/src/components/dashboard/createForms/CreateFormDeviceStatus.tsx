@@ -3,7 +3,7 @@ import React from 'react'
 import styled from 'styled-components';
 import * as yup from 'yup'
 import { CREATE_DEVICE_STATUS, GET_ALL_DEVICE_STATUSES_BY_NAME_WITH_PAGINATION, TOTAL_DEVICE_STATUSES_BY_NAME } from '../../../graphql/deviceStatuses';
-import { Button, Dialog, DialogContent, DialogTitle, Grid, MenuItem, Select, TextField } from '@material-ui/core';
+import { Button, Dialog, DialogContent, DialogTitle, Grid, TextField } from '@material-ui/core';
 import { Formik, Form, Field } from 'formik'
 
 const ButtonContainer = styled.div`

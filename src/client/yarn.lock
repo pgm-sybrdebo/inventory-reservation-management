@@ -1728,11 +1728,7 @@
     schema-utils "^2.6.5"
     source-map "^0.7.3"
 
-<<<<<<< HEAD
-"@popperjs/core@^2.9.2":
-=======
-"@popperjs/core@^2.4.4":
->>>>>>> e151b6a9dbcd1b55ce4ab1c312c50f0d656e1b57
+"@popperjs/core@^2.4.4", "@popperjs/core@^2.9.2":
   version "2.11.2"
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.2.tgz#830beaec4b4091a9e9398ac50f865ddea52186b9"
   integrity sha512-92FRmppjjqz29VMJ2dn+xdyXZBrMlE42AV6Kq6BwjWV7CNUW1hs2FtxSNLQE+gJhaZ6AAmYuO9y8dshhcBl7vA==
@@ -2154,7 +2150,13 @@
   resolved "https://registry.yarnpkg.com/@types/q/-/q-1.5.5.tgz#75a2a8e7d8ab4b230414505d92335d1dcb53a6df"
   integrity sha512-L28j2FcJfSZOnL1WBjDYp2vUHCeIFlyYI/53EwD/rKUBQ7MtUUfbQWiyKJGpcnv4/WgrhWsFKrcPstcAt/J0tQ==
 
-<<<<<<< HEAD
+"@types/react-data-grid@^4.0.7":
+  version "4.0.7"
+  resolved "https://registry.yarnpkg.com/@types/react-data-grid/-/react-data-grid-4.0.7.tgz#5e88bb189f55dd0566543053bbb255ad0ee21ea5"
+  integrity sha512-eQ9MEZDEZ7wwUxdI9PB3Q6xDY3epEmwqIqkAdTdzRlkg7/kFCPqqVmokDm+SNZ/V8istgNerMRYjN7yxAukZPg==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-datepicker@^4.3.4":
   version "4.3.4"
   resolved "https://registry.yarnpkg.com/@types/react-datepicker/-/react-datepicker-4.3.4.tgz#1cccf5acfb8672fce08940d1cf69e664500ea63d"
@@ -2164,14 +2166,6 @@
     "@types/react" "*"
     date-fns "^2.0.1"
     react-popper "^2.2.5"
-=======
-"@types/react-data-grid@^4.0.7":
-  version "4.0.7"
-  resolved "https://registry.yarnpkg.com/@types/react-data-grid/-/react-data-grid-4.0.7.tgz#5e88bb189f55dd0566543053bbb255ad0ee21ea5"
-  integrity sha512-eQ9MEZDEZ7wwUxdI9PB3Q6xDY3epEmwqIqkAdTdzRlkg7/kFCPqqVmokDm+SNZ/V8istgNerMRYjN7yxAukZPg==
-  dependencies:
-    "@types/react" "*"
->>>>>>> e151b6a9dbcd1b55ce4ab1c312c50f0d656e1b57
 
 "@types/react-dom@^17.0.0":
   version "17.0.11"

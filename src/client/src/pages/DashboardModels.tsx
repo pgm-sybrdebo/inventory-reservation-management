@@ -1,19 +1,18 @@
-import React, { useState, useReducer, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from "styled-components";
 import AdminLayout from '../layouts/AdminLayout';
 import Table from "../components/dashboard/Table";
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { GridCellParams, MuiEvent } from "@mui/x-data-grid";
-import UpdateFormDeviceStatus from '../components/dashboard/updateForms/UpdateFormStatus';
+
 import ConfirmDialog from '../components/dashboard/dialogs/ConfirmDialog';
 import SearchBar from 'material-ui-search-bar';
 import Loading from '../components/dashboard/Loading';
-import { columnsDeviceStatus } from '../components/dashboard/columns/columnsDeviceStatus';
-import { GET_ALL_DEVICE_STATUSES_BY_NAME_WITH_PAGINATION,  REMOVE_DEVICE_STATUS, SOFT_REMOVE_DEVICE_STATUS, TOTAL_DEVICE_STATUSES_BY_NAME, UPDATE_DEVICE_STATUS } from '../graphql/deviceStatuses';
+
+//import { GET_ALL_DEVICE_STATUSES_BY_NAME_WITH_PAGINATION,  REMOVE_DEVICE_STATUS, SOFT_REMOVE_DEVICE_STATUS, TOTAL_DEVICE_STATUSES_BY_NAME, UPDATE_DEVICE_STATUS } from '../graphql/deviceStatuses';
 import { Button } from '@material-ui/core';
-import CreateFormDeviceStatus from '../components/dashboard/createForms/CreateFormDeviceStatus';
 import { columnsModels } from '../components/dashboard/columns/columnsModel';
-import { GET_ALL_MODELS_BY_NAME_WITH_PAGINATION, REMOVE_MODEL, SOFT_REMOVE_MODEL, TOTAL_MODELS_BY_NAME, UPDATE_MODEL } from '../graphql/models';
+import { GET_ALL_MODELS_BY_NAME_WITH_PAGINATION, REMOVE_MODEL, SOFT_REMOVE_MODEL, TOTAL_MODELS_BY_NAME } from '../graphql/models';
 
 
 const Title = styled.h1`
@@ -68,8 +67,10 @@ function actionReducer (state: initState, action: ActionType): initState {
 
 const DashboardModels = () => {
   const [selectedRow, setSelectedRow] = useState();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenDialog, setIsOpenDialog] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isOpenCreate, setIsOpenCreate] = useState(false);
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
@@ -84,7 +85,7 @@ const DashboardModels = () => {
     }
   });
   const [getModelsByNameWithPagination, { error, loading, data }] = useLazyQuery(GET_ALL_MODELS_BY_NAME_WITH_PAGINATION);
-  const [updateModel] = useMutation(UPDATE_MODEL);
+  //const [updateModel] = useMutation(UPDATE_MODEL);
   const [softDeleteModel] = useMutation(SOFT_REMOVE_MODEL);
   const [deleteModel] = useMutation(REMOVE_MODEL);
 
@@ -97,7 +98,7 @@ const DashboardModels = () => {
       }
     })
 
-  }, [page, searchValue])
+  }, [getModelsByNameWithPagination, page, searchValue])
 
   const currentlySelectedRow = (
     params: GridCellParams,

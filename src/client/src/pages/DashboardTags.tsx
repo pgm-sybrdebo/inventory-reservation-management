@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useEffect } from 'react';
+import React, { useState,  useEffect } from 'react';
 import styled from "styled-components";
 import AdminLayout from '../layouts/AdminLayout';
 import Table from "../components/dashboard/Table";
@@ -8,7 +8,7 @@ import ConfirmDialog from '../components/dashboard/dialogs/ConfirmDialog';
 import SearchBar from 'material-ui-search-bar';
 import Loading from '../components/dashboard/Loading';
 import { Button } from '@material-ui/core';
-import { GET_ALL_TAGS_BY_NAME_WITH_PAGINATION, REMOVE_TAG, SOFT_REMOVE_TAG, TOTAL_TAGS_BY_NAME, UPDATE_TAG } from '../graphql/tags';
+import { GET_ALL_TAGS_BY_NAME_WITH_PAGINATION, REMOVE_TAG, SOFT_REMOVE_TAG, TOTAL_TAGS_BY_NAME } from '../graphql/tags';
 import { columnsTag } from '../components/dashboard/columns/columnsTag';
 import UpdateFormTag from '../components/dashboard/updateForms/UpdateFormTag';
 import CreateFormTag from '../components/dashboard/createForms/CreateFormTag';
@@ -83,7 +83,7 @@ const DashboardTags = () => {
     }
   });
   const [getTagsByNameWithPagination, { error, loading, data }] = useLazyQuery(GET_ALL_TAGS_BY_NAME_WITH_PAGINATION);
-  const [updateTag] = useMutation(UPDATE_TAG);
+  //const [updateTag] = useMutation(UPDATE_TAG);
   const [softDeleteTag] = useMutation(SOFT_REMOVE_TAG);
   const [deleteTag] = useMutation(REMOVE_TAG);
 
@@ -96,7 +96,7 @@ const DashboardTags = () => {
       }
     })
 
-  }, [page, searchValue]);
+  }, [getTagsByNameWithPagination, page, searchValue]);
 
 
   const currentlySelectedRow = (
