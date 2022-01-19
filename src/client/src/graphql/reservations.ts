@@ -108,6 +108,7 @@ export const GET_RESERVATIONS_BY_USER_ID_AND_RESERVATIONSTATE_ID = gql`
       expected_end_date
       end_date
       device {
+        id
         model {
           name
         }

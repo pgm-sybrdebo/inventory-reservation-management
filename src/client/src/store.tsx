@@ -11,6 +11,8 @@ type Store = {
   setFullTags:(value : {id:string, name:string}[] | null)=>void,
   reset:boolean,
   setReset:(value:boolean)=>void,
+  setSelectionResrev:(value:string)=>void,
+  selectionReserv:string,
 }
 
 const useStore = create<Store>((set)=>({
@@ -19,6 +21,7 @@ const useStore = create<Store>((set)=>({
   selection:"all",
   fullTags:null,
   reset:false,
+  selectionReserv:"b89fe2ec-f5b8-4461-943c-15073ac0438a",
 
   
   setReset(value:boolean){
@@ -52,6 +55,12 @@ const useStore = create<Store>((set)=>({
     set((state)=>({
       ...state,
       selection:value
+    }));
+  },
+  setSelectionResrev(value:string){
+    set((state)=>({
+      ...state,
+      selectionReserv:value
     }));
   },
   
