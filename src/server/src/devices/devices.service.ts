@@ -162,7 +162,7 @@ export class DevicesService {
     return this.devicesRepository.find({
       where: {
         modelId: modelId,
-        deviceStatusId: `'${process.env.DEVICE_STATUS_READY}'`,
+        deviceStatusId: `${process.env.DEVICE_STATUS_READY}`,
       },
       skip: (offset - 1) * limit,
       take: limit,
@@ -179,7 +179,7 @@ export class DevicesService {
   findOneByDeviceId(id: string): Promise<Device> {
     return this.devicesRepository.findOne({
       id: id,
-      deviceStatusId: `'${process.env.DEVICE_STATUS_READY}'`,
+      deviceStatusId: `${process.env.DEVICE_STATUS_READY}`,
     });
   }
 
