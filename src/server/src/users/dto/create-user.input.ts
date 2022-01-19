@@ -42,6 +42,7 @@ export class CreateUserInput {
 
   // @IsPositive()
   // @IsOptional()
+  @IsNotEmpty()
   @Min(0)
   @Max(1)
   @IsInt()

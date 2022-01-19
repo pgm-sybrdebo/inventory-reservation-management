@@ -27,18 +27,26 @@ import { Role } from 'src/auth/role.enum';
 import { User } from 'src/users/entities/user.entity';
 import { Damage } from 'src/damages/entities/damage.entity';
 import { Total } from 'src/models/dto/total';
+import { ModelsService } from 'src/models/models.service';
 
 @Resolver(() => Device)
 export class DevicesResolver {
-  constructor(private readonly devicesService: DevicesService) {}
+  constructor(
+    private readonly devicesService: DevicesService,
+    private readonly modelsService: ModelsService
+    ) {}
 
   @Mutation(() => Device)
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
-  createDevice(
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  async createDevice(
     @Args('createDeviceInput') createDeviceInput: CreateDeviceInput,
   ) {
-    return this.devicesService.create(createDeviceInput);
+    const createdDevice = await this.devicesService.create(createDeviceInput);
+    const updatedReadyQuantityModel = await this.modelsService.recalculateReadyQuantity(createdDevice.modelId);
+    const updatedQuantityModel = await this.modelsService.recalculateQuantity(createdDevice.modelId);
+
+    return createdDevice;
   }
 
   @Query(() => [Device], { name: 'devices' })
@@ -163,25 +171,34 @@ export class DevicesResolver {
   }
 
   @Mutation(() => Device)
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
-  updateDevice(
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  async updateDevice(
     @Args('updateDeviceInput') updateDeviceInput: UpdateDeviceInput,
   ) {
-    return this.devicesService.update(updateDeviceInput.id, updateDeviceInput);
+    const updatedDevice = await this.devicesService.update(updateDeviceInput.id, updateDeviceInput);
+    console.log("update", updatedDevice.modelId);
+    const updatedQuantityModel = await this.modelsService.recalculateReadyQuantity(updatedDevice.modelId);
+    return updatedDevice;
   }
 
   @Mutation(() => Device)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.SUPER_ADMIN)
-  removeDevice(@Args('id', new ParseUUIDPipe()) id: string) {
+  async removeDevice(@Args('id', new ParseUUIDPipe()) id: string) {
+    const deletedDevice = await this.devicesService.findOne(id);
+    const updatedReadyQuantityModel = await this.modelsService.recalculateReadyQuantity(deletedDevice.modelId);
+    const updatedQuantityModel = await this.modelsService.recalculateQuantity(deletedDevice.modelId);
     return this.devicesService.remove(id);
   }
 
   @Mutation(() => Device)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.SUPER_ADMIN)
-  softRemoveDevice(@Args('id', new ParseUUIDPipe()) id: string) {
+  async softRemoveDevice(@Args('id', new ParseUUIDPipe()) id: string) {
+    const deletedDevice = await this.devicesService.findOne(id);
+    const updatedReadyQuantityModel = await this.modelsService.recalculateReadyQuantity(deletedDevice.modelId);
+    const updatedQuantityModel = await this.modelsService.recalculateQuantity(deletedDevice.modelId);
     return this.devicesService.softRemove(id);
   }
 

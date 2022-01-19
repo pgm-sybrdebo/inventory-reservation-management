@@ -43,8 +43,8 @@ export class User {
   @Field()
   role: Role = 0;
 
-  @Column({ nullable: true })
-  @Field((type) => Int, { nullable: true })
+  @Column()
+  @Field((type) => Int)
   profession: number;
 
   @Column({ nullable: true })

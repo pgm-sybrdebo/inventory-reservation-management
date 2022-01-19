@@ -4,12 +4,9 @@ import AdminLayout from '../layouts/AdminLayout';
 import Table from "../components/dashboard/Table";
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { GridCellParams, MuiEvent } from "@mui/x-data-grid";
-
 import ConfirmDialog from '../components/dashboard/dialogs/ConfirmDialog';
 import SearchBar from 'material-ui-search-bar';
 import Loading from '../components/dashboard/Loading';
-
-//import { GET_ALL_DEVICE_STATUSES_BY_NAME_WITH_PAGINATION,  REMOVE_DEVICE_STATUS, SOFT_REMOVE_DEVICE_STATUS, TOTAL_DEVICE_STATUSES_BY_NAME, UPDATE_DEVICE_STATUS } from '../graphql/deviceStatuses';
 import { Button } from '@material-ui/core';
 import { columnsModels } from '../components/dashboard/columns/columnsModel';
 import { GET_ALL_MODELS_BY_NAME_WITH_PAGINATION, REMOVE_MODEL, SOFT_REMOVE_MODEL, TOTAL_MODELS_BY_NAME } from '../graphql/models';

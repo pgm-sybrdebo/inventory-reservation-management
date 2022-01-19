@@ -41,6 +41,10 @@ export class Model {
   @Column()
   @Field((type) => Int)
   quantity: number;
+  
+  @Column({nullable: true})
+  @Field((type) => Int, {nullable: true})
+  readyQuantity?: number;
 
   @Column()
   @Field()
