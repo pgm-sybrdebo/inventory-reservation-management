@@ -63,6 +63,7 @@ export interface ModelCardData {
   quantity: number;
   description: string;
   id: string;
+  readyQuantity: number;
 }
 export interface ModelDeviceData {
   id: string;
