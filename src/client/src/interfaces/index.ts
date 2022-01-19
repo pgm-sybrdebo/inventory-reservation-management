@@ -45,10 +45,16 @@ export interface InfoDevice {
 export interface ModelCardPic {
   src: string,
   title: string,
-  quantity: number,
+  quantity?: number,
   description: string,
-  id: string
+  id: string,
+  start_date?:number, 
+  end_date?:number | null, 
+  expected_end_date?: number | null,
+  deviceId?:string,
 }
+
+
 
 export interface DeviceCardParams {
   availability: string,
@@ -64,6 +70,15 @@ export interface ModelCardData {
   description: string;
   id: string;
   readyQuantity: number;
+}
+export interface reservationData {
+  name: string;
+  id: string;
+  device:{id:string, model:{name:string}};
+  start_date?:number, 
+  end_date?:number | null, 
+  expected_end_date?: number | null
+
 }
 export interface ModelDeviceData {
   id: string;

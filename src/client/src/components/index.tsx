@@ -17,6 +17,8 @@ import TopicDevices from "./TopicDevices/TopicDevices";
 import DeviceInfo from "./DeviceInfo/DeviceInfo"
 import DeviceInfoReserve from "./DeviceInfo/DeviceInfoReserve";
 import TopicMyReservation from "./TopicMyReservation/TopicMyReservation";
+import ReserveCard from "./ReserveCard/ReserveCard"
+
 
 
 export {
@@ -38,5 +40,6 @@ export {
   TopicDevices,
   DeviceInfo,
   DeviceInfoReserve,
-  TopicMyReservation
+  TopicMyReservation, 
+  ReserveCard
 }
