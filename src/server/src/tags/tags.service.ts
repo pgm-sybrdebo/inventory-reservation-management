@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Raw, Repository } from 'typeorm';
 import { CreateTagInput } from './dto/create-tag.input';
 import { UpdateTagInput } from './dto/update-tag.input';
 import { Tag } from './entities/tag.entity';
@@ -15,8 +15,33 @@ export class TagsService {
     return this.tagsRepository.save(newTag);
   }
 
+  async countWithName(name: string): Promise<number> {
+    const rawData = await this.tagsRepository.query(`
+    SELECT
+      COUNT(DISTINCT id) AS total
+    FROM
+      "tag"
+    WHERE "deleted_on" IS NULL
+    AND LOWER("name") LIKE LOWER('${name}%')
+    `);
+    return rawData[0].total;
+  }
+
   findAll(): Promise<Tag[]> {
     return this.tagsRepository.find();
+  }
+
+  findAllByNameWithPagination(name: string, offset: number, limit: number): Promise<Tag[]> {
+    return this.tagsRepository.find({
+      where: {
+        name: Raw(alias => `LOWER(${alias}) Like '${name}%'`)
+      },
+      skip: offset,
+      take: limit,
+      order: {
+        id: 'ASC',
+      },
+    });
   }
 
   findOne(id: string): Promise<Tag> {

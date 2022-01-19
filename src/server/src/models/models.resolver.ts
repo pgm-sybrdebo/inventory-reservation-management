@@ -33,11 +33,31 @@ export class ModelsResolver {
     return this.modelsService.create(createModelInput);
   }
 
+  @Query(() => Int, { name: 'totalModelsByName' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  async totalModelsByName(
+    @Args('name', { type: () => String }) name: string,
+  ) {
+    return this.modelsService.countWithName(name);
+  }
+
   @Query(() => [Model], { name: 'models' })
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.USER, Role.SUPER_ADMIN)
   findAll() {
     return this.modelsService.findAll();
+  }
+
+  @Query(() => [Model], { name: 'modelsByNameWithPagination' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  findAllByNameWithPagination(
+    @Args('name', { type: () => String }) name: string,
+    @Args('offset', { type: () => Int }, new ParseIntPipe()) offset: number,
+    @Args('limit', { type: () => Int }, new ParseIntPipe()) limit: number,
+  ) {
+    return this.modelsService.findAllByNameWithPagination(name, offset, limit);
   }
 
   @Query(() => [Model], { name: 'modelsWithPagination' })
@@ -136,11 +156,16 @@ export class ModelsResolver {
     return this.modelsService.update(updateModelInput.id, updateModelInput);
   }
 
-  @Mutation(() => Model)
+  @Mutation(() => Boolean)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.SUPER_ADMIN)
-  removeModel(@Args('id', new ParseUUIDPipe()) id: string) {
-    return this.modelsService.remove(id);
+  async removeModel(@Args('id', new ParseUUIDPipe()) id: string) { 
+    try {
+      await this.modelsService.remove(id);
+      return true;
+    } catch (error) {
+      throw error
+    }
   }
 
   @Mutation(() => Model)

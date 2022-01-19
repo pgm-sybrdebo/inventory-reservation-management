@@ -147,15 +147,15 @@ type Mutation {
   login(loginUserInput: LoginUserInput!): LoginResponse!
   removeDamage(id: String!): Damage!
   removeDevice(id: String!): Device!
-  removeDeviceStatus(id: String!): DeviceStatus!
+  removeDeviceStatus(id: String!): Boolean!
   removeMedia(id: String!): Media!
-  removeModel(id: String!): Model!
+  removeModel(id: String!): Boolean!
   removeModelFromTag(modelId: String!, tagId: String!): Model!
   removeReservation(id: String!): Reservation!
   removeReservationState(id: String!): ReservationState!
   removeReservationTime(id: String!): ReservationTime!
-  removeTag(id: String!): Tag!
-  removeUser(id: String!): User!
+  removeTag(id: String!): Boolean!
+  removeUser(id: String!): Boolean!
   signup(signupUserInput: SignupUserInput!): User!
   softRemoveDamage(id: String!): Damage!
   softRemoveDevice(id: String!): Device!
@@ -177,6 +177,7 @@ type Mutation {
   updateReservationTime(updateReservationTimeInput: UpdateReservationTimeInput!): ReservationTime!
   updateTag(updateTagInput: UpdateTagInput!): Tag!
   updateUser(updateUserInput: UpdateUserInput!): User!
+  updateUserAdmin(updateUserAdminInput: UpdateUserAdminInput!): User!
 }
 
 type Query {
@@ -186,6 +187,7 @@ type Query {
   device(id: String!): Device!
   deviceStatus(id: String!): DeviceStatus!
   deviceStatuses: [DeviceStatus!]!
+  deviceStatusesByNameWithPagination(limit: Int!, name: String!, offset: Int!): [DeviceStatus!]!
   devices: [Device!]!
   devicesWithPagination(limit: Int!, offset: Int!): [Device!]!
   differenceLastMonthDevices: Int!
@@ -200,6 +202,7 @@ type Query {
   model(id: String!): Model!
   models: [Model!]!
   modelsByFilterWithPagination(filter: Filter!, limit: Int!, offset: Int!): [Model!]!
+  modelsByNameWithPagination(limit: Int!, name: String!, offset: Int!): [Model!]!
   modelsWithPagination(limit: Int!, offset: Int!): [Model!]!
   recentDevices(from: String!, to: String!): [Device!]!
   recentModels(from: String!, to: String!): [Model!]!
@@ -217,15 +220,26 @@ type Query {
   stockDevices: [Device!]!
   tag(id: String!): Tag!
   tags: [Tag!]!
+  tagsByNameWithPagination(limit: Int!, name: String!, offset: Int!): [Tag!]!
+  totalDeviceStatusesByName(name: String!): Int!
   totalDevices: Int!
   totalDevicesByModelId(modelId: String!): [Total!]!
   totalModels: Int!
+  totalModelsByName(name: String!): Int!
   totalModelsWithFilter(filter: Filter!): [Total!]!
   totalMonthReservations(month: String!): Int!
+  totalTagsByName(name: String!): Int!
   totalUsers: Int!
+  totalUsersByLastName(lastName: String!): Int!
+  totalUsersByLastNameAndProfession(lastName: String!, profession: Int!): Int!
+  totalUsersByLastNameAndRole(lastName: String!, role: Int!): Int!
   user(id: String!): User!
   userByEmail(email: String!): User!
   users: [User!]!
+  usersByLastName(lastName: String!): [User!]!
+  usersByLastNameAndProfessionWithPagination(lastName: String!, limit: Int!, offset: Int!, profession: Int!): [User!]!
+  usersByLastNameAndRoleWithPagination(lastName: String!, limit: Int!, offset: Int!, role: Int!): [User!]!
+  usersByLastNameWithPagination(lastName: String!, limit: Int!, offset: Int!): [User!]!
   usersByProfession(profession: Int!): [User!]!
   usersByRole(role: Int!): [User!]!
   usersWithPagination(limit: Int!, offset: Int!): [User!]!
@@ -355,6 +369,17 @@ input UpdateReservationTimeInput {
 input UpdateTagInput {
   id: String!
   name: String
+}
+
+input UpdateUserAdminInput {
+  cardNumber: Int
+  email: String
+  firstName: String
+  id: String!
+  lastName: String
+  password: String
+  profession: Int
+  role: Int!
 }
 
 input UpdateUserInput {

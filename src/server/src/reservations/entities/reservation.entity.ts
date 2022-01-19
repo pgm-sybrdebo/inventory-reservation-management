@@ -61,7 +61,7 @@ export class Reservation {
   @Field()
   deleted_on: Date;
 
-  @ManyToOne(() => User, (user) => user.reservations)
+  @ManyToOne(() => User, (user) => user.reservations, { onDelete: "CASCADE"})
   @Field((type) => User)
   user: User;
 
