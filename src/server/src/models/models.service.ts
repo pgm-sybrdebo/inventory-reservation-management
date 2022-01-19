@@ -136,6 +136,7 @@ export class ModelsService {
       ${filter.tagIds ? 'INNER JOIN model_tag on model.id = model_tag.model_id' : ''}
       WHERE "deleted_on" IS NULL
       AND LOWER("name") LIKE LOWER('${filter.name}%')
+      AND "readyQuantity" > 0
       ${filter.tagIds ? `AND model_tag.tag_id in ('${filter.tagIds.join("', '")}')` : ""}
       ORDER BY model.id ASC
       LIMIT ${limit}
@@ -179,6 +180,7 @@ export class ModelsService {
       WHERE "deleted_on" IS NULL
       AND LOWER("name") LIKE LOWER('${filter.name}%')
       ${filter.tagIds ? `AND model_tag.tag_id in ('${filter.tagIds.join("', '")}')` : ""}
+      AND "readyQuantity" > 0
     `);
     //console.log(rawData);
     return rawData;

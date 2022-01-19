@@ -153,7 +153,7 @@ type Mutation {
   removeMedia(id: String!): Media!
   removeModel(id: String!): Boolean!
   removeModelFromTag(modelId: String!, tagId: String!): Model!
-  removeReservation(id: String!): Reservation!
+  removeReservation(id: String!): Boolean!
   removeReservationState(id: String!): ReservationState!
   removeReservationTime(id: String!): ReservationTime!
   removeTag(id: String!): Boolean!

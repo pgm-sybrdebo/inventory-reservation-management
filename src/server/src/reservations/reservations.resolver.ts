@@ -114,11 +114,16 @@ export class ReservationsResolver {
     );
   }
 
-  @Mutation(() => Reservation)
+  @Mutation(() => Boolean)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.USER, Role.SUPER_ADMIN)
-  removeReservation(@Args('id', new ParseUUIDPipe()) id: string) {
-    return this.reservationsService.remove(id);
+  async removeReservation(@Args('id', new ParseUUIDPipe()) id: string) {
+    try {
+      await this.reservationsService.remove(id);
+      return true;
+    } catch (error) {
+      throw error
+    }
   }
 
   @Mutation(() => Reservation)

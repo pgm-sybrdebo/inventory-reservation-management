@@ -112,8 +112,6 @@ export class ModelsResolver {
 
 
   @Query(() => [Total], { name: 'totalModelsWithFilter' })
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   async findTotalWithFilter(
     @Args('filter') filter: Filter
     // @Optional()
