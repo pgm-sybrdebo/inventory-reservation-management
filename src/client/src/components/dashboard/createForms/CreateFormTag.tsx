@@ -2,7 +2,7 @@ import { useMutation } from '@apollo/client';
 import React from 'react'
 import styled from 'styled-components';
 import * as yup from 'yup'
-import { Button, Dialog, DialogContent, DialogTitle, Grid, MenuItem, Select, TextField } from '@material-ui/core';
+import { Button, Dialog, DialogContent, DialogTitle, Grid, TextField } from '@material-ui/core';
 import { Formik, Form, Field } from 'formik'
 import { CREATE_TAG, GET_ALL_TAGS_BY_NAME_WITH_PAGINATION, TOTAL_TAGS_BY_NAME } from '../../../graphql/tags';
 

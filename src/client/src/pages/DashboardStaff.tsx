@@ -1,13 +1,13 @@
-import React, { useState, useReducer, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from "styled-components";
 import AdminLayout from '../layouts/AdminLayout';
 import Table from "../components/dashboard/Table";
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
-import { GET_ALL_USERS, GET_ALL_USERS_BY_LAST_NAME_AND_PROFESSION_WITH_PAGINATION, GET_ALL_USERS_BY_LAST_NAME_WITH_PAGINATION, REMOVE_USER, SOFT_REMOVE_USER, TOTAL_USERS, TOTAL_USERS_BY_LAST_NAME, TOTAL_USERS_BY_LAST_NAME_AND_PROFESSION, UPDATE_USER } from "../graphql/users";
+import { GET_ALL_USERS_BY_LAST_NAME_AND_PROFESSION_WITH_PAGINATION, REMOVE_USER, SOFT_REMOVE_USER, TOTAL_USERS_BY_LAST_NAME_AND_PROFESSION, UPDATE_USER } from "../graphql/users";
 import { TokenInfo } from "../interfaces";
 import jwt_decode from "jwt-decode";
 import { GridCellParams, MuiEvent } from "@mui/x-data-grid";
-import UpdateFormUser from '../components/dashboard/updateForms/UpdateFormUser';
+import UpdateFormUser from '../components/dashboard/updateForms/updateFormUser';
 import ConfirmDialog from '../components/dashboard/dialogs/ConfirmDialog';
 import SearchBar from 'material-ui-search-bar';
 import Loading from '../components/dashboard/Loading';
@@ -91,7 +91,7 @@ const DashboardStaff = () => {
       }
     })
 
-  }, [page, searchValue])
+  }, [getUsersByLastNameAndProfessionWithPagination, page, searchValue])
 
 
   const currentlySelectedRow = (

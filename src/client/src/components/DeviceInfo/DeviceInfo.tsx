@@ -103,25 +103,19 @@ const Wrapper = styled.div`
       justify-content: flex-start;
       align-items: flex-start;
       margin-bottom: 16px;
-      @media (min-width:768px){
-        flex-direction:row;
-        justify-content: space-between;
-        align-items: center;
-      }
+
       & h2{
         font-size:21px;
         font-weight: 700;
         color: #000;
         margin-bottom:8px;
-        @media (min-width:768px){
-          margin-bottom:0;
-        }
-       
+
       }
       & h6{
-        font-size:18px;
-        font-weight:600;
+        font-size:16px;
+        font-weight:400;
         color: #2E3939;
+        font-style: italic;
       }
     }
 

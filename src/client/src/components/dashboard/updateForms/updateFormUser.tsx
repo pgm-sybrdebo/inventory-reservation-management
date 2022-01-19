@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+
 import styled from 'styled-components';
 import { Formik, Form, Field } from 'formik'
 import * as yup from "yup";
@@ -36,7 +36,7 @@ const validationSchema = yup.object({
 
 const UpdateFormUser = ({selectedRow, open, handleClose}: UpdateFormUserProps) => {
   
-  const [updateUser, {data, loading, error}] = useMutation(UPDATE_USER_ADMIN);
+  const [updateUser] = useMutation(UPDATE_USER_ADMIN);
 
 
   console.log("row", selectedRow)

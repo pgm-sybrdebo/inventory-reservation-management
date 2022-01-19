@@ -1,9 +1,8 @@
-import React, {useState} from 'react';
 import styled from 'styled-components';
 import { Formik, Form, Field } from 'formik'
 import * as yup from "yup";
 import { useMutation } from '@apollo/client';
-import { Button, Dialog, DialogContent, DialogTitle, Grid, MenuItem, Select, TextField } from '@material-ui/core';
+import { Button, Dialog, DialogContent, DialogTitle, Grid, TextField } from '@material-ui/core';
 import { GET_ALL_TAGS_BY_NAME_WITH_PAGINATION, TOTAL_TAGS_BY_NAME, UPDATE_TAG } from '../../../graphql/tags';
 
 const ButtonContainer = styled.div`
