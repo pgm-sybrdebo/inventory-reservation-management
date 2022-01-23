@@ -37,8 +37,8 @@ export class DevicesResolver {
     ) {}
 
   @Mutation(() => Device)
-  // @UseGuards(JwtAuthGuard, RolesGuard)
-  // @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   async createDevice(
     @Args('createDeviceInput') createDeviceInput: CreateDeviceInput,
   ) {
@@ -110,13 +110,6 @@ export class DevicesResolver {
     return this.devicesService.getTotalDevicesByModelId(modelId);
   }
 
-  // @Query(() => Int, { name: 'totalReadyDevices' })
-  // @UseGuards(JwtAuthGuard, RolesGuard)
-  // @Roles(Role.ADMIN, Role.SUPER_ADMIN)
-  // async findTotalReady() {
-  //   return this.devicesService.findAndCountReadyDevices();
-  // }
-
   @Query(() => Int, { name: 'differenceLastMonthDevices' })
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.SUPER_ADMIN)
@@ -171,8 +164,8 @@ export class DevicesResolver {
   }
 
   @Mutation(() => Device)
-  // @UseGuards(JwtAuthGuard, RolesGuard)
-  // @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   async updateDevice(
     @Args('updateDeviceInput') updateDeviceInput: UpdateDeviceInput,
   ) {

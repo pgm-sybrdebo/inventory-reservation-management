@@ -30,7 +30,6 @@ export class CreateModelInput {
   description: string;
 
   @IsNotEmpty()
-  @IsPositive()
   @Min(0)
   @Max(1000)
   @IsInt()
