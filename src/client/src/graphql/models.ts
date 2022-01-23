@@ -17,6 +17,7 @@ export const GET_ALL_MODELS_BY_NAME_WITH_PAGINATION = gql`
       description
       specifications
       quantity
+      readyQuantity
       max_reservation_time
       created_on
       updated_on
