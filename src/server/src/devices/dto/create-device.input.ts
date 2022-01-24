@@ -16,14 +16,14 @@ export class CreateDeviceInput {
   @IsOptional()
   @IsUUID('all')
   @Field({ nullable: true })
-  userId: string;
+  userId?: string;
 
   // @IsNotEmpty()
   // @IsBoolean()
   // @Field((type) => Boolean)
   // is_available: boolean;
 
-  @IsNotEmpty()
-  @Field()
-  qr_code: string;
+  @IsOptional()
+  @Field({nullable: true})
+  qr_code?: string;
 }

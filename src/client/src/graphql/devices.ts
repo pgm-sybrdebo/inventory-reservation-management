@@ -150,7 +150,7 @@ export const GET_ALL_IN_CHECK_DEVICES = gql`
 
 export const CREATE_DEVICE = gql`
 
-mutation ($modelId: String!, $deviceStatusId: String!, $qr_code: String! ) {
+mutation ($modelId: String!, $deviceStatusId: String!, $qr_code: String ) {
   createDevice(createDeviceInput: {
     modelId: $modelId,
     deviceStatusId: $deviceStatusId,

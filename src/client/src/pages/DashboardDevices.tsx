@@ -15,6 +15,7 @@ import {
   SOFT_REMOVE_DEVICE,
   TOTAL_DEVICES_BY_NAME,
 } from "../graphql/devices";
+import CreateFormDevice from "../components/dashboard/createForms/CreateFormDevice";
 
 const Title = styled.h1`
   margin: 1.5rem;
@@ -263,6 +264,10 @@ const DashboardDevices = () => {
               : deleteCurrentDevice
           }
         />
+      )}
+
+      {isOpenCreate && (
+        <CreateFormDevice handleClose={handleClose} open={isOpenCreate} />
       )}
     </AdminLayout>
   );

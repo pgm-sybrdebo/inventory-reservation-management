@@ -39,8 +39,8 @@ export class Device {
   // @Field((type) => Boolean)
   // is_available: boolean;
 
-  @Column()
-  @Field()
+  @Column({ nullable: true })
+  @Field({ nullable: true })
   qr_code: string;
 
   // @Column(() => Dates)

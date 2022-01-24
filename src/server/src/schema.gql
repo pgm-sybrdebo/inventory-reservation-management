@@ -13,7 +13,7 @@ input CreateDamageInput {
 input CreateDeviceInput {
   deviceStatusId: String!
   modelId: String!
-  qr_code: String!
+  qr_code: String
   userId: String
 }
 
@@ -79,7 +79,7 @@ type Device {
   id: String!
   model: Model!
   modelId: String!
-  qr_code: String!
+  qr_code: String
   reservations: [Reservation!]
   updated_on: Timestamp!
   user: User!
