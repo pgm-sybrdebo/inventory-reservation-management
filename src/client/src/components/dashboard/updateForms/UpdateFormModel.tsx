@@ -9,12 +9,9 @@ import {
   TextareaAutosize,
   TextField,
 } from "@material-ui/core";
-import { Typography, Button, Input } from "@mui/material";
-import { Formik, Form, Field, FieldArray } from "formik";
-import { Add, Remove } from "@material-ui/icons";
-import { bgcolor, borderColor } from "@mui/system";
+import { Button, Input } from "@mui/material";
+import { Formik, Form, Field } from "formik";
 import {
-  CREATE_MODEL,
   GET_ALL_MODELS_BY_NAME_WITH_PAGINATION,
   TOTAL_MODELS_BY_NAME,
   UPDATE_MODEL,
@@ -22,6 +19,7 @@ import {
 import {
   CREATE_MEDIA,
   GET_PICTURE_BY_MODEL_ID,
+  SOFT_REMOVE_MEDIA,
   UPDATE_MEDIA,
 } from "../../../graphql/media";
 import Loading from "../Loading";
@@ -42,12 +40,31 @@ const Label = styled.label`
   font-weight: 400;
   line-height: 1;
   letter-spacing: 0.00938em;
+  margin-bottom: 0.5rem;
+`;
+
+const Text = styled.p`
+  display: block;
+  font-size: 0.9rem;
+  color: rgba(0, 0, 0, 0.54);
+  padding: 0;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.00938em;
+  margin-bottom: 1rem;
 `;
 
 const Image = styled.img`
   width: 10rem;
   height: 10rem;
   border-radius: 1rem;
+  margin-bottom: 1rem;
+`;
+
+const ImageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 interface UpdateFormModelProps {
@@ -76,17 +93,8 @@ const validationSchema = yup.object({
   quantity: yup.number().min(0).max(1000).required("Required"),
   readyQuantity: yup.number().min(0).max(1000).required("Required"),
   brand: yup.string().min(1, "Too short").required("Required"),
-  specifications: yup
-    .array()
-    .of(
-      yup.object().shape({
-        label: yup.string().min(1, "Too short").required("Required"),
-        value: yup.string().min(1, "Too short").required("Required"),
-      })
-    )
-    .required("Required"),
   max_reservation_time: yup.number().min(1).max(100).required("Required"),
-  image: yup.string().required("Required"),
+  image: yup.string(),
 });
 
 const UpdateFormModel = ({
@@ -100,19 +108,20 @@ const UpdateFormModel = ({
     },
   });
   const [updateModel] = useMutation(UPDATE_MODEL);
-  const [updateMedia] = useMutation(UPDATE_MEDIA);
+  const [deleteMedia] = useMutation(SOFT_REMOVE_MEDIA);
+  const [createMedia] = useMutation(CREATE_MEDIA);
 
   if (data) {
     console.log(data);
   }
 
   return (
-    <Dialog fullWidth open={open} onClose={handleClose}>
+    <Dialog open={open} onClose={handleClose}>
       {loading && <Loading />}
       {error && <p>{error.message}</p>}
       {data && (
         <>
-          <DialogTitle>Create new model</DialogTitle>
+          <DialogTitle>Update model</DialogTitle>
           <DialogContent>
             <Formik
               initialValues={{
@@ -122,63 +131,75 @@ const UpdateFormModel = ({
                 readyQuantity: selectedRow.readyQuantity,
                 brand: selectedRow.brand,
                 max_reservation_time: selectedRow.max_reservation_time,
-                // image: selectedRow.image,
+                image: "",
               }}
               onSubmit={async (values, { setSubmitting }) => {
                 setSubmitting(true);
                 try {
-                  // const imgData = new FormData();
-                  // if (values.image !== null) {
-                  //   imgData.append("image", values.image);
-                  // }
+                  console.log(selectedRow.id);
+                  console.log("start submitting");
+                  await updateModel({
+                    variables: {
+                      id: selectedRow.id,
+                      name: values.name,
+                      description: values.description,
+                      quantity: Number(values.quantity),
+                      readyQuantity: Number(values.readyQuantity),
+                      brand: values.brand,
+                      max_reservation_time: Number(values.max_reservation_time),
+                    },
+                    refetchQueries: [
+                      {
+                        query: GET_ALL_MODELS_BY_NAME_WITH_PAGINATION,
+                        variables: {
+                          name: "",
+                          offset: 0,
+                          limit: 10,
+                        },
+                      },
+                      {
+                        query: TOTAL_MODELS_BY_NAME,
+                        variables: {
+                          name: "",
+                        },
+                      },
+                    ],
+                  });
 
-                  // const uploadRequest = await fetch(
-                  //   "http://localhost:3000/uploadModelPictures",
-                  //   {
-                  //     method: "POST",
-                  //     headers: new Headers({ Accept: "application/json" }),
-                  //     body: imgData,
-                  //   }
-                  // );
-                  // const uploadResponse = await uploadRequest.json();
-
-                  // console.log(uploadResponse);
-                  // await createModel({
-                  //   variables: {
-                  //     name: values.name,
-                  //     description: values.description,
-                  //     quantity: Number(values.quantity),
-                  //     readyQuantity: Number(values.readyQuantity),
-                  //     brand: values.brand,
-                  //     specifications: specsString,
-                  //     max_reservation_time: Number(values.max_reservation_time),
-                  //   },
-                  //   refetchQueries: [
-                  //     {
-                  //       query: GET_ALL_MODELS_BY_NAME_WITH_PAGINATION,
-                  //       variables: {
-                  //         name: "",
-                  //         offset: 0,
-                  //         limit: 10,
-                  //       },
-                  //     },
-                  //     {
-                  //       query: TOTAL_MODELS_BY_NAME,
-                  //       variables: {
-                  //         name: "",
-                  //       },
-                  //     },
-                  //   ],
-                  // });
-
-                  // await createMedia({
-                  //   variables: {
-                  //     modelId: modelId,
-                  //     type: uploadResponse[0].type,
-                  //     source: uploadResponse[0].filename,
-                  //   },
-                  //   refetchQueries: [],
-                  // });
+                  if (values.image !== null && values.image !== "") {
+                    const imgData = new FormData();
+                    imgData.append("image", values.image);
+                    const uploadRequest = await fetch(
+                      "http://localhost:3000/uploadModelPictures",
+                      {
+                        method: "POST",
+                        headers: new Headers({ Accept: "application/json" }),
+                        body: imgData,
+                      }
+                    );
+                    const uploadResponse = await uploadRequest.json();
+                    console.log("id", data.mediaByModelId.id);
+                    await deleteMedia({
+                      variables: {
+                        id: data.mediaByModelId.id,
+                      },
+                    });
+                    await createMedia({
+                      variables: {
+                        modelId: selectedRow.id,
+                        type: uploadResponse[0].type,
+                        source: uploadResponse[0].filename,
+                      },
+                      refetchQueries: [
+                        {
+                          query: GET_PICTURE_BY_MODEL_ID,
+                          variables: {
+                            modelId: selectedRow.id,
+                          },
+                        },
+                      ],
+                    });
+                  }
                   console.log("done");
                   handleClose();
                 } catch (error) {
@@ -225,7 +246,6 @@ const UpdateFormModel = ({
                         name="description"
                         style={{
                           width: "100%",
-                          marginTop: "0.5rem",
                           padding: "0.5rem",
                         }}
                         type="text"
@@ -311,25 +331,28 @@ const UpdateFormModel = ({
                       />
                     </Grid>
                     <Grid item xs={12}>
-                      <Image
-                        src={
-                          data.mediaByModelId.source
-                            ? `http://localhost:3000/model-image/${data.mediaByModelId.source}`
-                            : defaultImage
-                        }
-                        alt={selectedRow.name}
-                      />
-                      <Label htmlFor="modelImage">Change model Image</Label>
-                      <Input
-                        id="modelImage"
-                        type="file"
-                        name="modelImage"
-                        onChange={(e: any) => {
-                          if (e.target.files) {
-                            setFieldValue("image", e.target.files[0]);
+                      <Text>Model Image</Text>
+                      <ImageContainer>
+                        <Image
+                          src={
+                            data.mediaByModelId.source
+                              ? `http://localhost:3000/model-image/${data.mediaByModelId.source}`
+                              : defaultImage
                           }
-                        }}
-                      />
+                          alt={selectedRow.name}
+                        />
+                        <Label htmlFor="modelImage">Change model Image</Label>
+                        <Input
+                          id="modelImage"
+                          type="file"
+                          name="modelImage"
+                          onChange={(e: any) => {
+                            if (e.target.files) {
+                              setFieldValue("image", e.target.files[0]);
+                            }
+                          }}
+                        />
+                      </ImageContainer>
                     </Grid>
                   </Grid>
                   <ButtonContainer>
@@ -354,7 +377,7 @@ const UpdateFormModel = ({
                         //   },
                       }}
                     >
-                      Create
+                      Update
                     </Button>
                     <Button
                       onClick={handleClose}

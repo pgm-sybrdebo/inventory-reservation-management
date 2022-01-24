@@ -48,11 +48,16 @@ export class MediasResolver {
     return this.mediasService.update(updateMediaInput.id, updateMediaInput);
   }
 
-  @Mutation(() => Media)
+  @Mutation(() => Boolean)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.SUPER_ADMIN)
-  removeMedia(@Args('id', new ParseUUIDPipe()) id: string) {
-    return this.mediasService.remove(id);
+  async removeMedia(@Args('id', new ParseUUIDPipe()) id: string) {
+    try {
+      await this.mediasService.remove(id);
+      return true;
+    } catch (error) {
+      throw error
+    }
   }
 
   @Mutation(() => Media)

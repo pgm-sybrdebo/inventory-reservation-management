@@ -37,3 +37,17 @@ export const GET_PICTURE_BY_MODEL_ID = gql`
     }
   }
 `;
+
+export const REMOVE_MEDIA = gql`
+  mutation ($id: String!){
+    removeMedia(id: $id)
+  }
+`;
+
+export const SOFT_REMOVE_MEDIA = gql`
+  mutation ($id: String!){
+    softRemoveMedia(id: $id) {
+      id
+    }
+  }
+`;
