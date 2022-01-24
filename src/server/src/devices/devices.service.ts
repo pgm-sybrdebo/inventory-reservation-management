@@ -17,6 +17,7 @@ import {
   Not,
   Equal,
   IsNull,
+  Raw,
 } from 'typeorm';
 import { CreateDeviceInput } from './dto/create-device.input';
 import { UpdateDeviceInput } from './dto/update-device.input';
@@ -47,7 +48,35 @@ export class DevicesService {
     return this.devicesRepository.save(newDevice);
   }
 
-  // (Device[] | number)[]
+  async countWithName(name: string): Promise<number> {
+    const rawData = await this.devicesRepository.query(`
+    SELECT
+      COUNT(DISTINCT device.id) AS total
+    FROM
+      "device"
+    INNER JOIN "model" ON device."modelId" = model.id
+    WHERE device.deleted_on IS NULL
+    AND LOWER(model.name) LIKE LOWER('${name}%')
+    `);
+    return rawData[0].total;
+  }
+
+  findAllByNameWithPagination(name: string, offset: number, limit: number): Promise<Device[]> {
+    return this.devicesRepository.find({
+      relations: ['model'],
+      where: {
+        model: { 
+          name: Raw(alias => `LOWER(${alias}) Like '${name}%'`)
+        }
+      },
+      skip: offset,
+      take: limit,
+      order: {
+        id: 'ASC',
+      },
+    });
+  }
+
   async findAllPagination(offset: number, limit: number): Promise<any> {
     const test = await this.devicesRepository.findAndCount({
       skip: offset,

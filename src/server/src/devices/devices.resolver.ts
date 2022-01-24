@@ -37,8 +37,8 @@ export class DevicesResolver {
     ) {}
 
   @Mutation(() => Device)
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   async createDevice(
     @Args('createDeviceInput') createDeviceInput: CreateDeviceInput,
   ) {
@@ -49,11 +49,32 @@ export class DevicesResolver {
     return createdDevice;
   }
 
+
+  @Query(() => Int, { name: 'totalDevicesByName' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  async totalDevicesByName(
+    @Args('name', { type: () => String }) name: string,
+  ) {
+    return this.devicesService.countWithName(name);
+  }
+
   @Query(() => [Device], { name: 'devices' })
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   findAll() {
     return this.devicesService.findAll();
+  }
+
+  @Query(() => [Device], { name: 'devicesByNameWithPagination' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  findAllByNameWithPagination(
+    @Args('name', { type: () => String }) name: string,
+    @Args('offset', { type: () => Int }, new ParseIntPipe()) offset: number,
+    @Args('limit', { type: () => Int }, new ParseIntPipe()) limit: number,
+  ) {
+    return this.devicesService.findAllByNameWithPagination(name, offset, limit);
   }
 
   @Query(() => [Device], { name: 'devicesWithPagination' })

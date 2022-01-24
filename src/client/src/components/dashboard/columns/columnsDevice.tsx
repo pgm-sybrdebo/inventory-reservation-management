@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { Delete, DeleteForever } from "@material-ui/icons";
 import { BiEdit } from "react-icons/bi";
 import moment from "moment";
-import { makeStyles } from "@material-ui/core/styles";
+import { Box, Hidden, Typography } from "@mui/material";
 
 const Button = styled.button`
   width: 2rem;
@@ -33,62 +33,64 @@ const Button = styled.button`
   }
 `;
 
-const Center = styled.span`
-  text-align: center;
-  display: block;
-  width: 100%;
-`;
+const columnsDevice: GridColDef[] = [
+  { field: "id", headerName: "Id", minWidth: 300, flex: 1 },
+  {
+    field: "modelName",
+    headerName: "Model name",
+    minWidth: 300,
+    flex: 1,
+    renderCell: (params) => {
+      return (
+        <Typography
+          sx={{
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+          }}
+        >
+          {params.row.model.name}
+        </Typography>
+      );
+    },
+  },
+  {
+    field: "device status",
+    headerName: "Device status",
+    minWidth: 150,
+    flex: 1,
+    renderCell: (params) => {
+      return (
+        <Box
+          sx={{
+            width: "90%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "2rem",
+            margin: "0 auto",
+            borderRadius: "0.3rem",
+            backgroundColor:
+              params.row.deviceStatus.name === "broken"
+                ? "#ED0034"
+                : params.row.deviceStatus.name === "stolen"
+                ? "#CBBEC5"
+                : params.row.deviceStatus.name === "in check"
+                ? "#F58732"
+                : "#5AB946",
+          }}
+        >
+          <Typography
+            sx={{
+              color: "#000",
+            }}
+          >
+            {params.row.deviceStatus.name}
+          </Typography>
+        </Box>
+      );
+    },
+  },
 
-const Description = styled.span`
-  text-overflow: ellipsis;
-  overflow: hidden;
-`;
-
-const columnsModels: GridColDef[] = [
-  { field: "name", headerName: "Name", minWidth: 200, flex: 1 },
-  {
-    field: "brand",
-    headerName: "Brand",
-    minWidth: 150,
-    flex: 1,
-    headerClassName: "centeredHeader",
-  },
-  {
-    field: "description",
-    headerName: "Description",
-    minWidth: 200,
-    flex: 1,
-    renderCell: (params) => {
-      return <Description>{params.row.description}</Description>;
-    },
-  },
-  {
-    field: "quantity",
-    headerName: "Total quantity",
-    minWidth: 150,
-    flex: 1,
-    renderCell: (params) => {
-      return <Center>{params.row.quantity}</Center>;
-    },
-  },
-  {
-    field: "readyQuantity",
-    headerName: "Ready quantity",
-    minWidth: 150,
-    flex: 1,
-    renderCell: (params) => {
-      return <Center>{params.row.readyQuantity}</Center>;
-    },
-  },
-  {
-    field: "max_reservation_time",
-    headerName: "Max reservation time in days",
-    minWidth: 150,
-    flex: 1,
-    renderCell: (params) => {
-      return <Center>{params.row.max_reservation_time}</Center>;
-    },
-  },
   {
     field: "created_on",
     headerName: "Created on",
@@ -159,4 +161,4 @@ const columnsModels: GridColDef[] = [
   },
 ];
 
-export { columnsModels };
+export { columnsDevice };

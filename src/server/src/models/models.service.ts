@@ -76,16 +76,6 @@ export class ModelsService {
   }
 
   async findAllByTagIds(tagIds: string[]): Promise<Model[]> {
-    // console.log(tagIds);
-    // let tagIds2 = tagIds.join("', '");
-    // tagIds2 = `('${tagIds2}')`;
-    // console.log(tagIds2);
-    // return this.modelsRepository.query(`
-    //   SELECT *
-    //   FROM model_tag
-    //   WHERE tag_id IN ${tagIds2}
-    // `);
-
     return this.modelsRepository.find({
       relations: ['tags'],
       where: (qb: SelectQueryBuilder<Model>) => {
@@ -109,24 +99,6 @@ export class ModelsService {
     // })
   }
 
-
-  // async findAllByFilterWithPagination(filter: Filter, offset: number, limit: number): Promise<Model[]> {
-  //   return this.modelsRepository.find({
-  //     relations: ['tags'],
-  //     where: (qb: SelectQueryBuilder<Model>) => {
-  //       qb.where('tag_id IN (:...tagsIds)', { tagsIds: filter.tagIds });
-  //     },
-  //     where: {
-  //       name: Like(`${filter.name}%`),
-        
-  //     }, 
-  //     skip: (offset - 1) * limit,
-  //     take: limit,
-  //     order: {
-  //       id: 'ASC'
-  //     }
-  //   });
-  // }
   async findAllByFilterWithPagination(filter: Filter, offset: number, limit: number): Promise<Model[]> {
     const rawData = await this.modelsRepository.query(`
       SELECT
@@ -182,7 +154,6 @@ export class ModelsService {
       ${filter.tagIds ? `AND model_tag.tag_id in ('${filter.tagIds.join("', '")}')` : ""}
       AND "readyQuantity" > 0
     `);
-    //console.log(rawData);
     return rawData;
   }
 

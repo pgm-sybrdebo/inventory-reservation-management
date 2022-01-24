@@ -15,8 +15,6 @@ import DashboardStudents from "./DashboardStudents";
 import DashboardStatuses from "./DashboardStatuses";
 import DashboardTags from "./DashboardTags";
 import DashboardDevices from "./DashboardDevices";
-import DashboardBorrowedDevices from "./DashboardBorrowedDevices";
-import DashboardStockDevices from "./DashboardStockDevices";
 import DashboardInCheckDevices from "./DashboardInCheckDevices";
 import ReturnDevice from "./ReturnDevice";
 import TakeOrReserveDevice from "./TakeOrReserveDevice";
@@ -40,8 +38,6 @@ export {
   DashboardStatuses,
   DashboardTags,
   DashboardDevices,
-  DashboardBorrowedDevices,
-  DashboardStockDevices,
   DashboardInCheckDevices,
   ReturnDevice,
   TakeOrReserveDevice,

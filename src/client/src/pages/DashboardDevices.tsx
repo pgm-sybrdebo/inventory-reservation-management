@@ -1,167 +1,271 @@
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import AdminLayout from '../layouts/AdminLayout';
-import { GridColDef} from '@mui/x-data-grid';
+import AdminLayout from "../layouts/AdminLayout";
 import Table from "../components/dashboard/Table";
-import { RiDeleteBin6Line } from "react-icons/ri";
-import { BiEdit } from "react-icons/bi";
-import { useQuery } from "@apollo/client";
-//import { GET_ALL_USERS_BY_ROLE } from "../graphql/users";
-import { GET_ALL_DEVICES } from "../graphql/devices";
+import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
+import { GridCellParams, MuiEvent } from "@mui/x-data-grid";
+import ConfirmDialog from "../components/dashboard/dialogs/ConfirmDialog";
+import SearchBar from "material-ui-search-bar";
+import Loading from "../components/dashboard/Loading";
+import { Button } from "@material-ui/core";
+import { columnsDevice } from "../components/dashboard/columns/columnsDevice";
+import {
+  GET_ALL_DEVICES_BY_NAME_WITH_PAGINATION,
+  REMOVE_DEVICE,
+  SOFT_REMOVE_DEVICE,
+  TOTAL_DEVICES_BY_NAME,
+} from "../graphql/devices";
 
 const Title = styled.h1`
   margin: 1.5rem;
 `;
 
-const Actions = styled.div`
+const SearchContainer = styled.div`
+  margin: 0 1.5rem;
+
+  h2 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+`;
+
+const SearchButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 100%;
-`;
-
-const Button = styled.button`
-  width: 2rem;
-  height: 2rem;
-  min-width: 2rem;
-  min-height: 2rem;
-  display: flex;
   align-items: center;
-  justify-content: center;
-  background-color: #CBBEC5;
-  border: 1px solid #CBBEC5;
-  background-color: transparent;
-  color: #F58732;
-  border: 1px solid #F58732;
-  border-radius: 3px;
-  cursor:pointer;
-  font-size: 1rem;
-  font-weight: bold;
-  transition: all 0.2s ease-in-out;
 
-  &:hover {
-    background-color: #F58732;
-    color: #FFF;
-    // border: 1px solid #F58732;
+  div {
+    width: 100%;
+  }
 
+  button {
+    margin-left: 3rem;
   }
 `;
 
-const Description = styled.span`
-  text-overflow: ellipsis;
-  overflow: hidden;
-`;
+interface initState {
+  action: string;
+}
 
+type ActionType = { action: "softDelete" } | { action: "delete" };
 
-const columns: GridColDef[] = [
-  { 
-    field: "name", 
-    headerName: "Name", 
-    width: 200,
-    renderCell: (params) => {
-      return (
-        <span>{params.row.model.name}</span>
-      )
-    }
-  },
-  { 
-    field: "brand", 
-    headerName: "Brand", 
-    width: 150,
-    renderCell: (params) => {
-      return (
-        <span>{params.row.model.brand}</span>
-      )
-    }
-  },
-  { 
-    field: "description", 
-    headerName: "Description", 
-    width: 200,
-    renderCell: (params) => {
-      return (
-        <Description>{params.row.model.description}</Description>
-      )
-    }
-  },
-  { 
-    field: "specifications", 
-    headerName: "Specifications", 
-    width: 200,
-    renderCell: (params) => {
-      return (
-        <span>{params.row.model.specifications}</span>
-      )
-    }
-  },
-  { 
-    field: "max_reservation_time", 
-    headerName: "Max reservation time", 
-    width: 150,
-    renderCell: (params) => {
-      return (
-        <span>{params.row.model.max_reservation_time}</span>
-      )
-    }
-  },
-  { 
-    field: "device status", 
-    headerName: "Device status", 
-    width: 150,
-    renderCell: (params) => {
-      return (
-        <span>{params.row.deviceStatus.name}</span>
-      )
-    }
-  },
-  {
-    field: "action",
-    headerName: "Action",
-    width: 120,
-    renderCell: (params) => {
-
-      return (
-        <Actions>
-        
-            <Button onClick={() => console.log('click')}>
-              <BiEdit />
-            </Button>
-
-         
-            <Button type="submit">
-                <RiDeleteBin6Line />
-              </Button>
-            
-        </Actions>
-      );
-    },
-  },
-];
-
-
+const initialState = { action: "" };
+function actionReducer(state: initState, action: ActionType): initState {
+  switch (action.action) {
+    case "softDelete":
+      return { action: "softDelete" };
+    case "delete":
+      return { action: "delete" };
+    default:
+      return state;
+  }
+}
 
 const DashboardDevices = () => {
+  const [selectedRow, setSelectedRow] = useState();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [isOpen, setIsOpen] = useState(false);
+  const [isOpenDialog, setIsOpenDialog] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [isOpenCreate, setIsOpenCreate] = useState(false);
+  const [title, setTitle] = useState("");
+  const [message, setMessage] = useState("");
+  const [searchChange, setSearchChange] = useState("");
+  const [searchValue, setSearchValue] = useState("");
+  const [page, setPage] = useState(0);
+  const [state, dispatch] = React.useReducer(actionReducer, initialState);
 
-  const { error, loading, data } = useQuery(GET_ALL_DEVICES);
-  if (data) {
-    console.log(data);
-  }
+  const { data: totalData } = useQuery(TOTAL_DEVICES_BY_NAME, {
+    variables: {
+      name: searchValue,
+    },
+  });
+  const [getDevicesByNameWithPagination, { error, loading, data }] =
+    useLazyQuery(GET_ALL_DEVICES_BY_NAME_WITH_PAGINATION);
+  //const [updateModel] = useMutation(UPDATE_MODEL);
+  const [softDeleteDevice] = useMutation(SOFT_REMOVE_DEVICE);
+  const [deleteDevice] = useMutation(REMOVE_DEVICE);
 
-  // if (loading) return 
-  // if (error) return <p>{error.message}</p>
-  
+  useEffect(() => {
+    getDevicesByNameWithPagination({
+      variables: {
+        name: searchValue,
+        offset: page * 10,
+        limit: 10,
+      },
+    });
+  }, [getDevicesByNameWithPagination, page, searchValue]);
+
+  const currentlySelectedRow = (
+    params: GridCellParams,
+    event: MuiEvent<React.MouseEvent>
+  ) => {
+    const { field } = params;
+
+    if (field !== "edit" && field !== "delete" && field !== "softDelete") {
+      return;
+    }
+
+    if (
+      field === "edit" &&
+      event.target instanceof Element &&
+      (event.target.tagName === "BUTTON" ||
+        event.target.tagName === "svg" ||
+        event.target.tagName === "path")
+    ) {
+      setSelectedRow(params.row);
+      setIsOpen(true);
+    } else if (
+      field === "softDelete" &&
+      event.target instanceof Element &&
+      (event.target.tagName === "BUTTON" ||
+        event.target.tagName === "svg" ||
+        event.target.tagName === "path")
+    ) {
+      setSelectedRow(params.row);
+      setIsOpenDialog(true);
+      setTitle("Confirm soft delete of this device");
+      setMessage("Are you sure you want to soft delete this device?");
+      dispatch({ action: "softDelete" });
+    } else if (
+      field === "delete" &&
+      event.target instanceof Element &&
+      (event.target.tagName === "BUTTON" ||
+        event.target.tagName === "svg" ||
+        event.target.tagName === "path")
+    ) {
+      setSelectedRow(params.row);
+      setIsOpenDialog(true);
+      setTitle("Confirm delete of this device");
+      setMessage(
+        "Are you sure you want to delete this device? The data of this device will be lost for ever."
+      );
+      dispatch({ action: "delete" });
+    }
+  };
+
+  const softDeleteCurrentDevice = async (id: string) => {
+    try {
+      await softDeleteDevice({
+        variables: {
+          id: id,
+        },
+        refetchQueries: [
+          {
+            query: GET_ALL_DEVICES_BY_NAME_WITH_PAGINATION,
+            variables: {
+              name: searchValue,
+              offset: page * 10,
+              limit: 10,
+            },
+          },
+          {
+            query: TOTAL_DEVICES_BY_NAME,
+            variables: {
+              name: searchValue,
+            },
+          },
+        ],
+      });
+      handleClose();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteCurrentDevice = async (id: string) => {
+    try {
+      await deleteDevice({
+        variables: {
+          id: id,
+        },
+        refetchQueries: [
+          {
+            query: GET_ALL_DEVICES_BY_NAME_WITH_PAGINATION,
+            variables: {
+              name: searchValue,
+              offset: page * 10,
+              limit: 10,
+            },
+          },
+          {
+            query: TOTAL_DEVICES_BY_NAME,
+            variables: {
+              name: searchValue,
+            },
+          },
+        ],
+      });
+      handleClose();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleClose = () => {
+    console.log("close");
+    setIsOpen(false);
+    setIsOpenDialog(false);
+    setIsOpenCreate(false);
+  };
 
   return (
     <AdminLayout>
       <Title>All devices</Title>
 
-      {loading && (<p>Loading ...</p>)}
-      {error && (<p>{error.message}</p>)}
-      {data && <Table  data={data.devices} columns={columns} />}
+      <SearchContainer>
+        <h2>Search on model name:</h2>
+        <SearchButtonContainer>
+          <SearchBar
+            value={searchChange}
+            onChange={(newValue) => {
+              setSearchChange(newValue);
+            }}
+            onRequestSearch={() => setSearchValue(searchChange)}
+          />
+          <Button
+            variant="contained"
+            size="large"
+            onClick={() => setIsOpenCreate(true)}
+            style={{
+              backgroundColor: "#F58732",
+            }}
+          >
+            Create
+          </Button>
+        </SearchButtonContainer>
+      </SearchContainer>
 
+      {loading && <Loading />}
+      {error && <p>{error.message}</p>}
+      {data && totalData && (
+        <Table
+          data={data.devicesByNameWithPagination}
+          columns={columnsDevice}
+          onCellClick={currentlySelectedRow}
+          total={totalData.totalDevicesByName}
+          page={page}
+          setPage={setPage}
+        />
+      )}
 
+      {isOpenDialog && (
+        <ConfirmDialog
+          selectedRow={selectedRow}
+          title={title}
+          message={message}
+          open={isOpenDialog}
+          handleClose={handleClose}
+          handleConfirm={
+            state.action === "softDelete"
+              ? softDeleteCurrentDevice
+              : deleteCurrentDevice
+          }
+        />
+      )}
     </AdminLayout>
-
-  )
-}
+  );
+};
 
 export default DashboardDevices;
-
