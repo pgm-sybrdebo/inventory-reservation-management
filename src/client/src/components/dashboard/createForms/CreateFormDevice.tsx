@@ -1,26 +1,10 @@
 import { useMutation, useQuery } from "@apollo/client";
 import styled from "styled-components";
 import * as yup from "yup";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  Grid,
-  TextareaAutosize,
-  TextField,
-} from "@material-ui/core";
-import {
-  Typography,
-  Button,
-  Input,
-  Box,
-  InputLabel,
-  Select,
-  MenuItem,
-} from "@mui/material";
+import { Dialog, DialogContent, DialogTitle, Grid } from "@material-ui/core";
+import { Button, Box, InputLabel, Select, MenuItem } from "@mui/material";
 import { Formik, Form } from "formik";
 import { GET_ALL_MODELS } from "../../../graphql/models";
-import { CREATE_MEDIA } from "../../../graphql/media";
 import {
   CREATE_DEVICE,
   GET_ALL_DEVICES_BY_NAME_WITH_PAGINATION,
@@ -36,16 +20,6 @@ const ButtonContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   margin: 3rem 0;
-`;
-
-const Label = styled.label`
-  display: block;
-  font-size: 0.9rem;
-  color: rgba(0, 0, 0, 0.54);
-  padding: 0;
-  font-weight: 400;
-  line-height: 1;
-  letter-spacing: 0.00938em;
 `;
 
 interface CreateFormDeviceProps {
@@ -219,8 +193,6 @@ const CreateFormDevice = ({ open, handleClose }: CreateFormDeviceProps) => {
                 </Form>
               )}
             </Formik>
-
-            {qrCode && <img src={qrCode} />}
           </DialogContent>
         </>
       )}

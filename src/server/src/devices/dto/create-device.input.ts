@@ -18,11 +18,6 @@ export class CreateDeviceInput {
   @Field({ nullable: true })
   userId?: string;
 
-  // @IsNotEmpty()
-  // @IsBoolean()
-  // @Field((type) => Boolean)
-  // is_available: boolean;
-
   @IsOptional()
   @Field({nullable: true})
   qr_code?: string;
