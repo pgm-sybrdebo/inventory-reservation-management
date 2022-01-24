@@ -32,8 +32,8 @@ export class MediasService {
   findFirstByModelId(modelId: string): Promise<Media> {
     return this.mediasRepository.findOne({
       where: {
-        modelId: modelId
-      }
+        modelId: modelId,
+      },
     });
   }
 

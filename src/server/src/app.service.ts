@@ -20,9 +20,7 @@ export class AppService {
     const models = await this.modelsService.findAll();
     models.forEach(async (model) => {
       await this.modelsService.recalculateReadyQuantity(model.id);
-    })
+    });
     console.log('Every hour');
   }
 }
-
-

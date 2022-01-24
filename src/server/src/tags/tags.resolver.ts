@@ -23,9 +23,7 @@ export class TagsResolver {
   @Query(() => Int, { name: 'totalTagsByName' })
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.SUPER_ADMIN)
-  async totalTagsByName(
-    @Args('name', { type: () => String }) name: string,
-  ) {
+  async totalTagsByName(@Args('name', { type: () => String }) name: string) {
     return this.tagsService.countWithName(name);
   }
 
@@ -69,7 +67,7 @@ export class TagsResolver {
       await this.tagsService.remove(id);
       return true;
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 

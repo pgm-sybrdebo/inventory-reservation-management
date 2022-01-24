@@ -70,7 +70,7 @@ export class Device {
   @Field((type) => DeviceStatus)
   deviceStatus: DeviceStatus;
 
-  @ManyToOne(() => User, (user) => user.devices, {onDelete: "SET NULL"})
+  @ManyToOne(() => User, (user) => user.devices, { onDelete: 'SET NULL' })
   @Field((type) => User)
   user: User;
 

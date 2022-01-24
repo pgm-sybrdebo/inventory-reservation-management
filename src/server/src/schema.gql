@@ -192,6 +192,7 @@ type Query {
   deviceStatusesByNameWithPagination(limit: Int!, name: String!, offset: Int!): [DeviceStatus!]!
   devices: [Device!]!
   devicesByNameWithPagination(limit: Int!, name: String!, offset: Int!): [Device!]!
+  devicesInCheckByNameWithPagination(limit: Int!, name: String!, offset: Int!): [Device!]!
   devicesWithPagination(limit: Int!, offset: Int!): [Device!]!
   differenceLastMonthDevices: Int!
   differenceLastMonthModels: Int!
@@ -229,6 +230,7 @@ type Query {
   totalDevices: Int!
   totalDevicesByModelId(modelId: String!): [Total!]!
   totalDevicesByName(name: String!): Int!
+  totalDevicesInCheckByName(name: String!): Int!
   totalModels: Int!
   totalModelsByName(name: String!): Int!
   totalModelsWithFilter(filter: Filter!): [Total!]!

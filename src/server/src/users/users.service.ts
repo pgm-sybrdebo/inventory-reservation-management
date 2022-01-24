@@ -26,8 +26,8 @@ export class UsersService {
   findAll(): Promise<User[]> {
     return this.usersRepository.find({
       order: {
-        id: 'ASC'
-      }
+        id: 'ASC',
+      },
     });
   }
 
@@ -44,15 +44,19 @@ export class UsersService {
   findAllByLastName(lastName: string): Promise<User[]> {
     return this.usersRepository.find({
       where: {
-        lastName: Raw(alias => `LOWER(${alias}) Like '${lastName}%'`)
-      }
+        lastName: Raw((alias) => `LOWER(${alias}) Like '${lastName}%'`),
+      },
     });
   }
 
-  findAllByLastNameWithPagination(lastName: string, offset: number, limit: number): Promise<User[]> {
+  findAllByLastNameWithPagination(
+    lastName: string,
+    offset: number,
+    limit: number,
+  ): Promise<User[]> {
     return this.usersRepository.find({
       where: {
-        lastName: Raw(alias => `LOWER(${alias}) Like '${lastName}%'`)
+        lastName: Raw((alias) => `LOWER(${alias}) Like '${lastName}%'`),
       },
       skip: offset,
       take: limit,
@@ -62,11 +66,18 @@ export class UsersService {
     });
   }
 
-  async findAllByLastNameAndRoleWithPagination(role: number, lastName: string, offset: number, limit: number): Promise<User[]> {
+  async findAllByLastNameAndRoleWithPagination(
+    role: number,
+    lastName: string,
+    offset: number,
+    limit: number,
+  ): Promise<User[]> {
     const rawData = await this.usersRepository.find({
       where: {
-        lastName: Raw(alias => `LOWER(${alias}) Like '${lastName.toLowerCase()}%'`),
-        role: Raw(a => `${a} = '${role}'`)
+        lastName: Raw(
+          (alias) => `LOWER(${alias}) Like '${lastName.toLowerCase()}%'`,
+        ),
+        role: Raw((a) => `${a} = '${role}'`),
       },
       skip: offset,
       take: limit,
@@ -75,14 +86,20 @@ export class UsersService {
       },
     });
     return rawData;
-  
   }
 
-  findAllByLastNameAndProfessionWithPagination(profession: number, lastName: string, offset: number, limit: number): Promise<User[]> {
+  findAllByLastNameAndProfessionWithPagination(
+    profession: number,
+    lastName: string,
+    offset: number,
+    limit: number,
+  ): Promise<User[]> {
     return this.usersRepository.find({
       where: {
-        lastName: Raw(alias => `LOWER(${alias}) Like '${lastName.toLowerCase()}%'`),
-        profession: profession
+        lastName: Raw(
+          (alias) => `LOWER(${alias}) Like '${lastName.toLowerCase()}%'`,
+        ),
+        profession: profession,
       },
       skip: offset,
       take: limit,
@@ -95,8 +112,6 @@ export class UsersService {
   findAllByRole(role: number): Promise<User[]> {
     return this.usersRepository.find({ role });
   }
-
-  
 
   findAllByProfession(profession: number): Promise<User[]> {
     return this.usersRepository.find({ profession });
@@ -118,7 +133,10 @@ export class UsersService {
     return rawData[0].total;
   }
 
-  async countWithLastNameAndRole(lastName: string, role: number): Promise<number> {
+  async countWithLastNameAndRole(
+    lastName: string,
+    role: number,
+  ): Promise<number> {
     const rawData = await this.usersRepository.query(`
     SELECT
       COUNT(DISTINCT id) AS total
@@ -131,7 +149,10 @@ export class UsersService {
     return rawData[0].total;
   }
 
-  async countWithLastNameAndProfession(lastName: string, profession: number): Promise<number> {
+  async countWithLastNameAndProfession(
+    lastName: string,
+    profession: number,
+  ): Promise<number> {
     const rawData = await this.usersRepository.query(`
     SELECT
       COUNT(DISTINCT id) AS total

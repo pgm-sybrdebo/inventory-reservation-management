@@ -38,10 +38,14 @@ export class DeviceStatusesService {
     return this.deviceStatusesRepository.find();
   }
 
-  findAllByNameWithPagination(name: string, offset: number, limit: number): Promise<DeviceStatus[]> {
+  findAllByNameWithPagination(
+    name: string,
+    offset: number,
+    limit: number,
+  ): Promise<DeviceStatus[]> {
     return this.deviceStatusesRepository.find({
       where: {
-        name: Raw(alias => `LOWER(${alias}) Like '${name}%'`)
+        name: Raw((alias) => `LOWER(${alias}) Like '${name}%'`),
       },
       skip: offset,
       take: limit,

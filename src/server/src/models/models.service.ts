@@ -52,10 +52,14 @@ export class ModelsService {
     return this.modelsRepository.find();
   }
 
-  findAllByNameWithPagination(name: string, offset: number, limit: number): Promise<Model[]> {
+  findAllByNameWithPagination(
+    name: string,
+    offset: number,
+    limit: number,
+  ): Promise<Model[]> {
     return this.modelsRepository.find({
       where: {
-        name: Raw(alias => `LOWER(${alias}) Like '${name}%'`)
+        name: Raw((alias) => `LOWER(${alias}) Like '${name}%'`),
       },
       skip: offset,
       take: limit,
@@ -99,17 +103,29 @@ export class ModelsService {
     // })
   }
 
-  async findAllByFilterWithPagination(filter: Filter, offset: number, limit: number): Promise<Model[]> {
+  async findAllByFilterWithPagination(
+    filter: Filter,
+    offset: number,
+    limit: number,
+  ): Promise<Model[]> {
     const rawData = await this.modelsRepository.query(`
       SELECT
         ${filter.tagIds ? 'DISTINCT ON (model.id) *' : '*'}
       FROM
         model
-      ${filter.tagIds ? 'INNER JOIN model_tag on model.id = model_tag.model_id' : ''}
+      ${
+        filter.tagIds
+          ? 'INNER JOIN model_tag on model.id = model_tag.model_id'
+          : ''
+      }
       WHERE "deleted_on" IS NULL
       AND LOWER("name") LIKE LOWER('${filter.name}%')
       AND "readyQuantity" > 0
-      ${filter.tagIds ? `AND model_tag.tag_id in ('${filter.tagIds.join("', '")}')` : ""}
+      ${
+        filter.tagIds
+          ? `AND model_tag.tag_id in ('${filter.tagIds.join("', '")}')`
+          : ''
+      }
       ORDER BY model.id ASC
       LIMIT ${limit}
       OFFSET ${(offset - 1) * limit}
@@ -148,10 +164,18 @@ export class ModelsService {
         COUNT(DISTINCT id) AS total
       FROM
         model
-      ${filter.tagIds ? 'INNER JOIN model_tag on model.id = model_tag.model_id' : ''}
+      ${
+        filter.tagIds
+          ? 'INNER JOIN model_tag on model.id = model_tag.model_id'
+          : ''
+      }
       WHERE "deleted_on" IS NULL
       AND LOWER("name") LIKE LOWER('${filter.name}%')
-      ${filter.tagIds ? `AND model_tag.tag_id in ('${filter.tagIds.join("', '")}')` : ""}
+      ${
+        filter.tagIds
+          ? `AND model_tag.tag_id in ('${filter.tagIds.join("', '")}')`
+          : ''
+      }
       AND "readyQuantity" > 0
     `);
     return rawData;
@@ -220,14 +244,14 @@ export class ModelsService {
     WHERE "deleted_on" IS NULL
     AND "modelId" = '${id}'
     `);
-    console.log("total", newTotal)
+    console.log('total', newTotal);
     const updatedModel = await this.modelsRepository.preload({
       id: id,
-      quantity: Number(newTotal[0].count)
+      quantity: Number(newTotal[0].count),
     });
     return this.modelsRepository.save(updatedModel);
   }
-  
+
   async recalculateReadyQuantity(id: string): Promise<Model> {
     const newTotal = await this.modelsRepository.query(`
     SELECT
@@ -238,10 +262,10 @@ export class ModelsService {
     AND "modelId" = '${id}'
     AND "deviceStatusId" = '${process.env.DEVICE_STATUS_READY}'
     `);
-    console.log("total", newTotal)
+    console.log('total', newTotal);
     const updatedModel = await this.modelsRepository.preload({
       id: id,
-      readyQuantity: Number(newTotal[0].count)
+      readyQuantity: Number(newTotal[0].count),
     });
     return this.modelsRepository.save(updatedModel);
   }

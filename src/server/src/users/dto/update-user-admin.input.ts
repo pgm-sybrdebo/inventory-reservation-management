@@ -1,6 +1,15 @@
 import { CreateUserInput } from './create-user.input';
 import { InputType, Field, Int, PartialType } from '@nestjs/graphql';
-import { IsAlphanumeric, IsInt, IsNotEmpty, IsPositive, IsString, IsUUID, Max, Min } from 'class-validator';
+import {
+  IsAlphanumeric,
+  IsInt,
+  IsNotEmpty,
+  IsPositive,
+  IsString,
+  IsUUID,
+  Max,
+  Min,
+} from 'class-validator';
 
 @InputType()
 export class UpdateUserAdminInput extends PartialType(CreateUserInput) {
@@ -14,5 +23,4 @@ export class UpdateUserAdminInput extends PartialType(CreateUserInput) {
   @IsInt()
   @Field((type) => Int)
   role: number;
-
 }

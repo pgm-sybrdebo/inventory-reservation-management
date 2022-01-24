@@ -31,10 +31,14 @@ export class TagsService {
     return this.tagsRepository.find();
   }
 
-  findAllByNameWithPagination(name: string, offset: number, limit: number): Promise<Tag[]> {
+  findAllByNameWithPagination(
+    name: string,
+    offset: number,
+    limit: number,
+  ): Promise<Tag[]> {
     return this.tagsRepository.find({
       where: {
-        name: Raw(alias => `LOWER(${alias}) Like '${name}%'`)
+        name: Raw((alias) => `LOWER(${alias}) Like '${name}%'`),
       },
       skip: offset,
       take: limit,

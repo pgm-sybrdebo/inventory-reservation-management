@@ -36,7 +36,7 @@ export class CreateModelInput {
   @Field((type) => Int)
   quantity: number;
 
-   // @IsPositive()
+  // @IsPositive()
   @IsOptional()
   @Min(0)
   @Max(1000)

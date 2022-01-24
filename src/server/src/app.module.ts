@@ -77,7 +77,7 @@ const nodeEnvironment = `${(
     MulterModule.register({
       dest: './uploads',
     }),
-    ScheduleModule.forRoot()
+    ScheduleModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [AppService],

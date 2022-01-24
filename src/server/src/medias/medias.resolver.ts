@@ -56,7 +56,7 @@ export class MediasResolver {
       await this.mediasService.remove(id);
       return true;
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 

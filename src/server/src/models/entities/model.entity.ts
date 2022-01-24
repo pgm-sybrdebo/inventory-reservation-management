@@ -41,9 +41,9 @@ export class Model {
   @Column()
   @Field((type) => Int)
   quantity: number;
-  
-  @Column({nullable: true})
-  @Field((type) => Int, {nullable: true})
+
+  @Column({ nullable: true })
+  @Field((type) => Int, { nullable: true })
   readyQuantity?: number;
 
   @Column()
@@ -81,7 +81,7 @@ export class Model {
   @Field((type) => [Device], { nullable: true })
   devices?: Device[];
 
-  @OneToMany(() => Media, (media) => media.model, {cascade: true})
+  @OneToMany(() => Media, (media) => media.model, { cascade: true })
   @Field((type) => [Media], { nullable: true })
   medias?: Media[];
 

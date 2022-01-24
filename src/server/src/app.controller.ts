@@ -38,7 +38,7 @@ export class AppController {
     const response = {
       // originalname: file.originalname,
       filename: file.filename,
-      type: ext.replace(".", "")
+      type: ext.replace('.', ''),
     };
     return response;
   }
@@ -58,7 +58,7 @@ export class AppController {
     const response = {
       // originalname: file.originalname,
       filename: file.filename,
-      type: ext.replace(".", "")
+      type: ext.replace('.', ''),
     };
     return response;
   }
@@ -75,12 +75,12 @@ export class AppController {
   )
   async uploadedModulesImages(@UploadedFiles() files) {
     const response = [];
-    files.forEach(file => {
+    files.forEach((file) => {
       const ext = extname(file.originalname);
       const fileReponse = {
         // originalname: file.originalname,
         filename: file.filename,
-        type: ext.replace(".", "")
+        type: ext.replace('.', ''),
       };
       response.push(fileReponse);
     });
@@ -102,5 +102,3 @@ export class AppController {
     return res.sendFile(image, { root: './uploads/devices' });
   }
 }
-
-

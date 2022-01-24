@@ -19,6 +19,6 @@ export class CreateDeviceInput {
   userId?: string;
 
   @IsOptional()
-  @Field({nullable: true})
+  @Field({ nullable: true })
   qr_code?: string;
 }

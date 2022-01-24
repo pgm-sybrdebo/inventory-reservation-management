@@ -64,7 +64,11 @@ export class UsersResolver {
     @Args('offset', { type: () => Int }, new ParseIntPipe()) offset: number,
     @Args('limit', { type: () => Int }, new ParseIntPipe()) limit: number,
   ) {
-    return this.usersService.findAllByLastNameWithPagination(lastName, offset, limit);
+    return this.usersService.findAllByLastNameWithPagination(
+      lastName,
+      offset,
+      limit,
+    );
   }
 
   @Query(() => [User], { name: 'usersByLastNameAndRoleWithPagination' })
@@ -76,7 +80,12 @@ export class UsersResolver {
     @Args('offset', { type: () => Int }, new ParseIntPipe()) offset: number,
     @Args('limit', { type: () => Int }, new ParseIntPipe()) limit: number,
   ) {
-    return this.usersService.findAllByLastNameAndRoleWithPagination(role, lastName, offset, limit);
+    return this.usersService.findAllByLastNameAndRoleWithPagination(
+      role,
+      lastName,
+      offset,
+      limit,
+    );
   }
 
   @Query(() => [User], { name: 'usersByLastNameAndProfessionWithPagination' })
@@ -89,7 +98,12 @@ export class UsersResolver {
     @Args('offset', { type: () => Int }, new ParseIntPipe()) offset: number,
     @Args('limit', { type: () => Int }, new ParseIntPipe()) limit: number,
   ) {
-    return this.usersService.findAllByLastNameAndProfessionWithPagination(profession, lastName, offset, limit);
+    return this.usersService.findAllByLastNameAndProfessionWithPagination(
+      profession,
+      lastName,
+      offset,
+      limit,
+    );
   }
 
   @Query(() => [User], { name: 'usersByRole' })
@@ -133,7 +147,6 @@ export class UsersResolver {
   async totalUsersByLastNameAndRole(
     @Args('lastName', { type: () => String }) lastName: string,
     @Args('role', { type: () => Int }, new ParseIntPipe()) role: number,
-    
   ) {
     return this.usersService.countWithLastNameAndRole(lastName, role);
   }
@@ -143,9 +156,13 @@ export class UsersResolver {
   @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   async totalUsersByLastNameAndProfession(
     @Args('lastName', { type: () => String }) lastName: string,
-    @Args('profession', { type: () => Int }, new ParseIntPipe()) profession: number,
+    @Args('profession', { type: () => Int }, new ParseIntPipe())
+    profession: number,
   ) {
-    return this.usersService.countWithLastNameAndProfession(lastName, profession);
+    return this.usersService.countWithLastNameAndProfession(
+      lastName,
+      profession,
+    );
   }
 
   @Query(() => Int, { name: 'differenceLastMonthUsers' })
@@ -188,11 +205,16 @@ export class UsersResolver {
     return this.usersService.update(updateUserInput.id, updateUserInput);
   }
 
-  @Mutation(() => User, { name: "updateUserAdmin"})
+  @Mutation(() => User, { name: 'updateUserAdmin' })
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.USER, Role.SUPER_ADMIN)
-  updateUserAdmin(@Args('updateUserAdminInput') updateUserAdminInput: UpdateUserAdminInput) {
-    return this.usersService.update(updateUserAdminInput.id, updateUserAdminInput);
+  updateUserAdmin(
+    @Args('updateUserAdminInput') updateUserAdminInput: UpdateUserAdminInput,
+  ) {
+    return this.usersService.update(
+      updateUserAdminInput.id,
+      updateUserAdminInput,
+    );
   }
 
   @Mutation(() => Boolean)
@@ -203,11 +225,11 @@ export class UsersResolver {
       await this.usersService.remove(id);
       return true;
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
-  @Mutation(() => User, {name: "softRemoveUser"})
+  @Mutation(() => User, { name: 'softRemoveUser' })
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.USER, Role.SUPER_ADMIN)
   softRemoveUser(@Args('id', new ParseUUIDPipe()) id: string) {
