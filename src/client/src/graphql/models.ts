@@ -39,12 +39,13 @@ export const DIFFERENCE_LAST_MONTH_MODELS = gql`
 
 export const CREATE_MODEL = gql`
 
-mutation ($name: String!, $brand: String!, $description: String!, $quantity: Int!, $specifications: String!, $max_reservation_time: Int! ) {
+mutation ($name: String!, $brand: String!, $description: String!, $quantity: Int!, $readyQuantity: Int! $specifications: String!, $max_reservation_time: Int! ) {
   createModel(createModelInput: {
     name: $name
     brand: $brand
     description: $description
     quantity: $quantity
+    readyQuantity: $readyQuantity
     specifications: $specifications
     max_reservation_time: $max_reservation_time
   }) {
@@ -55,13 +56,14 @@ mutation ($name: String!, $brand: String!, $description: String!, $quantity: Int
 
 export const UPDATE_MODEL = gql`
 
-mutation ($id: String!, $name: String!, $brand: String!, $description: String!, $quantity: Int!, $specifications: String!, $max_reservation_time: Int! ) {
+mutation ($id: String!, $name: String, $brand: String, $description: String, $quantity: Int, $readyQuantity: Int, $max_reservation_time: Int ) {
   updateModel(updateModelInput: {
     id: $id
     name: $name
     brand: $brand
-    description: $description
+    description: $descriptions
     quantity: $quantity
+    readyQuantity: $readyQuantity
     specifications: $specifications
     max_reservation_time: $max_reservation_time
   }) {

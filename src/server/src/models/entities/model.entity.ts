@@ -81,7 +81,7 @@ export class Model {
   @Field((type) => [Device], { nullable: true })
   devices?: Device[];
 
-  @OneToMany(() => Media, (media) => media.model)
+  @OneToMany(() => Media, (media) => media.model, {cascade: true})
   @Field((type) => [Media], { nullable: true })
   medias?: Media[];
 

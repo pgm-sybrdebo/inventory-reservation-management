@@ -34,6 +34,13 @@ export class MediasResolver {
     return this.mediasService.findOne(id);
   }
 
+  @Query(() => Media, { name: 'mediaByModelId' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  findFirstByModelId(@Args('modelId', new ParseUUIDPipe()) modelId: string) {
+    return this.mediasService.findFirstByModelId(modelId);
+  }
+
   @Mutation(() => Media)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.SUPER_ADMIN)

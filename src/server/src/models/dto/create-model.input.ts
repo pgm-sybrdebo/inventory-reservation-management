@@ -60,7 +60,7 @@ export class CreateModelInput {
 
   @IsNotEmpty()
   @IsPositive()
-  @Min(0)
+  @Min(1)
   @Max(1000)
   @Field((type) => Int)
   max_reservation_time: number;

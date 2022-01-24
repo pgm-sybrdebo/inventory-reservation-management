@@ -29,6 +29,14 @@ export class MediasService {
     return this.mediasRepository.findOneOrFail(id);
   }
 
+  findFirstByModelId(modelId: string): Promise<Media> {
+    return this.mediasRepository.findOne({
+      where: {
+        modelId: modelId
+      }
+    });
+  }
+
   async update(id: string, updateMediaInput: UpdateMediaInput): Promise<Media> {
     const updatedMedia = await this.mediasRepository.preload({
       id: id,

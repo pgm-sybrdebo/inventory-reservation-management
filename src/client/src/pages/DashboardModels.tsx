@@ -16,6 +16,7 @@ import {
   TOTAL_MODELS_BY_NAME,
 } from "../graphql/models";
 import CreateFormModel from "../components/dashboard/createForms/CreateFormModel";
+import UpdateFormModel from "../components/dashboard/updateForms/UpdateFormModel";
 
 const Title = styled.h1`
   margin: 1.5rem;
@@ -263,6 +264,14 @@ const DashboardModels = () => {
               ? softDeleteCurrentModel
               : deleteCurrentModel
           }
+        />
+      )}
+
+      {isOpen && (
+        <UpdateFormModel
+          selectedRow={selectedRow}
+          handleClose={handleClose}
+          open={isOpen}
         />
       )}
 

@@ -200,6 +200,7 @@ type Query {
   getDevicesByModelIdWithPagination(limit: Int!, modelId: String!, offset: Int!): [Device!]!
   inCheckDevices: [Device!]!
   media(id: String!): Media!
+  mediaByModelId(modelId: String!): Media!
   medias: [Media!]!
   model(id: String!): Model!
   models: [Model!]!

@@ -1,12 +1,6 @@
 import { useMutation } from "@apollo/client";
-import React from "react";
 import styled from "styled-components";
 import * as yup from "yup";
-import {
-  CREATE_DEVICE_STATUS,
-  GET_ALL_DEVICE_STATUSES_BY_NAME_WITH_PAGINATION,
-  TOTAL_DEVICE_STATUSES_BY_NAME,
-} from "../../../graphql/deviceStatuses";
 import {
   Dialog,
   DialogContent,
@@ -15,10 +9,16 @@ import {
   TextareaAutosize,
   TextField,
 } from "@material-ui/core";
-import { Typography, Button } from "@mui/material";
+import { Typography, Button, Input } from "@mui/material";
 import { Formik, Form, Field, FieldArray } from "formik";
 import { Add, Remove } from "@material-ui/icons";
 import { bgcolor, borderColor } from "@mui/system";
+import {
+  CREATE_MODEL,
+  GET_ALL_MODELS_BY_NAME_WITH_PAGINATION,
+  TOTAL_MODELS_BY_NAME,
+} from "../../../graphql/models";
+import { CREATE_MEDIA } from "../../../graphql/media";
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -28,6 +28,7 @@ const ButtonContainer = styled.div`
 `;
 
 const Label = styled.label`
+  display: block;
   font-size: 0.9rem;
   color: rgba(0, 0, 0, 0.54);
   padding: 0;
@@ -56,6 +57,15 @@ const makeNewArray = (array: Spec[]) => {
   return newArray;
 };
 
+const makeNewObject = (array: Spec[]) => {
+  const obj = {};
+  for (let i = 0; i < array.length; i++) {
+    // @ts-ignore
+    obj[array[i].label] = array[i].value;
+  }
+  return obj;
+};
+
 const validationSchema = yup.object({
   name: yup.string().min(1, "Too short").required("Required"),
   description: yup.string().min(1, "Too short").required("Required"),
@@ -71,12 +81,21 @@ const validationSchema = yup.object({
       })
     )
     .required("Required"),
-  max_reservation_time: yup.number().min(0).max(100).required("Required"),
+  max_reservation_time: yup.number().min(1).max(100).required("Required"),
+  image: yup.string().required("Required"),
 });
 
+let modelId: string;
 const CreateFormModel = ({ open, handleClose }: CreateFormModelProps) => {
-  const [createDeviceStatus] = useMutation(CREATE_DEVICE_STATUS);
+  const [createModel] = useMutation(CREATE_MODEL, {
+    update: (proxy, mutationResult) => {
+      console.log("mutationResult", mutationResult);
+      modelId = mutationResult.data.createModel.id;
+    },
+  });
+  const [createMedia] = useMutation(CREATE_MEDIA);
 
+  console.log("modelId", modelId);
   return (
     <Dialog fullWidth open={open} onClose={handleClose}>
       <>
@@ -91,39 +110,72 @@ const CreateFormModel = ({ open, handleClose }: CreateFormModelProps) => {
               brand: "",
               specifications: [],
               max_reservation_time: 0,
+              image: "",
             }}
             onSubmit={async (values, { setSubmitting }) => {
               setSubmitting(true);
               try {
-                console.log("create");
-                console.log("specs", values.specifications);
+                let specs;
+                let specsString;
                 if (values.specifications.length > 0) {
-                  const specs = makeNewArray(values.specifications);
+                  specs = makeNewObject(values.specifications);
                   console.log("specsNew", specs);
+                  specsString = JSON.stringify(specs);
+                  console.log("stin", specsString);
                 }
 
-                // await createDeviceStatus({
-                //   variables: {
-                //     name: values.name
-                //   },
-                //   refetchQueries: [
-                //     {
-                //       query: GET_ALL_DEVICE_STATUSES_BY_NAME_WITH_PAGINATION,
-                //       variables: {
-                //         name: "",
-                //         offset: 0,
-                //         limit: 10
-                //       }
-                //     },
-                //     {
-                //       query:
-                //       TOTAL_DEVICE_STATUSES_BY_NAME,
-                //       variables: {
-                //         name: "",
-                //       }
-                //     }
-                //   ]
-                // });
+                const imgData = new FormData();
+                if (values.image !== null) {
+                  imgData.append("image", values.image);
+                }
+
+                const uploadRequest = await fetch(
+                  "http://localhost:3000/uploadModelPictures",
+                  {
+                    method: "POST",
+                    headers: new Headers({ Accept: "application/json" }),
+                    body: imgData,
+                  }
+                );
+                const uploadResponse = await uploadRequest.json();
+
+                console.log(uploadResponse);
+                await createModel({
+                  variables: {
+                    name: values.name,
+                    description: values.description,
+                    quantity: Number(values.quantity),
+                    readyQuantity: Number(values.readyQuantity),
+                    brand: values.brand,
+                    specifications: specsString,
+                    max_reservation_time: Number(values.max_reservation_time),
+                  },
+                  refetchQueries: [
+                    {
+                      query: GET_ALL_MODELS_BY_NAME_WITH_PAGINATION,
+                      variables: {
+                        name: "",
+                        offset: 0,
+                        limit: 10,
+                      },
+                    },
+                    {
+                      query: TOTAL_MODELS_BY_NAME,
+                      variables: {
+                        name: "",
+                      },
+                    },
+                  ],
+                });
+
+                await createMedia({
+                  variables: {
+                    modelId: modelId,
+                    type: uploadResponse[0].type,
+                    source: uploadResponse[0].filename,
+                  },
+                  refetchQueries: [],
+                });
                 console.log("done");
                 handleClose();
               } catch (error) {
@@ -153,8 +205,7 @@ const CreateFormModel = ({ open, handleClose }: CreateFormModelProps) => {
                       type="text"
                       label="Name:"
                       value={values.name}
-                      // @ts-ignore
-                      onChange={(e) => {
+                      onChange={(e: any) => {
                         setFieldValue("name", e.target.value);
                       }}
                       error={Boolean(touched.name && errors.name)}
@@ -177,8 +228,7 @@ const CreateFormModel = ({ open, handleClose }: CreateFormModelProps) => {
                       type="text"
                       aria-label="Description:"
                       value={values.description}
-                      // @ts-ignore
-                      onChange={(e) => {
+                      onChange={(e: any) => {
                         setFieldValue("description", e.target.value);
                       }}
                       error={Boolean(touched.description && errors.description)}
@@ -193,8 +243,7 @@ const CreateFormModel = ({ open, handleClose }: CreateFormModelProps) => {
                       type="number"
                       label="Quantity:"
                       value={values.quantity}
-                      // @ts-ignore
-                      onChange={(e) => {
+                      onChange={(e: any) => {
                         setFieldValue("quantity", e.target.value);
                       }}
                       error={Boolean(touched.quantity && errors.quantity)}
@@ -209,8 +258,7 @@ const CreateFormModel = ({ open, handleClose }: CreateFormModelProps) => {
                       type="number"
                       label="Ready quantity:"
                       value={values.readyQuantity}
-                      // @ts-ignore
-                      onChange={(e) => {
+                      onChange={(e: any) => {
                         setFieldValue("readyQuantity", e.target.value);
                       }}
                       error={Boolean(
@@ -227,8 +275,7 @@ const CreateFormModel = ({ open, handleClose }: CreateFormModelProps) => {
                       type="text"
                       label="Brand:"
                       value={values.brand}
-                      // @ts-ignore
-                      onChange={(e) => {
+                      onChange={(e: any) => {
                         setFieldValue("brand", e.target.value);
                       }}
                       error={Boolean(touched.brand && errors.brand)}
@@ -361,8 +408,7 @@ const CreateFormModel = ({ open, handleClose }: CreateFormModelProps) => {
                       type="number"
                       label="Max reservation time (in days):"
                       value={values.max_reservation_time}
-                      // @ts-ignore
-                      onChange={(e) => {
+                      onChange={(e: any) => {
                         setFieldValue("max_reservation_time", e.target.value);
                       }}
                       error={Boolean(
@@ -373,6 +419,19 @@ const CreateFormModel = ({ open, handleClose }: CreateFormModelProps) => {
                         touched.max_reservation_time &&
                         errors.max_reservation_time
                       }
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Label htmlFor="modelImage">Add model Image</Label>
+                    <Input
+                      id="modelImage"
+                      type="file"
+                      name="modelImage"
+                      onChange={(e: any) => {
+                        if (e.target.files) {
+                          setFieldValue("image", e.target.files[0]);
+                        }
+                      }}
                     />
                   </Grid>
                 </Grid>
