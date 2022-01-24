@@ -1,10 +1,21 @@
-import { useMutation } from '@apollo/client';
-import React from 'react'
-import styled from 'styled-components';
-import * as yup from 'yup'
-import { Button, Dialog, DialogContent, DialogTitle, Grid, TextField } from '@material-ui/core';
-import { Formik, Form, Field } from 'formik'
-import { CREATE_TAG, GET_ALL_TAGS_BY_NAME_WITH_PAGINATION, TOTAL_TAGS_BY_NAME } from '../../../graphql/tags';
+import { useMutation } from "@apollo/client";
+import React from "react";
+import styled from "styled-components";
+import * as yup from "yup";
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  TextField,
+} from "@material-ui/core";
+import { Formik, Form, Field } from "formik";
+import {
+  CREATE_TAG,
+  GET_ALL_TAGS_BY_NAME_WITH_PAGINATION,
+  TOTAL_TAGS_BY_NAME,
+} from "../../../graphql/tags";
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -14,27 +25,28 @@ const ButtonContainer = styled.div`
 `;
 
 interface CreateFormTagProps {
-  open: boolean,
-  handleClose: any
+  open: boolean;
+  handleClose: () => void;
+  page: number;
+  name: string;
 }
 
 const validationSchema = yup.object({
-  name: yup.string().min(1).required("Required")
-})
+  name: yup.string().min(1).required("Required"),
+});
 
-const CreateFormTag = ({open, handleClose }: CreateFormTagProps ) => {
+const CreateFormTag = ({
+  open,
+  handleClose,
+  page,
+  name,
+}: CreateFormTagProps) => {
   const [createTag] = useMutation(CREATE_TAG);
 
   return (
-    <Dialog 
-      fullWidth
-      open={open}
-      onClose={handleClose}
-    >
+    <Dialog fullWidth open={open} onClose={handleClose}>
       <>
-        <DialogTitle>
-          Create new tag
-        </DialogTitle>
+        <DialogTitle>Create new tag</DialogTitle>
         <DialogContent>
           <Formik
             initialValues={{
@@ -46,25 +58,24 @@ const CreateFormTag = ({open, handleClose }: CreateFormTagProps ) => {
                 console.log("create");
                 await createTag({
                   variables: {
-                    name: values.name
-                  }, 
+                    name: values.name,
+                  },
                   refetchQueries: [
                     {
                       query: GET_ALL_TAGS_BY_NAME_WITH_PAGINATION,
                       variables: {
-                        name: "",
-                        offset: 0,
-                        limit: 10
-                      }
+                        name: name,
+                        offset: page * 10,
+                        limit: 10,
+                      },
                     },
                     {
-                      query: 
-                      TOTAL_TAGS_BY_NAME,
+                      query: TOTAL_TAGS_BY_NAME,
                       variables: {
-                        name: "",
-                      }
-                    }
-                  ]
+                        name: name,
+                      },
+                    },
+                  ],
                 });
                 console.log("done");
                 handleClose();
@@ -72,10 +83,9 @@ const CreateFormTag = ({open, handleClose }: CreateFormTagProps ) => {
                 console.log(error);
               }
               setSubmitting(false);
-
             }}
             validationSchema={validationSchema}
-          > 
+          >
             {({
               handleSubmit,
               isSubmitting,
@@ -84,12 +94,12 @@ const CreateFormTag = ({open, handleClose }: CreateFormTagProps ) => {
               setFieldValue,
               values,
               touched,
-              errors
+              errors,
             }) => (
               <Form>
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
-                    <Field 
+                    <Field
                       component={TextField}
                       fullWidth
                       name="name"
@@ -97,7 +107,9 @@ const CreateFormTag = ({open, handleClose }: CreateFormTagProps ) => {
                       label="Name:"
                       value={values.name}
                       // @ts-ignore
-                      onChange={(e) => {setFieldValue("name", e.target.value)}}
+                      onChange={(e) => {
+                        setFieldValue("name", e.target.value);
+                      }}
                       error={Boolean(touched.name && errors.name)}
                       helperText={touched.name && errors.name}
                     />
@@ -106,38 +118,38 @@ const CreateFormTag = ({open, handleClose }: CreateFormTagProps ) => {
                 <ButtonContainer>
                   <Button
                     // type='submit'
-                    variant='contained'
-                    size='large'
+                    variant="contained"
+                    size="large"
                     fullWidth
                     disabled={isSubmitting}
                     onClick={submitForm}
                     style={{
-                      backgroundColor: '#F58732',
-                      marginRight: '3rem'
+                      backgroundColor: "#F58732",
+                      marginRight: "3rem",
                     }}
                   >
                     Create
                   </Button>
                   <Button
                     onClick={handleClose}
-                    variant='outlined'
-                    size='large'
+                    variant="outlined"
+                    size="large"
                     fullWidth
                     style={{
-                      borderColor: '#ED0034',
-                      borderWidth: '2px' 
-                  }}
+                      borderColor: "#ED0034",
+                      borderWidth: "2px",
+                    }}
                   >
                     Cancel
                   </Button>
                 </ButtonContainer>
               </Form>
-            )}     
+            )}
           </Formik>
         </DialogContent>
       </>
     </Dialog>
-  )
-}
+  );
+};
 
 export default CreateFormTag;

@@ -54,7 +54,11 @@ export class DeviceStatusesResolver {
     @Args('offset', { type: () => Int }, new ParseIntPipe()) offset: number,
     @Args('limit', { type: () => Int }, new ParseIntPipe()) limit: number,
   ) {
-    return this.deviceStatusesService.findAllByNameWithPagination(name, offset, limit);
+    return this.deviceStatusesService.findAllByNameWithPagination(
+      name,
+      offset,
+      limit,
+    );
   }
 
   @Mutation(() => DeviceStatus)
@@ -78,7 +82,7 @@ export class DeviceStatusesResolver {
       await this.deviceStatusesService.remove(id);
       return true;
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 

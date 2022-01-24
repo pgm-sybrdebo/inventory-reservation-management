@@ -30,14 +30,13 @@ export class CreateModelInput {
   description: string;
 
   @IsNotEmpty()
-  @IsPositive()
   @Min(0)
   @Max(1000)
   @IsInt()
   @Field((type) => Int)
   quantity: number;
 
-   // @IsPositive()
+  // @IsPositive()
   @IsOptional()
   @Min(0)
   @Max(1000)
@@ -61,7 +60,7 @@ export class CreateModelInput {
 
   @IsNotEmpty()
   @IsPositive()
-  @Min(0)
+  @Min(1)
   @Max(1000)
   @Field((type) => Int)
   max_reservation_time: number;

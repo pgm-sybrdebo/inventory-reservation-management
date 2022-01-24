@@ -34,6 +34,15 @@ export interface modelInfo {
   specifications: string[],
   tags: string[],
 }
+export interface Model {
+  id: string,
+  name: string,
+  quantity: number,
+  readyQuantity: number,
+  description: string,
+  brand: string,
+  specifications: string,
+}
 
 export interface InfoDevice {
   name: string,
@@ -234,4 +243,9 @@ export interface FilterParams {
   name: string,
   onChange: (value: any) => void,
   value: any
+}
+
+export interface DeviceStatus {
+  id: string,
+  name: string
 }

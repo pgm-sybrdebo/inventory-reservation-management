@@ -33,20 +33,37 @@ import { ModelsService } from 'src/models/models.service';
 export class DevicesResolver {
   constructor(
     private readonly devicesService: DevicesService,
-    private readonly modelsService: ModelsService
-    ) {}
+    private readonly modelsService: ModelsService,
+  ) {}
 
   @Mutation(() => Device)
-  // @UseGuards(JwtAuthGuard, RolesGuard)
-  // @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   async createDevice(
     @Args('createDeviceInput') createDeviceInput: CreateDeviceInput,
   ) {
     const createdDevice = await this.devicesService.create(createDeviceInput);
-    const updatedReadyQuantityModel = await this.modelsService.recalculateReadyQuantity(createdDevice.modelId);
-    const updatedQuantityModel = await this.modelsService.recalculateQuantity(createdDevice.modelId);
+    const updatedReadyQuantityModel =
+      await this.modelsService.recalculateReadyQuantity(createdDevice.modelId);
+    const updatedQuantityModel = await this.modelsService.recalculateQuantity(
+      createdDevice.modelId,
+    );
 
     return createdDevice;
+  }
+
+  @Query(() => Int, { name: 'totalDevicesByName' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  async totalDevicesByName(@Args('name', { type: () => String }) name: string) {
+    return this.devicesService.countWithName(name);
+  }
+
+  @Query(() => Int, { name: 'totalDevicesInCheckByName' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  async totalDevicesInCheckByName(@Args('name', { type: () => String }) name: string) {
+    return this.devicesService.countDevicesInCheckWithName(name);
   }
 
   @Query(() => [Device], { name: 'devices' })
@@ -54,6 +71,28 @@ export class DevicesResolver {
   @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   findAll() {
     return this.devicesService.findAll();
+  }
+
+  @Query(() => [Device], { name: 'devicesByNameWithPagination' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  findAllByNameWithPagination(
+    @Args('name', { type: () => String }) name: string,
+    @Args('offset', { type: () => Int }, new ParseIntPipe()) offset: number,
+    @Args('limit', { type: () => Int }, new ParseIntPipe()) limit: number,
+  ) {
+    return this.devicesService.findAllByNameWithPagination(name, offset, limit);
+  }
+
+  @Query(() => [Device], { name: 'devicesInCheckByNameWithPagination' })
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  findAllInCheckByNameWithPagination(
+    @Args('name', { type: () => String }) name: string,
+    @Args('offset', { type: () => Int }, new ParseIntPipe()) offset: number,
+    @Args('limit', { type: () => Int }, new ParseIntPipe()) limit: number,
+  ) {
+    return this.devicesService.findAllInCheckByNameWithPagination(name, offset, limit);
   }
 
   @Query(() => [Device], { name: 'devicesWithPagination' })
@@ -100,22 +139,14 @@ export class DevicesResolver {
     return this.devicesService.findAndCount();
   }
 
-
   @Query(() => [Total], { name: 'totalDevicesByModelId' })
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   async GetTotalDevicesByModelId(
-    @Args('modelId', new ParseUUIDPipe()) modelId: string
+    @Args('modelId', new ParseUUIDPipe()) modelId: string,
   ) {
     return this.devicesService.getTotalDevicesByModelId(modelId);
   }
-
-  // @Query(() => Int, { name: 'totalReadyDevices' })
-  // @UseGuards(JwtAuthGuard, RolesGuard)
-  // @Roles(Role.ADMIN, Role.SUPER_ADMIN)
-  // async findTotalReady() {
-  //   return this.devicesService.findAndCountReadyDevices();
-  // }
 
   @Query(() => Int, { name: 'differenceLastMonthDevices' })
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -171,25 +202,39 @@ export class DevicesResolver {
   }
 
   @Mutation(() => Device)
-  // @UseGuards(JwtAuthGuard, RolesGuard)
-  // @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   async updateDevice(
     @Args('updateDeviceInput') updateDeviceInput: UpdateDeviceInput,
   ) {
-    const updatedDevice = await this.devicesService.update(updateDeviceInput.id, updateDeviceInput);
-    console.log("update", updatedDevice.modelId);
-    const updatedQuantityModel = await this.modelsService.recalculateReadyQuantity(updatedDevice.modelId);
+    const updatedDevice = await this.devicesService.update(
+      updateDeviceInput.id,
+      updateDeviceInput,
+    );
+    console.log('update', updatedDevice.modelId);
+    const updatedQuantityModel =
+      await this.modelsService.recalculateReadyQuantity(updatedDevice.modelId);
     return updatedDevice;
   }
 
-  @Mutation(() => Device)
+  @Mutation(() => Boolean)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   async removeDevice(@Args('id', new ParseUUIDPipe()) id: string) {
-    const deletedDevice = await this.devicesService.findOne(id);
-    const updatedReadyQuantityModel = await this.modelsService.recalculateReadyQuantity(deletedDevice.modelId);
-    const updatedQuantityModel = await this.modelsService.recalculateQuantity(deletedDevice.modelId);
-    return this.devicesService.remove(id);
+    try {
+      const deletedDevice = await this.devicesService.findOne(id);
+      const updatedReadyQuantityModel =
+        await this.modelsService.recalculateReadyQuantity(
+          deletedDevice.modelId,
+        );
+      const updatedQuantityModel = await this.modelsService.recalculateQuantity(
+        deletedDevice.modelId,
+      );
+      await this.devicesService.remove(id);
+      return true;
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   @Mutation(() => Device)
@@ -197,8 +242,11 @@ export class DevicesResolver {
   @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   async softRemoveDevice(@Args('id', new ParseUUIDPipe()) id: string) {
     const deletedDevice = await this.devicesService.findOne(id);
-    const updatedReadyQuantityModel = await this.modelsService.recalculateReadyQuantity(deletedDevice.modelId);
-    const updatedQuantityModel = await this.modelsService.recalculateQuantity(deletedDevice.modelId);
+    const updatedReadyQuantityModel =
+      await this.modelsService.recalculateReadyQuantity(deletedDevice.modelId);
+    const updatedQuantityModel = await this.modelsService.recalculateQuantity(
+      deletedDevice.modelId,
+    );
     return this.devicesService.softRemove(id);
   }
 

@@ -6,14 +6,14 @@ input CreateDamageInput {
   description: String!
   deviceId: String!
   picture: String!
-  reservationId: String!
+  reservationId: String
   title: String!
 }
 
 input CreateDeviceInput {
   deviceStatusId: String!
   modelId: String!
-  qr_code: String!
+  qr_code: String
   userId: String
 }
 
@@ -66,7 +66,7 @@ type Damage {
   id: String!
   picture: String!
   reservation: Reservation!
-  reservationId: String!
+  reservationId: String
   title: String!
 }
 
@@ -79,7 +79,7 @@ type Device {
   id: String!
   model: Model!
   modelId: String!
-  qr_code: String!
+  qr_code: String
   reservations: [Reservation!]
   updated_on: Timestamp!
   user: User!
@@ -148,9 +148,9 @@ type Mutation {
   createTag(createTagInput: CreateTagInput!): Tag!
   login(loginUserInput: LoginUserInput!): LoginResponse!
   removeDamage(id: String!): Damage!
-  removeDevice(id: String!): Device!
+  removeDevice(id: String!): Boolean!
   removeDeviceStatus(id: String!): Boolean!
-  removeMedia(id: String!): Media!
+  removeMedia(id: String!): Boolean!
   removeModel(id: String!): Boolean!
   removeModelFromTag(modelId: String!, tagId: String!): Model!
   removeReservation(id: String!): Boolean!
@@ -191,6 +191,8 @@ type Query {
   deviceStatuses: [DeviceStatus!]!
   deviceStatusesByNameWithPagination(limit: Int!, name: String!, offset: Int!): [DeviceStatus!]!
   devices: [Device!]!
+  devicesByNameWithPagination(limit: Int!, name: String!, offset: Int!): [Device!]!
+  devicesInCheckByNameWithPagination(limit: Int!, name: String!, offset: Int!): [Device!]!
   devicesWithPagination(limit: Int!, offset: Int!): [Device!]!
   differenceLastMonthDevices: Int!
   differenceLastMonthModels: Int!
@@ -200,6 +202,7 @@ type Query {
   getDevicesByModelIdWithPagination(limit: Int!, modelId: String!, offset: Int!): [Device!]!
   inCheckDevices: [Device!]!
   media(id: String!): Media!
+  mediaByModelId(modelId: String!): Media!
   medias: [Media!]!
   model(id: String!): Model!
   models: [Model!]!
@@ -226,6 +229,8 @@ type Query {
   totalDeviceStatusesByName(name: String!): Int!
   totalDevices: Int!
   totalDevicesByModelId(modelId: String!): [Total!]!
+  totalDevicesByName(name: String!): Int!
+  totalDevicesInCheckByName(name: String!): Int!
   totalModels: Int!
   totalModelsByName(name: String!): Int!
   totalModelsWithFilter(filter: Filter!): [Total!]!

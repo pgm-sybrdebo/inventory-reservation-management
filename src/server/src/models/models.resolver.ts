@@ -11,7 +11,12 @@ import { ModelsService } from './models.service';
 import { Model } from './entities/model.entity';
 import { CreateModelInput } from './dto/create-model.input';
 import { UpdateModelInput } from './dto/update-model.input';
-import { Optional, ParseIntPipe, ParseUUIDPipe, UseGuards } from '@nestjs/common';
+import {
+  Optional,
+  ParseIntPipe,
+  ParseUUIDPipe,
+  UseGuards,
+} from '@nestjs/common';
 import { Media } from 'src/medias/entities/media.entity';
 import { Device } from 'src/devices/entities/device.entity';
 import { Roles } from 'src/auth/decorators/roles.decorator';
@@ -24,9 +29,7 @@ import { Total } from './dto/total';
 
 @Resolver(() => Model)
 export class ModelsResolver {
-  constructor(
-    private readonly modelsService: ModelsService,
-  ) {}
+  constructor(private readonly modelsService: ModelsService) {}
 
   @Mutation(() => Model)
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -38,9 +41,7 @@ export class ModelsResolver {
   @Query(() => Int, { name: 'totalModelsByName' })
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.SUPER_ADMIN)
-  async totalModelsByName(
-    @Args('name', { type: () => String }) name: string,
-  ) {
+  async totalModelsByName(@Args('name', { type: () => String }) name: string) {
     return this.modelsService.countWithName(name);
   }
 
@@ -91,7 +92,11 @@ export class ModelsResolver {
     @Args('offset', { type: () => Int }, new ParseIntPipe()) offset: number,
     @Args('limit', { type: () => Int }, new ParseIntPipe()) limit: number,
   ) {
-    return this.modelsService.findAllByFilterWithPagination(filter, offset, limit);
+    return this.modelsService.findAllByFilterWithPagination(
+      filter,
+      offset,
+      limit,
+    );
   }
 
   // @Query(() => [Model], { name: 'modelsByTagId' })
@@ -110,14 +115,13 @@ export class ModelsResolver {
     return this.modelsService.findAndCount();
   }
 
-
   @Query(() => [Total], { name: 'totalModelsWithFilter' })
   async findTotalWithFilter(
-    @Args('filter') filter: Filter
+    @Args('filter') filter: Filter,
     // @Optional()
     // @Args('tagIds', { type: () => [String] }) tagIds: string[], nullable: true
     // @Args({
-    //   name: 'tagIds', 
+    //   name: 'tagIds',
     //   type: () =>  [String],
     //   nullable: true,
     // }
@@ -159,12 +163,12 @@ export class ModelsResolver {
   @Mutation(() => Boolean)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.SUPER_ADMIN)
-  async removeModel(@Args('id', new ParseUUIDPipe()) id: string) { 
+  async removeModel(@Args('id', new ParseUUIDPipe()) id: string) {
     try {
       await this.modelsService.remove(id);
       return true;
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 

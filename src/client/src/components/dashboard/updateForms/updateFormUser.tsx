@@ -1,10 +1,27 @@
-
-import styled from 'styled-components';
-import { Formik, Form, Field } from 'formik'
+import styled from "styled-components";
+import { Formik, Form, Field } from "formik";
 import * as yup from "yup";
-import { useMutation } from '@apollo/client';
-import { GET_ALL_USERS, GET_ALL_USERS_BY_LAST_NAME_AND_PROFESSION_WITH_PAGINATION, GET_ALL_USERS_BY_LAST_NAME_AND_ROLE_WITH_PAGINATION, GET_ALL_USERS_BY_LAST_NAME_WITH_PAGINATION, TOTAL_USERS_BY_LAST_NAME, TOTAL_USERS_BY_LAST_NAME_AND_PROFESSION, TOTAL_USERS_BY_LAST_NAME_AND_ROLE, UPDATE_USER_ADMIN } from '../../../graphql/users';
-import { Button, Dialog, DialogContent, DialogTitle, Grid, MenuItem, Select, TextField } from '@material-ui/core';
+import { useMutation } from "@apollo/client";
+import {
+  GET_ALL_USERS,
+  GET_ALL_USERS_BY_LAST_NAME_AND_PROFESSION_WITH_PAGINATION,
+  GET_ALL_USERS_BY_LAST_NAME_AND_ROLE_WITH_PAGINATION,
+  GET_ALL_USERS_BY_LAST_NAME_WITH_PAGINATION,
+  TOTAL_USERS_BY_LAST_NAME,
+  TOTAL_USERS_BY_LAST_NAME_AND_PROFESSION,
+  TOTAL_USERS_BY_LAST_NAME_AND_ROLE,
+  UPDATE_USER_ADMIN,
+} from "../../../graphql/users";
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  MenuItem,
+  Select,
+  TextField,
+} from "@material-ui/core";
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -13,13 +30,13 @@ const ButtonContainer = styled.div`
   margin: 3rem 0;
 `;
 
-
 interface UpdateFormUserProps {
-  selectedRow: any
-  open: boolean,
-  handleClose: any
+  selectedRow: any;
+  open: boolean;
+  handleClose: () => void;
+  page: number;
+  name: string;
 }
-
 
 const validationSchema = yup.object({
   firstName: yup.string().min(1).required("Required"),
@@ -29,23 +46,20 @@ const validationSchema = yup.object({
   profession: yup.number().min(0).max(1).required("Required"),
   //cardNumber: yup.number().min(10000, "Card number is 5 numbers").max(99999, "Card number is 5 numbers").required("Required"),
   cardNumber: yup.number().required("Required"),
-})
+});
 
-
-
-
-const UpdateFormUser = ({selectedRow, open, handleClose}: UpdateFormUserProps) => {
-  
+const UpdateFormUser = ({
+  selectedRow,
+  open,
+  handleClose,
+  page,
+  name,
+}: UpdateFormUserProps) => {
   const [updateUser] = useMutation(UPDATE_USER_ADMIN);
 
-
-  console.log("row", selectedRow)
+  console.log("row", selectedRow);
   return (
-    <Dialog 
-      fullWidth
-      open={open}
-      onClose={handleClose}
-    >
+    <Dialog fullWidth open={open} onClose={handleClose}>
       <>
         <DialogTitle>
           Update {selectedRow.firstName} {selectedRow.lastName}
@@ -72,75 +86,78 @@ const UpdateFormUser = ({selectedRow, open, handleClose}: UpdateFormUserProps) =
                     email: values.email,
                     role: Number(values.role),
                     profession: Number(values.profession),
-                    cardNumber: values.cardNumber
-                  }, 
+                    cardNumber: values.cardNumber,
+                  },
                   refetchQueries: [
                     {
                       query: GET_ALL_USERS,
                     },
                     {
-                      query: GET_ALL_USERS_BY_LAST_NAME_AND_PROFESSION_WITH_PAGINATION,
+                      query:
+                        GET_ALL_USERS_BY_LAST_NAME_AND_PROFESSION_WITH_PAGINATION,
                       variables: {
-                        lastName: "",
+                        lastName: name,
                         profession: 0,
                         limit: 10,
-                        offset: 0
-                      }
+                        offset: page * 10,
+                      },
                     },
                     {
-                      query: GET_ALL_USERS_BY_LAST_NAME_AND_PROFESSION_WITH_PAGINATION,
+                      query:
+                        GET_ALL_USERS_BY_LAST_NAME_AND_PROFESSION_WITH_PAGINATION,
                       variables: {
-                        lastName: "",
+                        lastName: name,
                         profession: 1,
                         limit: 10,
-                        offset: 0
-                      }
+                        offset: page * 10,
+                      },
                     },
                     {
-                      query: GET_ALL_USERS_BY_LAST_NAME_AND_ROLE_WITH_PAGINATION,
+                      query:
+                        GET_ALL_USERS_BY_LAST_NAME_AND_ROLE_WITH_PAGINATION,
                       variables: {
-                        lastName: "",
+                        lastName: name,
                         role: 1,
                         limit: 10,
-                        offset: 0
-                      }
+                        offset: page * 10,
+                      },
                     },
                     {
                       query: GET_ALL_USERS_BY_LAST_NAME_WITH_PAGINATION,
                       variables: {
-                        lastName: "",
+                        lastName: name,
                         limit: 10,
-                        offset: 0
-                      }
+                        offset: page * 10,
+                      },
                     },
                     {
                       query: TOTAL_USERS_BY_LAST_NAME_AND_ROLE,
                       variables: {
-                        lastName: "",
+                        lastName: name,
                         role: 1,
-                      }
+                      },
                     },
                     {
                       query: TOTAL_USERS_BY_LAST_NAME_AND_PROFESSION,
                       variables: {
-                        lastName: "",
+                        lastName: name,
                         profession: 1,
-                      }
+                      },
                     },
                     {
                       query: TOTAL_USERS_BY_LAST_NAME_AND_PROFESSION,
                       variables: {
-                        lastName: "",
+                        lastName: name,
                         profession: 0,
-                      }
+                      },
                     },
                     {
                       query: TOTAL_USERS_BY_LAST_NAME,
                       variables: {
-                        lastName: "",
-                      }
+                        lastName: name,
+                      },
                     },
-                  ]
+                  ],
                 });
                 console.log("done");
                 handleClose();
@@ -148,10 +165,9 @@ const UpdateFormUser = ({selectedRow, open, handleClose}: UpdateFormUserProps) =
                 console.log(error);
               }
               setSubmitting(false);
-
             }}
             validationSchema={validationSchema}
-          > 
+          >
             {({
               handleSubmit,
               isSubmitting,
@@ -160,12 +176,12 @@ const UpdateFormUser = ({selectedRow, open, handleClose}: UpdateFormUserProps) =
               setFieldValue,
               values,
               touched,
-              errors
+              errors,
             }) => (
               <Form>
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
-                    <Field 
+                    <Field
                       component={TextField}
                       fullWidth
                       name="firstName"
@@ -173,13 +189,15 @@ const UpdateFormUser = ({selectedRow, open, handleClose}: UpdateFormUserProps) =
                       label="First name:"
                       value={values.firstName}
                       // @ts-ignore
-                      onChange={(e) => {setFieldValue("firstName", e.target.value)}}
+                      onChange={(e) => {
+                        setFieldValue("firstName", e.target.value);
+                      }}
                       error={Boolean(touched.firstName && errors.firstName)}
                       helperText={touched.firstName && errors.firstName}
                     />
                   </Grid>
                   <Grid item xs={12}>
-                    <Field 
+                    <Field
                       component={TextField}
                       fullWidth
                       name="lastName"
@@ -187,13 +205,15 @@ const UpdateFormUser = ({selectedRow, open, handleClose}: UpdateFormUserProps) =
                       label="Last name:"
                       value={values.lastName}
                       // @ts-ignore
-                      onChange={(e) => {setFieldValue("lastName", e.target.value)}}
+                      onChange={(e) => {
+                        setFieldValue("lastName", e.target.value);
+                      }}
                       error={Boolean(touched.lastName && errors.lastName)}
                       helperText={touched.lastName && errors.lastName}
                     />
                   </Grid>
                   <Grid item xs={12}>
-                    <Field 
+                    <Field
                       component={TextField}
                       fullWidth
                       name="email"
@@ -201,13 +221,15 @@ const UpdateFormUser = ({selectedRow, open, handleClose}: UpdateFormUserProps) =
                       label="Email:"
                       value={values.email}
                       // @ts-ignore
-                      onChange={(e) => {setFieldValue("email", e.target.value)}}
+                      onChange={(e) => {
+                        setFieldValue("email", e.target.value);
+                      }}
                       error={Boolean(touched.email && errors.email)}
                       helperText={touched.email && errors.email}
                     />
                   </Grid>
                   <Grid item xs={12}>
-                    <Field 
+                    <Field
                       component={TextField}
                       fullWidth
                       name="cardNumber"
@@ -215,20 +237,24 @@ const UpdateFormUser = ({selectedRow, open, handleClose}: UpdateFormUserProps) =
                       label="Card number:"
                       value={values.cardNumber}
                       // @ts-ignore
-                      onChange={(e) => {setFieldValue("cardNumber", e.target.value)}}
+                      onChange={(e) => {
+                        setFieldValue("cardNumber", e.target.value);
+                      }}
                       error={Boolean(touched.cardNumber && errors.cardNumber)}
                       helperText={touched.cardNumber && errors.cardNumber}
                     />
                   </Grid>
                   <Grid item xs={12}>
-                    <Field 
+                    <Field
                       component={Select}
                       fullWidth
                       name="profession"
                       label="Profession:"
                       value={values.profession}
                       // @ts-ignore
-                      onChange={(e) => {setFieldValue("profession", e.target.value)}}
+                      onChange={(e) => {
+                        setFieldValue("profession", e.target.value);
+                      }}
                       error={Boolean(touched.profession && errors.profession)}
                       helperText={touched.profession && errors.profession}
                     >
@@ -237,14 +263,16 @@ const UpdateFormUser = ({selectedRow, open, handleClose}: UpdateFormUserProps) =
                     </Field>
                   </Grid>
                   <Grid item xs={12}>
-                    <Field 
+                    <Field
                       component={Select}
                       fullWidth
                       name="role"
                       label="Role:"
                       value={values.role}
                       // @ts-ignore
-                      onChange={(e) => {setFieldValue("role", e.target.value)}}
+                      onChange={(e) => {
+                        setFieldValue("role", e.target.value);
+                      }}
                       error={Boolean(touched.role && errors.role)}
                       helperText={touched.role && errors.role}
                     >
@@ -257,39 +285,38 @@ const UpdateFormUser = ({selectedRow, open, handleClose}: UpdateFormUserProps) =
                 <ButtonContainer>
                   <Button
                     // type='submit'
-                    variant='contained'
-                    size='large'
+                    variant="contained"
+                    size="large"
                     fullWidth
                     disabled={isSubmitting}
                     onClick={submitForm}
                     style={{
-                      backgroundColor: '#F58732',
-                      marginRight: '3rem'
+                      backgroundColor: "#F58732",
+                      marginRight: "3rem",
                     }}
                   >
                     Update
                   </Button>
                   <Button
                     onClick={handleClose}
-                    variant='outlined'
-                    size='large'
+                    variant="outlined"
+                    size="large"
                     fullWidth
                     style={{
-                      borderColor: '#ED0034',
-                      borderWidth: '2px' 
-                  }}
+                      borderColor: "#ED0034",
+                      borderWidth: "2px",
+                    }}
                   >
                     Cancel
                   </Button>
                 </ButtonContainer>
               </Form>
-            )}     
+            )}
           </Formik>
         </DialogContent>
       </>
-
     </Dialog>
-  )
-}
+  );
+};
 
 export default UpdateFormUser;

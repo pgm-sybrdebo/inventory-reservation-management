@@ -1,5 +1,56 @@
 import { gql } from "@apollo/client";
 
+
+export const TOTAL_DEVICES_BY_NAME = gql`
+query totalDevicesByName($name: String!) {
+  totalDevicesByName(name: $name)
+}
+`;
+
+export const GET_ALL_DEVICES_BY_NAME_WITH_PAGINATION = gql`
+  query ($name: String!, $offset: Int!, $limit: Int!){
+    devicesByNameWithPagination(name: $name, offset: $offset, limit: $limit) {
+      id
+      model {
+        id
+        name
+      }
+      deviceStatus {
+        id
+        name
+      }
+      qr_code
+      created_on
+      updated_on
+    }
+  }
+`;
+
+export const TOTAL_DEVICES_IN_CHECK_BY_NAME = gql`
+query totalDevicesInCheckByName($name: String!) {
+  totalDevicesInCheckByName(name: $name)
+}
+`;
+
+export const GET_ALL_DEVICES_IN_CHECK_BY_NAME_WITH_PAGINATION = gql`
+  query ($name: String!, $offset: Int!, $limit: Int!){
+    devicesInCheckByNameWithPagination(name: $name, offset: $offset, limit: $limit) {
+      id
+      model {
+        id
+        name
+      }
+      deviceStatus {
+        id
+        name
+      }
+      qr_code
+      created_on
+      updated_on
+    }
+  }
+`;
+
 export const TOTAL_DEVICES = gql`
   query totalDevices {
     totalDevices
@@ -127,7 +178,7 @@ export const GET_ALL_IN_CHECK_DEVICES = gql`
 
 export const CREATE_DEVICE = gql`
 
-mutation ($modelId: String!, $deviceStatusId: String!, $qr_code: String! ) {
+mutation ($modelId: String!, $deviceStatusId: String!, $qr_code: String ) {
   createDevice(createDeviceInput: {
     modelId: $modelId,
     deviceStatusId: $deviceStatusId,
@@ -154,7 +205,13 @@ mutation ($id: String!, $modelId: String, $deviceStatusId: String, $userId: Stri
 
 export const REMOVE_DEVICE = gql`
   mutation ($id: String!){
-    removeDevice(id: $id) {
+    removeDevice(id: $id)
+  }
+`;
+
+export const SOFT_REMOVE_DEVICE = gql`
+  mutation ($id: String!){
+    softRemoveDevice(id: $id) {
       id
     }
   }
@@ -201,20 +258,6 @@ export const GET_DEVICES_BY_MODELID = gql`
     }
   }
 `;
-
-// export const GET_DEVICES_BY_MODELID_WITH_PAGINATION = gql`
-//   query ($modelId: String!, $offset: Int!, $limit: Int!){
-//     getDevicesByModelIdWithPagination(modelId: $modelId, offset: $offset, limit: $limit) {
-//       id
-//       qr_code
-//       damages {
-//         title
-//         picture 
-//         description
-//       }
-//     }
-//   }
-// `;
 
 
 export const GET_DEVICES_TOTAL_BY_MODELID = gql`

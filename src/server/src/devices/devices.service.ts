@@ -17,6 +17,7 @@ import {
   Not,
   Equal,
   IsNull,
+  Raw,
 } from 'typeorm';
 import { CreateDeviceInput } from './dto/create-device.input';
 import { UpdateDeviceInput } from './dto/update-device.input';
@@ -47,7 +48,74 @@ export class DevicesService {
     return this.devicesRepository.save(newDevice);
   }
 
-  // (Device[] | number)[]
+  async countWithName(name: string): Promise<number> {
+    const rawData = await this.devicesRepository.query(`
+    SELECT
+      COUNT(DISTINCT device.id) AS total
+    FROM
+      "device"
+    INNER JOIN "model" ON device."modelId" = model.id
+    WHERE device.deleted_on IS NULL
+    AND LOWER(model.name) LIKE LOWER('${name}%')
+    `);
+    return rawData[0].total;
+  }
+
+  async countDevicesInCheckWithName(name: string): Promise<number> {
+    const rawData = await this.devicesRepository.query(`
+    SELECT
+      COUNT(DISTINCT device.id) AS total
+    FROM
+      "device"
+    INNER JOIN "model" ON device."modelId" = model.id
+    WHERE device.deleted_on IS NULL
+    AND LOWER(model.name) LIKE LOWER('${name}%')
+    AND device."deviceStatusId" = '${process.env.DEVICE_STATUS_INCHECK}'
+    `);
+    return rawData[0].total;
+  }
+
+  findAllByNameWithPagination(
+    name: string,
+    offset: number,
+    limit: number,
+  ): Promise<Device[]> {
+    return this.devicesRepository.find({
+      relations: ['model'],
+      where: {
+        model: {
+          name: Raw((alias) => `LOWER(${alias}) Like '${name}%'`),
+        },
+      },
+      skip: offset,
+      take: limit,
+      order: {
+        created_on: 'ASC',
+      },
+    });
+  }
+
+  findAllInCheckByNameWithPagination(
+    name: string,
+    offset: number,
+    limit: number,
+  ): Promise<Device[]> {
+    return this.devicesRepository.find({
+      relations: ['model'],
+      where: {
+        deviceStatusId: process.env.DEVICE_STATUS_INCHECK,
+        model: {
+          name: Raw((alias) => `LOWER(${alias}) Like '${name}%'`),
+        },
+      },
+      skip: offset,
+      take: limit,
+      order: {
+        created_on: 'ASC',
+      },
+    });
+  }
+
   async findAllPagination(offset: number, limit: number): Promise<any> {
     const test = await this.devicesRepository.findAndCount({
       skip: offset,
@@ -56,7 +124,6 @@ export class DevicesService {
         id: 'ASC',
       },
     });
-    //console.log(test);
     return this.devicesRepository.find({
       skip: offset,
       take: limit,
@@ -84,7 +151,7 @@ export class DevicesService {
 
   findAllInCheckDevices(): Promise<Device[]> {
     return this.devicesRepository.find({
-      deviceStatusId: 'ec2ed711-e4a3-42f6-b441-0e91f98f31ba',
+      deviceStatusId: process.env.DEVICE_STATUS_INCHECK,
     });
   }
 
@@ -114,8 +181,6 @@ export class DevicesService {
     //console.log(rawData);
     return rawData;
   }
-
-
 
   // findAndCountReadyDevices(): Promise<number> {
   //   return this.devicesRepository.findAndCount({

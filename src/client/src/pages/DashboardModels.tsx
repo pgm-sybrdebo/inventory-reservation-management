@@ -1,16 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import AdminLayout from '../layouts/AdminLayout';
+import AdminLayout from "../layouts/AdminLayout";
 import Table from "../components/dashboard/Table";
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { GridCellParams, MuiEvent } from "@mui/x-data-grid";
-import ConfirmDialog from '../components/dashboard/dialogs/ConfirmDialog';
-import SearchBar from 'material-ui-search-bar';
-import Loading from '../components/dashboard/Loading';
-import { Button } from '@material-ui/core';
-import { columnsModels } from '../components/dashboard/columns/columnsModel';
-import { GET_ALL_MODELS_BY_NAME_WITH_PAGINATION, REMOVE_MODEL, SOFT_REMOVE_MODEL, TOTAL_MODELS_BY_NAME } from '../graphql/models';
-
+import ConfirmDialog from "../components/dashboard/dialogs/ConfirmDialog";
+import SearchBar from "material-ui-search-bar";
+import Loading from "../components/dashboard/Loading";
+import { Button } from "@material-ui/core";
+import { columnsModels } from "../components/dashboard/columns/columnsModel";
+import {
+  GET_ALL_MODELS_BY_NAME_WITH_PAGINATION,
+  REMOVE_MODEL,
+  SOFT_REMOVE_MODEL,
+  TOTAL_MODELS_BY_NAME,
+} from "../graphql/models";
+import CreateFormModel from "../components/dashboard/createForms/CreateFormModel";
+import UpdateFormModel from "../components/dashboard/updateForms/UpdateFormModel";
 
 const Title = styled.h1`
   margin: 1.5rem;
@@ -27,7 +33,7 @@ const SearchContainer = styled.div`
 `;
 
 const SearchButtonContainer = styled.div`
-  display: flex; 
+  display: flex;
   justify-content: space-between;
   align-items: center;
 
@@ -41,26 +47,22 @@ const SearchButtonContainer = styled.div`
 `;
 
 interface initState {
-  action: string
+  action: string;
 }
 
+type ActionType = { action: "softDelete" } | { action: "delete" };
 
-type ActionType = 
-  | { action: "softDelete" }
-  | { action: "delete" }
-
-const initialState = { action: "" }
-function actionReducer (state: initState, action: ActionType): initState {
+const initialState = { action: "" };
+function actionReducer(state: initState, action: ActionType): initState {
   switch (action.action) {
-    case 'softDelete':
+    case "softDelete":
       return { action: "softDelete" };
-    case 'delete':
+    case "delete":
       return { action: "delete" };
     default:
-      return state;  
+      return state;
   }
 }
-
 
 const DashboardModels = () => {
   const [selectedRow, setSelectedRow] = useState();
@@ -76,12 +78,13 @@ const DashboardModels = () => {
   const [page, setPage] = useState(0);
   const [state, dispatch] = React.useReducer(actionReducer, initialState);
 
-  const {data: totalData} = useQuery(TOTAL_MODELS_BY_NAME, {
+  const { data: totalData } = useQuery(TOTAL_MODELS_BY_NAME, {
     variables: {
-      name: searchValue
-    }
+      name: searchValue,
+    },
   });
-  const [getModelsByNameWithPagination, { error, loading, data }] = useLazyQuery(GET_ALL_MODELS_BY_NAME_WITH_PAGINATION);
+  const [getModelsByNameWithPagination, { error, loading, data }] =
+    useLazyQuery(GET_ALL_MODELS_BY_NAME_WITH_PAGINATION);
   //const [updateModel] = useMutation(UPDATE_MODEL);
   const [softDeleteModel] = useMutation(SOFT_REMOVE_MODEL);
   const [deleteModel] = useMutation(REMOVE_MODEL);
@@ -91,11 +94,10 @@ const DashboardModels = () => {
       variables: {
         name: searchValue,
         offset: page * 10,
-        limit: 10
-      }
-    })
-
-  }, [getModelsByNameWithPagination, page, searchValue])
+        limit: 10,
+      },
+    });
+  }, [getModelsByNameWithPagination, page, searchValue]);
 
   const currentlySelectedRow = (
     params: GridCellParams,
@@ -103,98 +105,112 @@ const DashboardModels = () => {
   ) => {
     const { field } = params;
 
-    if (field !== "edit" && field !== "delete" && field !== "softDelete" ) {
+    if (field !== "edit" && field !== "delete" && field !== "softDelete") {
       return;
     }
 
-    console.log("tag", event.target instanceof Element ? event.target.tagName : "nope")
-    if (field === "edit" && event.target instanceof Element && (event.target.tagName === "BUTTON" || event.target.tagName === "svg" || event.target.tagName === "path")) {
+    if (
+      field === "edit" &&
+      event.target instanceof Element &&
+      (event.target.tagName === "BUTTON" ||
+        event.target.tagName === "svg" ||
+        event.target.tagName === "path")
+    ) {
       setSelectedRow(params.row);
       setIsOpen(true);
-    } else if (field === "softDelete" && event.target instanceof Element && (event.target.tagName === "BUTTON" || event.target.tagName === "svg" || event.target.tagName === "path")){
-      console.log("ano");
+    } else if (
+      field === "softDelete" &&
+      event.target instanceof Element &&
+      (event.target.tagName === "BUTTON" ||
+        event.target.tagName === "svg" ||
+        event.target.tagName === "path")
+    ) {
       setSelectedRow(params.row);
       setIsOpenDialog(true);
       setTitle("Confirm soft delete of this model");
       setMessage("Are you sure you want to soft delete this model?");
-      dispatch({ action: "softDelete" })
-    } else if (field === "delete" && event.target instanceof Element && (event.target.tagName === "BUTTON" || event.target.tagName === "svg" || event.target.tagName === "path")){
-      console.log("ano");
+      dispatch({ action: "softDelete" });
+    } else if (
+      field === "delete" &&
+      event.target instanceof Element &&
+      (event.target.tagName === "BUTTON" ||
+        event.target.tagName === "svg" ||
+        event.target.tagName === "path")
+    ) {
       setSelectedRow(params.row);
       setIsOpenDialog(true);
       setTitle("Confirm delete of this model");
-      setMessage("Are you sure you want to delete this model? The data of this model will be lost for ever.");
-      dispatch({ action: "delete" })
+      setMessage(
+        "Are you sure you want to delete this model? The data of this model will be lost for ever."
+      );
+      dispatch({ action: "delete" });
     }
   };
 
-  const softDeleteCurrentModel = async (id:string) => {
+  const softDeleteCurrentModel = async (id: string) => {
     try {
       await softDeleteModel({
         variables: {
           id: id,
-        }, 
+        },
         refetchQueries: [
           {
             query: GET_ALL_MODELS_BY_NAME_WITH_PAGINATION,
             variables: {
               name: searchValue,
               offset: page * 10,
-              limit: 10
-            }
+              limit: 10,
+            },
           },
           {
-            query: 
-            TOTAL_MODELS_BY_NAME,
+            query: TOTAL_MODELS_BY_NAME,
             variables: {
               name: searchValue,
-            }
-          }
-        ]
+            },
+          },
+        ],
       });
       handleClose();
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
-  const deleteCurrentModel = async (id:string) => {
+  const deleteCurrentModel = async (id: string) => {
     try {
       await deleteModel({
         variables: {
           id: id,
-        }, 
+        },
         refetchQueries: [
           {
             query: GET_ALL_MODELS_BY_NAME_WITH_PAGINATION,
             variables: {
               name: searchValue,
               offset: page * 10,
-              limit: 10
-            }
+              limit: 10,
+            },
           },
           {
-            query: 
-            TOTAL_MODELS_BY_NAME,
+            query: TOTAL_MODELS_BY_NAME,
             variables: {
               name: searchValue,
-            }
-          }
-        ]
+            },
+          },
+        ],
       });
       handleClose();
     } catch (error) {
       console.log(error);
     }
-  }
-  
+  };
+
   const handleClose = () => {
     console.log("close");
     setIsOpen(false);
     setIsOpenDialog(false);
     setIsOpenCreate(false);
-  }
-
+  };
 
   return (
     <AdminLayout>
@@ -202,31 +218,39 @@ const DashboardModels = () => {
 
       <SearchContainer>
         <h2>Search on name:</h2>
-        <SearchButtonContainer>  
+        <SearchButtonContainer>
           <SearchBar
             value={searchChange}
             onChange={(newValue) => {
-              setSearchChange(newValue)
+              setSearchChange(newValue);
             }}
             onRequestSearch={() => setSearchValue(searchChange)}
           />
           <Button
-            variant='contained'
-            size='large'
+            variant="contained"
+            size="large"
             onClick={() => setIsOpenCreate(true)}
             style={{
-              backgroundColor: '#F58732',
+              backgroundColor: "#F58732",
             }}
-          >Create</Button>
+          >
+            Create
+          </Button>
         </SearchButtonContainer>
       </SearchContainer>
 
-      {loading && (<Loading />)}
-      {error && (<p>{error.message}</p>)}
-      {data && totalData && <Table  data={data.modelsByNameWithPagination} columns={ columnsModels} onCellClick={currentlySelectedRow} total={totalData.totalModelsByName}
-      page={page}
-      setPage={setPage}
-      />}
+      {loading && <Loading />}
+      {error && <p>{error.message}</p>}
+      {data && totalData && (
+        <Table
+          data={data.modelsByNameWithPagination}
+          columns={columnsModels}
+          onCellClick={currentlySelectedRow}
+          total={totalData.totalModelsByName}
+          page={page}
+          setPage={setPage}
+        />
+      )}
 
       {isOpenDialog && (
         <ConfirmDialog
@@ -235,12 +259,34 @@ const DashboardModels = () => {
           message={message}
           open={isOpenDialog}
           handleClose={handleClose}
-          handleConfirm={ state.action === 'softDelete' ? softDeleteCurrentModel : deleteCurrentModel}
+          handleConfirm={
+            state.action === "softDelete"
+              ? softDeleteCurrentModel
+              : deleteCurrentModel
+          }
         />
       )}
 
-    </AdminLayout>
-  )
-}
+      {isOpen && (
+        <UpdateFormModel
+          selectedRow={selectedRow}
+          handleClose={handleClose}
+          open={isOpen}
+          page={page}
+          name={searchValue}
+        />
+      )}
 
-export default DashboardModels
+      {isOpenCreate && (
+        <CreateFormModel
+          handleClose={handleClose}
+          open={isOpenCreate}
+          page={page}
+          name={searchValue}
+        />
+      )}
+    </AdminLayout>
+  );
+};
+
+export default DashboardModels;

@@ -1,10 +1,21 @@
-import { useMutation } from '@apollo/client';
-import React from 'react'
-import styled from 'styled-components';
-import * as yup from 'yup'
-import { CREATE_DEVICE_STATUS, GET_ALL_DEVICE_STATUSES_BY_NAME_WITH_PAGINATION, TOTAL_DEVICE_STATUSES_BY_NAME } from '../../../graphql/deviceStatuses';
-import { Button, Dialog, DialogContent, DialogTitle, Grid, TextField } from '@material-ui/core';
-import { Formik, Form, Field } from 'formik'
+import { useMutation } from "@apollo/client";
+import React from "react";
+import styled from "styled-components";
+import * as yup from "yup";
+import {
+  CREATE_DEVICE_STATUS,
+  GET_ALL_DEVICE_STATUSES_BY_NAME_WITH_PAGINATION,
+  TOTAL_DEVICE_STATUSES_BY_NAME,
+} from "../../../graphql/deviceStatuses";
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  TextField,
+} from "@material-ui/core";
+import { Formik, Form, Field } from "formik";
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -14,27 +25,28 @@ const ButtonContainer = styled.div`
 `;
 
 interface CreateFormDeviceStatusProps {
-  open: boolean,
-  handleClose: any
+  open: boolean;
+  handleClose: () => void;
+  page: number;
+  name: string;
 }
 
 const validationSchema = yup.object({
-  name: yup.string().min(1).required("Required")
-})
+  name: yup.string().min(1).required("Required"),
+});
 
-const CreateFormDeviceStatus = ({open, handleClose }: CreateFormDeviceStatusProps ) => {
+const CreateFormDeviceStatus = ({
+  open,
+  handleClose,
+  page,
+  name,
+}: CreateFormDeviceStatusProps) => {
   const [createDeviceStatus] = useMutation(CREATE_DEVICE_STATUS);
 
   return (
-    <Dialog 
-      fullWidth
-      open={open}
-      onClose={handleClose}
-    >
+    <Dialog fullWidth open={open} onClose={handleClose}>
       <>
-        <DialogTitle>
-          Create new device status
-        </DialogTitle>
+        <DialogTitle>Create new device status</DialogTitle>
         <DialogContent>
           <Formik
             initialValues={{
@@ -46,25 +58,24 @@ const CreateFormDeviceStatus = ({open, handleClose }: CreateFormDeviceStatusProp
                 console.log("create");
                 await createDeviceStatus({
                   variables: {
-                    name: values.name
-                  }, 
+                    name: values.name,
+                  },
                   refetchQueries: [
                     {
                       query: GET_ALL_DEVICE_STATUSES_BY_NAME_WITH_PAGINATION,
                       variables: {
-                        name: "",
+                        name: name,
                         offset: 0,
-                        limit: 10
-                      }
+                        limit: page * 10,
+                      },
                     },
                     {
-                      query: 
-                      TOTAL_DEVICE_STATUSES_BY_NAME,
+                      query: TOTAL_DEVICE_STATUSES_BY_NAME,
                       variables: {
-                        name: "",
-                      }
-                    }
-                  ]
+                        name: name,
+                      },
+                    },
+                  ],
                 });
                 console.log("done");
                 handleClose();
@@ -72,10 +83,9 @@ const CreateFormDeviceStatus = ({open, handleClose }: CreateFormDeviceStatusProp
                 console.log(error);
               }
               setSubmitting(false);
-
             }}
             validationSchema={validationSchema}
-          > 
+          >
             {({
               handleSubmit,
               isSubmitting,
@@ -84,12 +94,12 @@ const CreateFormDeviceStatus = ({open, handleClose }: CreateFormDeviceStatusProp
               setFieldValue,
               values,
               touched,
-              errors
+              errors,
             }) => (
               <Form>
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
-                    <Field 
+                    <Field
                       component={TextField}
                       fullWidth
                       name="name"
@@ -97,7 +107,9 @@ const CreateFormDeviceStatus = ({open, handleClose }: CreateFormDeviceStatusProp
                       label="Name:"
                       value={values.name}
                       // @ts-ignore
-                      onChange={(e) => {setFieldValue("name", e.target.value)}}
+                      onChange={(e) => {
+                        setFieldValue("name", e.target.value);
+                      }}
                       error={Boolean(touched.name && errors.name)}
                       helperText={touched.name && errors.name}
                     />
@@ -106,38 +118,38 @@ const CreateFormDeviceStatus = ({open, handleClose }: CreateFormDeviceStatusProp
                 <ButtonContainer>
                   <Button
                     // type='submit'
-                    variant='contained'
-                    size='large'
+                    variant="contained"
+                    size="large"
                     fullWidth
                     disabled={isSubmitting}
                     onClick={submitForm}
                     style={{
-                      backgroundColor: '#F58732',
-                      marginRight: '3rem'
+                      backgroundColor: "#F58732",
+                      marginRight: "3rem",
                     }}
                   >
                     Create
                   </Button>
                   <Button
                     onClick={handleClose}
-                    variant='outlined'
-                    size='large'
+                    variant="outlined"
+                    size="large"
                     fullWidth
                     style={{
-                      borderColor: '#ED0034',
-                      borderWidth: '2px' 
-                  }}
+                      borderColor: "#ED0034",
+                      borderWidth: "2px",
+                    }}
                   >
                     Cancel
                   </Button>
                 </ButtonContainer>
               </Form>
-            )}     
+            )}
           </Formik>
         </DialogContent>
       </>
     </Dialog>
-  )
-}
+  );
+};
 
-export default CreateFormDeviceStatus
+export default CreateFormDeviceStatus;

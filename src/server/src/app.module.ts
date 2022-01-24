@@ -17,8 +17,10 @@ import { MediasModule } from './medias/medias.module';
 import { TagsModule } from './tags/tags.module';
 import { AuthModule } from './auth/auth.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { MulterModule } from '@nestjs/platform-express';
 
 import * as dotenv from 'dotenv';
+
 dotenv.config();
 const nodeEnvironment = `${(
   process.env.NODE_ENV || 'development'
@@ -72,7 +74,10 @@ const nodeEnvironment = `${(
     MediasModule,
     TagsModule,
     AuthModule,
-    ScheduleModule.forRoot()
+    MulterModule.register({
+      dest: './uploads',
+    }),
+    ScheduleModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [AppService],
