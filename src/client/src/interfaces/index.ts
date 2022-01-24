@@ -244,3 +244,8 @@ export interface FilterParams {
   onChange: (value: any) => void,
   value: any
 }
+
+export interface DeviceStatus {
+  id: string,
+  name: string
+}

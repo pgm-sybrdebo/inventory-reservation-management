@@ -72,7 +72,7 @@ export class DevicesService {
       skip: offset,
       take: limit,
       order: {
-        id: 'ASC',
+        created_on: 'ASC',
       },
     });
   }

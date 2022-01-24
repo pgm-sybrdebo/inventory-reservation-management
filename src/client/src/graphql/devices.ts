@@ -12,11 +12,14 @@ export const GET_ALL_DEVICES_BY_NAME_WITH_PAGINATION = gql`
     devicesByNameWithPagination(name: $name, offset: $offset, limit: $limit) {
       id
       model {
+        id
         name
       }
       deviceStatus {
+        id
         name
       }
+      qr_code
       created_on
       updated_on
     }

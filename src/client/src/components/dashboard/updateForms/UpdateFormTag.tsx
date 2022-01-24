@@ -1,9 +1,20 @@
-import styled from 'styled-components';
-import { Formik, Form, Field } from 'formik'
+import styled from "styled-components";
+import { Formik, Form, Field } from "formik";
 import * as yup from "yup";
-import { useMutation } from '@apollo/client';
-import { Button, Dialog, DialogContent, DialogTitle, Grid, TextField } from '@material-ui/core';
-import { GET_ALL_TAGS_BY_NAME_WITH_PAGINATION, TOTAL_TAGS_BY_NAME, UPDATE_TAG } from '../../../graphql/tags';
+import { useMutation } from "@apollo/client";
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  TextField,
+} from "@material-ui/core";
+import {
+  GET_ALL_TAGS_BY_NAME_WITH_PAGINATION,
+  TOTAL_TAGS_BY_NAME,
+  UPDATE_TAG,
+} from "../../../graphql/tags";
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -12,34 +23,32 @@ const ButtonContainer = styled.div`
   margin: 3rem 0;
 `;
 
-
 interface UpdateFormStatusProps {
-  selectedRow: any
-  open: boolean,
-  handleClose: () => void
+  selectedRow: any;
+  open: boolean;
+  handleClose: () => void;
+  page: number;
+  name: string;
 }
-
 
 const validationSchema = yup.object({
   name: yup.string().min(1).required("Required"),
-})
+});
 
-const UpdateFormTag = ({selectedRow, open, handleClose}: UpdateFormStatusProps) => {
-  
+const UpdateFormTag = ({
+  selectedRow,
+  open,
+  handleClose,
+  page,
+  name,
+}: UpdateFormStatusProps) => {
   const [updateTag] = useMutation(UPDATE_TAG);
 
-
-  console.log("row", selectedRow)
+  console.log("row", selectedRow);
   return (
-    <Dialog 
-      fullWidth
-      open={open}
-      onClose={handleClose}
-    >
+    <Dialog fullWidth open={open} onClose={handleClose}>
       <>
-        <DialogTitle>
-          Update {selectedRow.name}
-        </DialogTitle>
+        <DialogTitle>Update {selectedRow.name}</DialogTitle>
         <DialogContent>
           <Formik
             initialValues={{
@@ -52,25 +61,24 @@ const UpdateFormTag = ({selectedRow, open, handleClose}: UpdateFormStatusProps) 
                 await updateTag({
                   variables: {
                     id: selectedRow.id,
-                    name: values.name
-                  }, 
+                    name: values.name,
+                  },
                   refetchQueries: [
                     {
                       query: GET_ALL_TAGS_BY_NAME_WITH_PAGINATION,
                       variables: {
-                        name: "",
-                        offset: 0,
-                        limit: 10
-                      }
+                        name: name,
+                        offset: page * 10,
+                        limit: 10,
+                      },
                     },
                     {
-                      query: 
-                      TOTAL_TAGS_BY_NAME,
+                      query: TOTAL_TAGS_BY_NAME,
                       variables: {
-                        name: "",
-                      }
-                    }
-                  ]
+                        name: name,
+                      },
+                    },
+                  ],
                 });
                 console.log("done");
                 handleClose();
@@ -78,10 +86,9 @@ const UpdateFormTag = ({selectedRow, open, handleClose}: UpdateFormStatusProps) 
                 console.log(error);
               }
               setSubmitting(false);
-
             }}
             validationSchema={validationSchema}
-          > 
+          >
             {({
               handleSubmit,
               isSubmitting,
@@ -90,12 +97,12 @@ const UpdateFormTag = ({selectedRow, open, handleClose}: UpdateFormStatusProps) 
               setFieldValue,
               values,
               touched,
-              errors
+              errors,
             }) => (
               <Form>
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
-                    <Field 
+                    <Field
                       component={TextField}
                       fullWidth
                       name="name"
@@ -103,7 +110,9 @@ const UpdateFormTag = ({selectedRow, open, handleClose}: UpdateFormStatusProps) 
                       label="Name:"
                       value={values.name}
                       // @ts-ignore
-                      onChange={(e) => {setFieldValue("name", e.target.value)}}
+                      onChange={(e) => {
+                        setFieldValue("name", e.target.value);
+                      }}
                       error={Boolean(touched.name && errors.name)}
                       helperText={touched.name && errors.name}
                     />
@@ -112,40 +121,38 @@ const UpdateFormTag = ({selectedRow, open, handleClose}: UpdateFormStatusProps) 
                 <ButtonContainer>
                   <Button
                     // type='submit'
-                    variant='contained'
-                    size='large'
+                    variant="contained"
+                    size="large"
                     fullWidth
                     disabled={isSubmitting}
                     onClick={submitForm}
                     style={{
-                      backgroundColor: '#F58732',
-                      marginRight: '3rem'
+                      backgroundColor: "#F58732",
+                      marginRight: "3rem",
                     }}
                   >
                     Update
                   </Button>
                   <Button
                     onClick={handleClose}
-                    variant='outlined'
-                    size='large'
+                    variant="outlined"
+                    size="large"
                     fullWidth
                     style={{
-                      borderColor: '#ED0034',
-                      borderWidth: '2px' 
-                  }}
+                      borderColor: "#ED0034",
+                      borderWidth: "2px",
+                    }}
                   >
                     Cancel
                   </Button>
                 </ButtonContainer>
               </Form>
-            )}     
+            )}
           </Formik>
         </DialogContent>
       </>
-
     </Dialog>
-  )
-}
+  );
+};
 
 export default UpdateFormTag;
-

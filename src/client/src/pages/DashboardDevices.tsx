@@ -16,6 +16,7 @@ import {
   TOTAL_DEVICES_BY_NAME,
 } from "../graphql/devices";
 import CreateFormDevice from "../components/dashboard/createForms/CreateFormDevice";
+import UpdateFormDevice from "../components/dashboard/updateForms/UpdateFormDevice";
 
 const Title = styled.h1`
   margin: 1.5rem;
@@ -266,8 +267,23 @@ const DashboardDevices = () => {
         />
       )}
 
+      {isOpen && (
+        <UpdateFormDevice
+          selectedRow={selectedRow}
+          handleClose={handleClose}
+          open={isOpen}
+          page={page}
+          name={searchValue}
+        />
+      )}
+
       {isOpenCreate && (
-        <CreateFormDevice handleClose={handleClose} open={isOpenCreate} />
+        <CreateFormDevice
+          handleClose={handleClose}
+          open={isOpenCreate}
+          page={page}
+          name={searchValue}
+        />
       )}
     </AdminLayout>
   );

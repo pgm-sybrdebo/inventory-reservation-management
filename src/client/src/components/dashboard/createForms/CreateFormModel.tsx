@@ -40,22 +40,14 @@ const Label = styled.label`
 interface CreateFormModelProps {
   open: boolean;
   handleClose: any;
+  page: number;
+  name: string;
 }
 
 interface Spec {
   label: string;
   value: string;
 }
-
-const makeNewArray = (array: Spec[]) => {
-  const newArray = [];
-  for (let i = 0; i < array.length; i++) {
-    newArray.push({
-      [array[i].label]: array[i].value,
-    });
-  }
-  return newArray;
-};
 
 const makeNewObject = (array: Spec[]) => {
   const obj = {};
@@ -86,7 +78,12 @@ const validationSchema = yup.object({
 });
 
 let modelId: string;
-const CreateFormModel = ({ open, handleClose }: CreateFormModelProps) => {
+const CreateFormModel = ({
+  open,
+  handleClose,
+  page,
+  name,
+}: CreateFormModelProps) => {
   const [createModel] = useMutation(CREATE_MODEL, {
     update: (proxy, mutationResult) => {
       console.log("mutationResult", mutationResult);
@@ -154,15 +151,15 @@ const CreateFormModel = ({ open, handleClose }: CreateFormModelProps) => {
                     {
                       query: GET_ALL_MODELS_BY_NAME_WITH_PAGINATION,
                       variables: {
-                        name: "",
-                        offset: 0,
+                        name: name,
+                        offset: page * 10,
                         limit: 10,
                       },
                     },
                     {
                       query: TOTAL_MODELS_BY_NAME,
                       variables: {
-                        name: "",
+                        name: name,
                       },
                     },
                   ],

@@ -148,7 +148,7 @@ type Mutation {
   createTag(createTagInput: CreateTagInput!): Tag!
   login(loginUserInput: LoginUserInput!): LoginResponse!
   removeDamage(id: String!): Damage!
-  removeDevice(id: String!): Device!
+  removeDevice(id: String!): Boolean!
   removeDeviceStatus(id: String!): Boolean!
   removeMedia(id: String!): Boolean!
   removeModel(id: String!): Boolean!

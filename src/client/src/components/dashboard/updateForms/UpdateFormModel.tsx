@@ -71,21 +71,14 @@ interface UpdateFormModelProps {
   selectedRow: any;
   open: boolean;
   handleClose: () => void;
+  page: number;
+  name: string;
 }
 
 interface Spec {
   label: string;
   value: string;
 }
-
-const makeNewObject = (array: Spec[]) => {
-  const obj = {};
-  for (let i = 0; i < array.length; i++) {
-    // @ts-ignore
-    obj[array[i].label] = array[i].value;
-  }
-  return obj;
-};
 
 const validationSchema = yup.object({
   name: yup.string().min(1, "Too short").required("Required"),
@@ -101,6 +94,8 @@ const UpdateFormModel = ({
   selectedRow,
   open,
   handleClose,
+  page,
+  name,
 }: UpdateFormModelProps) => {
   const { data, loading, error } = useQuery(GET_PICTURE_BY_MODEL_ID, {
     variables: {
@@ -152,15 +147,15 @@ const UpdateFormModel = ({
                       {
                         query: GET_ALL_MODELS_BY_NAME_WITH_PAGINATION,
                         variables: {
-                          name: "",
-                          offset: 0,
+                          name: name,
+                          offset: page * 10,
                           limit: 10,
                         },
                       },
                       {
                         query: TOTAL_MODELS_BY_NAME,
                         variables: {
-                          name: "",
+                          name: name,
                         },
                       },
                     ],

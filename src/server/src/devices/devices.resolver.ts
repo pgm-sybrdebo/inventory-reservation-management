@@ -196,14 +196,19 @@ export class DevicesResolver {
     return updatedDevice;
   }
 
-  @Mutation(() => Device)
+  @Mutation(() => Boolean)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   async removeDevice(@Args('id', new ParseUUIDPipe()) id: string) {
-    const deletedDevice = await this.devicesService.findOne(id);
-    const updatedReadyQuantityModel = await this.modelsService.recalculateReadyQuantity(deletedDevice.modelId);
-    const updatedQuantityModel = await this.modelsService.recalculateQuantity(deletedDevice.modelId);
-    return this.devicesService.remove(id);
+    try {
+      const deletedDevice = await this.devicesService.findOne(id);
+      const updatedReadyQuantityModel = await this.modelsService.recalculateReadyQuantity(deletedDevice.modelId);
+      const updatedQuantityModel = await this.modelsService.recalculateQuantity(deletedDevice.modelId);
+      await this.devicesService.remove(id);
+      return true;
+    } catch(error) {
+      console.error(error);
+    }
   }
 
   @Mutation(() => Device)

@@ -272,11 +272,18 @@ const DashboardModels = () => {
           selectedRow={selectedRow}
           handleClose={handleClose}
           open={isOpen}
+          page={page}
+          name={searchValue}
         />
       )}
 
       {isOpenCreate && (
-        <CreateFormModel handleClose={handleClose} open={isOpenCreate} />
+        <CreateFormModel
+          handleClose={handleClose}
+          open={isOpenCreate}
+          page={page}
+          name={searchValue}
+        />
       )}
     </AdminLayout>
   );

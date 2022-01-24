@@ -11,9 +11,10 @@ import {
   TOTAL_DEVICES_BY_NAME,
   UPDATE_DEVICE,
 } from "../../../graphql/devices";
-import { Model } from "../../../interfaces";
+import { DeviceStatus, Model } from "../../../interfaces";
 import QRCode from "qrcode";
 import Loading from "../Loading";
+import { GET_DEVICESTATUSES } from "../../../graphql/deviceStatuses";
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -22,49 +23,43 @@ const ButtonContainer = styled.div`
   margin: 3rem 0;
 `;
 
-interface CreateFormDeviceProps {
+const Image = styled.img`
+  width: 10rem;
+  height: 10rem;
+  margin: 0 auto;
+`;
+
+interface UpdateFormDeviceProps {
+  selectedRow: any;
   open: boolean;
   handleClose: () => void;
   page: number;
   name: string;
 }
 
-const generateQR = async (text: string) => {
-  try {
-    return await QRCode.toDataURL(text);
-  } catch (error) {
-    console.error(error);
-  }
-};
-
 const validationSchema = yup.object({
   modelId: yup.string().required("Required"),
 });
 
-const CreateFormDevice = ({
+const UpdateFormDevice = ({
+  selectedRow,
   open,
   handleClose,
   page,
   name,
-}: CreateFormDeviceProps) => {
-  let deviceId: string;
+}: UpdateFormDeviceProps) => {
+  console.log("row", selectedRow);
   const { data, loading, error } = useQuery(GET_ALL_MODELS);
-  const [createDevice] = useMutation(CREATE_DEVICE, {
-    update: (proxy, mutationResult) => {
-      console.log("mutationResult", mutationResult);
-      deviceId = mutationResult.data.createDevice.id;
-    },
-  });
+  const {
+    data: deviceStatusData,
+    loading: deviceStatusLoading,
+    error: deviceStatusError,
+  } = useQuery(GET_DEVICESTATUSES);
   const [updateDevice] = useMutation(UPDATE_DEVICE);
 
-  if (data) {
-    console.log(data);
-  }
-
-  let qrCode: string | undefined;
   return (
     <Dialog fullWidth open={open} onClose={handleClose}>
-      {loading && (
+      {loading && deviceStatusLoading && (
         <Box
           sx={{
             padding: 3,
@@ -73,22 +68,25 @@ const CreateFormDevice = ({
           <Loading />
         </Box>
       )}
-      {error && <p>{error.message}</p>}
-      {data && (
+      {error && deviceStatusError && <p>{error.message}</p>}
+      {data && deviceStatusData && (
         <>
-          <DialogTitle>Create new device</DialogTitle>
+          <DialogTitle>Update device</DialogTitle>
+          <Image src={selectedRow.qr_code} />
           <DialogContent>
             <Formik
               initialValues={{
-                modelId: "",
+                modelId: selectedRow.model.id,
+                deviceStatusId: selectedRow.deviceStatus.id,
               }}
               onSubmit={async (values, { setSubmitting }) => {
                 setSubmitting(true);
                 try {
-                  await createDevice({
+                  await updateDevice({
                     variables: {
+                      id: selectedRow.id,
                       modelId: values.modelId,
-                      deviceStatusId: "7b4a3256-6005-402b-916b-810f4d6669c8",
+                      deviceStatusId: values.deviceStatusId,
                     },
                     refetchQueries: [
                       {
@@ -108,16 +106,6 @@ const CreateFormDevice = ({
                     ],
                   });
 
-                  if (deviceId) {
-                    qrCode = await generateQR(deviceId);
-                  }
-
-                  await updateDevice({
-                    variables: {
-                      id: deviceId,
-                      qr_code: qrCode,
-                    },
-                  });
                   handleClose();
                 } catch (error) {
                   console.log(error);
@@ -159,6 +147,31 @@ const CreateFormDevice = ({
                         })}
                       </Select>
                     </Grid>
+                    <Grid item xs={12}>
+                      <InputLabel id="deviceStatusId">Device Status</InputLabel>
+                      <Select
+                        sx={{
+                          width: "100%",
+                        }}
+                        labelId="deviceStatusId"
+                        id="deviceStatusId"
+                        value={values.deviceStatusId}
+                        label="deviceStatusId"
+                        onChange={(e: any) => {
+                          setFieldValue("deviceStatusId", e.target.value);
+                        }}
+                      >
+                        {deviceStatusData.deviceStatuses.map(
+                          (deviceStatus: DeviceStatus) => {
+                            return (
+                              <MenuItem value={deviceStatus.id}>
+                                {deviceStatus.name}
+                              </MenuItem>
+                            );
+                          }
+                        )}
+                      </Select>
+                    </Grid>
                   </Grid>
                   <ButtonContainer>
                     <Button
@@ -175,7 +188,7 @@ const CreateFormDevice = ({
                         },
                       }}
                     >
-                      Create
+                      Update
                     </Button>
                     <Button
                       onClick={handleClose}
@@ -207,4 +220,4 @@ const CreateFormDevice = ({
   );
 };
 
-export default CreateFormDevice;
+export default UpdateFormDevice;
