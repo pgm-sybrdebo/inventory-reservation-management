@@ -26,6 +26,31 @@ export const GET_ALL_DEVICES_BY_NAME_WITH_PAGINATION = gql`
   }
 `;
 
+export const TOTAL_DEVICES_IN_CHECK_BY_NAME = gql`
+query totalDevicesInCheckByName($name: String!) {
+  totalDevicesInCheckByName(name: $name)
+}
+`;
+
+export const GET_ALL_DEVICES_IN_CHECK_BY_NAME_WITH_PAGINATION = gql`
+  query ($name: String!, $offset: Int!, $limit: Int!){
+    devicesInCheckByNameWithPagination(name: $name, offset: $offset, limit: $limit) {
+      id
+      model {
+        id
+        name
+      }
+      deviceStatus {
+        id
+        name
+      }
+      qr_code
+      created_on
+      updated_on
+    }
+  }
+`;
+
 export const TOTAL_DEVICES = gql`
   query totalDevices {
     totalDevices

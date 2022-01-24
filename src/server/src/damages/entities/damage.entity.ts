@@ -15,8 +15,8 @@ export class Damage {
   @Field()
   deviceId: string;
 
-  @Column()
-  @Field()
+  @Column({nullable: true})
+  @Field({nullable: true})
   reservationId: string;
 
   @Column()

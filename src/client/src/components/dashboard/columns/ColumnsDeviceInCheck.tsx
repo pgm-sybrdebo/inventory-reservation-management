@@ -39,6 +39,58 @@ const Button = styled.button`
     // border: 1px solid #F58732;
   }
 `;
+const GreenButton = styled.button`
+  width: 2rem;
+  height: 2rem;
+  min-width: 2rem;
+  min-height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #cbbec5;
+  border: 1px solid #cbbec5;
+  background-color: transparent;
+  color: #5ab946;
+  border: 1px solid #5ab946;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: all 0.2s ease-in-out;
+  margin: 0 auto;
+
+  &:hover {
+    background-color: #5ab946;
+    color: #fff;
+    // border: 1px solid #F58732;
+  }
+`;
+const RedButton = styled.button`
+  width: 2rem;
+  height: 2rem;
+  min-width: 2rem;
+  min-height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #cbbec5;
+  border: 1px solid #cbbec5;
+  background-color: transparent;
+  color: #ed0034;
+  border: 1px solid #ed0034;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: all 0.2s ease-in-out;
+  margin: 0 auto;
+
+  &:hover {
+    background-color: #ed0034;
+    color: #fff;
+    // border: 1px solid #F58732;
+  }
+`;
 
 const ColumnsDeviceInCheck: GridColDef[] = [
   { field: "id", headerName: "Id", minWidth: 300, flex: 1 },
@@ -119,9 +171,9 @@ const ColumnsDeviceInCheck: GridColDef[] = [
     sortable: false,
     renderCell: (params) => {
       return (
-        <Button>
+        <GreenButton>
           <Check />
-        </Button>
+        </GreenButton>
       );
     },
   },
@@ -133,9 +185,9 @@ const ColumnsDeviceInCheck: GridColDef[] = [
     sortable: false,
     renderCell: (params) => {
       return (
-        <Button>
+        <RedButton>
           <Block />
-        </Button>
+        </RedButton>
       );
     },
   },
