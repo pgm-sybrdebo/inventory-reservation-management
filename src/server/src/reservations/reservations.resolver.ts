@@ -45,7 +45,7 @@ export class ReservationsResolver {
     name: 'reservationsByUserIdAndReservationState',
   })
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN, Role.USER)
   findAllByUserIdAndReservationState(
     @Args('userId', new ParseUUIDPipe()) userId: string,
     @Args('reservationStateId', new ParseUUIDPipe()) reservationStateId: string,

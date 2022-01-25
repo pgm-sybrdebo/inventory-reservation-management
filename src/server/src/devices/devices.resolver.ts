@@ -147,7 +147,7 @@ export class DevicesResolver {
 
   @Query(() => [Total], { name: 'totalDevicesByModelId' })
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN, Role.USER)
   async GetTotalDevicesByModelId(
     @Args('modelId', new ParseUUIDPipe()) modelId: string,
   ) {

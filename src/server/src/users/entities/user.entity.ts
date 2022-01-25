@@ -38,7 +38,7 @@ export class User {
 
   @Column({ type: 'enum', enum: Role, default: Role.USER })
   @Field()
-  role: Role = 0;
+  role: Role;
 
   @Column()
   @Field((type) => Int)

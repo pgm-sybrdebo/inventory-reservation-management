@@ -25,7 +25,7 @@ export class Media {
   @Column(() => Dates)
   date: Dates;
 
-  @ManyToOne(() => Model, (model) => model.medias)
+  @ManyToOne(() => Model, (model) => model.medias, { onDelete: 'CASCADE'})
   @Field((type) => Model)
   model: Model;
 }

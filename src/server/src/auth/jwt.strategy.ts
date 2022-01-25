@@ -9,12 +9,13 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: `${process.env.AUTHENTICATION_SECRET}`,
+      secretOrKey: 'artevelde-inventory-reservation',
       logging: true,
     });
   }
 
   async validate(payload: any) {
+    console.log("val");
     return {
       userId: payload.sub,
       email: payload.email,
