@@ -1,23 +1,15 @@
 import { InputType, Int, Field } from '@nestjs/graphql';
 import {
   IsInt,
-  IsJSON,
   IsNotEmpty,
   IsOptional,
   IsPositive,
   IsString,
-  IsUUID,
   Max,
   Min,
 } from 'class-validator';
-import JSON, { GraphQLJSONObject } from 'graphql-type-json';
-
 @InputType()
 export class CreateModelInput {
-  // @IsNotEmpty()
-  // @IsUUID('all')
-  // @Field()
-  // reservation_time_id: string;
 
   @IsNotEmpty()
   @IsString()
@@ -36,7 +28,6 @@ export class CreateModelInput {
   @Field((type) => Int)
   quantity: number;
 
-  // @IsPositive()
   @IsOptional()
   @Min(0)
   @Max(1000)
@@ -49,12 +40,8 @@ export class CreateModelInput {
   @Field()
   brand: string;
 
-  // @IsNotEmpty()
-  // @IsJSON()
-  // @Field(type => GraphQLJSONObject)
-  // specifications: JSON;
-
   @IsNotEmpty()
+  @IsString()
   @Field()
   specifications: string;
 

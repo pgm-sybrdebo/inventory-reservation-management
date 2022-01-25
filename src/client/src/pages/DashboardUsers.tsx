@@ -136,10 +136,6 @@ const DashboardUsers = () => {
       return;
     }
 
-    console.log(
-      "tag",
-      event.target instanceof Element ? event.target.tagName : "nope"
-    );
     if (
       field === "edit" &&
       event.target instanceof Element &&
@@ -156,7 +152,6 @@ const DashboardUsers = () => {
         event.target.tagName === "svg" ||
         event.target.tagName === "path")
     ) {
-      console.log("ano");
       setSelectedRow(params.row);
       setIsOpenDialog(true);
       setTitle("Confirm anonymization of this user");
@@ -169,7 +164,6 @@ const DashboardUsers = () => {
         event.target.tagName === "svg" ||
         event.target.tagName === "path")
     ) {
-      console.log("ano");
       setSelectedRow(params.row);
       setIsOpenDialog(true);
       setTitle("Confirm soft delete of this user");
@@ -182,7 +176,6 @@ const DashboardUsers = () => {
         event.target.tagName === "svg" ||
         event.target.tagName === "path")
     ) {
-      console.log("ano");
       setSelectedRow(params.row);
       setIsOpenDialog(true);
       setTitle("Confirm delete of this user");
@@ -225,7 +218,6 @@ const DashboardUsers = () => {
       setOpenSnackbar(true);
       handleClose();
     } catch (error) {
-      console.log(error);
       setSnackbarSuccess(false);
       setSnackbarMessage(`User is not anonymized due to error: ${error}`);
       setOpenSnackbar(true);
@@ -260,7 +252,6 @@ const DashboardUsers = () => {
       setOpenSnackbar(true);
       handleClose();
     } catch (error) {
-      console.log(error);
       setSnackbarSuccess(false);
       setSnackbarMessage(`User is not deleted due to error: ${error}`);
       setOpenSnackbar(true);
@@ -295,7 +286,6 @@ const DashboardUsers = () => {
       setOpenSnackbar(true);
       handleClose();
     } catch (error) {
-      console.log(error);
       setSnackbarSuccess(false);
       setSnackbarMessage(`User is not deleted due to error: ${error}`);
       setOpenSnackbar(true);
@@ -303,7 +293,6 @@ const DashboardUsers = () => {
   };
 
   const handleClose = () => {
-    console.log("close");
     setIsOpen(false);
     setIsOpenDialog(false);
   };

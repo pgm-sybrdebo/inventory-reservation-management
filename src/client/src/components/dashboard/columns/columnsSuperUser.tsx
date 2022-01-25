@@ -52,7 +52,6 @@ const columnsSuperUser: GridColDef[] = [
     flex: 1,
     renderCell: (params) => {
       return (
-        //<span>{params.row.role === 0 ? "User" : "Admin"}</span>
         <span>
           {params.row.role === 0
             ? "User"

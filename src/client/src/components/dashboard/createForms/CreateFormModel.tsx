@@ -20,6 +20,7 @@ import {
 } from "../../../graphql/models";
 import { CREATE_MEDIA } from "../../../graphql/media";
 import { useState, useEffect } from "react";
+import "dotenv/config";
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -115,13 +116,11 @@ const CreateFormModel = ({
   ]);
   const [createModel] = useMutation(CREATE_MODEL, {
     update: (proxy, mutationResult) => {
-      console.log("mutationResult", mutationResult);
       modelId = mutationResult.data.createModel.id;
     },
   });
   const [createMedia] = useMutation(CREATE_MEDIA);
 
-  console.log("modelId", modelId);
   return (
     <Dialog fullWidth open={open} onClose={handleClose}>
       <>
@@ -145,9 +144,7 @@ const CreateFormModel = ({
                 let specsString;
                 if (values.specifications.length > 0) {
                   specs = makeNewObject(values.specifications);
-                  console.log("specsNew", specs);
                   specsString = JSON.stringify(specs);
-                  console.log("stin", specsString);
                 }
 
                 const imgData = new FormData();
@@ -156,7 +153,7 @@ const CreateFormModel = ({
                 }
 
                 const uploadRequest = await fetch(
-                  "http://localhost:3000/uploadModelPictures",
+                  `${process.env.REACT_APP_UPLOAD_PATH_MODEL_PICTURE}`,
                   {
                     method: "POST",
                     headers: new Headers({ Accept: "application/json" }),
@@ -165,7 +162,6 @@ const CreateFormModel = ({
                 );
                 const uploadResponse = await uploadRequest.json();
 
-                console.log(uploadResponse);
                 await createModel({
                   variables: {
                     name: values.name,
@@ -202,13 +198,11 @@ const CreateFormModel = ({
                   },
                   refetchQueries: [],
                 });
-                console.log("done");
                 setSnackbarSuccess(true);
                 setMessage("New model is added!");
                 setOpenSnackbar(true);
                 handleClose();
               } catch (error) {
-                console.log(error);
                 setSnackbarSuccess(false);
                 setMessage(`Model is not created due to error: ${error}`);
                 setOpenSnackbar(true);
@@ -469,7 +463,6 @@ const CreateFormModel = ({
                 </Grid>
                 <ButtonContainer>
                   <Button
-                    // type='submit'
                     variant="contained"
                     size="large"
                     fullWidth
@@ -481,12 +474,6 @@ const CreateFormModel = ({
                       ":hover": {
                         bgcolor: "#F58732",
                       },
-                      //   ":hover": {
-                      //     bgcolor: "#FFF",
-                      //     color: "#F58732",
-                      //     borderColor: "#F58732",
-                      //     borderWidth: 2,
-                      //   },
                     }}
                   >
                     Create

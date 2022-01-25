@@ -73,20 +73,9 @@ export class ModelsResolver {
     return this.modelsService.findAllByPagination(offset, limit);
   }
 
-  // @Query(() => [Model], { name: 'modelsByTagIdWithPagination' })
-  // // @UseGuards(JwtAuthGuard, RolesGuard)
-  // // @Roles(Role.ADMIN, Role.USER, Role.SUPER_ADMIN)
-  // findAllByTagId(
-  //   @Args('tagIds', { type: () => [String] }) tagIds: string[],
-  //   @Args('offset', { type: () => Int }, new ParseIntPipe()) offset: number,
-  //   @Args('limit', { type: () => Int }, new ParseIntPipe()) limit: number,
-  // ) {
-  //   return this.modelsService.findAllByTagIdsPagination(tagIds, offset, limit);
-  // }
-
   @Query(() => [Model], { name: 'modelsByFilterWithPagination' })
-  // @UseGuards(JwtAuthGuard, RolesGuard)
-  // @Roles(Role.ADMIN, Role.USER, Role.SUPER_ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.USER, Role.SUPER_ADMIN)
   findAllByFilterWithPagination(
     @Args('filter') filter: Filter,
     @Args('offset', { type: () => Int }, new ParseIntPipe()) offset: number,
@@ -99,15 +88,6 @@ export class ModelsResolver {
     );
   }
 
-  // @Query(() => [Model], { name: 'modelsByTagId' })
-  // // @UseGuards(JwtAuthGuard, RolesGuard)
-  // // @Roles(Role.ADMIN, Role.USER, Role.SUPER_ADMIN)
-  // findAllByTagIdWithPagination(
-  //   @Args('tagIds', { type: () => [String] }) tagIds: string[],
-  // ) {
-  //   return this.modelsService.findAllByTagIds(tagIds);
-  // }
-
   @Query(() => Int, { name: 'totalModels' })
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.SUPER_ADMIN)
@@ -118,13 +98,6 @@ export class ModelsResolver {
   @Query(() => [Total], { name: 'totalModelsWithFilter' })
   async findTotalWithFilter(
     @Args('filter') filter: Filter,
-    // @Optional()
-    // @Args('tagIds', { type: () => [String] }) tagIds: string[], nullable: true
-    // @Args({
-    //   name: 'tagIds',
-    //   type: () =>  [String],
-    //   nullable: true,
-    // }
   ) {
     return this.modelsService.countWithFilter(filter);
   }

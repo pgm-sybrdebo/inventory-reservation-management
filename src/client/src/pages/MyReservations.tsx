@@ -13,6 +13,7 @@ import { useQuery } from "@apollo/client";
 import { reservationData, TokenInfo } from "../interfaces";
 import jwt_decode from "jwt-decode";
 import useStore from "../store";
+import "dotenv/config";
 
 function MyReservations() {
   const store = useStore();
@@ -46,16 +47,16 @@ function MyReservations() {
   if (data) {
     result = data.reservationsByUserIdAndReservationState;
   }
-  console.log(result);
   return (
     <>
       <Header />
       <TopicMyReservation />
       <Container>
         <h2 style={{ marginTop: "32px" }}>
-          {(store.selectionReserv === "b89fe2ec-f5b8-4461-943c-15073ac0438a" &&
+          {(store.selectionReserv ===
+            `${process.env.REACT_APP_RESERVED_STATE}` &&
             "My Reserved Devices") ||
-            (store.selectionReserv === "1d6e3e78-024e-4bed-bc5e-065b6fb7d1c4"
+            (store.selectionReserv === `${process.env.REACT_APP_TAKEN_STATE}`
               ? "My Taken Devices"
               : "History")}
         </h2>

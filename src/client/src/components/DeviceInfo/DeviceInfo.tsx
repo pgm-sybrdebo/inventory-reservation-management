@@ -1,56 +1,52 @@
-import React from 'react'
+import React from "react";
 import styled from "styled-components";
-import StyledButton from '../Button/StyledButton.style';
+import StyledButton from "../Button/StyledButton.style";
 import { useNavigate } from "react-router-dom";
-import {InfoDevice} from '../../interfaces'
-import { useParams } from 'react-router-dom';
-import {  useMutation } from '@apollo/client';
-import { UPDATE_RESERVATION } from '../../graphql/reservations';
-import { UPDATE_DEVICE } from '../../graphql/devices';
-const DeviceInfo: React.FC<InfoDevice> = ({name, description , damages}) => { 
+import { InfoDevice } from "../../interfaces";
+import { useParams } from "react-router-dom";
+import { useMutation } from "@apollo/client";
+import { UPDATE_RESERVATION } from "../../graphql/reservations";
+import { UPDATE_DEVICE } from "../../graphql/devices";
+import "dotenv/config";
+const DeviceInfo: React.FC<InfoDevice> = ({ name, description, damages }) => {
   let navigate = useNavigate();
   let { id } = useParams();
   let dt = Date.now();
-  
-  
+
   const [UpdateReservation] = useMutation(UPDATE_RESERVATION, {
-    onCompleted: (response: any) => {
-      
-      console.log(response)
-    },
+    onCompleted: (response: any) => {},
     onError: (error) => {
       console.log(`GRAPHQL ERROR: ${error.message}`);
-    }
+    },
   });
 
   const [UpdateDevice] = useMutation(UPDATE_DEVICE, {
     onCompleted: (response: any) => {
-      console.log(response)
-      navigate(-1)
+      navigate(-1);
     },
     onError: (error) => {
       console.log(`GRAPHQL ERROR: ${error.message}`);
-    }
+    },
   });
 
-  const handleReturn = async()=>{
+  const handleReturn = async () => {
     await UpdateReservation({
       variables: {
-        id:id,
-        reservationStateId: "45e2e05a-f498-4be1-9a58-d29219f6bbea",
-        end_date: dt
-      }
-    })
+        id: id,
+        reservationStateId: `${process.env.REACT_APP_RETURNED_STATE}`,
+        end_date: dt,
+      },
+    });
 
     UpdateDevice({
       variables: {
-        id:id,
-        deviceStatusId: "ec2ed711-e4a3-42f6-b441-0e91f98f31ba",
+        id: id,
+        deviceStatusId: `${process.env.REACT_APP_DEVICE_STATUS_INCHECK}`,
         userId: null,
-      }
-    })
-  }
-  return(
+      },
+    });
+  };
+  return (
     <Wrapper>
       <div className="topic">
         <h2>{name}</h2>
@@ -64,36 +60,45 @@ const DeviceInfo: React.FC<InfoDevice> = ({name, description , damages}) => {
         <div className="speces">
           <h4>Damages</h4>
           <ul>
-            {damages.map((damage, index) => <li key={index} className="spec">{damage.title}: {damage.description}</li>)}
+            {damages.map((damage, index) => (
+              <li key={index} className="spec">
+                {damage.title}: {damage.description}
+              </li>
+            ))}
           </ul>
         </div>
       </div>
       <div className="btns">
-          <StyledButton 
-            type="button" 
-            text="Cancel" 
-            color="white"
-            width="48%"
-            backgroundcolor="#ED1534"
-            radius=".25rem"
-            onClick = {()=> navigate(-1)}
-          />
-          <StyledButton 
-            type="button" 
-            text="Return" 
-            color="white"
-            width="48%"
-            backgroundcolor="#F58732"
-            radius=".25rem"
-            onClick = {()=>{
-              
-              if(window.confirm(`Confirm Returning This Device:  \nName : "${name}"  \nId: "${id}"`)){handleReturn()}}
+        <StyledButton
+          type="button"
+          text="Cancel"
+          color="white"
+          width="48%"
+          backgroundcolor="#ED1534"
+          radius=".25rem"
+          onClick={() => navigate(-1)}
+        />
+        <StyledButton
+          type="button"
+          text="Return"
+          color="white"
+          width="48%"
+          backgroundcolor="#F58732"
+          radius=".25rem"
+          onClick={() => {
+            if (
+              window.confirm(
+                `Confirm Returning This Device:  \nName : "${name}"  \nId: "${id}"`
+              )
+            ) {
+              handleReturn();
             }
-          />
-        </div>
+          }}
+        />
+      </div>
     </Wrapper>
-  )
-}
+  );
+};
 
 const Wrapper = styled.div`
     width: 100%;
@@ -182,4 +187,4 @@ const Wrapper = styled.div`
     }
 `;
 
-export default DeviceInfo
+export default DeviceInfo;

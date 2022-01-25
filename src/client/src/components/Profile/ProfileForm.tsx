@@ -19,7 +19,6 @@ const ProfileForm: React.FC = () => {
     const token = localStorage.getItem("token");
     if (token) {
       const myData = jwt_decode<TokenInfo>(token);
-      console.log(myData);
       return myData.sub;
     }
   });
@@ -86,7 +85,6 @@ const ProfileForm: React.FC = () => {
     }),
     onSubmit: (values, { setSubmitting }) => {
       setSubmitting(true);
-      console.log(values);
       edit({
         variables: {
           id: id,

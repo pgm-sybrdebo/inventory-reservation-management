@@ -62,7 +62,9 @@ export class DevicesResolver {
   @Query(() => Int, { name: 'totalDevicesInCheckByName' })
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.SUPER_ADMIN)
-  async totalDevicesInCheckByName(@Args('name', { type: () => String }) name: string) {
+  async totalDevicesInCheckByName(
+    @Args('name', { type: () => String }) name: string,
+  ) {
     return this.devicesService.countDevicesInCheckWithName(name);
   }
 
@@ -85,14 +87,18 @@ export class DevicesResolver {
   }
 
   @Query(() => [Device], { name: 'devicesInCheckByNameWithPagination' })
-  // @UseGuards(JwtAuthGuard, RolesGuard)
-  // @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   findAllInCheckByNameWithPagination(
     @Args('name', { type: () => String }) name: string,
     @Args('offset', { type: () => Int }, new ParseIntPipe()) offset: number,
     @Args('limit', { type: () => Int }, new ParseIntPipe()) limit: number,
   ) {
-    return this.devicesService.findAllInCheckByNameWithPagination(name, offset, limit);
+    return this.devicesService.findAllInCheckByNameWithPagination(
+      name,
+      offset,
+      limit,
+    );
   }
 
   @Query(() => [Device], { name: 'devicesWithPagination' })
@@ -211,7 +217,6 @@ export class DevicesResolver {
       updateDeviceInput.id,
       updateDeviceInput,
     );
-    console.log('update', updatedDevice.modelId);
     const updatedQuantityModel =
       await this.modelsService.recalculateReadyQuantity(updatedDevice.modelId);
     return updatedDevice;

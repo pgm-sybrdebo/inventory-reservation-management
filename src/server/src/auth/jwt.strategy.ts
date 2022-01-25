@@ -4,11 +4,12 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
+  
   constructor() {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: 'artevelde-inventory-reservation', // .env
+      secretOrKey: `${process.env.AUTHENTICATION_SECRET}`,
       logging: true,
     });
   }

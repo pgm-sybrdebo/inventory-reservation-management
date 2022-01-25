@@ -138,10 +138,6 @@ const DashboardAdmins = () => {
       return;
     }
 
-    console.log(
-      "tag",
-      event.target instanceof Element ? event.target.tagName : "nope"
-    );
     if (
       field === "edit" &&
       event.target instanceof Element &&
@@ -158,7 +154,6 @@ const DashboardAdmins = () => {
         event.target.tagName === "svg" ||
         event.target.tagName === "path")
     ) {
-      console.log("ano");
       setSelectedRow(params.row);
       setIsOpenDialog(true);
       setTitle("Confirm anonymization of this user");
@@ -171,7 +166,6 @@ const DashboardAdmins = () => {
         event.target.tagName === "svg" ||
         event.target.tagName === "path")
     ) {
-      console.log("ano");
       setSelectedRow(params.row);
       setIsOpenDialog(true);
       setTitle("Confirm soft delete of this user");
@@ -184,7 +178,6 @@ const DashboardAdmins = () => {
         event.target.tagName === "svg" ||
         event.target.tagName === "path")
     ) {
-      console.log("ano");
       setSelectedRow(params.row);
       setIsOpenDialog(true);
       setTitle("Confirm delete of this user");
@@ -229,7 +222,6 @@ const DashboardAdmins = () => {
       setOpenSnackbar(true);
       handleClose();
     } catch (error) {
-      console.log(error);
       setSnackbarSuccess(false);
       setSnackbarMessage(`User is not anonymized due to error: ${error}`);
       setOpenSnackbar(true);
@@ -266,7 +258,6 @@ const DashboardAdmins = () => {
       setOpenSnackbar(true);
       handleClose();
     } catch (error) {
-      console.log(error);
       setSnackbarSuccess(false);
       setSnackbarMessage(`User is not deleted due to error: ${error}`);
       setOpenSnackbar(true);
@@ -303,7 +294,6 @@ const DashboardAdmins = () => {
       setOpenSnackbar(true);
       handleClose();
     } catch (error) {
-      console.log(error);
       setSnackbarSuccess(false);
       setSnackbarMessage(`User is not deleted due to error: ${error}`);
       setOpenSnackbar(true);
@@ -311,14 +301,9 @@ const DashboardAdmins = () => {
   };
 
   const handleClose = () => {
-    console.log("close");
     setIsOpen(false);
     setIsOpenDialog(false);
   };
-
-  if (data) {
-    console.log(data);
-  }
 
   return (
     <AdminLayout>

@@ -56,7 +56,6 @@ export class AppController {
   async uploadedDeviceQrCode(@UploadedFile() file) {
     const ext = extname(file.originalname);
     const response = {
-      // originalname: file.originalname,
       filename: file.filename,
       type: ext.replace('.', ''),
     };
@@ -78,7 +77,6 @@ export class AppController {
     files.forEach((file) => {
       const ext = extname(file.originalname);
       const fileReponse = {
-        // originalname: file.originalname,
         filename: file.filename,
         type: ext.replace('.', ''),
       };

@@ -184,10 +184,6 @@ export class UsersService {
     const iso = date.toISOString();
     const date1 = new Date(Number(to));
     const iso1 = date1.toISOString();
-    //console.log(date);
-    //console.log(date1);
-    //console.log(iso);
-    //console.log(iso1);
 
     return this.usersRepository.find({
       created_on: Between(iso, iso1),
@@ -205,9 +201,7 @@ export class UsersService {
   async update(id: string, updateUserInput: UpdateUserInput): Promise<User> {
     let updatedUser;
     if (updateUserInput.password) {
-      //console.log(updateUserInput.password);
       const hashPassword = await bcrypt.hash(updateUserInput.password, 10);
-      //console.log('hash', hashPassword);
       updatedUser = await this.usersRepository.preload({
         id: id,
         ...updateUserInput,

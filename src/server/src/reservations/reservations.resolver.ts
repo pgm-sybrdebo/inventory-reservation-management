@@ -20,11 +20,6 @@ import { ReservationsOverview } from './dto/reservationsOverview';
 import { Device } from 'src/devices/entities/device.entity';
 import { User } from 'src/users/entities/user.entity';
 
-// type ReservationsOverview = {
-//   month: string;
-//   total: number;
-// }
-
 @Resolver(() => Reservation)
 export class ReservationsResolver {
   constructor(private readonly reservationsService: ReservationsService) {}

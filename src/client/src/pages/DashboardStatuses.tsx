@@ -132,10 +132,6 @@ const DashboardStatuses = () => {
       return;
     }
 
-    console.log(
-      "tag",
-      event.target instanceof Element ? event.target.tagName : "nope"
-    );
     if (
       field === "edit" &&
       event.target instanceof Element &&
@@ -152,7 +148,6 @@ const DashboardStatuses = () => {
         event.target.tagName === "svg" ||
         event.target.tagName === "path")
     ) {
-      console.log("ano");
       setSelectedRow(params.row);
       setIsOpenDialog(true);
       setTitle("Confirm soft delete of this device status");
@@ -165,7 +160,6 @@ const DashboardStatuses = () => {
         event.target.tagName === "svg" ||
         event.target.tagName === "path")
     ) {
-      console.log("ano");
       setSelectedRow(params.row);
       setIsOpenDialog(true);
       setTitle("Confirm delete of this device status");
@@ -204,7 +198,6 @@ const DashboardStatuses = () => {
       setOpenSnackbar(true);
       handleClose();
     } catch (error) {
-      console.log(error);
       setSnackbarSuccess(false);
       setSnackbarMessage(`Device status is not deleted due to error: ${error}`);
       setOpenSnackbar(true);
@@ -239,7 +232,6 @@ const DashboardStatuses = () => {
       setOpenSnackbar(true);
       handleClose();
     } catch (error) {
-      console.log(error);
       setSnackbarSuccess(false);
       setSnackbarMessage(`Device status is not deleted due to error: ${error}`);
       setOpenSnackbar(true);
@@ -247,7 +239,6 @@ const DashboardStatuses = () => {
   };
 
   const handleClose = () => {
-    console.log("close");
     setIsOpen(false);
     setIsOpenDialog(false);
     setIsOpenCreate(false);

@@ -1,5 +1,4 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
-import { Dates } from 'src/mixins/date.entity';
 import { Model } from 'src/models/entities/model.entity';
 import {
   PrimaryGeneratedColumn,
@@ -21,9 +20,6 @@ export class Tag {
   @Column()
   @Field()
   name: string;
-
-  // @Column(() => Dates)
-  // date: Dates;
 
   @CreateDateColumn()
   @Field()

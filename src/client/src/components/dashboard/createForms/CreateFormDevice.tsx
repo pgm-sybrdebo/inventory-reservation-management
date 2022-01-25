@@ -15,6 +15,7 @@ import { Model } from "../../../interfaces";
 import QRCode from "qrcode";
 import Loading from "../Loading";
 import { useState, useEffect } from "react";
+import "dotenv/config";
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -81,7 +82,6 @@ const CreateFormDevice = ({
   const { data, loading, error } = useQuery(GET_ALL_MODELS);
   const [createDevice] = useMutation(CREATE_DEVICE, {
     update: (proxy, mutationResult) => {
-      console.log("mutationResult", mutationResult);
       deviceId = mutationResult.data.createDevice.id;
     },
   });
@@ -113,7 +113,7 @@ const CreateFormDevice = ({
                   await createDevice({
                     variables: {
                       modelId: values.modelId,
-                      deviceStatusId: "7b4a3256-6005-402b-916b-810f4d6669c8",
+                      deviceStatusId: `${process.env.REACT_APP_READY_STATE}`,
                     },
                     refetchQueries: [
                       {
@@ -146,10 +146,8 @@ const CreateFormDevice = ({
                   setSnackbarSuccess(true);
                   setMessage("New device is added!");
                   setOpenSnackbar(true);
-                  console.log("done");
                   handleClose();
                 } catch (error) {
-                  console.log(error);
                   setSnackbarSuccess(false);
                   setMessage(`Device is not created due to error: ${error}`);
                   setOpenSnackbar(true);

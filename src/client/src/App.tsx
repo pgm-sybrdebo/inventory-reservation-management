@@ -36,27 +36,14 @@ import {
 
 import { TokenInfo, UserRole } from "./interfaces";
 import DashboardModels from "./pages/DashboardModels";
-import { UserProvider, useUser } from "./context/AuthenticationContext";
-import { useEffect } from "react";
-// import { useQuery } from "@apollo/client";
-// import { GET_DEVICE_BY_ID } from "./graphql/devices";
+import { UserProvider } from "./context/AuthenticationContext";
 
 const RequireAuth = ({ availableRoles }: { availableRoles: UserRole[] }) => {
   let navigate = useNavigate();
-  // console.log("hey");
-  // const user = useUser();
-  // console.log("uuu", user);
 
   const token = localStorage.getItem("token");
-  // console.log(typeof token);
-  // console.log(token);
+
   let location = useLocation();
-  // const routeDetail = location.pathname.split( '/' );
-  // console.log(routeDetail);
-  // const deviceId = routeDetail[3];
-  // const {data:deviceData} = useQuery(GET_DEVICE_BY_ID, {
-  //   variables: {id: deviceId}
-  // })
   if (!token) {
     console.log("no token");
     return <Navigate to="/login" state={{ from: location }} />;
@@ -64,7 +51,6 @@ const RequireAuth = ({ availableRoles }: { availableRoles: UserRole[] }) => {
 
   if (token) {
     const userData = jwt_decode<TokenInfo>(token);
-    console.log(userData.sub);
     if (userData.exp < Date.now() / 1000) {
       localStorage.removeItem("token");
       navigate("/login");

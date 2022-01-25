@@ -46,9 +46,6 @@ export class Reservation {
   @Field({ nullable: true })
   end_date: Date;
 
-  // @Column(() => Dates)
-  // date: Dates;
-
   @CreateDateColumn()
   @Field()
   created_on: Date;

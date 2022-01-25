@@ -48,8 +48,11 @@ const validationSchema = yup.object({
   email: yup.string().email("Invalid email!").required("Required"),
   role: yup.number().min(0).max(1).required("Required"),
   profession: yup.number().min(0).max(1).required("Required"),
-  //cardNumber: yup.number().min(10000, "Card number is 5 numbers").max(99999, "Card number is 5 numbers").required("Required"),
-  cardNumber: yup.number().required("Required"),
+  cardNumber: yup
+    .number()
+    .min(10000, "Card number is 5 numbers")
+    .max(99999, "Card number is 5 numbers")
+    .required("Required"),
 });
 
 const UpdateFormUser = ({
@@ -86,7 +89,6 @@ const UpdateFormUser = ({
     onSnackbarSuccessChange,
   ]);
 
-  console.log("row", selectedRow);
   return (
     <Dialog fullWidth open={open} onClose={handleClose}>
       <>
@@ -106,7 +108,6 @@ const UpdateFormUser = ({
             onSubmit={async (values, { setSubmitting }) => {
               setSubmitting(true);
               try {
-                console.log("update");
                 await updateUser({
                   variables: {
                     id: selectedRow.id,
@@ -191,10 +192,8 @@ const UpdateFormUser = ({
                 setSnackbarSuccess(true);
                 setMessage("User is updated!");
                 setOpenSnackbar(true);
-                console.log("done");
                 handleClose();
               } catch (error) {
-                console.log(error);
                 setSnackbarSuccess(false);
                 setMessage(`User is not updated due to error: ${error}`);
                 setOpenSnackbar(true);
@@ -223,8 +222,7 @@ const UpdateFormUser = ({
                       type="text"
                       label="First name:"
                       value={values.firstName}
-                      // @ts-ignore
-                      onChange={(e) => {
+                      onChange={(e: any) => {
                         setFieldValue("firstName", e.target.value);
                       }}
                       error={Boolean(touched.firstName && errors.firstName)}
@@ -239,8 +237,7 @@ const UpdateFormUser = ({
                       type="text"
                       label="Last name:"
                       value={values.lastName}
-                      // @ts-ignore
-                      onChange={(e) => {
+                      onChange={(e: any) => {
                         setFieldValue("lastName", e.target.value);
                       }}
                       error={Boolean(touched.lastName && errors.lastName)}
@@ -255,8 +252,7 @@ const UpdateFormUser = ({
                       type="text"
                       label="Email:"
                       value={values.email}
-                      // @ts-ignore
-                      onChange={(e) => {
+                      onChange={(e: any) => {
                         setFieldValue("email", e.target.value);
                       }}
                       error={Boolean(touched.email && errors.email)}
@@ -271,8 +267,7 @@ const UpdateFormUser = ({
                       type="number"
                       label="Card number:"
                       value={values.cardNumber}
-                      // @ts-ignore
-                      onChange={(e) => {
+                      onChange={(e: any) => {
                         setFieldValue("cardNumber", e.target.value);
                       }}
                       error={Boolean(touched.cardNumber && errors.cardNumber)}
@@ -286,8 +281,7 @@ const UpdateFormUser = ({
                       name="profession"
                       label="Profession:"
                       value={values.profession}
-                      // @ts-ignore
-                      onChange={(e) => {
+                      onChange={(e: any) => {
                         setFieldValue("profession", e.target.value);
                       }}
                       error={Boolean(touched.profession && errors.profession)}
@@ -304,8 +298,7 @@ const UpdateFormUser = ({
                       name="role"
                       label="Role:"
                       value={values.role}
-                      // @ts-ignore
-                      onChange={(e) => {
+                      onChange={(e: any) => {
                         setFieldValue("role", e.target.value);
                       }}
                       error={Boolean(touched.role && errors.role)}
@@ -319,7 +312,6 @@ const UpdateFormUser = ({
                 </Grid>
                 <ButtonContainer>
                   <Button
-                    // type='submit'
                     variant="contained"
                     size="large"
                     fullWidth

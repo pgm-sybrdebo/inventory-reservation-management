@@ -178,15 +178,9 @@ export class DevicesService {
       AND "modelId" =  '${modelId}'
       AND "deviceStatusId" = '${process.env.DEVICE_STATUS_READY}'
     `);
-    //console.log(rawData);
+
     return rawData;
   }
-
-  // findAndCountReadyDevices(): Promise<number> {
-  //   return this.devicesRepository.findAndCount({
-  //     deviceStatusId: 'ec2ed711-e4a3-42f6-b441-0e91f98f31ba'
-  //   });
-  // }
 
   async findDifferenceLastMonth(): Promise<number> {
     const date = new Date();

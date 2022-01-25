@@ -1,7 +1,7 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom';
+import React from "react";
+import { NavLink } from "react-router-dom";
 import styled from "styled-components";
-import { MenuItemProps } from '../../interfaces';
+import { MenuItemProps } from "../../interfaces";
 //import * as routes from '../../routes';
 
 const MenuItemComponent = styled.li`
@@ -32,17 +32,14 @@ const SubMenuList = styled.ul`
       margin-left: 0.5rem;
     }
 
-    &:hover, &.active {
-      background-color: #CBBEC5;
+    &:hover,
+    &.active {
+      background-color: #cbbec5;
     }
-
-
   }
 `;
 
-
-
-const MenuItem = ({ title, submenu, icon }:MenuItemProps) => {
+const MenuItem = ({ title, submenu, icon }: MenuItemProps) => {
   return (
     <MenuItemComponent>
       <Container>
@@ -51,21 +48,19 @@ const MenuItem = ({ title, submenu, icon }:MenuItemProps) => {
       </Container>
       <SubMenuList>
         {submenu.map((submenuItem, index) => {
-          const url = submenuItem.url
+          const url = submenuItem.url;
           return (
-          
-          <NavLink to={url}>
-            <li key={index}>
-              {submenuItem.icon}
-              <span>{submenuItem.name}</span>
-            </li>
-          </NavLink>
-          )
+            <NavLink to={url}>
+              <li key={index}>
+                {submenuItem.icon}
+                <span>{submenuItem.name}</span>
+              </li>
+            </NavLink>
+          );
         })}
       </SubMenuList>
     </MenuItemComponent>
-  )
-}
+  );
+};
 
-
-export default MenuItem
+export default MenuItem;

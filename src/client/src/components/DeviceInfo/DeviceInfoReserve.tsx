@@ -9,9 +9,9 @@ import { GET_DEVICE_BY_ID, UPDATE_DEVICE } from "../../graphql/devices";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { CREATE_RESERVATION } from "../../graphql/reservations";
-//import { addDays } from "date-fns";
 import jwt_decode from "jwt-decode";
 import moment from "moment";
+import "dotenv/config";
 
 const DeviceInfoReserve: React.FC<InfoDevice> = ({
   name,
@@ -19,11 +19,8 @@ const DeviceInfoReserve: React.FC<InfoDevice> = ({
   damages,
 }) => {
   let dt = Date.now();
-  let userData: any;
   const token = localStorage.getItem("token");
-  // if (token) {
-  //   userData = jwt_decode<TokenInfo>(token!);
-  // }
+  const userData = jwt_decode<TokenInfo>(token!);
 
   const [UpdateDevice] = useMutation(UPDATE_DEVICE, {
     onCompleted: (response: any) => {
@@ -95,15 +92,12 @@ const DeviceInfoReserve: React.FC<InfoDevice> = ({
       }
     );
   }
-  console.log("s", Date.parse(startDate!));
-  console.log("d", dt);
-  console.log(datesToExclude);
 
   const handleCreateFuture = async () => {
     await CreatReservation({
       variables: {
         deviceId: id,
-        reservationStateId: "b89fe2ec-f5b8-4461-943c-15073ac0438a",
+        reservationStateId: `${process.env.REACT_APP_RESERVED_STATE}`,
         userId: userData.sub,
         start_date: moment(startDate!).format("YYYY-MM-DD HH:mm:ss.SSS"),
         expected_end_date: moment(endDate!).format("YYYY-MM-DD HH:mm:ss.SSS"),
@@ -115,7 +109,7 @@ const DeviceInfoReserve: React.FC<InfoDevice> = ({
     await CreatReservation({
       variables: {
         deviceId: id,
-        reservationStateId: "b89fe2ec-f5b8-4461-943c-15073ac0438a",
+        reservationStateId: `${process.env.REACT_APP_RESERVED_STATE}`,
         userId: userData.sub,
         start_date: moment(startDate!).format("YYYY-MM-DD HH:mm:ss.SSS"),
         expected_end_date: moment(endDate!).format("YYYY-MM-DD HH:mm:ss.SSS"),
@@ -128,7 +122,6 @@ const DeviceInfoReserve: React.FC<InfoDevice> = ({
       },
     });
   };
-  console.log(moment(startDate!).format("YYYY-MM-DD HH:mm:ss.SSS"));
   return (
     <Wrapper>
       <div className="topic">

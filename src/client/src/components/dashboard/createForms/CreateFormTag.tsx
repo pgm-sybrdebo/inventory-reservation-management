@@ -10,7 +10,6 @@ import {
   Grid,
   TextField,
 } from "@material-ui/core";
-import { Snackbar, Alert } from "@mui/material";
 import { Formik, Form, Field } from "formik";
 import {
   CREATE_TAG,
@@ -85,7 +84,6 @@ const CreateFormTag = ({
               onSubmit={async (values, { setSubmitting }) => {
                 setSubmitting(true);
                 try {
-                  console.log("create");
                   await createTag({
                     variables: {
                       name: values.name,
@@ -110,10 +108,8 @@ const CreateFormTag = ({
                   setSnackbarSuccess(true);
                   setMessage("New tag is added!");
                   setOpenSnackbar(true);
-                  console.log("done");
                   handleClose();
                 } catch (error) {
-                  console.log(error);
                   setSnackbarSuccess(false);
                   setMessage(`Tag is not created due to error: ${error}`);
                   setOpenSnackbar(true);

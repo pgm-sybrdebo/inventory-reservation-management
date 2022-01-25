@@ -109,7 +109,6 @@ function Devices() {
   const changePage = ({ selected }: any) => {
     setPageNumber(selected + 1);
   };
-  console.log(devPag);
   return (
     <>
       <Header />
