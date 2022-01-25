@@ -181,8 +181,6 @@ const DashboardInCheckDevices = () => {
 
   const setCurrentDeviceReady = async (id: string) => {
     try {
-      console.log("env1", process.env);
-      console.log("env", process.env.REACT_APP_READY_STATE);
       await updateDevice({
         variables: {
           id: id,
@@ -210,7 +208,6 @@ const DashboardInCheckDevices = () => {
       setOpenSnackbar(true);
       handleClose();
     } catch (error) {
-      console.log(error);
       setSnackbarSuccess(false);
       setSnackbarMessage(
         `Device status is not changed to ready due to error: ${error}`
@@ -248,7 +245,6 @@ const DashboardInCheckDevices = () => {
       setOpenSnackbar(true);
       handleClose();
     } catch (error) {
-      console.log(error);
       setSnackbarSuccess(false);
       setSnackbarMessage(
         `Device status is not changed to broken due to error: ${error}`
@@ -258,7 +254,6 @@ const DashboardInCheckDevices = () => {
   };
 
   const handleClose = () => {
-    console.log("close");
     setIsOpen(false);
     setIsOpenDialog(false);
   };

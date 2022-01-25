@@ -85,7 +85,6 @@ const UpdateFormStatus = ({
             onSubmit={async (values, { setSubmitting }) => {
               setSubmitting(true);
               try {
-                console.log("update");
                 await updateDeviceStatus({
                   variables: {
                     id: selectedRow.id,
@@ -111,10 +110,8 @@ const UpdateFormStatus = ({
                 setSnackbarSuccess(true);
                 setMessage("Device status is updated!");
                 setOpenSnackbar(true);
-                console.log("done");
                 handleClose();
               } catch (error) {
-                console.log(error);
                 setSnackbarSuccess(false);
                 setMessage(
                   `Device status is not updated due to error: ${error}`
@@ -145,8 +142,7 @@ const UpdateFormStatus = ({
                       type="text"
                       label="Name:"
                       value={values.name}
-                      // @ts-ignore
-                      onChange={(e) => {
+                      onChange={(e: any) => {
                         setFieldValue("name", e.target.value);
                       }}
                       error={Boolean(touched.name && errors.name)}
@@ -156,7 +152,6 @@ const UpdateFormStatus = ({
                 </Grid>
                 <ButtonContainer>
                   <Button
-                    // type='submit'
                     variant="contained"
                     size="large"
                     fullWidth

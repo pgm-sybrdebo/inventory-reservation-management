@@ -34,6 +34,8 @@ export class CreateUserInput {
 
   @IsPositive()
   @IsInt()
+  @Min(10000)
+  @Max(99999)
   @Field((type) => Int)
   cardNumber: number;
 

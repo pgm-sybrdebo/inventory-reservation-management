@@ -55,7 +55,6 @@ const UpdateFormDevice = ({
   onOpenSnackbarChange,
   onSnackbarSuccessChange,
 }: UpdateFormDeviceProps) => {
-  console.log("row", selectedRow);
   const { data, loading, error } = useQuery(GET_ALL_MODELS);
   const {
     data: deviceStatusData,
@@ -140,7 +139,6 @@ const UpdateFormDevice = ({
                   setOpenSnackbar(true);
                   handleClose();
                 } catch (error) {
-                  console.log(error);
                   setSnackbarSuccess(false);
                   setMessage(`Device is not updated due to error: ${error}`);
                   setOpenSnackbar(true);

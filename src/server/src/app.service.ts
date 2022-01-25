@@ -18,6 +18,5 @@ export class AppService {
     models.forEach(async (model) => {
       await this.modelsService.recalculateReadyQuantity(model.id);
     });
-    console.log('Every hour');
   }
 }

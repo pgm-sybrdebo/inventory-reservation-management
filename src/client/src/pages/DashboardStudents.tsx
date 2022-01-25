@@ -113,10 +113,6 @@ const DashboardStudents = () => {
   const [softDeleteUser] = useMutation(SOFT_REMOVE_USER);
   const [deleteUser] = useMutation(REMOVE_USER);
 
-  if (totalData) {
-    console.log("total", totalData);
-  }
-
   useEffect(() => {
     getUsersByLastNameAndProfessionWithPagination({
       variables: {
@@ -143,10 +139,6 @@ const DashboardStudents = () => {
       return;
     }
 
-    console.log(
-      "tag",
-      event.target instanceof Element ? event.target.tagName : "nope"
-    );
     if (
       field === "edit" &&
       event.target instanceof Element &&
@@ -163,7 +155,6 @@ const DashboardStudents = () => {
         event.target.tagName === "svg" ||
         event.target.tagName === "path")
     ) {
-      console.log("ano");
       setSelectedRow(params.row);
       setIsOpenDialog(true);
       setTitle("Confirm anonymization of this user");
@@ -176,7 +167,6 @@ const DashboardStudents = () => {
         event.target.tagName === "svg" ||
         event.target.tagName === "path")
     ) {
-      console.log("ano");
       setSelectedRow(params.row);
       setIsOpenDialog(true);
       setTitle("Confirm soft delete of this user");
@@ -189,7 +179,6 @@ const DashboardStudents = () => {
         event.target.tagName === "svg" ||
         event.target.tagName === "path")
     ) {
-      console.log("ano");
       setSelectedRow(params.row);
       setIsOpenDialog(true);
       setTitle("Confirm delete of this user");
@@ -234,7 +223,6 @@ const DashboardStudents = () => {
       setOpenSnackbar(true);
       handleClose();
     } catch (error) {
-      console.log(error);
       setSnackbarSuccess(false);
       setSnackbarMessage(`User is not anonymized due to error: ${error}`);
       setOpenSnackbar(true);
@@ -271,7 +259,6 @@ const DashboardStudents = () => {
       setOpenSnackbar(true);
       handleClose();
     } catch (error) {
-      console.log(error);
       setSnackbarSuccess(false);
       setSnackbarMessage(`User is not deleted due to error: ${error}`);
       setOpenSnackbar(true);
@@ -308,7 +295,6 @@ const DashboardStudents = () => {
       setOpenSnackbar(true);
       handleClose();
     } catch (error) {
-      console.log(error);
       setSnackbarSuccess(false);
       setSnackbarMessage(`User is not deleted due to error: ${error}`);
       setOpenSnackbar(true);
@@ -316,7 +302,6 @@ const DashboardStudents = () => {
   };
 
   const handleClose = () => {
-    console.log("close");
     setIsOpen(false);
     setIsOpenDialog(false);
   };

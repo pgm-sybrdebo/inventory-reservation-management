@@ -73,7 +73,6 @@ const UpdateFormTag = ({
     onSnackbarSuccessChange,
   ]);
 
-  console.log("row", selectedRow);
   return (
     <Dialog fullWidth open={open} onClose={handleClose}>
       <>
@@ -86,7 +85,6 @@ const UpdateFormTag = ({
             onSubmit={async (values, { setSubmitting }) => {
               setSubmitting(true);
               try {
-                console.log("update");
                 await updateTag({
                   variables: {
                     id: selectedRow.id,
@@ -112,10 +110,8 @@ const UpdateFormTag = ({
                 setSnackbarSuccess(true);
                 setMessage("Tag is updated!");
                 setOpenSnackbar(true);
-                console.log("done");
                 handleClose();
               } catch (error) {
-                console.log(error);
                 setSnackbarSuccess(false);
                 setMessage(`Tag is not updated due to error: ${error}`);
                 setOpenSnackbar(true);

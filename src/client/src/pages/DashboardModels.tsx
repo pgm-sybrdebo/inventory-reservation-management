@@ -200,7 +200,6 @@ const DashboardModels = () => {
       setOpenSnackbar(true);
       handleClose();
     } catch (error) {
-      console.log(error);
       setSnackbarSuccess(false);
       setSnackbarMessage(`Model is not deleted due to error: ${error}`);
       setOpenSnackbar(true);
@@ -235,7 +234,6 @@ const DashboardModels = () => {
       setOpenSnackbar(true);
       handleClose();
     } catch (error) {
-      console.log(error);
       setSnackbarSuccess(false);
       setSnackbarMessage(`Model is not deleted due to error: ${error}`);
       setOpenSnackbar(true);
@@ -243,7 +241,6 @@ const DashboardModels = () => {
   };
 
   const handleClose = () => {
-    console.log("close");
     setIsOpen(false);
     setIsOpenDialog(false);
     setIsOpenCreate(false);

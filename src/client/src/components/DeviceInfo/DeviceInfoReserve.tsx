@@ -1,57 +1,64 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 import styled from "styled-components";
-import StyledButton from '../Button/StyledButton.style';
+import StyledButton from "../Button/StyledButton.style";
 import { useNavigate } from "react-router-dom";
-import {InfoDevice, TokenInfo} from '../../interfaces'
-import { useParams } from 'react-router-dom';
-import { useMutation, useQuery } from '@apollo/client';
-import { GET_DEVICE_BY_ID, UPDATE_DEVICE } from '../../graphql/devices';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import { CREATE_RESERVATION } from '../../graphql/reservations';
+import { InfoDevice, TokenInfo } from "../../interfaces";
+import { useParams } from "react-router-dom";
+import { useMutation, useQuery } from "@apollo/client";
+import { GET_DEVICE_BY_ID, UPDATE_DEVICE } from "../../graphql/devices";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { CREATE_RESERVATION } from "../../graphql/reservations";
 //import { addDays } from "date-fns";
-import jwt_decode from "jwt-decode"
-import moment from 'moment';
+import jwt_decode from "jwt-decode";
+import moment from "moment";
+import "dotenv/config";
 
-
-const DeviceInfoReserve: React.FC<InfoDevice> = ({name, description , damages}) => { 
+const DeviceInfoReserve: React.FC<InfoDevice> = ({
+  name,
+  description,
+  damages,
+}) => {
   let dt = Date.now();
-  const token = localStorage.getItem('token');  
+  const token = localStorage.getItem("token");
   const userData = jwt_decode<TokenInfo>(token!);
 
   const [UpdateDevice] = useMutation(UPDATE_DEVICE, {
     onCompleted: (response: any) => {
-      console.log(response)
-      navigate(-1)
+      console.log(response);
+      navigate(-1);
     },
     onError: (error) => {
       console.log(`GRAPHQL ERROR: ${error.message}`);
-    }
+    },
   });
-  
+
   const [CreatReservation] = useMutation(CREATE_RESERVATION, {
     onCompleted: (response: any) => {
-      
-      console.log(response)
+      console.log(response);
     },
-    onError: (error: { message: string; }) => {
+    onError: (error: { message: string }) => {
       console.log(`GRAPHQL ERROR: ${error.message}`);
-    }
+    },
   });
   const getDaysArray = (start: number, end: number) => {
-    for(var arr=[],dt=new Date(start); dt<=new Date(end); dt.setDate(dt.getDate()+1)){
-        arr.push(new Date(dt));
+    for (
+      var arr = [], dt = new Date(start);
+      dt <= new Date(end);
+      dt.setDate(dt.getDate() + 1)
+    ) {
+      arr.push(new Date(dt));
     }
     return arr;
-};
+  };
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const onChange = (dates: any[]) => {
     const [start, end] = dates;
-    if(start){
+    if (start) {
       setStartDate(start);
     }
-    if(end){
+    if (end) {
       setEndDate(end);
     }
   };
@@ -60,52 +67,63 @@ const DeviceInfoReserve: React.FC<InfoDevice> = ({name, description , damages}) 
   const { loading, error, data } = useQuery(GET_DEVICE_BY_ID, {
     variables: { id },
   });
-  if(loading) {return <div className="loading"><h1 className="loading__text">Loading...</h1></div>}
-  if(error) {return <div className="loading"><h1 className="loading__text">Error {error.message}</h1></div>}
+  if (loading) {
+    return (
+      <div className="loading">
+        <h1 className="loading__text">Loading...</h1>
+      </div>
+    );
+  }
+  if (error) {
+    return (
+      <div className="loading">
+        <h1 className="loading__text">Error {error.message}</h1>
+      </div>
+    );
+  }
   let result;
   let datesToExclude: any[] = [];
-  if(data){
+  if (data) {
     result = data.getDeviceById;
-    result.reservations.map((r: { start_date: number; expected_end_date: number; }) => {
-      return datesToExclude.push(getDaysArray(r.start_date, r.expected_end_date));
-    });
+    result.reservations.map(
+      (r: { start_date: number; expected_end_date: number }) => {
+        return datesToExclude.push(
+          getDaysArray(r.start_date, r.expected_end_date)
+        );
+      }
+    );
   }
-  console.log("s",Date.parse(startDate!))
-  console.log("d",dt)
-  console.log(datesToExclude);
 
-  
-  const handleCreateFuture = async() => {
+  const handleCreateFuture = async () => {
     await CreatReservation({
-      variables:{
+      variables: {
         deviceId: id,
-        reservationStateId: "b89fe2ec-f5b8-4461-943c-15073ac0438a",
+        reservationStateId: `${process.env.REACT_APP_RESERVED_STATE}`,
         userId: userData.sub,
         start_date: moment(startDate!).format("YYYY-MM-DD HH:mm:ss.SSS"),
-        expected_end_date: moment(endDate!).format("YYYY-MM-DD HH:mm:ss.SSS")
-      }
-    })
-    navigate(-1)
-  }
-  const handleCreateNow = async() => {
+        expected_end_date: moment(endDate!).format("YYYY-MM-DD HH:mm:ss.SSS"),
+      },
+    });
+    navigate(-1);
+  };
+  const handleCreateNow = async () => {
     await CreatReservation({
-      variables:{
+      variables: {
         deviceId: id,
-        reservationStateId: "b89fe2ec-f5b8-4461-943c-15073ac0438a",
+        reservationStateId: `${process.env.REACT_APP_RESERVED_STATE}`,
         userId: userData.sub,
         start_date: moment(startDate!).format("YYYY-MM-DD HH:mm:ss.SSS"),
-        expected_end_date: moment(endDate!).format("YYYY-MM-DD HH:mm:ss.SSS")
-      }
-    })
+        expected_end_date: moment(endDate!).format("YYYY-MM-DD HH:mm:ss.SSS"),
+      },
+    });
     UpdateDevice({
       variables: {
-        id:id,
+        id: id,
         userId: userData.sub,
-      }
-    })
-  }
-  console.log(moment(startDate!).format("YYYY-MM-DD HH:mm:ss.SSS"))
-  return(
+      },
+    });
+  };
+  return (
     <Wrapper>
       <div className="topic">
         <h2>{name}</h2>
@@ -119,7 +137,11 @@ const DeviceInfoReserve: React.FC<InfoDevice> = ({name, description , damages}) 
         <div className="speces">
           <h4>Damages</h4>
           <ul>
-            {damages.map((damage, index) => <li key={index} className="spec">{damage.title}: {damage.description}</li>)}
+            {damages.map((damage, index) => (
+              <li key={index} className="spec">
+                {damage.title}: {damage.description}
+              </li>
+            ))}
           </ul>
         </div>
       </div>
@@ -136,34 +158,34 @@ const DeviceInfoReserve: React.FC<InfoDevice> = ({name, description , damages}) 
         minDate={new Date()}
       />
       <div className="btns">
-          <StyledButton 
-            type="button" 
-            text="Cancel" 
-            color="white"
-            width="48%"
-            backgroundcolor="#ED1534"
-            radius=".25rem"
-            onClick = {()=> navigate(-1)}
-          />
-          <StyledButton 
-            type="button" 
-            text="Apply" 
-            color="white"
-            width="48%"
-            backgroundcolor="#F58732"
-            radius=".25rem"
-            onClick = {()=>{
-              if(Date.parse(startDate!) <= dt){
-                handleCreateNow()
-              }else{
-                handleCreateFuture()
-              }
-            }}
-          />
-        </div>
+        <StyledButton
+          type="button"
+          text="Cancel"
+          color="white"
+          width="48%"
+          backgroundcolor="#ED1534"
+          radius=".25rem"
+          onClick={() => navigate(-1)}
+        />
+        <StyledButton
+          type="button"
+          text="Apply"
+          color="white"
+          width="48%"
+          backgroundcolor="#F58732"
+          radius=".25rem"
+          onClick={() => {
+            if (Date.parse(startDate!) <= dt) {
+              handleCreateNow();
+            } else {
+              handleCreateFuture();
+            }
+          }}
+        />
+      </div>
     </Wrapper>
-  )
-}
+  );
+};
 
 const Wrapper = styled.div`
     width: 100%;
@@ -259,4 +281,4 @@ const Wrapper = styled.div`
     }
 `;
 
-export default DeviceInfoReserve
+export default DeviceInfoReserve;

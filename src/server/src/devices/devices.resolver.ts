@@ -217,7 +217,6 @@ export class DevicesResolver {
       updateDeviceInput.id,
       updateDeviceInput,
     );
-    console.log('update', updatedDevice.modelId);
     const updatedQuantityModel =
       await this.modelsService.recalculateReadyQuantity(updatedDevice.modelId);
     return updatedDevice;

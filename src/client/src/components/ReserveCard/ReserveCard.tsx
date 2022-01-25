@@ -1,15 +1,28 @@
-import React from 'react'
+import React from "react";
 import styled from "styled-components";
-import { ModelCardPic } from '../../interfaces'
-import CardBtn from '../CardBtn/CardBtn';
-import useStore from '../../store';
-import moment from 'moment';
-import { useMutation } from '@apollo/client';
-import { SOFT_REMOVE_RESERVATION, TAKEN_CONFIRMED, UPDATE_RESERVATION } from '../../graphql/reservations';
-import { UPDATE_DEVICE } from '../../graphql/devices';
+import { ModelCardPic } from "../../interfaces";
+import CardBtn from "../CardBtn/CardBtn";
+import useStore from "../../store";
+import moment from "moment";
+import { useMutation } from "@apollo/client";
+import {
+  SOFT_REMOVE_RESERVATION,
+  TAKEN_CONFIRMED,
+  UPDATE_RESERVATION,
+} from "../../graphql/reservations";
+import { UPDATE_DEVICE } from "../../graphql/devices";
 import { useNavigate } from "react-router-dom";
+import "dotenv/config";
 
-const ReserveCard : React.FC<ModelCardPic>= ({src, title, start_date, end_date, description, id, deviceId}) => {
+const ReserveCard: React.FC<ModelCardPic> = ({
+  src,
+  title,
+  start_date,
+  end_date,
+  description,
+  id,
+  deviceId,
+}) => {
   let navigate = useNavigate();
   const store = useStore();
   let dt = Date.now();
@@ -18,138 +31,150 @@ const ReserveCard : React.FC<ModelCardPic>= ({src, title, start_date, end_date, 
 
   const [TakenConfirmed] = useMutation(TAKEN_CONFIRMED, {
     onCompleted: (response: any) => {
-      
-      console.log(response)
-      navigate(0)
+      console.log(response);
+      navigate(0);
     },
     onError: (error) => {
       console.log(`GRAPHQL ERROR: ${error.message}`);
-    }
+    },
   });
   // SOFT_REMOVE_RESERVATION
 
   const [delete_reservation] = useMutation(SOFT_REMOVE_RESERVATION, {
     onCompleted: (response: any) => {
-      
-      console.log(response)
-      navigate(0)
+      console.log(response);
+      navigate(0);
     },
     onError: (error) => {
       console.log(`GRAPHQL ERROR: ${error.message}`);
-    }
+    },
   });
 
   const [UpdateReservation] = useMutation(UPDATE_RESERVATION, {
     onCompleted: (response: any) => {
-      
-      console.log(response)
+      console.log(response);
     },
     onError: (error) => {
       console.log(`GRAPHQL ERROR: ${error.message}`);
-    }
+    },
   });
 
   const [UpdateDevice] = useMutation(UPDATE_DEVICE, {
     onCompleted: (response: any) => {
-      console.log(response)
-      navigate(0)
+      console.log(response);
+      navigate(0);
     },
     onError: (error) => {
       console.log(`GRAPHQL ERROR: ${error.message}`);
-    }
+    },
   });
 
   const handleDelete = () => {
-    delete_reservation({ 
+    delete_reservation({
       variables: {
-        id:id
-      }
-    })
-  }
+        id: id,
+      },
+    });
+  };
   const handleConfirm = () => {
-    TakenConfirmed({ 
+    TakenConfirmed({
       variables: {
-        id:id
-      }
-    })
-  }
-  const handleReturn = async()=>{
+        id: id,
+      },
+    });
+  };
+  const handleReturn = async () => {
     await UpdateReservation({
       variables: {
-        id:id,
-        reservationStateId: "45e2e05a-f498-4be1-9a58-d29219f6bbea",
-        end_date: dt
-      }
-    })
+        id: id,
+        reservationStateId: `${process.env.REACT_APP_RETURNED_STATE}`,
+        end_date: dt,
+      },
+    });
 
     UpdateDevice({
       variables: {
-        id:deviceId,
-        deviceStatusId: "ec2ed711-e4a3-42f6-b441-0e91f98f31ba",
+        id: deviceId,
+        deviceStatusId: `${process.env.REACT_APP_DEVICE_STATUS_INCHECK}`,
         userId: null,
-      }
-    })
-  }
-  return(
+      },
+    });
+  };
+  return (
     <BigCard>
-    <div className="bg">
-      <img src={src} alt="model" />
-    </div>
-    <div className="info">
-      <div className="top">
-        <h2>{title}</h2>
+      <div className="bg">
+        <img src={src} alt="model" />
       </div>
-      <div className="text">
-        <div className="desc">{description}</div>
-        <div className="dates">
-          <span>Starts on: {moment(start_date!).format("YYYY-MM-DD")}</span>
-          <span>Return Before: {moment(end_date!).format("YYYY-MM-DD")}</span>
+      <div className="info">
+        <div className="top">
+          <h2>{title}</h2>
         </div>
-        
-        
+        <div className="text">
+          <div className="desc">{description}</div>
+          <div className="dates">
+            <span>Starts on: {moment(start_date!).format("YYYY-MM-DD")}</span>
+            <span>Return Before: {moment(end_date!).format("YYYY-MM-DD")}</span>
+          </div>
+        </div>
       </div>
-    </div>
-    
-      {
-        (store.selectionReserv==="b89fe2ec-f5b8-4461-943c-15073ac0438a"  && start_date && 
-        <div className="btns">
-        {start_date <= dt ?
-        <CardBtn
-          type="button" 
-          text="Confirm Taking" 
-          name="ct"
-          onClick = {()=>{    
-            if(window.confirm(`Confirm Taking This Device:  \nName : "${title}"`)){handleConfirm()}}
-          }
-        />
-        :
-        <CardBtn
-          type="button" 
-          text="Delete Reservation" 
-          name="dr"
-          onClick = {()=>{    
-            if(window.confirm(`Confirm Deleting Reservation:  \nName : "${title}"`)){handleDelete()}}
-          }
-        />
-          }
-      </div>)
-      ||
-      (store.selectionReserv==="1d6e3e78-024e-4bed-bc5e-065b6fb7d1c4" &&
-      <div className="btns">
-      <CardBtn
-        type="button" 
-        text="Return" 
-        name="rt"
-        onClick = {()=>{   
-          if(window.confirm(`Confirm Returning This Device:  \nName : "${title}"`)){handleReturn()}}
-        }
-      />
-    </div>
 
-    )}
-  </BigCard>
-  )
-}
+      {(store.selectionReserv === `${process.env.REACT_APP_RESERVED_STATE}` &&
+        start_date && (
+          <div className="btns">
+            {start_date <= dt ? (
+              <CardBtn
+                type="button"
+                text="Confirm Taking"
+                name="ct"
+                onClick={() => {
+                  if (
+                    window.confirm(
+                      `Confirm Taking This Device:  \nName : "${title}"`
+                    )
+                  ) {
+                    handleConfirm();
+                  }
+                }}
+              />
+            ) : (
+              <CardBtn
+                type="button"
+                text="Delete Reservation"
+                name="dr"
+                onClick={() => {
+                  if (
+                    window.confirm(
+                      `Confirm Deleting Reservation:  \nName : "${title}"`
+                    )
+                  ) {
+                    handleDelete();
+                  }
+                }}
+              />
+            )}
+          </div>
+        )) ||
+        (store.selectionReserv === `${process.env.REACT_APP_TAKEN_STATE}` && (
+          <div className="btns">
+            <CardBtn
+              type="button"
+              text="Return"
+              name="rt"
+              onClick={() => {
+                if (
+                  window.confirm(
+                    `Confirm Returning This Device:  \nName : "${title}"`
+                  )
+                ) {
+                  handleReturn();
+                }
+              }}
+            />
+          </div>
+        ))}
+    </BigCard>
+  );
+};
 
 const BigCard = styled.div`
   width: 100%;
@@ -244,4 +269,4 @@ const BigCard = styled.div`
   
 `;
 
-export default ReserveCard
+export default ReserveCard;

@@ -20,7 +20,6 @@ import {
   CREATE_MEDIA,
   GET_PICTURE_BY_MODEL_ID,
   SOFT_REMOVE_MEDIA,
-  UPDATE_MEDIA,
 } from "../../../graphql/media";
 import Loading from "../Loading";
 import defaultImage from "../../../assets/device.jpg";
@@ -135,10 +134,6 @@ const UpdateFormModel = ({
   const [deleteMedia] = useMutation(SOFT_REMOVE_MEDIA);
   const [createMedia] = useMutation(CREATE_MEDIA);
 
-  if (data) {
-    console.log(data);
-  }
-
   return (
     <Dialog open={open} onClose={handleClose}>
       {loading && <Loading />}
@@ -160,8 +155,6 @@ const UpdateFormModel = ({
               onSubmit={async (values, { setSubmitting }) => {
                 setSubmitting(true);
                 try {
-                  console.log(selectedRow.id);
-                  console.log("start submitting");
                   await updateModel({
                     variables: {
                       id: selectedRow.id,
@@ -202,7 +195,6 @@ const UpdateFormModel = ({
                       }
                     );
                     const uploadResponse = await uploadRequest.json();
-                    console.log("id", data.mediaByModelId.id);
                     await deleteMedia({
                       variables: {
                         id: data.mediaByModelId.id,
@@ -227,10 +219,8 @@ const UpdateFormModel = ({
                   setSnackbarSuccess(true);
                   setMessage("Model is updated!");
                   setOpenSnackbar(true);
-                  console.log("done");
                   handleClose();
                 } catch (error) {
-                  console.log(error);
                   setSnackbarSuccess(false);
                   setMessage(`Model is not updated due to error: ${error}`);
                   setOpenSnackbar(true);
@@ -387,7 +377,6 @@ const UpdateFormModel = ({
                   </Grid>
                   <ButtonContainer>
                     <Button
-                      // type='submit'
                       variant="contained"
                       size="large"
                       fullWidth
@@ -399,12 +388,6 @@ const UpdateFormModel = ({
                         ":hover": {
                           bgcolor: "#F58732",
                         },
-                        //   ":hover": {
-                        //     bgcolor: "#FFF",
-                        //     color: "#F58732",
-                        //     borderColor: "#F58732",
-                        //     borderWidth: 2,
-                        //   },
                       }}
                     >
                       Update

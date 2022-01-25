@@ -9,22 +9,15 @@ import {
   TextareaAutosize,
   TextField,
 } from "@material-ui/core";
-import { Typography, Button, Input } from "@mui/material";
+import { Button, Input } from "@mui/material";
 import { Formik, Form, Field, FieldArray } from "formik";
-import { Add, Remove } from "@material-ui/icons";
-import { bgcolor, borderColor } from "@mui/system";
-import {
-  CREATE_MODEL,
-  GET_ALL_MODELS_BY_NAME_WITH_PAGINATION,
-  TOTAL_MODELS_BY_NAME,
-} from "../../../graphql/models";
-import { CREATE_MEDIA } from "../../../graphql/media";
 import { CREATE_DAMAGE } from "../../../graphql/damages";
 import {
   GET_ALL_DEVICES_IN_CHECK_BY_NAME_WITH_PAGINATION,
   TOTAL_DEVICES_IN_CHECK_BY_NAME,
 } from "../../../graphql/devices";
 import { useState, useEffect } from "react";
+import "dotenv/config";
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -45,7 +38,7 @@ const Label = styled.label`
 
 interface CreateFormDamageProps {
   open: boolean;
-  handleClose: any;
+  handleClose: () => void;
   page: number;
   name: string;
   selectedRow: any;
@@ -114,7 +107,7 @@ const CreateFormDamage = ({
                 }
 
                 const uploadRequest = await fetch(
-                  "http://localhost:3000/uploadDamagePicture",
+                  `${process.env.REACT_APP_UPLOAD_PATH_DAMAGE_PICTURE}`,
                   {
                     method: "POST",
                     headers: new Headers({ Accept: "application/json" }),
@@ -150,10 +143,8 @@ const CreateFormDamage = ({
                 setSnackbarSuccess(true);
                 setMessage("New damage is added!");
                 setOpenSnackbar(true);
-                console.log("done");
                 handleClose();
               } catch (error) {
-                console.log(error);
                 setSnackbarSuccess(false);
                 setMessage(`Damage is not created due to error: ${error}`);
                 setOpenSnackbar(true);

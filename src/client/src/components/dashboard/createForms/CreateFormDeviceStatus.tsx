@@ -83,7 +83,6 @@ const CreateFormDeviceStatus = ({
             onSubmit={async (values, { setSubmitting }) => {
               setSubmitting(true);
               try {
-                console.log("create");
                 await createDeviceStatus({
                   variables: {
                     name: values.name,
@@ -108,10 +107,8 @@ const CreateFormDeviceStatus = ({
                 setSnackbarSuccess(true);
                 setMessage("New device status is added!");
                 setOpenSnackbar(true);
-                console.log("done");
                 handleClose();
               } catch (error) {
-                console.log(error);
                 setSnackbarSuccess(false);
                 setMessage(
                   `Device status is not created due to error: ${error}`
@@ -142,8 +139,7 @@ const CreateFormDeviceStatus = ({
                       type="text"
                       label="Name:"
                       value={values.name}
-                      // @ts-ignore
-                      onChange={(e) => {
+                      onChange={(e: any) => {
                         setFieldValue("name", e.target.value);
                       }}
                       error={Boolean(touched.name && errors.name)}
@@ -153,7 +149,6 @@ const CreateFormDeviceStatus = ({
                 </Grid>
                 <ButtonContainer>
                   <Button
-                    // type='submit'
                     variant="contained"
                     size="large"
                     fullWidth
