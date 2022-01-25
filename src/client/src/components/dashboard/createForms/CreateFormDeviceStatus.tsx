@@ -92,8 +92,8 @@ const CreateFormDeviceStatus = ({
                       query: GET_ALL_DEVICE_STATUSES_BY_NAME_WITH_PAGINATION,
                       variables: {
                         name: name,
-                        offset: 0,
-                        limit: page * 10,
+                        offset: page * 10,
+                        limit: 10,
                       },
                     },
                     {
