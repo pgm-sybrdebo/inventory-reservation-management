@@ -12,14 +12,11 @@ import { DamagesModule } from 'src/damages/damages.module';
 @Module({
   imports: [
     TypeOrmModule.forFeature([Device]),
-    // ReservationsModule,
     forwardRef(() => ReservationsModule),
     DeviceStatusesModule,
-    // UsersModule,
     DamagesModule,
     forwardRef(() => ModelsModule),
     forwardRef(() => UsersModule),
-    // ModelsModule,
   ],
   providers: [DevicesResolver, DevicesService],
   exports: [DevicesService],

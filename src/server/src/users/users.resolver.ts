@@ -25,11 +25,6 @@ import { Total } from 'src/models/dto/total';
 export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
 
-  // @Mutation(() => User)
-  // createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
-  //   return this.usersService.create(createUserInput);
-  // }
-
   @Query(() => [User], { name: 'users' })
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.SUPER_ADMIN)
@@ -181,8 +176,6 @@ export class UsersResolver {
   ) {
     return this.usersService.findRecentUsers(from, to);
   }
-
-  // findAll(@context() context)
 
   @Query(() => User, { name: 'user' })
   @UseGuards(JwtAuthGuard, RolesGuard)

@@ -1,9 +1,10 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { IsOptional } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 @InputType()
 export class Filter {
   @IsOptional()
+  @IsString()
   @Field({ nullable: true })
   name?: string;
 

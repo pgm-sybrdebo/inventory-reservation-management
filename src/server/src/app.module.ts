@@ -8,7 +8,6 @@ import { join } from 'path';
 import { UsersModule } from './users/users.module';
 import { ReservationsModule } from './reservations/reservations.module';
 import { ReservationStatesModule } from './reservation-states/reservation-states.module';
-import { ReservationTimesModule } from './reservation-times/reservation-times.module';
 import { DamagesModule } from './damages/damages.module';
 import { DevicesModule } from './devices/devices.module';
 import { ModelsModule } from './models/models.module';
@@ -66,7 +65,6 @@ const nodeEnvironment = `${(
     UsersModule,
     ReservationsModule,
     ReservationStatesModule,
-    ReservationTimesModule,
     DamagesModule,
     DevicesModule,
     ModelsModule,

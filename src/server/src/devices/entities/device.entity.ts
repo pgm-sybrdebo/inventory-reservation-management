@@ -1,7 +1,6 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { Damage } from 'src/damages/entities/damage.entity';
 import { DeviceStatus } from 'src/device-statuses/entities/device-status.entity';
-import { Dates } from 'src/mixins/date.entity';
 import { Model } from 'src/models/entities/model.entity';
 import { Reservation } from 'src/reservations/entities/reservation.entity';
 import { User } from 'src/users/entities/user.entity';
@@ -35,16 +34,9 @@ export class Device {
   @Field({ nullable: true })
   userId: string;
 
-  // @Column()
-  // @Field((type) => Boolean)
-  // is_available: boolean;
-
   @Column({ nullable: true })
   @Field({ nullable: true })
   qr_code: string;
-
-  // @Column(() => Dates)
-  // date: Dates;
 
   @CreateDateColumn()
   @Field()

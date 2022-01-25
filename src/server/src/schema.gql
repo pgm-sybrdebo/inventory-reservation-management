@@ -50,11 +50,6 @@ input CreateReservationStateInput {
   name: String!
 }
 
-input CreateReservationTimeInput {
-  amount: Int!
-  name: String!
-}
-
 input CreateTagInput {
   name: String!
 }
@@ -144,7 +139,6 @@ type Mutation {
   createModel(createModelInput: CreateModelInput!): Model!
   createReservation(createReservationInput: CreateReservationInput!): Reservation!
   createReservationState(createReservationStateInput: CreateReservationStateInput!): ReservationState!
-  createReservationTime(createReservationTimeInput: CreateReservationTimeInput!): ReservationTime!
   createTag(createTagInput: CreateTagInput!): Tag!
   login(loginUserInput: LoginUserInput!): LoginResponse!
   removeDamage(id: String!): Damage!
@@ -155,7 +149,6 @@ type Mutation {
   removeModelFromTag(modelId: String!, tagId: String!): Model!
   removeReservation(id: String!): Boolean!
   removeReservationState(id: String!): ReservationState!
-  removeReservationTime(id: String!): ReservationTime!
   removeTag(id: String!): Boolean!
   removeUser(id: String!): Boolean!
   signup(signupUserInput: SignupUserInput!): User!
@@ -176,7 +169,6 @@ type Mutation {
   updateModel(updateModelInput: UpdateModelInput!): Model!
   updateReservation(updateReservationInput: UpdateReservationInput!): Reservation!
   updateReservationState(updateReservationStateInput: UpdateReservationStateInput!): ReservationState!
-  updateReservationTime(updateReservationTimeInput: UpdateReservationTimeInput!): ReservationTime!
   updateTag(updateTagInput: UpdateTagInput!): Tag!
   updateUser(updateUserInput: UpdateUserInput!): User!
   updateUserAdmin(updateUserAdminInput: UpdateUserAdminInput!): User!
@@ -217,8 +209,6 @@ type Query {
   reservation(id: String!): Reservation!
   reservationState(id: String!): ReservationState!
   reservationStates: [ReservationState!]!
-  reservationTime(id: String!): ReservationTime!
-  reservationTimes: [ReservationTime!]!
   reservations: [Reservation!]!
   reservationsByUserIdAndReservationState(reservationStateId: String!, userId: String!): [Reservation!]!
   reservationsOverview(today: String!): [ReservationsOverview!]!
@@ -273,12 +263,6 @@ type ReservationState {
   id: String!
   name: String!
   reservations: [Reservation!]
-}
-
-type ReservationTime {
-  amount: Int!
-  id: String!
-  name: String!
 }
 
 type ReservationsOverview {
@@ -364,12 +348,6 @@ input UpdateReservationInput {
 }
 
 input UpdateReservationStateInput {
-  id: String!
-  name: String
-}
-
-input UpdateReservationTimeInput {
-  amount: Int
   id: String!
   name: String
 }

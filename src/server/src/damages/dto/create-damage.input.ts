@@ -10,7 +10,7 @@ export class CreateDamageInput {
 
   @IsOptional()
   @IsUUID('all')
-  @Field({nullable: true})
+  @Field({ nullable: true })
   reservationId?: string;
 
   @IsNotEmpty()

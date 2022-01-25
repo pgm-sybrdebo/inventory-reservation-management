@@ -11,19 +11,16 @@ interface Context {
 }
 
 define(Device, (faker: typeof Faker, context: Context) => {
-  // console.log("sup", context);
+
   const { id, device_statuses } = context;
-  // console.log("id", id);
-  // console.log("deviceStatus", device_statuses);
   const device = new Device();
   const deviceSt = device_statuses[faker.random.number({ min: 0, max: 3 })];
-  // console.log("device", deviceSt);
   device.modelId = id;
   // 70% chance for no current user
   const boolean = Math.random() < 0.7;
   device.user = boolean ? null : (factory(User)() as any);
 
   device.deviceStatus = deviceSt;
-  device.qr_code = 'default_qr_code';
+  device.qr_code = 'data:image/png;base64,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';
   return device;
 });

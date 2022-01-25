@@ -10,9 +10,7 @@ import {
   Repository,
   Between,
   LessThanOrEqual,
-  In,
   SelectQueryBuilder,
-  Like,
   Raw,
 } from 'typeorm';
 import { CreateModelInput } from './dto/create-model.input';
@@ -86,21 +84,6 @@ export class ModelsService {
         qb.where('tag_id IN (:...tagsIds)', { tagsIds: tagIds });
       },
     });
-
-    // return this.modelsRepository.find({
-    //   relations: ['tags'],
-    //   where: (qb: SelectQueryBuilder<Model>) => {
-    //     qb.where(`tag_id IN :tagIds`, {tagIds: tagIds})
-    //   }
-    // })
-    // return this.modelsRepository.find();
-
-    // return this.modelsRepository.find({
-    //   relations: ['tags'],
-    //   where: (qb: SelectQueryBuilder<Model>) => {
-    //     qb.where('tag_id = :tagId', {tagId: tagId})
-    //   }
-    // })
   }
 
   async findAllByFilterWithPagination(
@@ -130,7 +113,6 @@ export class ModelsService {
       LIMIT ${limit}
       OFFSET ${(offset - 1) * limit}
     `);
-    //console.log(rawData);
     return rawData;
   }
 
@@ -157,8 +139,6 @@ export class ModelsService {
   }
 
   async countWithFilter(filter: Filter): Promise<number> {
-    //console.log(filter.name);
-    //console.log(filter.tagIds)
     const rawData = await this.modelsRepository.query(`
       SELECT
         COUNT(DISTINCT id) AS total

@@ -8,7 +8,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.enableCors({
     // origin: 'https://dormdash.onrender.com',
-    origin: 'http://localhost:3001',
+    origin: `${process.env.CLIENT_URL}`,
     credentials: true,
     allowedHeaders:
       'Content-Type, Accept, Authorization, X-Requested-With, Origin, X-Csrftoken, X-Xsrftoken',

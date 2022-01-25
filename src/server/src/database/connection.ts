@@ -9,11 +9,11 @@ const nodeEnvironment = `${(
 
 const typeormConfig: ConnectionOptions = {
   type: 'postgres',
-  host: 'frankfurt-postgres.render.com',
-  port: 5432,
-  username: 'aidsyb',
-  password: 'K3W1heJnIprF5WFpzqeQSU6EEuMEQRjj',
-  database: 'artevelde_inventory',
+  host: `${process.env.DB_HOST}`,
+  port: Number(process.env.DB_PORT),
+  username: `${process.env.DB_USERNAME}`,
+  password: `${process.env.DB_PASSWORD}`,
+  database: `${process.env.DB_DATABASE}`,
   // host: 'ec2-54-162-211-113.compute-1.amazonaws.com',
   // port: 5432,
   // username: 'spftdcheqzbjrb',

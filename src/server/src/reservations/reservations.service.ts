@@ -59,9 +59,6 @@ export class ReservationsService {
   findTotalMonthReservations(month: string): Promise<number> {
     const startDate = moment(month).startOf('month').toISOString();
     const endDate = moment(month).endOf('month').toISOString();
-    //console.log(startDate);
-    //console.log(endDate);
-
     return this.reservationsRepository.count({
       start_date: Between(startDate, endDate),
     });
@@ -81,7 +78,6 @@ export class ReservationsService {
         month DESC
       LIMIT 12
     `);
-    //console.log(rawData);
     return rawData;
   }
 
@@ -107,7 +103,7 @@ export class ReservationsService {
   ): Promise<Reservation> {
     const updatedReservation = await this.reservationsRepository.preload({
       id: id,
-      reservationStateId: '1d6e3e78-024e-4bed-bc5e-065b6fb7d1c4',
+      reservationStateId: `${process.env.RESERVATION_STATUS_TAKEN}`,
       ...updateReservationInput,
     });
 
@@ -116,14 +112,11 @@ export class ReservationsService {
 
   async remove(id: string): Promise<Reservation> {
     const reservation = await this.findOne(id);
-    //console.log(reservation);
     return this.reservationsRepository.remove(reservation);
-    // return reservation
   }
 
   async softRemove(id: string): Promise<Reservation> {
     const reservation = await this.findOne(id);
-    //console.log(reservation);
     return this.reservationsRepository.softRemove(reservation);
   }
 

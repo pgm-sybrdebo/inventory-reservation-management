@@ -15,7 +15,7 @@ import { RolesGuard } from './guards/roles.guard';
     UsersModule,
     JwtModule.register({
       signOptions: { expiresIn: '600000s' },
-      secret: 'artevelde-inventory-reservation', // process.env.JWT_SECRET
+      secret: `${process.env.AUTHENTICATION_SECRET}`
     }),
   ],
   providers: [

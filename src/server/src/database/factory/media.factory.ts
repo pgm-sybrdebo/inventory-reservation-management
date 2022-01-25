@@ -12,6 +12,6 @@ define(Media, (faker: typeof Faker, context: Context) => {
   const media = new Media();
   media.modelId = id;
   media.type = 'jpeg';
-  media.source = 'defaultImage.jpeg';
+  media.source = 'defaultModelImage.jpeg';
   return media;
 });
