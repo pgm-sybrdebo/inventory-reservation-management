@@ -7,7 +7,6 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe());
   app.enableCors({
-    // origin: 'https://dormdash.onrender.com',
     origin: `${process.env.CLIENT_URL}`,
     credentials: true,
     allowedHeaders:

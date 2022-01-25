@@ -56,11 +56,11 @@ const nodeEnvironment = `${(
         synchronize: true,
         logging: nodeEnvironment === 'development' ? true : false,
         dropSchema: nodeEnvironment === 'test' ? true : false,
-        ssl: false
+        // ssl: false
         // ssl: true,
-        // ssl: {
-        //   rejectUnauthorized: false,
-        // },
+        ssl: {
+          rejectUnauthorized: false,
+        },
       }),
     }),
     UsersModule,
