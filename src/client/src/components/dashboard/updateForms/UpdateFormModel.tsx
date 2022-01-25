@@ -187,7 +187,7 @@ const UpdateFormModel = ({
                     const imgData = new FormData();
                     imgData.append("image", values.image);
                     const uploadRequest = await fetch(
-                      "http://localhost:3000/uploadModelPictures",
+                      `${process.env.REACT_APP_UPLOAD_PATH_MODEL_PICTURE}`,
                       {
                         method: "POST",
                         headers: new Headers({ Accept: "application/json" }),
@@ -356,7 +356,7 @@ const UpdateFormModel = ({
                         <Image
                           src={
                             data.mediaByModelId.source
-                              ? `http://localhost:3000/model-image/${data.mediaByModelId.source}`
+                              ? `${process.env.SERVER_URL}/${data.mediaByModelId.source}`
                               : defaultImage
                           }
                           alt={selectedRow.name}

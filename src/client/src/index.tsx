@@ -11,7 +11,7 @@ import {
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 
-const link = from([new HttpLink({ uri: "http://localhost:3000/graphql" })]);
+const link = from([new HttpLink({ uri: `${process.env.SERVER_URL}/graphql` })]);
 
 const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists
