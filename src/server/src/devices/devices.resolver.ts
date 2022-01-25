@@ -209,7 +209,7 @@ export class DevicesResolver {
 
   @Mutation(() => Device)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN, Role.USER)
   async updateDevice(
     @Args('updateDeviceInput') updateDeviceInput: UpdateDeviceInput,
   ) {
