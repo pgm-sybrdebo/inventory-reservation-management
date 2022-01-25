@@ -24,6 +24,7 @@ import {
   GET_ALL_DEVICES_IN_CHECK_BY_NAME_WITH_PAGINATION,
   TOTAL_DEVICES_IN_CHECK_BY_NAME,
 } from "../../../graphql/devices";
+import { useState, useEffect } from "react";
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -48,6 +49,9 @@ interface CreateFormDamageProps {
   page: number;
   name: string;
   selectedRow: any;
+  onSnackbarMessageChange: any;
+  onOpenSnackbarChange: any;
+  onSnackbarSuccessChange: any;
 }
 
 const validationSchema = yup.object({
@@ -62,8 +66,33 @@ const CreateFormDamage = ({
   page,
   name,
   selectedRow,
+  onSnackbarMessageChange,
+  onOpenSnackbarChange,
+  onSnackbarSuccessChange,
 }: CreateFormDamageProps) => {
   const [createDamage] = useMutation(CREATE_DAMAGE);
+  const [message, setMessage] = useState("");
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarSuccess, setSnackbarSuccess] = useState(true);
+
+  useEffect(() => {
+    if (typeof onSnackbarMessageChange === "function") {
+      onSnackbarMessageChange(message);
+    }
+    if (typeof onOpenSnackbarChange === "function") {
+      onOpenSnackbarChange(openSnackbar);
+    }
+    if (typeof onSnackbarSuccessChange === "function") {
+      onSnackbarSuccessChange(snackbarSuccess);
+    }
+  }, [
+    message,
+    openSnackbar,
+    snackbarSuccess,
+    onSnackbarMessageChange,
+    onOpenSnackbarChange,
+    onSnackbarSuccessChange,
+  ]);
 
   return (
     <Dialog fullWidth open={open} onClose={handleClose}>
@@ -118,10 +147,16 @@ const CreateFormDamage = ({
                     },
                   ],
                 });
+                setSnackbarSuccess(true);
+                setMessage("New damage is added!");
+                setOpenSnackbar(true);
                 console.log("done");
                 handleClose();
               } catch (error) {
                 console.log(error);
+                setSnackbarSuccess(false);
+                setMessage(`Damage is not created due to error: ${error}`);
+                setOpenSnackbar(true);
               }
               setSubmitting(false);
             }}

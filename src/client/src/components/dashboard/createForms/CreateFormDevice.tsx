@@ -14,6 +14,7 @@ import {
 import { Model } from "../../../interfaces";
 import QRCode from "qrcode";
 import Loading from "../Loading";
+import { useState, useEffect } from "react";
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -27,6 +28,9 @@ interface CreateFormDeviceProps {
   handleClose: () => void;
   page: number;
   name: string;
+  onSnackbarMessageChange: any;
+  onOpenSnackbarChange: any;
+  onSnackbarSuccessChange: any;
 }
 
 const generateQR = async (text: string) => {
@@ -46,8 +50,34 @@ const CreateFormDevice = ({
   handleClose,
   page,
   name,
+  onSnackbarMessageChange,
+  onOpenSnackbarChange,
+  onSnackbarSuccessChange,
 }: CreateFormDeviceProps) => {
   let deviceId: string;
+  let qrCode: string | undefined;
+  const [message, setMessage] = useState("");
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarSuccess, setSnackbarSuccess] = useState(true);
+
+  useEffect(() => {
+    if (typeof onSnackbarMessageChange === "function") {
+      onSnackbarMessageChange(message);
+    }
+    if (typeof onOpenSnackbarChange === "function") {
+      onOpenSnackbarChange(openSnackbar);
+    }
+    if (typeof onSnackbarSuccessChange === "function") {
+      onSnackbarSuccessChange(snackbarSuccess);
+    }
+  }, [
+    message,
+    openSnackbar,
+    snackbarSuccess,
+    onSnackbarMessageChange,
+    onOpenSnackbarChange,
+    onSnackbarSuccessChange,
+  ]);
   const { data, loading, error } = useQuery(GET_ALL_MODELS);
   const [createDevice] = useMutation(CREATE_DEVICE, {
     update: (proxy, mutationResult) => {
@@ -57,11 +87,6 @@ const CreateFormDevice = ({
   });
   const [updateDevice] = useMutation(UPDATE_DEVICE);
 
-  if (data) {
-    console.log(data);
-  }
-
-  let qrCode: string | undefined;
   return (
     <Dialog fullWidth open={open} onClose={handleClose}>
       {loading && (
@@ -118,9 +143,16 @@ const CreateFormDevice = ({
                       qr_code: qrCode,
                     },
                   });
+                  setSnackbarSuccess(true);
+                  setMessage("New device is added!");
+                  setOpenSnackbar(true);
+                  console.log("done");
                   handleClose();
                 } catch (error) {
                   console.log(error);
+                  setSnackbarSuccess(false);
+                  setMessage(`Device is not created due to error: ${error}`);
+                  setOpenSnackbar(true);
                 }
                 setSubmitting(false);
               }}

@@ -15,6 +15,7 @@ import { DeviceStatus, Model } from "../../../interfaces";
 import QRCode from "qrcode";
 import Loading from "../Loading";
 import { GET_DEVICESTATUSES } from "../../../graphql/deviceStatuses";
+import { useState, useEffect } from "react";
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -35,6 +36,9 @@ interface UpdateFormDeviceProps {
   handleClose: () => void;
   page: number;
   name: string;
+  onSnackbarMessageChange: any;
+  onOpenSnackbarChange: any;
+  onSnackbarSuccessChange: any;
 }
 
 const validationSchema = yup.object({
@@ -47,6 +51,9 @@ const UpdateFormDevice = ({
   handleClose,
   page,
   name,
+  onSnackbarMessageChange,
+  onOpenSnackbarChange,
+  onSnackbarSuccessChange,
 }: UpdateFormDeviceProps) => {
   console.log("row", selectedRow);
   const { data, loading, error } = useQuery(GET_ALL_MODELS);
@@ -56,6 +63,29 @@ const UpdateFormDevice = ({
     error: deviceStatusError,
   } = useQuery(GET_DEVICESTATUSES);
   const [updateDevice] = useMutation(UPDATE_DEVICE);
+
+  const [message, setMessage] = useState("");
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarSuccess, setSnackbarSuccess] = useState(true);
+
+  useEffect(() => {
+    if (typeof onSnackbarMessageChange === "function") {
+      onSnackbarMessageChange(message);
+    }
+    if (typeof onOpenSnackbarChange === "function") {
+      onOpenSnackbarChange(openSnackbar);
+    }
+    if (typeof onSnackbarSuccessChange === "function") {
+      onSnackbarSuccessChange(snackbarSuccess);
+    }
+  }, [
+    message,
+    openSnackbar,
+    snackbarSuccess,
+    onSnackbarMessageChange,
+    onOpenSnackbarChange,
+    onSnackbarSuccessChange,
+  ]);
 
   return (
     <Dialog fullWidth open={open} onClose={handleClose}>
@@ -105,10 +135,15 @@ const UpdateFormDevice = ({
                       },
                     ],
                   });
-
+                  setSnackbarSuccess(true);
+                  setMessage("Device is updated!");
+                  setOpenSnackbar(true);
                   handleClose();
                 } catch (error) {
                   console.log(error);
+                  setSnackbarSuccess(false);
+                  setMessage(`Device is not updated due to error: ${error}`);
+                  setOpenSnackbar(true);
                 }
                 setSubmitting(false);
               }}

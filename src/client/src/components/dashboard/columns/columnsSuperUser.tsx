@@ -1,7 +1,7 @@
 // import { GridColDef, } from '@material-ui/data-grid';
-import { GridColDef} from '@mui/x-data-grid';
-import styled from 'styled-components';
-import { Delete, DeleteForever, VisibilityOff } from '@material-ui/icons';
+import { GridColDef } from "@mui/x-data-grid";
+import styled from "styled-components";
+import { Delete, DeleteForever, VisibilityOff } from "@material-ui/icons";
 import { BiEdit } from "react-icons/bi";
 
 const Button = styled.button`
@@ -12,60 +12,65 @@ const Button = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #CBBEC5;
-  border: 1px solid #CBBEC5;
+  background-color: #cbbec5;
+  border: 1px solid #cbbec5;
   background-color: transparent;
-  color: #F58732;
-  border: 1px solid #F58732;
+  color: #f58732;
+  border: 1px solid #f58732;
   border-radius: 3px;
-  cursor:pointer;
+  cursor: pointer;
   font-size: 1rem;
   font-weight: bold;
   transition: all 0.2s ease-in-out;
   margin: 0 auto;
 
   &:hover {
-    background-color: #F58732;
-    color: #FFF;
+    background-color: #f58732;
+    color: #fff;
     // border: 1px solid #F58732;
-
   }
 `;
 
 const columnsSuperUser: GridColDef[] = [
-  { field: "firstName", headerName: "First name", width: 200 },
-  { field: "lastName", headerName: "Last name", width: 200 },
-  { field: "email", headerName: "Email", width: 300 },
-  {field: "cardNumber", headerName:"Card number", width: 200},
-  { 
-    field: "profession", 
-    headerName: "Profession", 
-    width: 150,
+  { field: "firstName", headerName: "First name", minWidth: 200, flex: 1 },
+  { field: "lastName", headerName: "Last name", minWidth: 200, flex: 1 },
+  { field: "email", headerName: "Email", minWidth: 300, flex: 1 },
+  { field: "cardNumber", headerName: "Card number", minWidth: 200, flex: 1 },
+  {
+    field: "profession",
+    headerName: "Profession",
+    minWidth: 200,
+    flex: 1,
     renderCell: (params) => {
-      return (
-        <span>{params.row.profession === 0 ? "Student" : "Staff"}</span>
-      )
-    }
+      return <span>{params.row.profession === 0 ? "Student" : "Staff"}</span>;
+    },
   },
-  { 
-    field: "role", 
-    headerName: "Role", 
-    width: 150,
+  {
+    field: "role",
+    headerName: "Role",
+    minWidth: 200,
+    flex: 1,
     renderCell: (params) => {
       return (
         //<span>{params.row.role === 0 ? "User" : "Admin"}</span>
-        <span>{ params.row.role === 0 ? "User" : params.row.role === 1 ? "Admin" : "Super admin"}</span>
-      )
-    }
+        <span>
+          {params.row.role === 0
+            ? "User"
+            : params.row.role === 1
+            ? "Admin"
+            : "Super admin"}
+        </span>
+      );
+    },
   },
 
   {
     field: "edit",
     headerName: "Edit",
-    width: 100,
+    minWidth: 100,
+    flex: 1,
     sortable: false,
     renderCell: (params) => {
-
       return (
         <Button>
           <BiEdit />
@@ -76,10 +81,10 @@ const columnsSuperUser: GridColDef[] = [
   {
     field: "anonymize",
     headerName: "Anonymize",
-    width: 100,
+    minWidth: 100,
+    flex: 1,
     sortable: false,
     renderCell: (params) => {
-
       return (
         <Button>
           <VisibilityOff />
@@ -90,10 +95,10 @@ const columnsSuperUser: GridColDef[] = [
   {
     field: "softDelete",
     headerName: "Soft Delete",
-    width: 100,
+    minWidth: 100,
+    flex: 1,
     sortable: false,
     renderCell: (params) => {
-
       return (
         <Button>
           <Delete />
@@ -104,10 +109,10 @@ const columnsSuperUser: GridColDef[] = [
   {
     field: "delete",
     headerName: "Hard Delete",
-    width: 100,
+    minWidth: 100,
+    flex: 1,
     sortable: false,
     renderCell: (params) => {
-
       return (
         <Button>
           <DeleteForever />

@@ -15,6 +15,7 @@ import {
   TOTAL_DEVICE_STATUSES_BY_NAME,
   UPDATE_DEVICE_STATUS,
 } from "../../../graphql/deviceStatuses";
+import { useState, useEffect } from "react";
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -29,6 +30,9 @@ interface UpdateFormStatusProps {
   handleClose: () => void;
   page: number;
   name: string;
+  onSnackbarMessageChange: any;
+  onOpenSnackbarChange: any;
+  onSnackbarSuccessChange: any;
 }
 
 const validationSchema = yup.object({
@@ -41,10 +45,34 @@ const UpdateFormStatus = ({
   handleClose,
   page,
   name,
+  onSnackbarMessageChange,
+  onOpenSnackbarChange,
+  onSnackbarSuccessChange,
 }: UpdateFormStatusProps) => {
   const [updateDeviceStatus] = useMutation(UPDATE_DEVICE_STATUS);
 
-  console.log("row", selectedRow);
+  const [message, setMessage] = useState("");
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarSuccess, setSnackbarSuccess] = useState(true);
+
+  useEffect(() => {
+    if (typeof onSnackbarMessageChange === "function") {
+      onSnackbarMessageChange(message);
+    }
+    if (typeof onOpenSnackbarChange === "function") {
+      onOpenSnackbarChange(openSnackbar);
+    }
+    if (typeof onSnackbarSuccessChange === "function") {
+      onSnackbarSuccessChange(snackbarSuccess);
+    }
+  }, [
+    message,
+    openSnackbar,
+    snackbarSuccess,
+    onSnackbarMessageChange,
+    onOpenSnackbarChange,
+    onSnackbarSuccessChange,
+  ]);
   return (
     <Dialog fullWidth open={open} onClose={handleClose}>
       <>
@@ -80,10 +108,18 @@ const UpdateFormStatus = ({
                     },
                   ],
                 });
+                setSnackbarSuccess(true);
+                setMessage("Device status is updated!");
+                setOpenSnackbar(true);
                 console.log("done");
                 handleClose();
               } catch (error) {
                 console.log(error);
+                setSnackbarSuccess(false);
+                setMessage(
+                  `Device status is not updated due to error: ${error}`
+                );
+                setOpenSnackbar(true);
               }
               setSubmitting(false);
             }}

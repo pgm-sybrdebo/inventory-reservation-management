@@ -24,6 +24,7 @@ import {
 } from "../../../graphql/media";
 import Loading from "../Loading";
 import defaultImage from "../../../assets/device.jpg";
+import { useState, useEffect } from "react";
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -73,6 +74,9 @@ interface UpdateFormModelProps {
   handleClose: () => void;
   page: number;
   name: string;
+  onSnackbarMessageChange: any;
+  onOpenSnackbarChange: any;
+  onSnackbarSuccessChange: any;
 }
 
 interface Spec {
@@ -96,7 +100,32 @@ const UpdateFormModel = ({
   handleClose,
   page,
   name,
+  onSnackbarMessageChange,
+  onOpenSnackbarChange,
+  onSnackbarSuccessChange,
 }: UpdateFormModelProps) => {
+  const [message, setMessage] = useState("");
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarSuccess, setSnackbarSuccess] = useState(true);
+
+  useEffect(() => {
+    if (typeof onSnackbarMessageChange === "function") {
+      onSnackbarMessageChange(message);
+    }
+    if (typeof onOpenSnackbarChange === "function") {
+      onOpenSnackbarChange(openSnackbar);
+    }
+    if (typeof onSnackbarSuccessChange === "function") {
+      onSnackbarSuccessChange(snackbarSuccess);
+    }
+  }, [
+    message,
+    openSnackbar,
+    snackbarSuccess,
+    onSnackbarMessageChange,
+    onOpenSnackbarChange,
+    onSnackbarSuccessChange,
+  ]);
   const { data, loading, error } = useQuery(GET_PICTURE_BY_MODEL_ID, {
     variables: {
       modelId: selectedRow.id,
@@ -195,10 +224,16 @@ const UpdateFormModel = ({
                       ],
                     });
                   }
+                  setSnackbarSuccess(true);
+                  setMessage("Model is updated!");
+                  setOpenSnackbar(true);
                   console.log("done");
                   handleClose();
                 } catch (error) {
                   console.log(error);
+                  setSnackbarSuccess(false);
+                  setMessage(`Model is not updated due to error: ${error}`);
+                  setOpenSnackbar(true);
                 }
                 setSubmitting(false);
               }}

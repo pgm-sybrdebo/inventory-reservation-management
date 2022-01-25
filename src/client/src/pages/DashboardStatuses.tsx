@@ -15,8 +15,9 @@ import {
   SOFT_REMOVE_DEVICE_STATUS,
   TOTAL_DEVICE_STATUSES_BY_NAME,
 } from "../graphql/deviceStatuses";
-import { Button } from "@material-ui/core";
+import { Button, Snackbar } from "@material-ui/core";
 import CreateFormDeviceStatus from "../components/dashboard/createForms/CreateFormDeviceStatus";
+import { Alert } from "@mui/material";
 
 const Title = styled.h1`
   margin: 1.5rem;
@@ -75,6 +76,30 @@ const DashboardStatuses = () => {
   const [searchValue, setSearchValue] = useState("");
   const [page, setPage] = useState(0);
   const [state, dispatch] = React.useReducer(actionReducer, initialState);
+
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarSuccess, setSnackbarSuccess] = useState(true);
+
+  const handleSnackbarMessageChange = (isSelected: string) => {
+    setSnackbarMessage(isSelected);
+  };
+  const handleOpenSnackbarChange = (isSelected: boolean) => {
+    setOpenSnackbar(isSelected);
+  };
+  const handleSnackbarSuccessChange = (isSelected: boolean) => {
+    setSnackbarSuccess(isSelected);
+  };
+
+  const handleSnackbarClose = (
+    e: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSnackbar(false);
+  };
 
   const { data: totalData } = useQuery(TOTAL_DEVICE_STATUSES_BY_NAME, {
     variables: {
@@ -174,9 +199,15 @@ const DashboardStatuses = () => {
           },
         ],
       });
+      setSnackbarSuccess(true);
+      setSnackbarMessage("Device status is deleted!");
+      setOpenSnackbar(true);
       handleClose();
     } catch (error) {
       console.log(error);
+      setSnackbarSuccess(false);
+      setSnackbarMessage(`Device status is not deleted due to error: ${error}`);
+      setOpenSnackbar(true);
     }
   };
 
@@ -203,9 +234,15 @@ const DashboardStatuses = () => {
           },
         ],
       });
+      setSnackbarSuccess(true);
+      setSnackbarMessage("Device status is deleted for ever!");
+      setOpenSnackbar(true);
       handleClose();
     } catch (error) {
       console.log(error);
+      setSnackbarSuccess(false);
+      setSnackbarMessage(`Device status is not deleted due to error: ${error}`);
+      setOpenSnackbar(true);
     }
   };
 
@@ -244,7 +281,15 @@ const DashboardStatuses = () => {
       </SearchContainer>
 
       {loading && <Loading />}
-      {error && <p>{error.message}</p>}
+      {error && (
+        <Snackbar
+          anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+          open={true}
+          autoHideDuration={3000}
+        >
+          <Alert severity="error">An error occured: {error.message}</Alert>
+        </Snackbar>
+      )}
       {data && totalData && (
         <Table
           data={data.deviceStatusesByNameWithPagination}
@@ -263,6 +308,9 @@ const DashboardStatuses = () => {
           open={isOpen}
           page={page}
           name={searchValue}
+          onSnackbarMessageChange={handleSnackbarMessageChange}
+          onOpenSnackbarChange={handleOpenSnackbarChange}
+          onSnackbarSuccessChange={handleSnackbarSuccessChange}
         />
       )}
 
@@ -272,6 +320,9 @@ const DashboardStatuses = () => {
           open={isOpenCreate}
           page={page}
           name={searchValue}
+          onSnackbarMessageChange={handleSnackbarMessageChange}
+          onOpenSnackbarChange={handleOpenSnackbarChange}
+          onSnackbarSuccessChange={handleSnackbarSuccessChange}
         />
       )}
 
@@ -289,6 +340,20 @@ const DashboardStatuses = () => {
           }
         />
       )}
+
+      <Snackbar
+        open={openSnackbar}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        autoHideDuration={3000}
+        onClose={handleSnackbarClose}
+      >
+        <Alert
+          severity={snackbarSuccess ? "success" : "error"}
+          sx={{ width: "100%" }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </AdminLayout>
   );
 };

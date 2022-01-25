@@ -7,7 +7,7 @@ import { GridCellParams, MuiEvent } from "@mui/x-data-grid";
 import ConfirmDialog from "../components/dashboard/dialogs/ConfirmDialog";
 import SearchBar from "material-ui-search-bar";
 import Loading from "../components/dashboard/Loading";
-import { Button } from "@material-ui/core";
+import { Button, Snackbar } from "@material-ui/core";
 import { columnsDevice } from "../components/dashboard/columns/columnsDevice";
 import {
   GET_ALL_DEVICES_BY_NAME_WITH_PAGINATION,
@@ -17,6 +17,7 @@ import {
 } from "../graphql/devices";
 import CreateFormDevice from "../components/dashboard/createForms/CreateFormDevice";
 import UpdateFormDevice from "../components/dashboard/updateForms/UpdateFormDevice";
+import { Alert } from "@mui/material";
 
 const Title = styled.h1`
   margin: 1.5rem;
@@ -77,6 +78,30 @@ const DashboardDevices = () => {
   const [searchValue, setSearchValue] = useState("");
   const [page, setPage] = useState(0);
   const [state, dispatch] = React.useReducer(actionReducer, initialState);
+
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarSuccess, setSnackbarSuccess] = useState(true);
+
+  const handleSnackbarMessageChange = (isSelected: string) => {
+    setSnackbarMessage(isSelected);
+  };
+  const handleOpenSnackbarChange = (isSelected: boolean) => {
+    setOpenSnackbar(isSelected);
+  };
+  const handleSnackbarSuccessChange = (isSelected: boolean) => {
+    setSnackbarSuccess(isSelected);
+  };
+
+  const handleSnackbarClose = (
+    e: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSnackbar(false);
+  };
 
   const { data: totalData } = useQuery(TOTAL_DEVICES_BY_NAME, {
     variables: {
@@ -170,9 +195,15 @@ const DashboardDevices = () => {
           },
         ],
       });
+      setSnackbarSuccess(true);
+      setSnackbarMessage("Device is deleted!");
+      setOpenSnackbar(true);
       handleClose();
     } catch (error) {
       console.log(error);
+      setSnackbarSuccess(false);
+      setSnackbarMessage(`Device is not deleted due to error: ${error}`);
+      setOpenSnackbar(true);
     }
   };
 
@@ -199,9 +230,15 @@ const DashboardDevices = () => {
           },
         ],
       });
+      setSnackbarSuccess(true);
+      setSnackbarMessage("Device is deleted for ever!");
+      setOpenSnackbar(true);
       handleClose();
     } catch (error) {
       console.log(error);
+      setSnackbarSuccess(false);
+      setSnackbarMessage(`Device is not deleted due to error: ${error}`);
+      setOpenSnackbar(true);
     }
   };
 
@@ -240,7 +277,15 @@ const DashboardDevices = () => {
       </SearchContainer>
 
       {loading && <Loading />}
-      {error && <p>{error.message}</p>}
+      {error && (
+        <Snackbar
+          anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+          open={true}
+          autoHideDuration={3000}
+        >
+          <Alert severity="error">An error occured: {error.message}</Alert>
+        </Snackbar>
+      )}
       {data && totalData && (
         <Table
           data={data.devicesByNameWithPagination}
@@ -274,6 +319,9 @@ const DashboardDevices = () => {
           open={isOpen}
           page={page}
           name={searchValue}
+          onSnackbarMessageChange={handleSnackbarMessageChange}
+          onOpenSnackbarChange={handleOpenSnackbarChange}
+          onSnackbarSuccessChange={handleSnackbarSuccessChange}
         />
       )}
 
@@ -283,8 +331,25 @@ const DashboardDevices = () => {
           open={isOpenCreate}
           page={page}
           name={searchValue}
+          onSnackbarMessageChange={handleSnackbarMessageChange}
+          onOpenSnackbarChange={handleOpenSnackbarChange}
+          onSnackbarSuccessChange={handleSnackbarSuccessChange}
         />
       )}
+
+      <Snackbar
+        open={openSnackbar}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        autoHideDuration={3000}
+        onClose={handleSnackbarClose}
+      >
+        <Alert
+          severity={snackbarSuccess ? "success" : "error"}
+          sx={{ width: "100%" }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </AdminLayout>
   );
 };

@@ -19,6 +19,7 @@ import SearchBar from "material-ui-search-bar";
 import Loading from "../components/dashboard/Loading";
 import { columnsSuperUser } from "../components/dashboard/columns/columnsSuperUser";
 import { columnsUser } from "../components/dashboard/columns/columnUser";
+import { Snackbar, Alert } from "@mui/material";
 
 const Title = styled.h1`
   margin: 1.5rem;
@@ -70,6 +71,30 @@ const DashboardAdmins = () => {
   const [searchValue, setSearchValue] = useState("");
   const [page, setPage] = useState(0);
   const [state, dispatch] = React.useReducer(actionReducer, initialState);
+
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarSuccess, setSnackbarSuccess] = useState(true);
+
+  const handleSnackbarMessageChange = (isSelected: string) => {
+    setSnackbarMessage(isSelected);
+  };
+  const handleOpenSnackbarChange = (isSelected: boolean) => {
+    setOpenSnackbar(isSelected);
+  };
+  const handleSnackbarSuccessChange = (isSelected: boolean) => {
+    setSnackbarSuccess(isSelected);
+  };
+
+  const handleSnackbarClose = (
+    e: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSnackbar(false);
+  };
 
   const { data: totalData } = useQuery(TOTAL_USERS_BY_LAST_NAME_AND_ROLE, {
     variables: {
@@ -195,9 +220,15 @@ const DashboardAdmins = () => {
           },
         ],
       });
+      setSnackbarSuccess(true);
+      setSnackbarMessage("User is anonymized!");
+      setOpenSnackbar(true);
       handleClose();
     } catch (error) {
       console.log(error);
+      setSnackbarSuccess(false);
+      setSnackbarMessage(`User is not anonymized due to error: ${error}`);
+      setOpenSnackbar(true);
     }
   };
 
@@ -226,9 +257,15 @@ const DashboardAdmins = () => {
           },
         ],
       });
+      setSnackbarSuccess(true);
+      setSnackbarMessage("User is deleted!");
+      setOpenSnackbar(true);
       handleClose();
     } catch (error) {
       console.log(error);
+      setSnackbarSuccess(false);
+      setSnackbarMessage(`User is not deleted due to error: ${error}`);
+      setOpenSnackbar(true);
     }
   };
 
@@ -257,9 +294,15 @@ const DashboardAdmins = () => {
           },
         ],
       });
+      setSnackbarSuccess(true);
+      setSnackbarMessage("User is deleted for ever!");
+      setOpenSnackbar(true);
       handleClose();
     } catch (error) {
       console.log(error);
+      setSnackbarSuccess(false);
+      setSnackbarMessage(`User is not deleted due to error: ${error}`);
+      setOpenSnackbar(true);
     }
   };
 
@@ -289,11 +332,19 @@ const DashboardAdmins = () => {
       </SearchContainer>
 
       {loading && <Loading />}
-      {error && <p>{error.message}</p>}
+      {error && (
+        <Snackbar
+          anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+          open={true}
+          autoHideDuration={3000}
+        >
+          <Alert severity="error">An error occured: {error.message}</Alert>
+        </Snackbar>
+      )}
       {data && totalData && (
         <Table
           data={data.usersByLastNameAndRoleWithPagination}
-          columns={tokenData.role === 1 ? columnsSuperUser : columnsUser}
+          columns={tokenData.role === 2 ? columnsSuperUser : columnsUser}
           onCellClick={currentlySelectedRow}
           total={totalData.totalUsersByLastNameAndRole}
           page={page}
@@ -308,6 +359,9 @@ const DashboardAdmins = () => {
           open={isOpen}
           page={page}
           name={searchValue}
+          onSnackbarMessageChange={handleSnackbarMessageChange}
+          onOpenSnackbarChange={handleOpenSnackbarChange}
+          onSnackbarSuccessChange={handleSnackbarSuccessChange}
         />
       )}
 
@@ -327,6 +381,20 @@ const DashboardAdmins = () => {
           }
         />
       )}
+
+      <Snackbar
+        open={openSnackbar}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        autoHideDuration={3000}
+        onClose={handleSnackbarClose}
+      >
+        <Alert
+          severity={snackbarSuccess ? "success" : "error"}
+          sx={{ width: "100%" }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </AdminLayout>
   );
 };

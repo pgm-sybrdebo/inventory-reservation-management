@@ -22,6 +22,7 @@ import {
   Select,
   TextField,
 } from "@material-ui/core";
+import { useEffect, useState } from "react";
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -36,6 +37,9 @@ interface UpdateFormUserProps {
   handleClose: () => void;
   page: number;
   name: string;
+  onSnackbarMessageChange: any;
+  onOpenSnackbarChange: any;
+  onSnackbarSuccessChange: any;
 }
 
 const validationSchema = yup.object({
@@ -54,8 +58,33 @@ const UpdateFormUser = ({
   handleClose,
   page,
   name,
+  onSnackbarMessageChange,
+  onOpenSnackbarChange,
+  onSnackbarSuccessChange,
 }: UpdateFormUserProps) => {
   const [updateUser] = useMutation(UPDATE_USER_ADMIN);
+  const [message, setMessage] = useState("");
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarSuccess, setSnackbarSuccess] = useState(true);
+
+  useEffect(() => {
+    if (typeof onSnackbarMessageChange === "function") {
+      onSnackbarMessageChange(message);
+    }
+    if (typeof onOpenSnackbarChange === "function") {
+      onOpenSnackbarChange(openSnackbar);
+    }
+    if (typeof onSnackbarSuccessChange === "function") {
+      onSnackbarSuccessChange(snackbarSuccess);
+    }
+  }, [
+    message,
+    openSnackbar,
+    snackbarSuccess,
+    onSnackbarMessageChange,
+    onOpenSnackbarChange,
+    onSnackbarSuccessChange,
+  ]);
 
   console.log("row", selectedRow);
   return (
@@ -159,10 +188,16 @@ const UpdateFormUser = ({
                     },
                   ],
                 });
+                setSnackbarSuccess(true);
+                setMessage("User is updated!");
+                setOpenSnackbar(true);
                 console.log("done");
                 handleClose();
               } catch (error) {
                 console.log(error);
+                setSnackbarSuccess(false);
+                setMessage(`User is not updated due to error: ${error}`);
+                setOpenSnackbar(true);
               }
               setSubmitting(false);
             }}

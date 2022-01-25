@@ -19,6 +19,7 @@ import {
   TOTAL_MODELS_BY_NAME,
 } from "../../../graphql/models";
 import { CREATE_MEDIA } from "../../../graphql/media";
+import { useState, useEffect } from "react";
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -42,6 +43,9 @@ interface CreateFormModelProps {
   handleClose: any;
   page: number;
   name: string;
+  onSnackbarMessageChange: any;
+  onOpenSnackbarChange: any;
+  onSnackbarSuccessChange: any;
 }
 
 interface Spec {
@@ -83,7 +87,32 @@ const CreateFormModel = ({
   handleClose,
   page,
   name,
+  onSnackbarMessageChange,
+  onOpenSnackbarChange,
+  onSnackbarSuccessChange,
 }: CreateFormModelProps) => {
+  const [message, setMessage] = useState("");
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarSuccess, setSnackbarSuccess] = useState(true);
+
+  useEffect(() => {
+    if (typeof onSnackbarMessageChange === "function") {
+      onSnackbarMessageChange(message);
+    }
+    if (typeof onOpenSnackbarChange === "function") {
+      onOpenSnackbarChange(openSnackbar);
+    }
+    if (typeof onSnackbarSuccessChange === "function") {
+      onSnackbarSuccessChange(snackbarSuccess);
+    }
+  }, [
+    message,
+    openSnackbar,
+    snackbarSuccess,
+    onSnackbarMessageChange,
+    onOpenSnackbarChange,
+    onSnackbarSuccessChange,
+  ]);
   const [createModel] = useMutation(CREATE_MODEL, {
     update: (proxy, mutationResult) => {
       console.log("mutationResult", mutationResult);
@@ -174,9 +203,15 @@ const CreateFormModel = ({
                   refetchQueries: [],
                 });
                 console.log("done");
+                setSnackbarSuccess(true);
+                setMessage("New model is added!");
+                setOpenSnackbar(true);
                 handleClose();
               } catch (error) {
                 console.log(error);
+                setSnackbarSuccess(false);
+                setMessage(`Model is not created due to error: ${error}`);
+                setOpenSnackbar(true);
               }
               setSubmitting(false);
             }}

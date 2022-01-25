@@ -1,5 +1,5 @@
 import { useMutation } from "@apollo/client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import * as yup from "yup";
 import {
@@ -29,6 +29,9 @@ interface CreateFormDeviceStatusProps {
   handleClose: () => void;
   page: number;
   name: string;
+  onSnackbarMessageChange: any;
+  onOpenSnackbarChange: any;
+  onSnackbarSuccessChange: any;
 }
 
 const validationSchema = yup.object({
@@ -40,8 +43,33 @@ const CreateFormDeviceStatus = ({
   handleClose,
   page,
   name,
+  onSnackbarMessageChange,
+  onOpenSnackbarChange,
+  onSnackbarSuccessChange,
 }: CreateFormDeviceStatusProps) => {
   const [createDeviceStatus] = useMutation(CREATE_DEVICE_STATUS);
+  const [message, setMessage] = useState("");
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarSuccess, setSnackbarSuccess] = useState(true);
+
+  useEffect(() => {
+    if (typeof onSnackbarMessageChange === "function") {
+      onSnackbarMessageChange(message);
+    }
+    if (typeof onOpenSnackbarChange === "function") {
+      onOpenSnackbarChange(openSnackbar);
+    }
+    if (typeof onSnackbarSuccessChange === "function") {
+      onSnackbarSuccessChange(snackbarSuccess);
+    }
+  }, [
+    message,
+    openSnackbar,
+    snackbarSuccess,
+    onSnackbarMessageChange,
+    onOpenSnackbarChange,
+    onSnackbarSuccessChange,
+  ]);
 
   return (
     <Dialog fullWidth open={open} onClose={handleClose}>
@@ -77,10 +105,18 @@ const CreateFormDeviceStatus = ({
                     },
                   ],
                 });
+                setSnackbarSuccess(true);
+                setMessage("New device status is added!");
+                setOpenSnackbar(true);
                 console.log("done");
                 handleClose();
               } catch (error) {
                 console.log(error);
+                setSnackbarSuccess(false);
+                setMessage(
+                  `Device status is not created due to error: ${error}`
+                );
+                setOpenSnackbar(true);
               }
               setSubmitting(false);
             }}
