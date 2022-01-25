@@ -3,7 +3,7 @@ import { gql } from "@apollo/client";
 
 export const CREATE_DAMAGE = gql`
 
-mutation ($deviceId: String!, $reservationId: String!, $title: String!, $description: String!, $picture: String!  ) {
+mutation ($deviceId: String!, $reservationId: String, $title: String!, $description: String!, $picture: String!  ) {
   createDamage(createDamageInput: {
     deviceId: $deviceId
     reservationId: $reservationId

@@ -1,5 +1,5 @@
 import { InputType, Int, Field } from '@nestjs/graphql';
-import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
 
 @InputType()
 export class CreateDamageInput {
@@ -8,10 +8,10 @@ export class CreateDamageInput {
   @Field()
   deviceId: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsUUID('all')
-  @Field()
-  reservationId: string;
+  @Field({ nullable: true })
+  reservationId?: string;
 
   @IsNotEmpty()
   @IsString()

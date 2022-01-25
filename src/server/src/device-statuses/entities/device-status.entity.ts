@@ -22,8 +22,6 @@ export class DeviceStatus {
   @Field()
   name: string;
 
-  // @Column(() => Dates)
-  // date: Dates;
   @CreateDateColumn()
   @Field()
   created_on: Date;

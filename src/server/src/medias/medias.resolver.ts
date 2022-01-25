@@ -15,36 +15,55 @@ export class MediasResolver {
 
   @Mutation(() => Media)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   createMedia(@Args('createMediaInput') createMediaInput: CreateMediaInput) {
     return this.mediasService.create(createMediaInput);
   }
 
   @Query(() => [Media], { name: 'medias' })
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   findAll() {
     return this.mediasService.findAll();
   }
 
   @Query(() => Media, { name: 'media' })
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   findOne(@Args('id', new ParseUUIDPipe()) id: string) {
     return this.mediasService.findOne(id);
   }
 
-  @Mutation(() => Media)
+  @Query(() => Media, { name: 'mediaByModelId' })
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
-  updateMedia(@Args('updateMediaInput') updateMediaInput: UpdateMediaInput) {
-    return this.mediasService.update(updateMediaInput.id, updateMediaInput);
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  findFirstByModelId(@Args('modelId', new ParseUUIDPipe()) modelId: string) {
+    return this.mediasService.findFirstByModelId(modelId);
   }
 
   @Mutation(() => Media)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
-  removeMedia(@Args('id', new ParseUUIDPipe()) id: string) {
-    return this.mediasService.remove(id);
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  updateMedia(@Args('updateMediaInput') updateMediaInput: UpdateMediaInput) {
+    return this.mediasService.update(updateMediaInput.id, updateMediaInput);
+  }
+
+  @Mutation(() => Boolean)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  async removeMedia(@Args('id', new ParseUUIDPipe()) id: string) {
+    try {
+      await this.mediasService.remove(id);
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @Mutation(() => Media)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  softRemoveMedia(@Args('id', new ParseUUIDPipe()) id: string) {
+    return this.mediasService.softRemove(id);
   }
 }

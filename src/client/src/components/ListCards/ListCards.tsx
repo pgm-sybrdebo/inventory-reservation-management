@@ -9,11 +9,12 @@ const ListCards : React.FC<base> = ({children}) => (
 
 const List = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
   width: 100%;
   margin-bottom:32px;
+  margin-top:32px;
+
 `;
 
 export default ListCards

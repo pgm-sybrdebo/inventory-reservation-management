@@ -1,14 +1,13 @@
-import {createGlobalStyle} from "styled-components";
+import { createGlobalStyle } from "styled-components";
 
-import Source_Sans_Pro_SemiBold_woff2 from './fonts/Source_Sans_Pro_SemiBold.woff2';
-import Source_Sans_Pro_SemiBold_woff from './fonts/Source_Sans_Pro_SemiBold.woff';
-import Source_Sans_Pro_Regular_woff2 from './fonts/Source_Sans_Pro_Regular.woff2';
-import Source_Sans_Pro_Regular_woff from './fonts/Source_Sans_Pro_Regular.woff';
-import Source_Sans_Pro_Italic_woff2 from './fonts/Source_Sans_Pro_Italic.woff2';
-import Source_Sans_Pro_Italic_woff from './fonts/Source_Sans_Pro_Italic.woff';
-import Source_Sans_Pro_Bold_woff2 from './fonts/Source_Sans_Pro_Bold.woff2';
-import Source_Sans_Pro_Bold_woff from './fonts/Source_Sans_Pro_Bold.woff';
-
+import Source_Sans_Pro_SemiBold_woff2 from "./fonts/Source_Sans_Pro_SemiBold.woff2";
+import Source_Sans_Pro_SemiBold_woff from "./fonts/Source_Sans_Pro_SemiBold.woff";
+import Source_Sans_Pro_Regular_woff2 from "./fonts/Source_Sans_Pro_Regular.woff2";
+import Source_Sans_Pro_Regular_woff from "./fonts/Source_Sans_Pro_Regular.woff";
+import Source_Sans_Pro_Italic_woff2 from "./fonts/Source_Sans_Pro_Italic.woff2";
+import Source_Sans_Pro_Italic_woff from "./fonts/Source_Sans_Pro_Italic.woff";
+import Source_Sans_Pro_Bold_woff2 from "./fonts/Source_Sans_Pro_Bold.woff2";
+import Source_Sans_Pro_Bold_woff from "./fonts/Source_Sans_Pro_Bold.woff";
 
 export const GlobalStyles = createGlobalStyle`
 

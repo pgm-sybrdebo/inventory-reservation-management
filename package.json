@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@nestjs-query/query-graphql": "^0.30.0",
+    "@types/bcrypt": "^5.0.0"
+  }
+}

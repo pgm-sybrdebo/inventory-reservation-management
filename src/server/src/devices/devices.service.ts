@@ -17,11 +17,16 @@ import {
   Not,
   Equal,
   IsNull,
+  Raw,
 } from 'typeorm';
 import { CreateDeviceInput } from './dto/create-device.input';
 import { UpdateDeviceInput } from './dto/update-device.input';
 import { Device } from './entities/device.entity';
 
+interface DeviceCount {
+  devices: Device[];
+  count: number;
+}
 @Injectable()
 export class DevicesService {
   constructor(
@@ -43,6 +48,91 @@ export class DevicesService {
     return this.devicesRepository.save(newDevice);
   }
 
+  async countWithName(name: string): Promise<number> {
+    const rawData = await this.devicesRepository.query(`
+    SELECT
+      COUNT(DISTINCT device.id) AS total
+    FROM
+      "device"
+    INNER JOIN "model" ON device."modelId" = model.id
+    WHERE device.deleted_on IS NULL
+    AND LOWER(model.name) LIKE LOWER('${name}%')
+    `);
+    return rawData[0].total;
+  }
+
+  async countDevicesInCheckWithName(name: string): Promise<number> {
+    const rawData = await this.devicesRepository.query(`
+    SELECT
+      COUNT(DISTINCT device.id) AS total
+    FROM
+      "device"
+    INNER JOIN "model" ON device."modelId" = model.id
+    WHERE device.deleted_on IS NULL
+    AND LOWER(model.name) LIKE LOWER('${name}%')
+    AND device."deviceStatusId" = '${process.env.DEVICE_STATUS_INCHECK}'
+    `);
+    return rawData[0].total;
+  }
+
+  findAllByNameWithPagination(
+    name: string,
+    offset: number,
+    limit: number,
+  ): Promise<Device[]> {
+    return this.devicesRepository.find({
+      relations: ['model'],
+      where: {
+        model: {
+          name: Raw((alias) => `LOWER(${alias}) Like '${name}%'`),
+        },
+      },
+      skip: offset,
+      take: limit,
+      order: {
+        created_on: 'ASC',
+      },
+    });
+  }
+
+  findAllInCheckByNameWithPagination(
+    name: string,
+    offset: number,
+    limit: number,
+  ): Promise<Device[]> {
+    return this.devicesRepository.find({
+      relations: ['model'],
+      where: {
+        deviceStatusId: process.env.DEVICE_STATUS_INCHECK,
+        model: {
+          name: Raw((alias) => `LOWER(${alias}) Like '${name}%'`),
+        },
+      },
+      skip: offset,
+      take: limit,
+      order: {
+        created_on: 'ASC',
+      },
+    });
+  }
+
+  async findAllPagination(offset: number, limit: number): Promise<any> {
+    const test = await this.devicesRepository.findAndCount({
+      skip: offset,
+      take: limit,
+      order: {
+        id: 'ASC',
+      },
+    });
+    return this.devicesRepository.find({
+      skip: offset,
+      take: limit,
+      order: {
+        id: 'ASC',
+      },
+    });
+  }
+
   findAll(): Promise<Device[]> {
     return this.devicesRepository.find();
   }
@@ -61,7 +151,7 @@ export class DevicesService {
 
   findAllInCheckDevices(): Promise<Device[]> {
     return this.devicesRepository.find({
-      deviceStatusId: 'ec2ed711-e4a3-42f6-b441-0e91f98f31ba',
+      deviceStatusId: process.env.DEVICE_STATUS_INCHECK,
     });
   }
 
@@ -76,6 +166,20 @@ export class DevicesService {
 
   findAndCount(): Promise<number> {
     return this.devicesRepository.count();
+  }
+
+  async getTotalDevicesByModelId(modelId: String): Promise<number> {
+    const rawData = await this.devicesRepository.query(`
+      SELECT
+        COUNT(id) AS total
+      FROM
+        device
+      WHERE "deleted_on" IS NULL
+      AND "modelId" =  '${modelId}'
+      AND "deviceStatusId" = '${process.env.DEVICE_STATUS_READY}'
+    `);
+
+    return rawData;
   }
 
   async findDifferenceLastMonth(): Promise<number> {
@@ -97,11 +201,6 @@ export class DevicesService {
     const iso = date.toISOString();
     const date1 = new Date(Number(to));
     const iso1 = date1.toISOString();
-    console.log(date);
-    console.log(date1);
-    console.log(iso);
-    console.log(iso1);
-
     return this.devicesRepository.find({
       created_on: Between(iso, iso1),
     });
@@ -110,7 +209,25 @@ export class DevicesService {
   findAllByModelId(modelId: string): Promise<Device[]> {
     return this.devicesRepository.find({
       modelId: modelId,
-      deviceStatusId: '7b4a3256-6005-402b-916b-810f4d6669c8',
+      deviceStatusId: `'${process.env.DEVICE_STATUS_READY}'`,
+    });
+  }
+
+  findAllByModelIdWithPagination(
+    modelId: string,
+    offset: number,
+    limit: number,
+  ): Promise<Device[]> {
+    return this.devicesRepository.find({
+      where: {
+        modelId: modelId,
+        deviceStatusId: `${process.env.DEVICE_STATUS_READY}`,
+      },
+      skip: (offset - 1) * limit,
+      take: limit,
+      order: {
+        id: 'ASC',
+      },
     });
   }
 
@@ -121,7 +238,7 @@ export class DevicesService {
   findOneByDeviceId(id: string): Promise<Device> {
     return this.devicesRepository.findOne({
       id: id,
-      deviceStatusId: '7b4a3256-6005-402b-916b-810f4d6669c8',
+      deviceStatusId: `${process.env.DEVICE_STATUS_READY}`,
     });
   }
 
@@ -140,6 +257,11 @@ export class DevicesService {
   async remove(id: string): Promise<Device> {
     const device = await this.findOne(id);
     return this.devicesRepository.remove(device);
+  }
+
+  async softRemove(id: string): Promise<Device> {
+    const device = await this.findOne(id);
+    return this.devicesRepository.softRemove(device);
   }
 
   getDeviceReservations(deviceId: string): Promise<Reservation[]> {

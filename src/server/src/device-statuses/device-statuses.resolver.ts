@@ -3,7 +3,7 @@ import { DeviceStatusesService } from './device-statuses.service';
 import { DeviceStatus } from './entities/device-status.entity';
 import { CreateDeviceStatusInput } from './dto/create-device-status.input';
 import { UpdateDeviceStatusInput } from './dto/update-device-status.input';
-import { ParseUUIDPipe, UseGuards } from '@nestjs/common';
+import { ParseIntPipe, ParseUUIDPipe, UseGuards } from '@nestjs/common';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
@@ -15,7 +15,7 @@ export class DeviceStatusesResolver {
 
   @Mutation(() => DeviceStatus)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   createDeviceStatus(
     @Args('createDeviceStatusInput')
     createDeviceStatusInput: CreateDeviceStatusInput,
@@ -23,23 +23,47 @@ export class DeviceStatusesResolver {
     return this.deviceStatusesService.create(createDeviceStatusInput);
   }
 
+  @Query(() => Int, { name: 'totalDeviceStatusesByName' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  async totalDeviceStatusesByName(
+    @Args('name', { type: () => String }) name: string,
+  ) {
+    return this.deviceStatusesService.countWithName(name);
+  }
+
   @Query(() => [DeviceStatus], { name: 'deviceStatuses' })
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   findAll() {
     return this.deviceStatusesService.findAll();
   }
 
   @Query(() => DeviceStatus, { name: 'deviceStatus' })
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   findOne(@Args('id', new ParseUUIDPipe()) id: string) {
     return this.deviceStatusesService.findOne(id);
   }
 
+  @Query(() => [DeviceStatus], { name: 'deviceStatusesByNameWithPagination' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  findAllByNameWithPagination(
+    @Args('name', { type: () => String }) name: string,
+    @Args('offset', { type: () => Int }, new ParseIntPipe()) offset: number,
+    @Args('limit', { type: () => Int }, new ParseIntPipe()) limit: number,
+  ) {
+    return this.deviceStatusesService.findAllByNameWithPagination(
+      name,
+      offset,
+      limit,
+    );
+  }
+
   @Mutation(() => DeviceStatus)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   updateDeviceStatus(
     @Args('updateDeviceStatusInput')
     updateDeviceStatusInput: UpdateDeviceStatusInput,
@@ -50,10 +74,22 @@ export class DeviceStatusesResolver {
     );
   }
 
+  @Mutation(() => Boolean)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  async removeDeviceStatus(@Args('id', new ParseUUIDPipe()) id: string) {
+    try {
+      await this.deviceStatusesService.remove(id);
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   @Mutation(() => DeviceStatus)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
-  removeDeviceStatus(@Args('id', new ParseUUIDPipe()) id: string) {
-    return this.deviceStatusesService.remove(id);
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  softRemoveDeviceStatus(@Args('id', new ParseUUIDPipe()) id: string) {
+    return this.deviceStatusesService.softRemove(id);
   }
 }

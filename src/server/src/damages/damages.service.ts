@@ -45,4 +45,9 @@ export class DamagesService {
     const damage = await this.findOne(id);
     return this.damagesRepository.remove(damage);
   }
+
+  async softRemove(id: string): Promise<Damage> {
+    const damage = await this.findOne(id);
+    return this.damagesRepository.softRemove(damage);
+  }
 }

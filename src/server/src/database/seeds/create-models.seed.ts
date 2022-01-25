@@ -16,7 +16,6 @@ export default class CreateModels implements Seeder {
     const device_statuses = await factory(DeviceStatus)().createMany(4);
     const reservation_states = await factory(ReservationState)().createMany(3);
     const models = await factory(Model)({ tags }).createMany(90); // 90
-    // console.log('models', models);
     const devs = [];
 
     for (const mod of models) {
@@ -25,8 +24,6 @@ export default class CreateModels implements Seeder {
       const dev = await factory(Device)({ id, device_statuses }).createMany(
         quantity,
       );
-      //  console.log("lenght", dev.length);
-      //  console.log("dev",dev);
       if (dev.length > 1) {
         for (let i = 0; i < dev.length; i++) {
           devs.push(dev[i]);
@@ -34,20 +31,8 @@ export default class CreateModels implements Seeder {
       } else {
         devs.push(dev[0]);
       }
-
-      // if (typeof(dev) === "object") {
-      //   console.log("obj!!!!!!!!");
-      //   console.log("lenght", dev.length);
-      //   devs.push(dev[0]);
-      // } else {
-      //   console.log("arrrrrrr");
-      //   devs = devs.concat(dev);
-      // }
-      // console.log(dev);
       await factory(Media)({ id }).create();
     }
-
-    // console.log("devs", devs);
 
     for (const d of devs) {
       const { id, userId } = d;
@@ -57,9 +42,6 @@ export default class CreateModels implements Seeder {
         reservation_states,
         userId,
       }).createMany(userId ? 1 : 2);
-      // console.log("reserv", reserv);
-      // console.log("one", reserv[0]);
-      // console.log("one id", reserv[0].id);
       const reservId = reserv[0].id;
       await factory(Damage)({ id, reservId }).create();
     }

@@ -8,7 +8,6 @@ import { join } from 'path';
 import { UsersModule } from './users/users.module';
 import { ReservationsModule } from './reservations/reservations.module';
 import { ReservationStatesModule } from './reservation-states/reservation-states.module';
-import { ReservationTimesModule } from './reservation-times/reservation-times.module';
 import { DamagesModule } from './damages/damages.module';
 import { DevicesModule } from './devices/devices.module';
 import { ModelsModule } from './models/models.module';
@@ -16,8 +15,11 @@ import { DeviceStatusesModule } from './device-statuses/device-statuses.module';
 import { MediasModule } from './medias/medias.module';
 import { TagsModule } from './tags/tags.module';
 import { AuthModule } from './auth/auth.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { MulterModule } from '@nestjs/platform-express';
 
 import * as dotenv from 'dotenv';
+
 dotenv.config();
 const nodeEnvironment = `${(
   process.env.NODE_ENV || 'development'
@@ -54,16 +56,15 @@ const nodeEnvironment = `${(
         synchronize: true,
         logging: nodeEnvironment === 'development' ? true : false,
         dropSchema: nodeEnvironment === 'test' ? true : false,
-        // ssl: true,
-        ssl: {
-          rejectUnauthorized: false,
-        },
+        ssl: true,
+        // ssl: {
+        //   rejectUnauthorized: false,
+        // },
       }),
     }),
     UsersModule,
     ReservationsModule,
     ReservationStatesModule,
-    ReservationTimesModule,
     DamagesModule,
     DevicesModule,
     ModelsModule,
@@ -71,6 +72,10 @@ const nodeEnvironment = `${(
     MediasModule,
     TagsModule,
     AuthModule,
+    MulterModule.register({
+      dest: './uploads',
+    }),
+    ScheduleModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [AppService],

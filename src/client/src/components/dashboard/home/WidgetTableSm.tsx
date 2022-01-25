@@ -1,6 +1,6 @@
-import React from 'react'
-import styled from 'styled-components';
-import WidgetListItem from './WidgetListItem';
+import React from "react";
+import styled from "styled-components";
+import WidgetListItem from "./WidgetListItem";
 
 const Container = styled.div`
   flex: 2;
@@ -14,25 +14,24 @@ const Container = styled.div`
   }
 `;
 
-
-const WidgetTableSm = ({recentNewDevices}: any) => {
+const WidgetTableSm = ({ recentNewDevices }: any) => {
   return (
     <Container>
       <h2>Recent Devices</h2>
       <ul>
-        {recentNewDevices.map((device:any) => {
+        {recentNewDevices.map((device: any) => {
           return (
             <WidgetListItem
-              type='device'
+              type="device"
               key={device.id}
               name={device.model.name}
-              time= {device.created_on}
+              time={device.created_on}
             />
-          )
+          );
         })}
       </ul>
     </Container>
-  )
-}
+  );
+};
 
-export default WidgetTableSm
+export default WidgetTableSm;

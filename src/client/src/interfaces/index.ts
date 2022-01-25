@@ -1,4 +1,5 @@
-import { GridColDef } from "@material-ui/data-grid";
+import { GridColDef } from "@mui/x-data-grid";
+
 
 // interfaces
 export interface base {
@@ -7,6 +8,19 @@ export interface base {
 
 export interface topic {
   quantity: number,
+  // setSearchTags:any,
+  // setSearchQuery:any,
+  // searchQuery:string
+}
+export interface Filters {
+  // setSearchTags:(value:string[] | null)=>void,
+  // setSearchQuery:(value:string)=>void,
+  // searchQuery:string,
+  setModalVisible:any,
+  
+}
+export interface TopicDevice {
+  title:string,
 }
 
 export interface image {
@@ -20,14 +34,43 @@ export interface modelInfo {
   specifications: string[],
   tags: string[],
 }
+export interface Model {
+  id: string,
+  name: string,
+  quantity: number,
+  readyQuantity: number,
+  description: string,
+  brand: string,
+  specifications: string,
+}
+
+export interface InfoDevice {
+  name: string,
+  description: string,
+  damages: {title: string, description: string, picture: string}[]
+}
 
 
 export interface ModelCardPic {
   src: string,
   title: string,
-  quantity: number,
+  quantity?: number,
   description: string,
-  id: string
+  id: string,
+  start_date?:number, 
+  end_date?:number | null, 
+  expected_end_date?: number | null,
+  deviceId?:string,
+}
+
+
+
+export interface DeviceCardParams {
+  availability: string,
+  deviceId: string,
+  className?: string,
+  children?: React.ReactNode,
+  onClick?: () => void,
 }
 
 export interface ModelCardData {
@@ -35,6 +78,20 @@ export interface ModelCardData {
   quantity: number;
   description: string;
   id: string;
+  readyQuantity: number;
+}
+export interface reservationData {
+  name: string;
+  id: string;
+  device:{id:string, model:{name:string}};
+  start_date?:number, 
+  end_date?:number | null, 
+  expected_end_date?: number | null
+
+}
+export interface ModelDeviceData {
+  id: string;
+  userId: string | null;
 }
 
 
@@ -130,11 +187,16 @@ export interface UserById extends User {
 
 export interface TableProps {
   columns: GridColDef[]
-  data: User[]
+  // data: User[]
+  data: any
+  onCellClick?: any
+  total?: number
+  page?: any
+  setPage?: any
 }
 
 export interface WidgetListItemProps {
-  name: string;
+  name: string
   time?: number
   type: string,
   firstName?: string
@@ -153,7 +215,8 @@ export interface AdminLayoutProps {
 
 export enum UserRole {
   Regular,
-  Admin
+  Admin,
+  SuperAdmin,
 }
 
 export interface TokenInfo {
@@ -170,4 +233,19 @@ export interface EditProfileValues {
   editEmail:string,
   editPass:string,
   repeatEditPass:string,
+}
+export interface FilterValues {
+  filterName: string,
+  filterSelect: any[],
+
+}
+export interface FilterParams {
+  name: string,
+  onChange: (value: any) => void,
+  value: any
+}
+
+export interface DeviceStatus {
+  id: string,
+  name: string
 }

@@ -12,6 +12,13 @@ import ModelImage from './ModelImage/ModelImage';
 import ModelInfo from './ModelInfo/ModelInfo'; 
 import GeneralList from './GeneralList/GeneralList';
 import ProfileForm from './Profile/ProfileForm';
+import StyledDeviceCard from './DeviceCard/StyledDeviceCard.style';
+import TopicDevices from "./TopicDevices/TopicDevices";
+import DeviceInfo from "./DeviceInfo/DeviceInfo"
+import DeviceInfoReserve from "./DeviceInfo/DeviceInfoReserve";
+import TopicMyReservation from "./TopicMyReservation/TopicMyReservation";
+import ReserveCard from "./ReserveCard/ReserveCard"
+
 
 
 export {
@@ -28,5 +35,11 @@ export {
   ModelInfo,
   ListCards,
   Topic,
-  ProfileForm
+  ProfileForm,
+  StyledDeviceCard,
+  TopicDevices,
+  DeviceInfo,
+  DeviceInfoReserve,
+  TopicMyReservation, 
+  ReserveCard
 }

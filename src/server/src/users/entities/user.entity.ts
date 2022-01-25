@@ -1,6 +1,5 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { Device } from 'src/devices/entities/device.entity';
-import { Dates } from 'src/mixins/date.entity';
 import { Reservation } from 'src/reservations/entities/reservation.entity';
 import {
   PrimaryGeneratedColumn,
@@ -10,8 +9,10 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   UpdateDateColumn,
+  BeforeInsert,
 } from 'typeorm';
 import { Role } from '../../auth/role.enum';
+import * as bcrypt from 'bcrypt';
 @Entity()
 @ObjectType()
 export class User {
@@ -37,19 +38,15 @@ export class User {
 
   @Column({ type: 'enum', enum: Role, default: Role.USER })
   @Field()
-  role: Role = 0;
+  role: Role;
 
-  @Column({ nullable: true })
-  @Field((type) => Int, { nullable: true })
+  @Column()
+  @Field((type) => Int)
   profession: number;
 
   @Column({ nullable: true })
   @Field((type) => Int, { nullable: true })
   cardNumber: number;
-
-  // @Column(() => Dates)
-  // @Field()
-  // date: Dates;
 
   @CreateDateColumn()
   @Field()
@@ -70,4 +67,10 @@ export class User {
   @OneToMany(() => Device, (device) => device.user)
   @Field((type) => [Device], { nullable: true })
   devices?: Device[];
+
+  // @BeforeInsert()
+  // async setPassword(password: string) {
+  //   const salt = await bcrypt.genSalt(10);
+  //   this.password = await bcrypt.hash(password || this.password, salt);
+  // }
 }

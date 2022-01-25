@@ -1,8 +1,5 @@
-import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { ObjectType, Field } from '@nestjs/graphql';
 import {
-  PrimaryGeneratedColumn,
-  Column,
-  Entity,
   UpdateDateColumn,
   DeleteDateColumn,
   CreateDateColumn,
@@ -10,17 +7,6 @@ import {
 
 @ObjectType()
 export class Dates {
-  // @Column({nullable: true})
-  // @Field({nullable: true})
-  // created_on?: Date;
-
-  // @Column({nullable: true})
-  // @Field({nullable: true})
-  // modified_on?: Date;
-
-  // @Column({nullable: true})
-  // @Field({nullable: true})
-  // deleted_on?: Date;
 
   @CreateDateColumn()
   @Field()

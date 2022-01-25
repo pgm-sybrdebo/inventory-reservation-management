@@ -6,14 +6,14 @@ input CreateDamageInput {
   description: String!
   deviceId: String!
   picture: String!
-  reservationId: String!
+  reservationId: String
   title: String!
 }
 
 input CreateDeviceInput {
   deviceStatusId: String!
   modelId: String!
-  qr_code: String!
+  qr_code: String
   userId: String
 }
 
@@ -33,6 +33,7 @@ input CreateModelInput {
   max_reservation_time: Int!
   name: String!
   quantity: Int!
+  readyQuantity: Int!
   specifications: String!
 }
 
@@ -49,11 +50,6 @@ input CreateReservationStateInput {
   name: String!
 }
 
-input CreateReservationTimeInput {
-  amount: Int!
-  name: String!
-}
-
 input CreateTagInput {
   name: String!
 }
@@ -65,7 +61,7 @@ type Damage {
   id: String!
   picture: String!
   reservation: Reservation!
-  reservationId: String!
+  reservationId: String
   title: String!
 }
 
@@ -78,7 +74,7 @@ type Device {
   id: String!
   model: Model!
   modelId: String!
-  qr_code: String!
+  qr_code: String
   reservations: [Reservation!]
   updated_on: Timestamp!
   user: User!
@@ -92,6 +88,11 @@ type DeviceStatus {
   id: String!
   name: String!
   updated_on: Timestamp!
+}
+
+input Filter {
+  name: String
+  tagIds: [String]
 }
 
 type LoginResponse {
@@ -123,6 +124,7 @@ type Model {
   medias: [Media!]
   name: String!
   quantity: Int!
+  readyQuantity: Int
   specifications: String!
   tags: [Tag!]
   updated_on: Timestamp!
@@ -137,21 +139,28 @@ type Mutation {
   createModel(createModelInput: CreateModelInput!): Model!
   createReservation(createReservationInput: CreateReservationInput!): Reservation!
   createReservationState(createReservationStateInput: CreateReservationStateInput!): ReservationState!
-  createReservationTime(createReservationTimeInput: CreateReservationTimeInput!): ReservationTime!
   createTag(createTagInput: CreateTagInput!): Tag!
   login(loginUserInput: LoginUserInput!): LoginResponse!
   removeDamage(id: String!): Damage!
-  removeDevice(id: String!): Device!
-  removeDeviceStatus(id: String!): DeviceStatus!
-  removeMedia(id: String!): Media!
-  removeModel(id: String!): Model!
+  removeDevice(id: String!): Boolean!
+  removeDeviceStatus(id: String!): Boolean!
+  removeMedia(id: String!): Boolean!
+  removeModel(id: String!): Boolean!
   removeModelFromTag(modelId: String!, tagId: String!): Model!
-  removeReservation(id: String!): Reservation!
+  removeReservation(id: String!): Boolean!
   removeReservationState(id: String!): ReservationState!
-  removeReservationTime(id: String!): ReservationTime!
-  removeTag(id: String!): Tag!
-  removeUser(id: String!): User!
+  removeTag(id: String!): Boolean!
+  removeUser(id: String!): Boolean!
   signup(signupUserInput: SignupUserInput!): User!
+  softRemoveDamage(id: String!): Damage!
+  softRemoveDevice(id: String!): Device!
+  softRemoveDeviceStatus(id: String!): DeviceStatus!
+  softRemoveMedia(id: String!): Media!
+  softRemoveModel(id: String!): Model!
+  softRemoveReservation(id: String!): Reservation!
+  softRemoveReservationState(id: String!): ReservationState!
+  softRemoveTag(id: String!): Tag!
+  softRemoveUser(id: String!): User!
   takenConfirmed(updateReservationInput: UpdateReservationInput!): Reservation!
   updateDamage(updateDamageInput: UpdateDamageInput!): Damage!
   updateDevice(updateDeviceInput: UpdateDeviceInput!): Device!
@@ -160,9 +169,9 @@ type Mutation {
   updateModel(updateModelInput: UpdateModelInput!): Model!
   updateReservation(updateReservationInput: UpdateReservationInput!): Reservation!
   updateReservationState(updateReservationStateInput: UpdateReservationStateInput!): ReservationState!
-  updateReservationTime(updateReservationTimeInput: UpdateReservationTimeInput!): ReservationTime!
   updateTag(updateTagInput: UpdateTagInput!): Tag!
   updateUser(updateUserInput: UpdateUserInput!): User!
+  updateUserAdmin(updateUserAdminInput: UpdateUserAdminInput!): User!
 }
 
 type Query {
@@ -172,18 +181,26 @@ type Query {
   device(id: String!): Device!
   deviceStatus(id: String!): DeviceStatus!
   deviceStatuses: [DeviceStatus!]!
+  deviceStatusesByNameWithPagination(limit: Int!, name: String!, offset: Int!): [DeviceStatus!]!
   devices: [Device!]!
+  devicesByNameWithPagination(limit: Int!, name: String!, offset: Int!): [Device!]!
+  devicesInCheckByNameWithPagination(limit: Int!, name: String!, offset: Int!): [Device!]!
+  devicesWithPagination(limit: Int!, offset: Int!): [Device!]!
   differenceLastMonthDevices: Int!
   differenceLastMonthModels: Int!
   differenceLastMonthUsers: Int!
   getDeviceById(id: String!): Device!
-  getDevicesByModelId(modelId: String!): Device!
+  getDevicesByModelId(modelId: String!): [Device!]!
+  getDevicesByModelIdWithPagination(limit: Int!, modelId: String!, offset: Int!): [Device!]!
   inCheckDevices: [Device!]!
   media(id: String!): Media!
+  mediaByModelId(modelId: String!): Media!
   medias: [Media!]!
   model(id: String!): Model!
   models: [Model!]!
-  modelsByTagId(tagIds: [String!]!): [Model!]!
+  modelsByFilterWithPagination(filter: Filter!, limit: Int!, offset: Int!): [Model!]!
+  modelsByNameWithPagination(limit: Int!, name: String!, offset: Int!): [Model!]!
+  modelsWithPagination(limit: Int!, offset: Int!): [Model!]!
   recentDevices(from: String!, to: String!): [Device!]!
   recentModels(from: String!, to: String!): [Model!]!
   recentNewDevices: [Device!]!
@@ -192,22 +209,37 @@ type Query {
   reservation(id: String!): Reservation!
   reservationState(id: String!): ReservationState!
   reservationStates: [ReservationState!]!
-  reservationTime(id: String!): ReservationTime!
-  reservationTimes: [ReservationTime!]!
   reservations: [Reservation!]!
+  reservationsByUserIdAndReservationState(reservationStateId: String!, userId: String!): [Reservation!]!
   reservationsOverview(today: String!): [ReservationsOverview!]!
   stockDevices: [Device!]!
   tag(id: String!): Tag!
   tags: [Tag!]!
+  tagsByNameWithPagination(limit: Int!, name: String!, offset: Int!): [Tag!]!
+  totalDeviceStatusesByName(name: String!): Int!
   totalDevices: Int!
+  totalDevicesByModelId(modelId: String!): [Total!]!
+  totalDevicesByName(name: String!): Int!
+  totalDevicesInCheckByName(name: String!): Int!
   totalModels: Int!
+  totalModelsByName(name: String!): Int!
+  totalModelsWithFilter(filter: Filter!): [Total!]!
   totalMonthReservations(month: String!): Int!
+  totalTagsByName(name: String!): Int!
   totalUsers: Int!
+  totalUsersByLastName(lastName: String!): Int!
+  totalUsersByLastNameAndProfession(lastName: String!, profession: Int!): Int!
+  totalUsersByLastNameAndRole(lastName: String!, role: Int!): Int!
   user(id: String!): User!
   userByEmail(email: String!): User!
   users: [User!]!
+  usersByLastName(lastName: String!): [User!]!
+  usersByLastNameAndProfessionWithPagination(lastName: String!, limit: Int!, offset: Int!, profession: Int!): [User!]!
+  usersByLastNameAndRoleWithPagination(lastName: String!, limit: Int!, offset: Int!, role: Int!): [User!]!
+  usersByLastNameWithPagination(lastName: String!, limit: Int!, offset: Int!): [User!]!
   usersByProfession(profession: Int!): [User!]!
   usersByRole(role: Int!): [User!]!
+  usersWithPagination(limit: Int!, offset: Int!): [User!]!
 }
 
 type Reservation {
@@ -231,12 +263,6 @@ type ReservationState {
   id: String!
   name: String!
   reservations: [Reservation!]
-}
-
-type ReservationTime {
-  amount: Int!
-  id: String!
-  name: String!
 }
 
 type ReservationsOverview {
@@ -266,6 +292,10 @@ type Tag {
 `Date` type as integer. Type represents date and time as number of milliseconds from start of UNIX epoch.
 """
 scalar Timestamp
+
+type Total {
+  total: Float!
+}
 
 input UpdateDamageInput {
   description: String
@@ -303,6 +333,7 @@ input UpdateModelInput {
   max_reservation_time: Int
   name: String
   quantity: Int
+  readyQuantity: Int
   specifications: String
 }
 
@@ -321,15 +352,20 @@ input UpdateReservationStateInput {
   name: String
 }
 
-input UpdateReservationTimeInput {
-  amount: Int
+input UpdateTagInput {
   id: String!
   name: String
 }
 
-input UpdateTagInput {
+input UpdateUserAdminInput {
+  cardNumber: Int
+  email: String
+  firstName: String
   id: String!
-  name: String
+  lastName: String
+  password: String
+  profession: Int
+  role: Int!
 }
 
 input UpdateUserInput {
@@ -352,7 +388,7 @@ type User {
   id: String!
   lastName: String!
   password: String!
-  profession: Int
+  profession: Int!
   reservations: [Reservation!]
   role: Float!
   updated_on: Timestamp!

@@ -46,9 +46,6 @@ export class Reservation {
   @Field({ nullable: true })
   end_date: Date;
 
-  // @Column(() => Dates)
-  // date: Dates;
-
   @CreateDateColumn()
   @Field()
   created_on: Date;
@@ -61,7 +58,7 @@ export class Reservation {
   @Field()
   deleted_on: Date;
 
-  @ManyToOne(() => User, (user) => user.reservations)
+  @ManyToOne(() => User, (user) => user.reservations, { onDelete: 'CASCADE' })
   @Field((type) => User)
   user: User;
 
