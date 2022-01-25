@@ -192,8 +192,8 @@ export class UsersResolver {
   }
 
   @Query(() => User, { name: 'userByEmail' })
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN, Role.USER, Role.SUPER_ADMIN)
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles(Role.ADMIN, Role.USER, Role.SUPER_ADMIN)
   findOneByEmail(@Args('email', { type: () => String }) email: string) {
     return this.usersService.findOneByEmail(email);
   }

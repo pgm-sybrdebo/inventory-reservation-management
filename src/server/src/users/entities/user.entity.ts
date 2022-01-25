@@ -75,9 +75,9 @@ export class User {
   @Field((type) => [Device], { nullable: true })
   devices?: Device[];
 
-  @BeforeInsert()
-  async setPassword(password: string) {
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(password || this.password, salt);
-  }
+  // @BeforeInsert()
+  // async setPassword(password: string) {
+  //   const salt = await bcrypt.genSalt(10);
+  //   this.password = await bcrypt.hash(password || this.password, salt);
+  // }
 }

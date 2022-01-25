@@ -35,9 +35,12 @@ const SearchContainer = styled.div`
   }
 `;
 
-const token: string = localStorage.getItem("token") || "";
-const tokenData = jwt_decode<TokenInfo>(token);
-
+const token: string | null = localStorage.getItem("token");
+const tokenData = token
+  ? jwt_decode<TokenInfo>(token)
+  : {
+      role: 0,
+    };
 interface initState {
   action: string;
 }
