@@ -63,7 +63,10 @@ const RegisterForm: React.FC = () => {
         ),
 
         regStatus: YUP.number().required("Profession is required"),
-        regNumber: YUP.number().required("Card number is required"),
+        regNumber: YUP.number()
+          .min(10000, "Cardnumber has 5 numbers")
+          .max(99999, "Cardnumber has 5 numbers")
+          .required("Card number is required"),
       }),
       onSubmit: (values, { setSubmitting }) => {
         setSubmitting(true);
