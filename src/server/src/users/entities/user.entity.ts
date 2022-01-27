@@ -9,7 +9,6 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   UpdateDateColumn,
-  BeforeInsert,
 } from 'typeorm';
 import { Role } from '../../auth/role.enum';
 import * as bcrypt from 'bcrypt';

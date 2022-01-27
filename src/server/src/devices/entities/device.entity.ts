@@ -1,4 +1,4 @@
-import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { ObjectType, Field } from '@nestjs/graphql';
 import { Damage } from 'src/damages/entities/damage.entity';
 import { DeviceStatus } from 'src/device-statuses/entities/device-status.entity';
 import { Model } from 'src/models/entities/model.entity';

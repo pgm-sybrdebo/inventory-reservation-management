@@ -1,5 +1,5 @@
-import { InputType, Int, Field } from '@nestjs/graphql';
-import { IsBoolean, IsNotEmpty, IsOptional, IsUUID } from 'class-validator';
+import { InputType, Field } from '@nestjs/graphql';
+import { IsNotEmpty, IsOptional, IsUUID } from 'class-validator';
 
 @InputType()
 export class CreateDeviceInput {

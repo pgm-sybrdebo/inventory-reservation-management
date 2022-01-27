@@ -7,14 +7,9 @@ import { GridCellParams, MuiEvent } from "@mui/x-data-grid";
 import ConfirmDialog from "../components/dashboard/dialogs/ConfirmDialog";
 import SearchBar from "material-ui-search-bar";
 import Loading from "../components/dashboard/Loading";
-import { Button, Snackbar } from "@material-ui/core";
-import { columnsDevice } from "../components/dashboard/columns/columnsDevice";
+import { Snackbar } from "@material-ui/core";
 import {
-  GET_ALL_DEVICES_BY_NAME_WITH_PAGINATION,
   GET_ALL_DEVICES_IN_CHECK_BY_NAME_WITH_PAGINATION,
-  REMOVE_DEVICE,
-  SOFT_REMOVE_DEVICE,
-  TOTAL_DEVICES_BY_NAME,
   TOTAL_DEVICES_IN_CHECK_BY_NAME,
   UPDATE_DEVICE,
 } from "../graphql/devices";

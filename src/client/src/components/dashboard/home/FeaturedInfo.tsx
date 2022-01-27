@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import { FeaturedInfoProps } from "../../../interfaces";
 import Widget from "./Widget";

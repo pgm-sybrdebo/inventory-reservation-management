@@ -1,4 +1,4 @@
-import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { ObjectType, Field } from '@nestjs/graphql';
 import { Model } from 'src/models/entities/model.entity';
 import {
   PrimaryGeneratedColumn,

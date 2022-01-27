@@ -1,5 +1,5 @@
 import { CreateDeviceStatusInput } from './create-device-status.input';
-import { InputType, Field, Int, PartialType } from '@nestjs/graphql';
+import { InputType, Field, PartialType } from '@nestjs/graphql';
 import { IsNotEmpty, IsUUID } from 'class-validator';
 
 @InputType()

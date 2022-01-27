@@ -1,8 +1,7 @@
-import { define, factory } from 'typeorm-seeding';
+import { define } from 'typeorm-seeding';
 import * as Faker from 'faker';
 import { Damage } from 'src/damages/entities/damage.entity';
-import { Device } from 'src/devices/entities/device.entity';
-import { Reservation } from 'src/reservations/entities/reservation.entity';
+
 
 interface Context {
   id: string;

@@ -9,7 +9,6 @@ import {
 } from '@nestjs/graphql';
 import { UsersService } from './users.service';
 import { User } from './entities/user.entity';
-import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { ParseIntPipe, ParseUUIDPipe, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
@@ -17,9 +16,7 @@ import { Roles } from 'src/auth/decorators/roles.decorator';
 import { Role } from 'src/auth/role.enum';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Reservation } from 'src/reservations/entities/reservation.entity';
-import { PaginationParams } from 'src/mixins/paginationParams';
 import { UpdateUserAdminInput } from './dto/update-user-admin.input';
-import { Total } from 'src/models/dto/total';
 
 @Resolver(() => User)
 export class UsersResolver {

@@ -1,5 +1,5 @@
 import { CreateModelInput } from './create-model.input';
-import { InputType, Field, Int, PartialType } from '@nestjs/graphql';
+import { InputType, Field, PartialType } from '@nestjs/graphql';
 import { IsNotEmpty, IsUUID } from 'class-validator';
 
 @InputType()

@@ -1,12 +1,10 @@
 import { InputType, Field } from '@nestjs/graphql';
 import {
-  IsAlphanumeric,
   IsDate,
   IsNotEmpty,
   IsOptional,
   IsUUID,
 } from 'class-validator';
-import { Timestamp } from 'typeorm';
 
 @InputType()
 export class CreateReservationInput {

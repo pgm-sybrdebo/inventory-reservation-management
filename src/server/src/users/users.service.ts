@@ -7,7 +7,6 @@ import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
-import { raw } from 'express';
 
 @Injectable()
 export class UsersService {
