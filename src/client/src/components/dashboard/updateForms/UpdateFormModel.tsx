@@ -356,7 +356,7 @@ const UpdateFormModel = ({
                         <Image
                           src={
                             data.mediaByModelId.source
-                              ? `${process.env.SERVER_URL}/${data.mediaByModelId.source}`
+                              ? `${process.env.REACT_APP_SERVER_URL}/model-image/${data.mediaByModelId.source}`
                               : defaultImage
                           }
                           alt={selectedRow.name}
