@@ -7,7 +7,7 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe());
   app.enableCors({
-    origin: `${process.env.CLIENT_URL}`,
+    origin: 'https://artevelde-inventory-client.herokuapp.com/',
     credentials: true,
     allowedHeaders:
       'Content-Type, Accept, Authorization, X-Requested-With, Origin, X-Csrftoken, X-Xsrftoken',
