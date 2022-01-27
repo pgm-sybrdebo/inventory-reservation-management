@@ -1,6 +1,5 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { Device } from 'src/devices/entities/device.entity';
-import { Dates } from 'src/mixins/date.entity';
 import {
   PrimaryGeneratedColumn,
   Column,

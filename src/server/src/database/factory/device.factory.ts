@@ -1,7 +1,6 @@
 import { define, factory } from 'typeorm-seeding';
 import * as Faker from 'faker';
 import { Device } from 'src/devices/entities/device.entity';
-import { Model } from 'src/models/entities/model.entity';
 import { DeviceStatus } from 'src/device-statuses/entities/device-status.entity';
 import { User } from 'src/users/entities/user.entity';
 

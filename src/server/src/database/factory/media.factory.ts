@@ -1,4 +1,4 @@
-import { define, factory } from 'typeorm-seeding';
+import { define } from 'typeorm-seeding';
 import * as Faker from 'faker';
 import { Media } from 'src/medias/entities/media.entity';
 

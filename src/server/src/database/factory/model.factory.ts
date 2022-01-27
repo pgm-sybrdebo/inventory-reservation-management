@@ -1,4 +1,4 @@
-import { define, factory } from 'typeorm-seeding';
+import { define } from 'typeorm-seeding';
 import * as Faker from 'faker';
 import { Model } from '../../models/entities/model.entity';
 import MODELS from '../data/models.json';
